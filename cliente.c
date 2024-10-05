@@ -35,3 +35,55 @@ int main(int argc, char **argv) {
     }
     return 0;
 }
+
+Cliente* CarregarClienteConf(int* nomeficheiro, int* totalconf){
+
+    FILE* ficheiroconfig = fopen(nomeficheiro, "r");
+
+    if(ficheiroconfig == NULL)
+    {
+        printf("Ocorreu um erro na abertura do ficheiro: %s\n", strerror(errno));
+        return NULL;
+    }
+    int quantidade_config = 0;
+    int capacidade = 1;
+    char* linhadoconf = (char*)malloc(BUF_SIZE* sizeof(char));
+    Cliente* quantidadeconfigarmazenadas = (Cliente*)malloc(capacidade* sizeof(Cliente));
+
+    while (fgets(linhadoconf, BUF_SIZE, ficheiroconfig) != NULL) 
+    {
+        if(quantidade_config==0){
+            quantidadeconfigarmazenadas[0].idCliente = atoi(linhadoconf);
+        }
+        if(quantidade_config==1){
+            quantidadeconfigarmazenadas[1].ipServidor = linhadoconf;  
+        }
+    }
+    quantidadeconfigarmazenadas[0].idCliente = atoi(linhadoconf);
+
+    if()
+    quantidadeconfigarmazenadas[1].ipServidor = 
+
+    while (fgets(linhadoconf, BUF_SIZE, config) != NULL) {
+        // Leitura do IdJogo (primeira linha)
+        quantidadeconfigarmazenadas[quantidade_config].idCliente = atoi(linhadoconf);
+
+        // Leitura do Jogo (segunda linha)
+        if (fgets(linhadoconf, BUF_SIZE, config) != NULL) {
+
+            strncpy(quantidadeconfigarmazenadas[quantidade_config].ipServidor, linhadoconf, BUF_SIZE);
+            // Remove o newline '\n' ao final da string, se existir
+            quantidadeconfigarmazenadas[quantidade_config].jogoAtual[strcspn(quantidadeconfigarmazenadas[quantidade_config].jogoAtual, "\n")] = '\0';
+        }
+
+        // Leitura da Solução (terceira linha)
+        if (fgets(line, BUF_SIZE, config) != NULL) {
+            strncpy(quantidadeconfigarmazenadas[quantidade_config].solucaoJogo, line, BUF_SIZE);
+            // Remove o newline '\n' ao final da string, se existir
+            quantidadeconfigarmazenadas[quantidade_config].solucaoJogo[strcspn(quantidadeconfigarmazenadas[quantidade_config].solucaoJogo, "\n")] = '\0';
+        }
+
+        quantidade_config++;  // Contar o número de configurações lidas
+    }
+
+}
