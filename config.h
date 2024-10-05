@@ -7,7 +7,8 @@
 
 //1KB
 #define BUF_SIZE 1024
-
+#define IP_SIZE 16  
+#define CAPACIDADE_CONFIG 100
 // Definição da struct para armazenar as configurações
 typedef struct {
     int idJogo;
@@ -15,7 +16,13 @@ typedef struct {
     char solucaoJogo[BUF_SIZE];
 } ServidorConfig;
 
-struct ClienteConfig{
+typedef struct {
+    int idJogo;
+    char jogoAtual[BUF_SIZE];
+    char solucaoJogo[BUF_SIZE];
+} ClienteConfig;
+
+typedef struct{
     int idCliente;
-    char ipServidor;
-};
+    char ipServidor[IP_SIZE];
+}ClienteConfig;

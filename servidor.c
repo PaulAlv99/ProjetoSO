@@ -6,7 +6,7 @@ void criarServidor(){
 };
 
 ServidorConfig* carregarServidorConfig(char* filename, int* total) {
-	//modo leitura
+	int capacidade = CAPACIDADE_CONFIG;  // Capacidade inicial de configurações
     FILE* conf = fopen(filename, "r");
 
     if (conf == NULL) {
@@ -16,7 +16,7 @@ ServidorConfig* carregarServidorConfig(char* filename, int* total) {
 
     char* line = (char*)malloc(BUF_SIZE * sizeof(char));
     int result_count = 0;
-    int capacidade = 10;  // Capacidade inicial de configurações
+    
     ServidorConfig* results = (ServidorConfig*)malloc(capacidade * sizeof(ServidorConfig));
 
     while (fgets(line, BUF_SIZE, conf) != NULL) {
