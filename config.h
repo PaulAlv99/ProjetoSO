@@ -6,7 +6,7 @@
 #include <errno.h>
 
 //1KB
-#define BUF_SIZE 1024
+#define BUF_SIZE 128
 #define IP_SIZE 16  
 #define CAPACIDADE_CONFIG 100
 // Definição da struct para armazenar as configurações
@@ -14,9 +14,9 @@ typedef struct {
     int idJogo;
     char jogoAtual[BUF_SIZE];
     char solucaoJogo[BUF_SIZE];
-} ServidorConfig;
+} Servidor;
 
 typedef struct{
     int idCliente;
     char ipServidor[IP_SIZE];
-}ClienteConfig;
+}Cliente;

@@ -3,9 +3,9 @@
 
 void criarServidor(){
 
-};
+}
 
-ServidorConfig* carregarServidorConfig(char* filename, int* total) {
+Servidor* carregarServidor(char* filename, int* total) {
 	int capacidade = CAPACIDADE_CONFIG;  // Capacidade inicial de configurações
     FILE* conf = fopen(filename, "r");
 
@@ -17,13 +17,13 @@ ServidorConfig* carregarServidorConfig(char* filename, int* total) {
     char* line = (char*)malloc(BUF_SIZE * sizeof(char));
     int result_count = 0;
     
-    ServidorConfig* results = (ServidorConfig*)malloc(capacidade * sizeof(ServidorConfig));
+    Servidor* results = (Servidor*)malloc(capacidade * sizeof(Servidor));
 
     while (fgets(line, BUF_SIZE, conf) != NULL) {
         // Se a capacidade for excedida, aloca mais espaço
         if (result_count >= capacidade) {
             capacidade *= 2;
-            results = (ServidorConfig*)realloc(results, capacidade * sizeof(ServidorConfig));
+            results = (Servidor*)realloc(results, capacidade * sizeof(Servidor));
         }
 
         // Leitura do IdJogo (primeira linha)
@@ -53,7 +53,12 @@ ServidorConfig* carregarServidorConfig(char* filename, int* total) {
     return results;  // Retorna a lista de configurações
 }
 
+int validarSolucao(Cliente cliente){
+    //se nao tiver erradas retorna 0, caso contrário retorna o numero de respostas erradas
+    //inicialmente o cliente nao tem resposta erradas. aparece a 0 as suas respostas erradas
+    //quando faz a validação esse numero é atualizado conforme
 
+}
 int main(int argc, char **argv)
 {
     if (argc < 2) {
@@ -68,7 +73,7 @@ int main(int argc, char **argv)
 	}
 
 	int total = 0;
-    ServidorConfig* configs = carregarServidorConfig(argv[1], &total);
+    Servidor* configs = carregarServidor(argv[1], &total);
 
     if (configs != NULL) {
         for (int i = 0; i < total; i++) {
