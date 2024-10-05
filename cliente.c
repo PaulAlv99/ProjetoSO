@@ -1,5 +1,5 @@
 #include "config.h"
-
+#define CONFIGFILE "cliente.conf"
 // Função para validar o nome do arquivo com regex
 int validarNomeFile(char* arquivoNome){
 
@@ -34,6 +34,33 @@ int main(int argc, char **argv) {
         return 1;
     }
     return 0;
+
+    //hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+ if (argc < 2) {
+        printf("Erro: Nome do ficheiro nao fornecido.\n");
+        return 1;
+    }
+
+	if (strcmp(argv[1], CONFIGFILE) != 0)
+	{
+		printf("Nome do ficheiro incorreto");
+		return 1;
+	}
+
+	int total = 0;
+    Servidor* configs = carregarServidor(argv[1], &total);
+
+    if (configs != NULL) {
+        for (int i = 0; i < total; i++) {
+            printf("Jogo %d: %s\n", configs[i].idJogo, configs[i].jogoAtual);
+            printf("Solução: %s\n", configs[i].solucaoJogo);
+        }
+
+        free(configs);  // Libera a memória após o uso
+    }
+
+    return 0;
+    //hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
 }
 
 Cliente* CarregarClienteConf(int* nomeficheiro, int* totalconf){
@@ -45,45 +72,26 @@ Cliente* CarregarClienteConf(int* nomeficheiro, int* totalconf){
         printf("Ocorreu um erro na abertura do ficheiro: %s\n", strerror(errno));
         return NULL;
     }
-    int quantidade_config = 0;
+    int quantidade_linhas_config = 0;
     int capacidade = 1;
     char* linhadoconf = (char*)malloc(BUF_SIZE* sizeof(char));
     Cliente* quantidadeconfigarmazenadas = (Cliente*)malloc(capacidade* sizeof(Cliente));
 
     while (fgets(linhadoconf, BUF_SIZE, ficheiroconfig) != NULL) 
     {
-        if(quantidade_config==0){
+        if(quantidade_linhas_config==0){
             quantidadeconfigarmazenadas[0].idCliente = atoi(linhadoconf);
         }
-        if(quantidade_config==1){
+        if(quantidade_linhas_config==1){
             quantidadeconfigarmazenadas[1].ipServidor = linhadoconf;  
         }
+        quantidade_linhas_config++;
     }
-    quantidadeconfigarmazenadas[0].idCliente = atoi(linhadoconf);
+    fclose(ficheiroconfig);
+    free(linhadoconf);
 
-    if()
-    quantidadeconfigarmazenadas[1].ipServidor = 
-
-    while (fgets(linhadoconf, BUF_SIZE, config) != NULL) {
-        // Leitura do IdJogo (primeira linha)
-        quantidadeconfigarmazenadas[quantidade_config].idCliente = atoi(linhadoconf);
-
-        // Leitura do Jogo (segunda linha)
-        if (fgets(linhadoconf, BUF_SIZE, config) != NULL) {
-
-            strncpy(quantidadeconfigarmazenadas[quantidade_config].ipServidor, linhadoconf, BUF_SIZE);
-            // Remove o newline '\n' ao final da string, se existir
-            quantidadeconfigarmazenadas[quantidade_config].jogoAtual[strcspn(quantidadeconfigarmazenadas[quantidade_config].jogoAtual, "\n")] = '\0';
-        }
-
-        // Leitura da Solução (terceira linha)
-        if (fgets(line, BUF_SIZE, config) != NULL) {
-            strncpy(quantidadeconfigarmazenadas[quantidade_config].solucaoJogo, line, BUF_SIZE);
-            // Remove o newline '\n' ao final da string, se existir
-            quantidadeconfigarmazenadas[quantidade_config].solucaoJogo[strcspn(quantidadeconfigarmazenadas[quantidade_config].solucaoJogo, "\n")] = '\0';
-        }
-
-        quantidade_config++;  // Contar o número de configurações lidas
-    }
+    *totalconf = quantidade_linhas_config;
+    return quantidadeconfigarmazenadas;  // Retorna a lista de configurações
 
 }
+
