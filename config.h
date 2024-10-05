@@ -18,5 +18,5 @@ typedef struct {
 
 typedef struct{
     int idCliente;
-    char ipServidor[IP_SIZE];
+    char ipServidor;
 }Cliente;
