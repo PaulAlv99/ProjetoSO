@@ -1,28 +1,34 @@
+# Compiler and flags
 CC = gcc
 CFLAGS = -Wall
 LDFLAGS = -lpthread
+
+# Object files
 CLIENT_O = cliente.o
 SERVER_O = servidor.o
-EXECUTAVEIS = cliente servidor
 
-# Rule to build both executables
-all: $(EXECUTAVEIS)
+# Executable names with relative paths
+CLIENT_EXEC = ./cliente/cliente
+SERVER_EXEC = ./servidor/servidor
+
+# Default target to build both executables
+all: $(CLIENT_EXEC) $(SERVER_EXEC)
 
 # Rule to build the client executable
-cliente: $(CLIENT_O)
-	$(CC) $(CLIENT_O) -o cliente $(LDFLAGS)
+$(CLIENT_EXEC): $(CLIENT_O)
+	$(CC) $(CLIENT_O) -o $@ $(LDFLAGS)
 
 # Rule to build the server executable
-servidor: $(SERVER_O)
-	$(CC) $(SERVER_O) -o servidor $(LDFLAGS)
+$(SERVER_EXEC): $(SERVER_O)
+	$(CC) $(SERVER_O) -o $@ $(LDFLAGS)
 
 # Rules to build object files
-cliente.o: cliente.c
-	$(CC) $(CFLAGS) -c cliente.c
+$(CLIENT_O): cliente.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-servidor.o: servidor.c
-	$(CC) $(CFLAGS) -c servidor.c
+$(SERVER_O): servidor.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 # Clean rule to remove the executables and object files
 clean:
-	rm -f $(EXECUTAVEIS) $(CLIENT_O) $(SERVER_O)
+	rm -f $(CLIENT_EXEC) $(SERVER_EXEC) $(CLIENT_O) $(SERVER_O)
