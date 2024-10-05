@@ -16,12 +16,6 @@ typedef struct {
     char solucaoJogo[BUF_SIZE];
 } ServidorConfig;
 
-typedef struct {
-    int idJogo;
-    char jogoAtual[BUF_SIZE];
-    char solucaoJogo[BUF_SIZE];
-} ClienteConfig;
-
 typedef struct{
     int idCliente;
     char ipServidor[IP_SIZE];
