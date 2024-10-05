@@ -3,14 +3,19 @@
 #include <string.h>
 #include <regex.h>
 #include <time.h>
+#include <errno.h>
 
-struct servidorConfig{
+//1KB
+#define BUF_SIZE 1024
+
+// Definição da struct para armazenar as configurações
+typedef struct {
     int idJogo;
-    int solucaoJogo[8][8];
-    int jogoAtual[8][8];
-};
+    char jogoAtual[BUF_SIZE];
+    char solucaoJogo[BUF_SIZE];
+} ServidorConfig;
 
-struct clienteConfig{
+struct ClienteConfig{
     int idCliente;
     char ipServidor;
 };

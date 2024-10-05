@@ -1,7 +1,8 @@
 #include "config.h"
 
 // Função para validar o nome do arquivo com regex
-int validarNomeFile(const char* arquivoNome){
+int validarNomeFile(char* arquivoNome){
+
     regex_t regex;
     // Aceita cliente1.conf até cliente99.conf
     const char *padrao = "^cliente([1-9][0-9]?|99)\\.conf$";
