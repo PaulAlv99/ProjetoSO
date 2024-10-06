@@ -72,6 +72,7 @@ int main(int argc, char **argv)
     if (configs == NULL) {
         return 1;
     }
+    
     for (int i = 0; i < total; i++) {
             printf("Jogo %d: %s\n", configs[i].idJogo, configs[i].jogoAtual);
             printf("Solução: %s\n", configs[i].solucaoJogo);

@@ -1,7 +1,7 @@
 #include "config.h"
 // Aceita cliente1.conf até cliente99.conf
 char *padrao = "^cliente([1-9][0-9]?|99)\\.conf$";
-
+#define LINE_SIZE 16
 // void enviarJogoAtual(int idCliente){
 
 // }
@@ -23,38 +23,52 @@ void imprimirTabuleiro(char* jogo) {
 
 ClienteConfig* carregarConfigCliente(char* filename, int* total) {
     FILE* conf = abrirFicheiro(filename);
-    int capacidade = CAPACIDADE_CONFIG;  // Capacidade inicial de configurações
-    char* line = (char*)malloc(BUF_SIZE * sizeof(char));
+    
+    if (conf == NULL) {
+        return NULL; // Handle file opening error
+    }
+
+    int capacidade = CAPACIDADE_CONFIG;  // Initial capacity for configurations
+    char* line = (char*)malloc(LINE_SIZE * sizeof(char));
     int result_count = 0;
     
     ClienteConfig* results = (ClienteConfig*)malloc(capacidade * sizeof(ClienteConfig));
 
-    while (fgets(line, BUF_SIZE, conf) != NULL) {
-        // Se a capacidade for excedida, aloca mais espaço
+    while (fgets(line, LINE_SIZE, conf) != NULL) {
+        // Check if we need to resize the results array
         if (result_count >= capacidade) {
-            capacidade *= 2;
-            results = (ClienteConfig*)realloc(results, capacidade * sizeof(ClienteConfig));
+            int new_capacity = capacidade + 5; // Add a fixed number of slots
+            ClienteConfig* temp = (ClienteConfig*)realloc(results, new_capacity * sizeof(ClienteConfig));
+            if (temp == NULL) {
+                free(results); // Free old results if realloc fails
+                free(line);
+                fclose(conf);
+                return NULL; // Handle realloc failure
+            }
+            results = temp;
+            capacidade = new_capacity; // Update capacity to the new size
         }
 
-        // Leitura do IdJogo (primeira linha)
+        // Read IdCliente (first line)
         results[result_count].idCliente = atoi(line);
 
-        // Leitura do Jogo (segunda linha)
-        if (fgets(line, BUF_SIZE, conf) != NULL) {
-            strncpy(results[result_count].ipServidor, line, BUF_SIZE);
-            // Remove o newline '\n' ao final da string, se existir
+        // Read the IP address (second line)
+        if (fgets(line, LINE_SIZE, conf) != NULL) {
+            strncpy(results[result_count].ipServidor, line, IP_SIZE);
+            // Remove newline '\n' from the end of the string, if it exists
             results[result_count].ipServidor[strcspn(results[result_count].ipServidor, "\n")] = '\0';
         }
 
-        result_count++;  // Contar o número de configurações lidas
+        result_count++;  // Count the number of configurations read
     }
 
     fclose(conf);
     free(line);
 
     *total = result_count;
-    return results;  // Retorna a lista de configurações
+    return results;  // Return the list of configurations
 }
+
 
 int main(int argc, char **argv) {
     // Verifica se foi fornecido um nome de arquivo
@@ -75,11 +89,11 @@ int main(int argc, char **argv) {
     if (configs == NULL) {
         return 1;
     }
+
     for (int i = 0; i < total; i++) {
             printf("ID Cliente: %d\n", configs[i].idCliente);
             printf("IP Servidor: %s\n", configs[i].ipServidor);
         }
         free(configs);  // Libera a memória após o uso
-    return 0;
     return 0;
 }

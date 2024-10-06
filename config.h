@@ -8,7 +8,7 @@
 //1KB
 #define BUF_SIZE 128
 #define IP_SIZE 16  
-#define CAPACIDADE_CONFIG 100
+#define CAPACIDADE_CONFIG 10
 #define TAMANHO_TABULEIRO 9
 
 // Função para validar o nome do arquivo com regex
