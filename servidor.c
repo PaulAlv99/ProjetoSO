@@ -1,29 +1,20 @@
 #include "config.h"
 #define CONFIGFILE "servidor.conf"
 
-void criarServidor(){
-
-}
-
-Servidor* carregarServidor(char* filename, int* total) {
+ServidorConfig* carregarConfigServidor(char* filename, int* total) {
+    FILE* conf = abrirFicheiro(filename);
 	int capacidade = CAPACIDADE_CONFIG;  // Capacidade inicial de configurações
-    FILE* conf = fopen(filename, "r");
-
-    if (conf == NULL) {
-        printf("Ocorreu um erro na abertura do ficheiro: %s\n", strerror(errno));
-        return NULL;
-    }
 
     char* line = (char*)malloc(BUF_SIZE * sizeof(char));
     int result_count = 0;
     
-    Servidor* results = (Servidor*)malloc(capacidade * sizeof(Servidor));
+    ServidorConfig* results = (ServidorConfig*)malloc(capacidade * sizeof(ServidorConfig));
 
     while (fgets(line, BUF_SIZE, conf) != NULL) {
         // Se a capacidade for excedida, aloca mais espaço
         if (result_count >= capacidade) {
             capacidade *= 2;
-            results = (Servidor*)realloc(results, capacidade * sizeof(Servidor));
+            results = (ServidorConfig*)realloc(results, capacidade * sizeof(ServidorConfig));
         }
 
         // Leitura do IdJogo (primeira linha)
@@ -53,12 +44,15 @@ Servidor* carregarServidor(char* filename, int* total) {
     return results;  // Retorna a lista de configurações
 }
 
-int validarSolucao(Cliente cliente){
-    //se nao tiver erradas retorna 0, caso contrário retorna o numero de respostas erradas
-    //inicialmente o cliente nao tem resposta erradas. aparece a 0 as suas respostas erradas
-    //quando faz a validação esse numero é atualizado conforme
+// int validarSolucao(Cliente cliente){
+//     //se nao tiver erradas retorna 0, caso contrário retorna o numero de respostas erradas
+//     //inicialmente o cliente nao tem resposta erradas. aparece a 0 as suas respostas erradas
+//     //quando faz a validação esse numero é atualizado conforme
 
-}
+// }
+// int numeroErradasJogo(int idCliente,char* jogo){
+
+// }
 int main(int argc, char **argv)
 {
     if (argc < 2) {
@@ -68,21 +62,20 @@ int main(int argc, char **argv)
 
 	if (strcmp(argv[1], CONFIGFILE) != 0)
 	{
-		printf("Nome do ficheiro incorreto");
+		printf("Nome do ficheiro incorreto\n");
 		return 1;
 	}
 
 	int total = 0;
-    Servidor* configs = carregarServidor(argv[1], &total);
+    ServidorConfig* configs = carregarConfigServidor(argv[1], &total);
 
-    if (configs != NULL) {
-        for (int i = 0; i < total; i++) {
+    if (configs == NULL) {
+        return 1;
+    }
+    for (int i = 0; i < total; i++) {
             printf("Jogo %d: %s\n", configs[i].idJogo, configs[i].jogoAtual);
             printf("Solução: %s\n", configs[i].solucaoJogo);
         }
-
         free(configs);  // Libera a memória após o uso
-    }
-
     return 0;
 }

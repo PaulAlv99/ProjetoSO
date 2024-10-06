@@ -1,34 +1,39 @@
-# Compiler and flags
+# Compiler e flags
 CC = gcc
 CFLAGS = -Wall
 LDFLAGS = -lpthread
 
-# Object files
+# Objectos
 CLIENT_O = cliente.o
 SERVER_O = servidor.o
 
-# Executable names with relative paths
-CLIENT_EXEC = ./cliente/cliente
-SERVER_EXEC = ./servidor/servidor
+# Diretorios
+CLIENTE_DIR := cliente
+SERVIDOR_DIR := servidor
 
-# Default target to build both executables
+# caminho dos executaveis
+CLIENT_EXEC = $(CLIENTE_DIR)/cliente
+SERVER_EXEC = $(SERVIDOR_DIR)/servidor
+
 all: $(CLIENT_EXEC) $(SERVER_EXEC)
 
-# Rule to build the client executable
+# Regras para criar executavel cliente
 $(CLIENT_EXEC): $(CLIENT_O)
+	mkdir -p $(CLIENTE_DIR)
 	$(CC) $(CLIENT_O) -o $@ $(LDFLAGS)
 
-# Rule to build the server executable
+# Regras para criar executavel server
 $(SERVER_EXEC): $(SERVER_O)
+	mkdir -p $(SERVIDOR_DIR)
 	$(CC) $(SERVER_O) -o $@ $(LDFLAGS)
 
-# Rules to build object files
+# Regras para criar objetos
 $(CLIENT_O): cliente.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(SERVER_O): servidor.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Clean rule to remove the executables and object files
+# Remover executaveis,diretorios e objetos
 clean:
-	rm -f $(CLIENT_EXEC) $(SERVER_EXEC) $(CLIENT_O) $(SERVER_O)
+	rm -rf $(CLIENTE_DIR) $(SERVIDOR_DIR) $(CLIENT_O) $(SERVER_O)
