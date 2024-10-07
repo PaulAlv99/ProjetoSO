@@ -40,6 +40,22 @@ FILE* abrirFicheiro(char* filename){
     return conf;
 }
 
+int fecharFicheiro(FILE* file,const char* filename) {
+    if (file == NULL) {
+        // Não há arquivo para fechar
+        printf("Nenhum arquivo foi aberto.\n");
+        return 1;
+    }
+
+    if (fclose(file) == EOF) {
+        // Houve um erro ao tentar fechar o arquivo.
+        printf("Erro ao fechar o arquivo.\n");
+        return 1;
+    }
+    printf("Fechou ficheiro: %s\n",filename);
+    return 0; // Indica sucesso.
+}
+
 // Definição da struct para armazenar as configurações
 typedef struct {
     int idJogo;
