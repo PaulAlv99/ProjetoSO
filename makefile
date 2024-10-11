@@ -1,6 +1,6 @@
 # Compiler e flags
 CC = gcc
-CFLAGS = -Wall
+CFLAGS = -Wall -g
 LDFLAGS = -lpthread
 
 # Objectos

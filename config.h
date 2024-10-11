@@ -7,11 +7,24 @@
 
 //1KB
 #define BUF_SIZE 128
-#define IP_SIZE 16  
-#define CAPACIDADE_CONFIG 10
+#define PATH_SIZE 128 
+#define IP_SIZE 16
+#define CAPACIDADE_CONFSERVER 1
 #define TAMANHO_TABULEIRO 9
 
-// Função para validar o nome do arquivo com regex
+// Definição das structs
+struct ServidorConfig{
+    char ficheiroJogosCaminho[PATH_SIZE];
+    char ficheiroSolucoesCaminho[PATH_SIZE];
+};
+
+struct ClienteConfig{
+    int idCliente;
+    char ipServidor[IP_SIZE];
+};
+
+//Funcoes
+
 int validarNomeFile(char* arquivoNome,char* padrao){
     regex_t regex;
   
@@ -34,13 +47,12 @@ FILE* abrirFicheiro(char* filename){
 
     if (conf == NULL) {
         printf("Ocorreu um erro na abertura do ficheiro: %s\n", strerror(errno));
-        fclose(conf);
-        return NULL;
+        exit(1);
     }
     return conf;
 }
 
-int fecharFicheiro(FILE* file,const char* filename) {
+int fecharFicheiro(FILE* file) {
     if (file == NULL) {
         // Não há arquivo para fechar
         printf("Nenhum arquivo foi aberto.\n");
@@ -52,23 +64,36 @@ int fecharFicheiro(FILE* file,const char* filename) {
         printf("Erro ao fechar o arquivo.\n");
         return 1;
     }
-    printf("Fechou ficheiro: %s\n",filename);
     return 0; // Indica sucesso.
 }
 
-// Definição da struct para armazenar as configurações
-typedef struct {
-    int idJogo;
-    char jogoAtual[BUF_SIZE];
-    char solucaoJogo[BUF_SIZE];
-} ServidorConfig;
+int numeroConfigsFile(FILE* config) {
+    int contadorConfigs = 0;
+    char line[BUF_SIZE];  // Buffer para armazenar cada linha
 
-typedef struct {
-    int idJogo;
-    char jogoAtual[BUF_SIZE];
-} Tabuleiro;
+    // Conta o número de linhas no ficheiro
+    while (fgets(line, sizeof(line), config) != NULL) {
+        contadorConfigs++;
+    }
 
-typedef struct{
-    int idCliente;
-    char ipServidor[IP_SIZE];
-}ClienteConfig;
+    return contadorConfigs;  // Retorna o número de linhas
+}
+
+// void* realocarMemoria(void* resultado,size_t tamanhoTipoDados, int capacidade){
+//     resultado = realloc(resultado, capacidade * tamanhoTipoDados);
+//     if (!resultado) {
+//         printf("Erro ao realocar memória.\n");
+//         return NULL;
+//     }
+//     return resultado;
+// }
+
+void* alocarMemoria(size_t tamanhoTipoDados, int capacidade) {
+
+    void* resultado = malloc(capacidade * tamanhoTipoDados);
+    if (!resultado) {
+        printf("Erro ao alocar memória.\n"); 
+        return NULL;
+    }
+    return resultado;
+}

@@ -1,10 +1,11 @@
 #include "config.h"
-// Aceita cliente1.conf até cliente99.conf
-char *padrao = "^cliente([1-9][0-9]?|99)\\.conf$";
-#define LINE_SIZE 16
-// void enviarJogoAtual(int idCliente){
+// Aceita cliente1.conf até clienteN.conf
+char *padrao = "^cliente[1-9][0-9]*\\.conf$";
 
-// }
+#define LINE_SIZE 16
+
+//structs
+struct ClienteConfig clienteConfig;
 
 void imprimirTabuleiro(char* jogo) {
     for (int i = 0; i < TAMANHO_TABULEIRO; i++) {
@@ -21,25 +22,22 @@ void imprimirTabuleiro(char* jogo) {
     }
 }
 
-ClienteConfig* carregarConfigCliente(char* nomeFicheiro, int* total) {
+// Função para carregar as configurações do cliente
+struct ClienteConfig* carregarConfigCliente(char* nomeFicheiro, int* total) {
     FILE* config = abrirFicheiro(nomeFicheiro);
-    int capacidade = CAPACIDADE_CONFIG;  // Capacidade inicial de configurações
-    char* line = (char*)malloc(BUF_SIZE * sizeof(char));
+
+    char* line = alocarMemoria(sizeof(char),BUF_SIZE);
     int contadorConfigs = 0;
-    
-    ClienteConfig* resultado = (ClienteConfig*)malloc(capacidade * sizeof(ClienteConfig));
+    int numeroLinhas = numeroConfigsFile(config);
+    rewind(config);
 
+    // Aloca memória para o array de ClienteConfig
+    struct ClienteConfig* resultado = (struct ClienteConfig*) alocarMemoria(sizeof(struct ClienteConfig),numeroLinhas);
     while (fgets(line, BUF_SIZE, config) != NULL) {
-        // Se a capacidade for excedida, aloca mais espaço
-        if (contadorConfigs >= capacidade) {
-            capacidade *= 2;
-            resultado = (ClienteConfig*)realloc(resultado, capacidade * sizeof(ClienteConfig));
-        }
-
-        // Leitura do IdJogo (primeira linha)
+        // Leitura do IdCliente (primeira linha)
         resultado[contadorConfigs].idCliente = atoi(line);
 
-        // Leitura do Jogo (segunda linha)
+        // Leitura do IP do servidor (segunda linha)
         if (fgets(line, BUF_SIZE, config) != NULL) {
             strncpy(resultado[contadorConfigs].ipServidor, line, BUF_SIZE);
             // Remove o newline '\n' ao final da string, se existir
@@ -49,16 +47,15 @@ ClienteConfig* carregarConfigCliente(char* nomeFicheiro, int* total) {
         contadorConfigs++;  // Contar o número de configurações lidas
     }
 
-    fecharFicheiro(config,nomeFicheiro);
-    if(contadorConfigs==0){
+    fecharFicheiro(config);
+    if (contadorConfigs == 0) {
         printf("Sem configs\n");
     }
-    free(line);
 
+    free(line);
     *total = contadorConfigs;
     return resultado;  // Retorna a lista de configurações
 }
-
 
 int main(int argc, char **argv) {
     // Verifica se foi fornecido um nome de arquivo
@@ -68,22 +65,28 @@ int main(int argc, char **argv) {
     }
 
     // Valida o nome do arquivo passado como argumento
-    if (!validarNomeFile(argv[1],padrao)) {
+    if (!validarNomeFile(argv[1], padrao)) {
         printf("Nome do ficheiro de configuracao incorreto: %s\n", argv[1]);
         return 1;
     }
 
     int totalConfigs = 0;
-    ClienteConfig* configs = carregarConfigCliente(argv[1], &totalConfigs);
+    struct ClienteConfig* configs = carregarConfigCliente(argv[1], &totalConfigs);
 
     if (configs == NULL) {
         return 1;
     }
+
+    // Imprime as configurações carregadas
     for (int i = 0; i < totalConfigs; i++) {
-            printf("ID Cliente: %d\n", configs[i].idCliente);
-            printf("IP Servidor: %s\n", configs[i].ipServidor);
-        }
-    printf("Total configs:%d\n",totalConfigs);
-        free(configs);  // Libera a memória após o uso
+        printf("ID Cliente: %d\n", configs[i].idCliente);
+        printf("IP Servidor: %s\n", configs[i].ipServidor);
+    }
+
+    printf("Total de configurações: %d\n", totalConfigs);
+
+    // Libera a memória após o uso
+    free(configs);
+    
     return 0;
 }
