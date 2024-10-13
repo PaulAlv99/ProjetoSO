@@ -4,30 +4,67 @@
 //structs
 struct ServidorConfig serverConfig;
 
-struct ServidorConfig* carregarConfigServidor(char* nomeFicheiro, int* total) {
+
+void carregarConfigServidor(char* nomeFicheiro) {
     FILE* config = abrirFicheiro(nomeFicheiro);
-    int numeroLinhas = numeroConfigsFile(config);
+
+    fseek(config, 0, SEEK_END);
+    long tamanhoFicheiro = ftell(config);
     rewind(config);
 
-    struct ServidorConfig* resultado = (struct ServidorConfig*)alocarMemoria(sizeof(struct ServidorConfig), numeroLinhas);
-
+    char buffer[tamanhoFicheiro];
     int contadorConfigs = 0;
-    while (fgets(resultado[contadorConfigs].ficheiroJogosCaminho, PATH_SIZE, config) != NULL) {
-        resultado[contadorConfigs].ficheiroJogosCaminho[strcspn(resultado[contadorConfigs].ficheiroJogosCaminho, "\n")] = '\0';
+    //ambas tem o \0 no final nao esquecer se tiver mais linhas de config convem tirar \n
+    while (fgets(buffer, PATH_SIZE, config) != NULL) {
+        char *resultado = strtok(buffer, "\n");
+        strcpy(serverConfig.ficheiroJogosCaminho, resultado);
 
-        if (fgets(resultado[contadorConfigs].ficheiroSolucoesCaminho, PATH_SIZE, config) != NULL) {
-            resultado[contadorConfigs].ficheiroSolucoesCaminho[strcspn(resultado[contadorConfigs].ficheiroSolucoesCaminho, "\n")] = '\0';
+        if (fgets(buffer, PATH_SIZE, config) != NULL) {
+            strcpy(serverConfig.ficheiroSolucoesCaminho, resultado);
         }
-        contadorConfigs++;  // Count the number of configurations read
+        contadorConfigs++;
     }
 
     fecharFicheiro(config);
     if (contadorConfigs == 0) {
         printf("Sem configs\n");
+        exit(1);
     }
+    return;
+}
 
-    *total = contadorConfigs;
-    return resultado;  // Return the list of configurations
+void logEventoServidor(const char* message) {
+
+    //modo append
+    FILE *file = fopen("LogServidor.txt", "a");
+    if (file == NULL) {
+        perror("Erro ao abrir o ficheiro de log");
+        return;
+    }
+    fprintf(file, "[%s] %s\n", getTempo(), message);
+    fclose(file);
+}
+void logQueEvento(int numero){
+    switch(numero){
+        case 1:
+            logEventoServidor("Servidor comecou");
+            break;
+        case 2:
+            logEventoServidor("Servidor parou");
+            break;
+        case 3:
+            logEventoServidor("Servidor recebeu novo cliente.");
+            break;
+        case 4:
+            logEventoServidor("Servidor enviou um jogo");
+            break;
+        case 5:
+            logEventoServidor("Servidor recebeu uma solucao.");
+            break;
+        case 6:
+            logEventoServidor("Servidor enviou numero de erradas");
+            break;
+    }
 }
 
 int main(int argc, char **argv) {
@@ -40,20 +77,7 @@ int main(int argc, char **argv) {
         printf("Nome do ficheiro incorreto\n");
         return 1;
     }
-    int totalConfigs = 0;
-    struct ServidorConfig* configs = carregarConfigServidor(argv[1], &totalConfigs);
-
-    if (configs == NULL) {
-        return 1;
-    }
-
-    for (int i = 0; i < totalConfigs; i++) {
-        printf("loc: %s\n", configs[i].ficheiroJogosCaminho);
-        printf("loc: %s\n", configs[i].ficheiroSolucoesCaminho);
-    }
-
-    printf("Total de configurações: %d\n", totalConfigs);
-    free(configs);  // Libera a memória após o uso
-
+    carregarConfigServidor(argv[1]);
+    logQueEvento(1);
     return 0;
 }

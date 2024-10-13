@@ -7,6 +7,9 @@ char *padrao = "^cliente[1-9][0-9]*\\.conf$";
 //structs
 struct ClienteConfig clienteConfig;
 
+//tricos
+pthread_mutex_t mutexClienteLog = PTHREAD_MUTEX_INITIALIZER;
+
 void imprimirTabuleiro(char* jogo) {
     for (int i = 0; i < TAMANHO_TABULEIRO; i++) {
         if (i % 3 == 0 && i != 0) {
@@ -23,25 +26,25 @@ void imprimirTabuleiro(char* jogo) {
 }
 
 // Função para carregar as configurações do cliente
-struct ClienteConfig* carregarConfigCliente(char* nomeFicheiro, int* total) {
+void carregarConfigCliente(char* nomeFicheiro) {
     FILE* config = abrirFicheiro(nomeFicheiro);
 
-    char* line = alocarMemoria(sizeof(char),BUF_SIZE);
-    int contadorConfigs = 0;
-    int numeroLinhas = numeroConfigsFile(config);
+    fseek(config, 0, SEEK_END);
+    long tamanhoFicheiro = ftell(config);
     rewind(config);
 
+    char buffer[tamanhoFicheiro];
+    int contadorConfigs = 0;
+
     // Aloca memória para o array de ClienteConfig
-    struct ClienteConfig* resultado = (struct ClienteConfig*) alocarMemoria(sizeof(struct ClienteConfig),numeroLinhas);
-    while (fgets(line, BUF_SIZE, config) != NULL) {
+    while (fgets(buffer, BUF_SIZE, config) != NULL) {
         // Leitura do IdCliente (primeira linha)
-        resultado[contadorConfigs].idCliente = atoi(line);
+        clienteConfig.idCliente = atoi(buffer);
 
         // Leitura do IP do servidor (segunda linha)
-        if (fgets(line, BUF_SIZE, config) != NULL) {
-            strncpy(resultado[contadorConfigs].ipServidor, line, BUF_SIZE);
-            // Remove o newline '\n' ao final da string, se existir
-            resultado[contadorConfigs].ipServidor[strcspn(resultado[contadorConfigs].ipServidor, "\n")] = '\0';
+        if (fgets(buffer, BUF_SIZE, config) != NULL) {
+            char *resultado = strtok(buffer, "\n");
+            strcpy(clienteConfig.ipServidor, resultado);
         }
 
         contadorConfigs++;  // Contar o número de configurações lidas
@@ -50,11 +53,24 @@ struct ClienteConfig* carregarConfigCliente(char* nomeFicheiro, int* total) {
     fecharFicheiro(config);
     if (contadorConfigs == 0) {
         printf("Sem configs\n");
+        exit(1);
     }
+    return;
+}
 
-    free(line);
-    *total = contadorConfigs;
-    return resultado;  // Retorna a lista de configurações
+void logEventoCliente(const char* message) {
+    pthread_mutex_lock(&mutexClienteLog);
+    //modo append
+    FILE *file = fopen("LogCliente.txt", "a");
+    if (file == NULL) {
+        perror("Erro ao abrir o ficheiro de log");
+        pthread_mutex_unlock(&mutexClienteLog);
+        return;
+    }
+    fprintf(file, "[%s] [Client ID: %d] %s\n", getTempo(), clienteConfig.idCliente, message);
+    
+    fclose(file);
+    pthread_mutex_unlock(&mutexClienteLog);
 }
 
 int main(int argc, char **argv) {
@@ -70,23 +86,7 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    int totalConfigs = 0;
-    struct ClienteConfig* configs = carregarConfigCliente(argv[1], &totalConfigs);
-
-    if (configs == NULL) {
-        return 1;
-    }
-
-    // Imprime as configurações carregadas
-    for (int i = 0; i < totalConfigs; i++) {
-        printf("ID Cliente: %d\n", configs[i].idCliente);
-        printf("IP Servidor: %s\n", configs[i].ipServidor);
-    }
-
-    printf("Total de configurações: %d\n", totalConfigs);
-
-    // Libera a memória após o uso
-    free(configs);
-    
+    carregarConfigCliente(argv[1]);
+    logEventoCliente("Cliente iniciado");
     return 0;
 }
