@@ -44,7 +44,7 @@ void logEventoServidor(const char* message) {
     fprintf(file, "[%s] %s\n", getTempo(), message);
     fclose(file);
 }
-void logQueEvento(int numero){
+void logQueEventoServidor(int numero){
     switch(numero){
         case 1:
             logEventoServidor("Servidor comecou");
@@ -53,16 +53,27 @@ void logQueEvento(int numero){
             logEventoServidor("Servidor parou");
             break;
         case 3:
-            logEventoServidor("Servidor recebeu novo cliente.");
+        //fazer outra funcao para saber ID cliente ex. novo cliente e seu id
+            logEventoServidor("O cliente id: conectou-se");
             break;
         case 4:
-            logEventoServidor("Servidor enviou um jogo");
+        //fazer outra funcao para saber ID cliente
+            logEventoServidor("Servidor enviou um jogo id cliente:");
             break;
         case 5:
-            logEventoServidor("Servidor recebeu uma solucao.");
+        //fazer outra funcao para saber ID cliente
+            logEventoServidor("Servidor recebeu uma solucao.id cliente:");
             break;
         case 6:
-            logEventoServidor("Servidor enviou numero de erradas");
+        //fazer outra funcao para saber ID cliente
+            logEventoServidor("Servidor enviou numero de erradasid cliente:");
+            break;
+        case 7:
+        //fazer outra funcao para saber ID cliente
+            logEventoServidor("O cliente id: desconectou-se");
+            break;
+        default:
+            logEventoCliente("Evento desconhecido");
             break;
     }
 }
@@ -78,6 +89,6 @@ int main(int argc, char **argv) {
         return 1;
     }
     carregarConfigServidor(argv[1]);
-    logQueEvento(1);
+    logQueEventoServidor(1);
     return 0;
 }

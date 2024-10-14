@@ -36,7 +36,6 @@ void carregarConfigCliente(char* nomeFicheiro) {
     char buffer[tamanhoFicheiro];
     int contadorConfigs = 0;
 
-    // Aloca memória para o array de ClienteConfig
     while (fgets(buffer, BUF_SIZE, config) != NULL) {
         // Leitura do IdCliente (primeira linha)
         clienteConfig.idCliente = atoi(buffer);
@@ -71,6 +70,32 @@ void logEventoCliente(const char* message) {
     
     fclose(file);
     pthread_mutex_unlock(&mutexClienteLog);
+}
+
+void logQueEventoCliente(int numero){
+    switch(numero){
+        case 1:
+            logEventoCliente("Cliente id: iniciou");
+            break;
+        case 2:
+            logEventoCliente("Cliente id: parou");
+            break;
+        case 3:
+            logEventoCliente("Cliente id: conectou-se ao servidor");
+            break;
+        case 4:
+            logEventoCliente("Cliente id: enviou uma mensagem ao servidor");
+            break;
+        case 5:
+            logEventoCliente("Cliente id: recebeu uma resposta do servidor");
+            break;
+        case 6:
+            logEventoCliente("Cliente id: desconectou-se do servidor");
+            break;
+        default:
+            logEventoCliente("Evento desconhecido");
+            break;
+    }
 }
 
 int main(int argc, char **argv) {
