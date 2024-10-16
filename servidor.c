@@ -5,6 +5,7 @@
 struct ServidorConfig serverConfig;
 
 
+
 void carregarConfigServidor(char* nomeFicheiro) {
     FILE* config = abrirFicheiro(nomeFicheiro);
 

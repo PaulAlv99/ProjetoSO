@@ -1,4 +1,5 @@
 #include "config.h"
+#include "cliente.h"
 // Aceita cliente1.conf até clienteN.conf
 char *padrao = "^cliente[1-9][0-9]*\\.conf$";
 
@@ -112,6 +113,7 @@ int main(int argc, char **argv) {
     }
 
     carregarConfigCliente(argv[1]);
+    imprimirTabuleiro("530070000600195000098000060800060003400803001700020006060000280000419005000080079");
     logEventoCliente("Cliente iniciado");
     return 0;
 }
