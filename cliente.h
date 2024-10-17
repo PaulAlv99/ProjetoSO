@@ -1,5 +1,5 @@
 
-#include "ficheiros.h"
+#include "ficheiro.h"
 #include "config.h"
 
 //1KB
