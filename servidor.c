@@ -4,9 +4,6 @@
 //structs
 struct ServidorConfig serverConfig;
 
-
-
-
 void carregarConfigServidor(char* nomeFicheiro) {
     FILE* config = abrirFicheiro(nomeFicheiro);
 
@@ -79,7 +76,43 @@ void logQueEventoServidor(int numero){
             break;
     }
 }
+void verificarLinha(int linha, char* jogo, char* solucao) {
+    //Verifica uma linha do Sudoku (9 posições)
+    for (int i = 0; i < NUM_LINHAS; i++) {
+        int pos = linha * 9 + i;
+        //Verifica se a célula foi preenchida no jogo
+        if (jogo[pos] != solucao[pos]) {
+            //Imprime posição na forma posx-y comecando em 1
+            int coluna = (pos % 9) + 1;
+            printf("Posição errada: pos%d-%d\n", linha + 1, coluna);
+            //começa a contar do 0. pode ser guardado numa estrutura de dados para
+            //posteriormente mandar para o cliente
+            printf("Posicao na string: %d\n",pos);
+        }
+    }
+}
 
+void resolveJogo(char* jogo, char* solucao) {
+    //Verifica linha por linha (0 a 8, correspondente às 9 linhas)
+    for (int linha = 0; linha < 9; linha++) {
+        verificarLinha(linha, jogo, solucao);
+    }
+}
+
+void imprimirTabuleiro(char* jogo) {
+    for (int i = 0; i < NUM_LINHAS; i++) {
+        if (i % 3 == 0 && i != 0) {
+            printf("---------------------\n");  // Linha separadora horizontal
+        }
+        for (int j = 0; j < NUM_COLUNAS; j++) {
+            if (j % 3 == 0 && j != 0) {
+                printf(" | ");  // Separador vertical
+            }
+            printf("%c ", jogo[i * NUM_LINHAS + j]);
+        }
+        printf("\n");
+    }
+}
 int main(int argc, char **argv) {
     if (argc < 2) {
         printf("Erro: Nome do ficheiro nao fornecido.\n");
@@ -92,5 +125,15 @@ int main(int argc, char **argv) {
     }
     carregarConfigServidor(argv[1]);
     logQueEventoServidor(1);
+    char* solucao="534678912672195348198342567859761423426853791713924856961537284287419635345286179";
+    char* jogo="530070000600195000098000060800060003400803001700020006060000280000419005000080079";
+    clock_t startTempo, endTempo;
+    double tempoResolver;
+    startTempo = clock();
+    resolveJogo(jogo,solucao);
+    endTempo = clock();
+    tempoResolver = (double)(endTempo - startTempo) / CLOCKS_PER_SEC;
+    printf("Tempo para resolver: %f seconds\n", tempoResolver);
+    imprimirTabuleiro(jogo);
     return 0;
 }

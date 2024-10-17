@@ -8,10 +8,10 @@
 #include <pthread.h>
 
 #define TEMPO_TAMANHO 22
-#define BUF_SIZE 128
-#define TAMANHO_TABULEIRO 9
+#define BUF_SIZE 1024
 #define NUMEROS_NO_JOGO 81
-
+#define NUM_LINHAS 9
+#define NUM_COLUNAS 9
 //globais
 const char* getTempo();
 

@@ -10,15 +10,15 @@ pthread_mutex_t mutexClienteLog = PTHREAD_MUTEX_INITIALIZER;
 struct ClienteConfig clienteConfig;
 
 void imprimirTabuleiro(char* jogo) {
-    for (int i = 0; i < TAMANHO_TABULEIRO; i++) {
+    for (int i = 0; i < NUM_LINHAS; i++) {
         if (i % 3 == 0 && i != 0) {
             printf("---------------------\n");  // Linha separadora horizontal
         }
-        for (int j = 0; j < TAMANHO_TABULEIRO; j++) {
+        for (int j = 0; j < NUM_LINHAS; j++) {
             if (j % 3 == 0 && j != 0) {
                 printf(" | ");  // Separador vertical
             }
-            printf("%c ", jogo[i * TAMANHO_TABULEIRO + j]);  // Imprime espaço para 0
+            printf("%c ", jogo[i * NUM_LINHAS + j]);  // Imprime espaço para 0
         }
         printf("\n");
     }
@@ -59,13 +59,19 @@ void carregarConfigCliente(char* nomeFicheiro) {
 void logEventoCliente(const char* message) {
     pthread_mutex_lock(&mutexClienteLog);
     //modo append
-    FILE *file = fopen("LogCliente.txt", "a");
+    char str[BUF_SIZE];
+    char* nomeFicheiro = "LogCliente";
+    char* tipoFicheiro = ".txt";
+    //se o id for muito alto mesmo dá problema de overflow pq unsigned long pode nao dar
+    snprintf(str, BUF_SIZE, "%s%lu%s", nomeFicheiro, clienteConfig.idCliente, tipoFicheiro);
+    printf("nome:%s",str);
+    FILE *file = fopen(str, "a");
     if (file == NULL) {
         perror("Erro ao abrir o ficheiro de log");
         pthread_mutex_unlock(&mutexClienteLog);
         return;
     }
-    fprintf(file, "[%s] [Client ID: %d] %s\n", getTempo(), clienteConfig.idCliente, message);
+    fprintf(file, "[%s] [Cliente ID: %lu] %s\n", getTempo(), clienteConfig.idCliente, message);
     
     fclose(file);
     pthread_mutex_unlock(&mutexClienteLog);

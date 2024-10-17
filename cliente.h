@@ -7,7 +7,7 @@ void imprimirTabuleiro(char* jogo);
 void carregarConfigCliente(char* nomeFicheiro);
 
 struct ClienteConfig{
-    int idCliente;
+    unsigned long idCliente;
     char ipServidor[IP_SIZE];
 };
 
