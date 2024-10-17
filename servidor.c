@@ -1,4 +1,3 @@
-#include "config.h"
 #include "servidor.h"
 #define CONFIGFILE "servidor.conf"
 
@@ -76,7 +75,7 @@ void logQueEventoServidor(int numero){
             logEventoServidor("O cliente id: desconectou-se");
             break;
         default:
-            logEventoCliente("Evento desconhecido");
+            logEventoServidor("Evento desconhecido");
             break;
     }
 }

@@ -8,13 +8,11 @@
 #include <pthread.h>
 
 #define TEMPO_TAMANHO 22
+#define BUF_SIZE 128
+#define TAMANHO_TABULEIRO 9
+#define NUMEROS_NO_JOGO 81
 
 //globais
-const char* getTempo() {
-    static char buffer[TEMPO_TAMANHO];
-    time_t now = time(NULL);
-    strftime(buffer, sizeof(buffer) - 1, "%d-%m-%Y %H:%M:%S", localtime(&now));
-    return buffer;
-}
+const char* getTempo();
 
 
