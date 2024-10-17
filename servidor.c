@@ -1,8 +1,10 @@
 #include "config.h"
+#include "servidor.h"
 #define CONFIGFILE "servidor.conf"
 
 //structs
 struct ServidorConfig serverConfig;
+
 
 
 

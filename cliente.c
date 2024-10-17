@@ -1,15 +1,13 @@
-#include "config.h"
 #include "cliente.h"
 // Aceita cliente1.conf até clienteN.conf
 char *padrao = "^cliente[1-9][0-9]*\\.conf$";
 
 #define LINE_SIZE 16
 
-//structs
-struct ClienteConfig clienteConfig;
-
 //tricos
 pthread_mutex_t mutexClienteLog = PTHREAD_MUTEX_INITIALIZER;
+
+struct ClienteConfig clienteConfig;
 
 void imprimirTabuleiro(char* jogo) {
     for (int i = 0; i < TAMANHO_TABULEIRO; i++) {

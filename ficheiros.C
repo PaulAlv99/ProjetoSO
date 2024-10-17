@@ -24,3 +24,21 @@ FILE* abrirFicheiro(char* filename){
     }
     return conf;
 }
+
+
+int validarNomeFile(char* arquivoNome,char* padrao){
+    regex_t regex;
+  
+    if (regcomp(&regex, padrao, REG_EXTENDED) != 0) {
+        printf("Erro ao compilar a expressão regular.\n");
+        return 0;
+    }
+    // Se o resultado for 0, o nome do arquivo é válido
+    int resultado = regexec(&regex, arquivoNome, 0, NULL, 0);
+    
+    // Liberta mem usada pelo regex
+    regfree(&regex);
+    
+    
+    return (resultado == 0);
+}
