@@ -76,36 +76,36 @@ void logQueEventoServidor(int numero){
             break;
     }
 }
-void verificarLinha(int linha, char* jogo, char* solucao) {
-    //Verifica uma linha do Sudoku (9 posições)
-    for (int i = 0; i < NUM_LINHAS; i++) {
-        int pos = linha * 9 + i;
-        //Verifica se a célula foi preenchida no jogo
-        if (jogo[pos] != solucao[pos]) {
-            //Imprime posição na forma posx-y comecando em 1
-            int coluna = (pos % 9) + 1;
-            printf("Posição errada: pos%d-%d\n", linha + 1, coluna);
-            //começa a contar do 0. pode ser guardado numa estrutura de dados para
-            //posteriormente mandar para o cliente
-            printf("Posicao na string: %d\n",pos);
-        }
-        else{
-            //Imprime posição na forma posx-y comecando em 1
-            int coluna = (pos % 9) + 1;
-            printf("Posição Correta: pos%d-%d\n", linha + 1, coluna);
-            //começa a contar do 0. pode ser guardado numa estrutura de dados para
-            //posteriormente mandar para o cliente
-            printf("Posicao na string: %d\n",pos);
-        }
-    }
-}
+// void verificarLinha(int linha, char* jogo, char* solucao) {
+//     //Verifica uma linha do Sudoku (9 posições)
+//     for (int i = 0; i < NUM_LINHAS; i++) {
+//         int pos = linha * 9 + i;
+//         //Verifica se a célula foi preenchida no jogo
+//         if (jogo[pos] != solucao[pos]) {
+//             //Imprime posição na forma posx-y comecando em 1
+//             int coluna = (pos % 9) + 1;
+//             printf("Posição errada: pos%d-%d\n", linha + 1, coluna);
+//             //começa a contar do 0. pode ser guardado numa estrutura de dados para
+//             //posteriormente mandar para o cliente
+//             printf("Posicao na string: %d\n",pos);
+//         }
+//         else{
+//             //Imprime posição na forma posx-y comecando em 1
+//             int coluna = (pos % 9) + 1;
+//             printf("Posição Correta: pos%d-%d\n", linha + 1, coluna);
+//             //começa a contar do 0. pode ser guardado numa estrutura de dados para
+//             //posteriormente mandar para o cliente
+//             printf("Posicao na string: %d\n",pos);
+//         }
+//     }
+// }
 
-void resolveJogo(char* jogo, char* solucao) {
-    //Verifica linha por linha (0 a 8, correspondente às 9 linhas)
-    for (int linha = 0; linha < 9; linha++) {
-        verificarLinha(linha, jogo, solucao);
-    }
-}
+// void resolveJogo(char* jogo, char* solucao) {
+//     //Verifica linha por linha (0 a 8, correspondente às 9 linhas)
+//     for (int linha = 0; linha < 9; linha++) {
+//         verificarLinha(linha, jogo, solucao);
+//     }
+// }
 
 void imprimirTabuleiro(char jogo[]) {
     for (int i = 0; i < NUM_LINHAS; i++) {
