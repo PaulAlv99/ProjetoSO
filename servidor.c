@@ -89,6 +89,14 @@ void verificarLinha(int linha, char* jogo, char* solucao) {
             //posteriormente mandar para o cliente
             printf("Posicao na string: %d\n",pos);
         }
+        else{
+            //Imprime posição na forma posx-y comecando em 1
+            int coluna = (pos % 9) + 1;
+            printf("Posição Correta: pos%d-%d\n", linha + 1, coluna);
+            //começa a contar do 0. pode ser guardado numa estrutura de dados para
+            //posteriormente mandar para o cliente
+            printf("Posicao na string: %d\n",pos);
+        }
     }
 }
 
@@ -99,7 +107,7 @@ void resolveJogo(char* jogo, char* solucao) {
     }
 }
 
-void imprimirTabuleiro(char* jogo) {
+void imprimirTabuleiro(char jogo[]) {
     for (int i = 0; i < NUM_LINHAS; i++) {
         if (i % 3 == 0 && i != 0) {
             printf("---------------------\n");  // Linha separadora horizontal
@@ -113,6 +121,72 @@ void imprimirTabuleiro(char* jogo) {
         printf("\n");
     }
 }
+//Atualiza a tentativaAtual
+void tentarSolucaoCompleta(char tentativaAtual[], char valoresCorretos[]){
+    for(int i=0; i<strlen(tentativaAtual); i++){
+        if((tentativaAtual[i] != '0') && (tentativaAtual[i] != valoresCorretos[i])){
+            char numero = tentativaAtual[i];
+            int numeroInt = (int)(numero);
+            int novoNumero = numeroInt + 1;
+            char novoNumeroChar = (char)(novoNumero);
+            tentativaAtual[i] = novoNumeroChar;
+        }
+        else if(tentativaAtual[i] == '0'){
+            tentativaAtual[i] = '1';
+        }
+    }
+}
+
+//atualiza os valoresCorretos da Ultima Tentativa
+void atualizaValoresCorretos(char tentativaAtual[], char valoresCorretos[], char solucao[]){
+    for(int i = 0; i< strlen(tentativaAtual); i++){
+        if(valoresCorretos[i] == '0'){
+            if(tentativaAtual[i] == solucao[i]){
+                valoresCorretos[i] = tentativaAtual[i];
+                printf("Valor correto(%d), na posição %d da String \n", tentativaAtual[i], i+1);
+                //printf("%d \n", valoresCorretos);
+            }
+            else{
+                printf("Valor incorreto(%d), na posição %d da String \n", tentativaAtual[i], i+1);
+            }
+            
+        }
+    }
+}
+
+//Atualiza o booleano Resolvido se o jogo tiver sido resolvido
+bool verificaResolvido(char valoresCorretos[], char solucao[], bool resolvido){
+     for(int i = 0; i< strlen(valoresCorretos); i++){
+         if(valoresCorretos[i] != solucao[i]){
+             return false;
+         }
+     }
+     return true;
+}
+
+//ResolveJogo
+void resolverJogo(char jogo[], char tentativaAtual[], char valoresCorretos[], char solucao[], bool resolvido){
+    printf("Jogo Inicial: \n \n");
+    imprimirTabuleiro(jogo);
+    while(!resolvido){
+    //for(int i = 0; i< 10; i++){
+        tentarSolucaoCompleta(tentativaAtual, valoresCorretos);
+        atualizaValoresCorretos(tentativaAtual, valoresCorretos, solucao);
+        resolvido = verificaResolvido(valoresCorretos, solucao, resolvido);
+
+        printf("tentativaAtual: \n");
+        imprimirTabuleiro(tentativaAtual);
+
+         printf("ValoresCorretos: \n");
+        imprimirTabuleiro(valoresCorretos);
+
+        printf("Solução obtida até o momento: \n");
+        imprimirTabuleiro(valoresCorretos);
+    }
+    //}
+    printf("Parabéns, esta é a resolução correta!");
+}
+
 int main(int argc, char **argv) {
     if (argc < 2) {
         printf("Erro: Nome do ficheiro nao fornecido.\n");
@@ -125,15 +199,22 @@ int main(int argc, char **argv) {
     }
     carregarConfigServidor(argv[1]);
     logQueEventoServidor(1);
-    char* solucao="534678912672195348198342567859761423426853791713924856961537284287419635345286179";
-    char* jogo="530070000600195000098000060800060003400803001700020006060000280000419005000080079";
+    bool resolvido = false;
+    char solucao[]="534678912672195348198342567859761423426853791713924856961537284287419635345286179";
+    char jogo[]="530070000600195000098000060800060003400803001700020006060000280000419005000080079";
+    char valoresCorretos[] = "530070000600195000098000060800060003400803001700020006060000280000419005000080079";
+    char tentativa[] = "530070000600195000098000060800060003400803001700020006060000280000419005000080079";
+    //printf("jogo 0 = 5? %d ", jogo[0] == '5');
+    //printf("%d", valoresCorretos);
     clock_t startTempo, endTempo;
     double tempoResolver;
     startTempo = clock();
-    resolveJogo(jogo,solucao);
+
+    //resolveJogo(jogo,solucao);
+    resolverJogo(jogo, tentativa, valoresCorretos, solucao, resolvido);
     endTempo = clock();
     tempoResolver = (double)(endTempo - startTempo) / CLOCKS_PER_SEC;
     printf("Tempo para resolver: %f seconds\n", tempoResolver);
-    imprimirTabuleiro(jogo);
+    //imprimirTabuleiro(jogo);
     return 0;
 }

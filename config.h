@@ -6,6 +6,7 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <pthread.h>
+#include <stdbool.h>
 
 #define TEMPO_TAMANHO 22
 #define BUF_SIZE 1024
