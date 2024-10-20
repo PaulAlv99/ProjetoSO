@@ -16,3 +16,5 @@ struct ClienteThread{
     char tabuleiro[NUMEROS_NO_JOGO];
 };
 
+extern void logEventoCliente(const char* message);
+extern void logQueEventoCliente(int numero);

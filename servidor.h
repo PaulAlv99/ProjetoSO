@@ -12,8 +12,10 @@ void logEventoServidor(const char* message) ;
 void logQueEventoServidor(int numero);
 void tentarSolucaoCompleta(char tentativaAtual[], char valoresCorretos[]);
 void tentarSolucaoParcial(char tentativaAtual[], char valoresCorretos[]);
-void atualizaValoresCorretos(char tentativaAtual[], char valoresCorretos[], char solucao[]);
+void atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorretos[], char solucao[], int nTentativas);
+void atualizaValoresCorretosParcial(char tentativaAtual[], char valoresCorretos[], char solucao[], int nTentativas);
+
 bool verificaResolvido(char valoresCorretos[], char solucao[], bool resolvido);
-void resolverJogoCompleto(char jogo[], char tentativaAtual[], char valoresCorretos[], char solucao[], bool resolvido);
-void resolverJogoParcial(char jogo[], char tentativaAtual[], char valoresCorretos[], char solucao[], bool resolvido);
+void resolverJogoCompleto(char jogo[], char solucao[], int nTentativas);
+void resolverJogoParcial(char jogo[], char solucao[], int nTentativas);
 void imprimirTabuleiro(char jogo[]);
