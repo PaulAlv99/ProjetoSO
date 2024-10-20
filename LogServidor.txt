@@ -98,3 +98,5 @@
 [19-10-2024 17:41:17] Servidor comecou
 [19-10-2024 17:44:28] Servidor comecou
 [19-10-2024 17:55:55] Servidor comecou
+[20-10-2024 18:00:03] Servidor comecou
+[20-10-2024 18:03:32] Servidor comecou

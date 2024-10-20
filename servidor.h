@@ -11,7 +11,11 @@ void carregarConfigServidor(char* nomeFicheiro);
 void logEventoServidor(const char* message) ;
 void logQueEventoServidor(int numero);
 void tentarSolucaoCompleta(char tentativaAtual[], char valoresCorretos[]);
+void tentarSolucaoParcial(char tentativaAtual[], char valoresCorretos[]);
+
 void atualizaValoresCorretos(char tentativaAtual[], char valoresCorretos[], char solucao[]);
 bool verificaResolvido(char valoresCorretos[], char solucao[], bool resolvido);
-void resolverJogo(char jogo[], char tentativaAtual[], char valoresCorretos[], char solucao[], bool resolvido);
+void resolverJogoCompleto(char jogo[], char tentativaAtual[], char valoresCorretos[], char solucao[], bool resolvido);
+void resolverJogoParcial(char jogo[], char tentativaAtual[], char valoresCorretos[], char solucao[], bool resolvido);
+
 void imprimirTabuleiro(char jogo[]);

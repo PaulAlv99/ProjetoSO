@@ -165,7 +165,7 @@ bool verificaResolvido(char valoresCorretos[], char solucao[], bool resolvido){
 }
 
 //ResolveJogo
-void resolverJogo(char jogo[], char tentativaAtual[], char valoresCorretos[], char solucao[], bool resolvido){
+void resolverJogoCompleto(char jogo[], char tentativaAtual[], char valoresCorretos[], char solucao[], bool resolvido){
     printf("Jogo Inicial: \n \n");
     imprimirTabuleiro(jogo);
     while(!resolvido){
@@ -186,6 +186,49 @@ void resolverJogo(char jogo[], char tentativaAtual[], char valoresCorretos[], ch
     //}
     printf("Parabéns, esta é a resolução correta!");
 }
+
+//Solucao parcial (Tentar um valor por vez)
+void tentarSolucaoParcial(char tentativaAtual[], char valoresCorretos[]){
+    for(int i=0; i<strlen(tentativaAtual); i++){
+        if((tentativaAtual[i] != '0') && (tentativaAtual[i] != valoresCorretos[i])){
+            char numero = tentativaAtual[i];
+            int numeroInt = (int)(numero);
+            int novoNumero = numeroInt + 1;
+            char novoNumeroChar = (char)(novoNumero);
+            tentativaAtual[i] = novoNumeroChar;
+            break;
+        }
+        else if(tentativaAtual[i] == '0'){
+            tentativaAtual[i] = '1';
+            break;
+        }
+    }
+}
+
+
+//ResolveJogo
+void resolverJogoParcial(char jogo[], char tentativaAtual[], char valoresCorretos[], char solucao[], bool resolvido){
+    printf("Jogo Inicial: \n \n");
+    imprimirTabuleiro(jogo);
+    while(!resolvido){
+    //for(int i = 0; i< 10; i++){
+        tentarSolucaoParcial(tentativaAtual, valoresCorretos);
+        atualizaValoresCorretos(tentativaAtual, valoresCorretos, solucao);
+        resolvido = verificaResolvido(valoresCorretos, solucao, resolvido);
+
+        printf("tentativaAtual: \n");
+        imprimirTabuleiro(tentativaAtual);
+
+         printf("ValoresCorretos: \n");
+        imprimirTabuleiro(valoresCorretos);
+
+        printf("Solução obtida até o momento: \n");
+        imprimirTabuleiro(valoresCorretos);
+    }
+    //}
+    printf("Parabéns, esta é a resolução correta!");
+}
+
 
 int main(int argc, char **argv) {
     if (argc < 2) {
@@ -211,7 +254,9 @@ int main(int argc, char **argv) {
     startTempo = clock();
 
     //resolveJogo(jogo,solucao);
-    resolverJogo(jogo, tentativa, valoresCorretos, solucao, resolvido);
+    //resolverJogoCompleto(jogo, tentativa, valoresCorretos, solucao, resolvido);
+    resolverJogoParcial(jogo, tentativa, valoresCorretos, solucao, resolvido);
+
     endTempo = clock();
     tempoResolver = (double)(endTempo - startTempo) / CLOCKS_PER_SEC;
     printf("Tempo para resolver: %f seconds\n", tempoResolver);
