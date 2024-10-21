@@ -1,6 +1,8 @@
-#include "cliente.h"
+#include "./headers/cliente.h"
 // Aceita cliente1.conf até clienteN.conf
-char *padrao = "^cliente[1-9][0-9]*\\.conf$";
+char *padrao = "^\\./clienteConfigs/cliente[1-9][0-9]*\\.conf$";
+
+
 
 #define LINE_SIZE 16
 
@@ -57,14 +59,14 @@ void carregarConfigCliente(char* nomeFicheiro) {
 }
 
 void logEventoCliente(const char* message) {
-    pthread_mutex_lock(&mutexClienteLog);
     //modo append
     char str[BUF_SIZE];
+    char* clienteLogsDir = "clienteLogs";
     char* nomeFicheiro = "LogCliente";
     char* tipoFicheiro = ".txt";
-    //se o id for muito alto mesmo dá problema de overflow pq unsigned long pode nao dar
-    snprintf(str, BUF_SIZE, "%s%lu%s", nomeFicheiro, clienteConfig.idCliente, tipoFicheiro);
-    //printf("nome:%s",str);
+    //se o id for muito alto mesmo dá problema overflow mas nao dá crash por overflow
+    snprintf(str, BUF_SIZE, "%s/%s%lu%s", clienteLogsDir, nomeFicheiro, clienteConfig.idCliente,tipoFicheiro);
+    pthread_mutex_lock(&mutexClienteLog);
     FILE *file = fopen(str, "a");
     if (file == NULL) {
         perror("Erro ao abrir o ficheiro de log");

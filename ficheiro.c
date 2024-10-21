@@ -1,4 +1,4 @@
-#include "ficheiro.h"
+#include "./headers/ficheiro.h"
 
 int fecharFicheiro(FILE* file) {
     if (file == NULL) {

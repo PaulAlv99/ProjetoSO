@@ -7,6 +7,20 @@ struct ServidorConfig{
     char ficheiroSolucoesCaminho[PATH_SIZE];
 };
 
+struct Jogo{
+    long idJogo;
+    char jogo[NUMEROS_NO_JOGO];
+    char solucao[NUMEROS_NO_JOGO];
+};
+
+struct JogoAtual{
+    long idJogo;
+    char jogo[NUMEROS_NO_JOGO];
+    char tempoInicio[TEMPO_TAMANHO];
+    char tempoFinal[TEMPO_TAMANHO];
+    long numeroTentativas;
+};
+
 void carregarConfigServidor(char* nomeFicheiro);
 void logEventoServidor(const char* message) ;
 void logQueEventoServidor(int numero);

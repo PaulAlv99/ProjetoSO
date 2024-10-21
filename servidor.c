@@ -1,9 +1,11 @@
-#include "servidor.h"
-#define CONFIGFILE "servidor.conf"
-#include "cliente.h"
+#include "./headers/servidor.h"
+#define CONFIGFILE "./servidorConfig/servidor.conf"
+#include "./headers/cliente.h"
 //structs
 struct ServidorConfig serverConfig;
 
+//tricos
+pthread_mutex_t mutexServidorLog = PTHREAD_MUTEX_INITIALIZER;
 
 void carregarConfigServidor(char* nomeFicheiro) {
     FILE* config = abrirFicheiro(nomeFicheiro);
@@ -36,13 +38,17 @@ void carregarConfigServidor(char* nomeFicheiro) {
 void logEventoServidor(const char* message) {
 
     //modo append
-    FILE *file = fopen("LogServidor.txt", "a");
+    char* ficheiroLogs="servidorLogs/LogServidor.txt";
+    pthread_mutex_lock(&mutexServidorLog);
+    FILE *file = fopen(ficheiroLogs, "a");
     if (file == NULL) {
         perror("Erro ao abrir o ficheiro de log");
+        pthread_mutex_unlock(&mutexServidorLog);
         return;
     }
     fprintf(file, "[%s] %s\n", getTempo(), message);
     fclose(file);
+    pthread_mutex_unlock(&mutexServidorLog);
 }
 void logQueEventoServidor(int numero){
     switch(numero){
@@ -290,7 +296,12 @@ void resolverJogoParcial(char jogo[], char solucao[], int nTentativas){
     printf(TentativasTotais);
 }
 
+void lerJogo(char* nomeFicheiro){
+ 
+}
+void lerSolucao(char* nomeFicheiro){
 
+}
 int main(int argc, char **argv) {
     if (argc < 2) {
         printf("Erro: Nome do ficheiro nao fornecido.\n");

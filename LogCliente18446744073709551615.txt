@@ -1,3 +1,0 @@
-[18-10-2024 00:00:05] [Cliente ID: 18446744073709551615] Cliente iniciado
-[18-10-2024 00:00:11] [Cliente ID: 18446744073709551615] Cliente iniciado
-[18-10-2024 00:03:58] [Cliente ID: 18446744073709551615] Cliente iniciado

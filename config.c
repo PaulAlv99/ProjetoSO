@@ -1,4 +1,4 @@
-#include "config.h"
+#include "./headers/config.h"
 
 const char* getTempo() {
     static char buffer[TEMPO_TAMANHO];
