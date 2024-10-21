@@ -1,0 +1,3 @@
+[21-10-2024 11:28:25] [Cliente ID: 2] Cliente iniciado
+[21-10-2024 11:29:03] [Cliente ID: 2] Cliente iniciado
+[21-10-2024 11:29:11] [Cliente ID: 2] Cliente iniciado

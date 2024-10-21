@@ -27,17 +27,14 @@ struct ClienteConfig clienteConfig;
 // }
 
 // Função para carregar as configurações do cliente
+//apenas vai ler id e ip se tiver mais alguma coisa ignora
 void carregarConfigCliente(char* nomeFicheiro) {
     FILE* config = abrirFicheiro(nomeFicheiro);
-
-    fseek(config, 0, SEEK_END);
-    long tamanhoFicheiro = ftell(config);
-    rewind(config);
-
-    char buffer[tamanhoFicheiro];
+    
+    char buffer[BUF_SIZE];
     int contadorConfigs = 0;
 
-    while (fgets(buffer, BUF_SIZE, config) != NULL) {
+    if (fgets(buffer, BUF_SIZE, config) != NULL) {
         // Leitura do IdCliente (primeira linha)
         clienteConfig.idCliente = atoi(buffer);
 
@@ -55,6 +52,7 @@ void carregarConfigCliente(char* nomeFicheiro) {
         printf("Sem configs\n");
         exit(1);
     }
+    // printf("Configs n:%d\n",contadorConfigs);
     return;
 }
 
@@ -119,6 +117,7 @@ void logQueEventoCliente(int numero){
 //     }
 
 //     carregarConfigCliente(argv[1]);
+//     printf("ID:%ld\nIP:%s\n",clienteConfig.idCliente,clienteConfig.ipServidor);
 //     imprimirTabuleiro("530070000600195000098000060800060003400803001700020006060000280000419005000080079");
 //     logEventoCliente("Cliente iniciado");
 //     return 0;

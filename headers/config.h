@@ -9,10 +9,12 @@
 #include <stdbool.h>
 
 #define TEMPO_TAMANHO 22
-#define BUF_SIZE 4096
+#define BUF_SIZE 2048
+//81 + \0
 #define NUMEROS_NO_JOGO 81
 #define NUM_LINHAS 9
 #define NUM_COLUNAS 9
+#define NUM_JOGOS 5
 //globais
 const char* getTempo();
 

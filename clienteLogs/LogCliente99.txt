@@ -1,0 +1,7 @@
+[21-10-2024 11:29:22] [Cliente ID: 99] Cliente iniciado
+[21-10-2024 11:30:49] [Cliente ID: 99] Cliente iniciado
+[21-10-2024 11:31:23] [Cliente ID: 99] Cliente iniciado
+[21-10-2024 11:31:34] [Cliente ID: 99] Cliente iniciado
+[21-10-2024 11:32:21] [Cliente ID: 99] Cliente iniciado
+[21-10-2024 11:39:21] [Cliente ID: 99] Cliente iniciado
+[21-10-2024 11:40:40] [Cliente ID: 99] Cliente iniciado

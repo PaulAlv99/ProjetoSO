@@ -3,10 +3,11 @@
 #include "./headers/cliente.h"
 //structs
 struct ServidorConfig serverConfig;
-
+struct Jogo jogosEsolucoes[NUM_JOGOS];
 //tricos
 pthread_mutex_t mutexServidorLog = PTHREAD_MUTEX_INITIALIZER;
 
+//so tem o ficheiro da localizacao dos jogos e solucoes que neste caso e apenas 1 ficheiro
 void carregarConfigServidor(char* nomeFicheiro) {
     FILE* config = abrirFicheiro(nomeFicheiro);
 
@@ -17,21 +18,17 @@ void carregarConfigServidor(char* nomeFicheiro) {
     char buffer[tamanhoFicheiro];
     int contadorConfigs = 0;
     //ambas tem o \0 no final nao esquecer se tiver mais linhas de config convem tirar \n
-    while (fgets(buffer, PATH_SIZE, config) != NULL) {
-        char *resultado = strtok(buffer, "\n");
-        strcpy(serverConfig.ficheiroJogosCaminho, resultado);
-
         if (fgets(buffer, PATH_SIZE, config) != NULL) {
-            strcpy(serverConfig.ficheiroSolucoesCaminho, resultado);
+            strcpy(serverConfig.ficheiroJogosESolucoesCaminho, buffer);
+            // printf("caminho: %s", serverConfig.ficheiroJogosESolucoesCaminho);
         }
         contadorConfigs++;
-    }
+        fecharFicheiro(config);
+        if (contadorConfigs == 0) {
+            printf("Sem configs\n");
+            exit(1);
+        }
 
-    fecharFicheiro(config);
-    if (contadorConfigs == 0) {
-        printf("Sem configs\n");
-        exit(1);
-    }
     return;
 }
 
@@ -261,6 +258,41 @@ void atualizaValoresCorretosParcial(char tentativaAtual[], char valoresCorretos[
     }
 }
 
+void carregarFicheiroJogosSolucoes(char* nomeFicheiro) {
+    FILE* config = abrirFicheiro(nomeFicheiro);
+    
+    char buffer[BUF_SIZE];
+    int contadorConfigs = 0;
+    while (fgets(buffer, BUF_SIZE, config) != NULL) {
+        // Leitura do idJogo (primeira linha)
+        char *resultado = strtok(buffer, "\n");
+        jogosEsolucoes[contadorConfigs].idJogo = atoi(resultado);
+        printf("ID:%ld\n",jogosEsolucoes[contadorConfigs].idJogo);
+        // Leitura do IP do servidor (segunda linha)
+        if (fgets(buffer, BUF_SIZE, config) != NULL) {
+            char *resultado = strtok(buffer, "\n");
+            strcpy(jogosEsolucoes[contadorConfigs].jogo, resultado);
+            printf("Jogo:%s\n",jogosEsolucoes[contadorConfigs].jogo);
+            printf("Jogo:%s\n",resultado);
+            if (fgets(buffer, BUF_SIZE, config) != NULL) {
+                char *resultado = strtok(buffer, "\n");
+                strcpy(jogosEsolucoes[contadorConfigs].solucao, resultado);
+                printf("Jogo:%s\n",jogosEsolucoes[contadorConfigs].solucao);
+                printf("Jogo:%s\n",resultado);
+            }
+        }
+
+        contadorConfigs++;  // Contar o número de configurações lidas
+    }
+
+    fecharFicheiro(config);
+    if (contadorConfigs == 0) {
+        printf("Sem configs\n");
+        exit(1);
+    }
+    // printf("Configs n:%d\n",contadorConfigs);
+    return;
+}
 
 //ResolveJogo
 void resolverJogoParcial(char jogo[], char solucao[], int nTentativas){
@@ -296,12 +328,6 @@ void resolverJogoParcial(char jogo[], char solucao[], int nTentativas){
     printf(TentativasTotais);
 }
 
-void lerJogo(char* nomeFicheiro){
- 
-}
-void lerSolucao(char* nomeFicheiro){
-
-}
 int main(int argc, char **argv) {
     if (argc < 2) {
         printf("Erro: Nome do ficheiro nao fornecido.\n");
@@ -313,9 +339,11 @@ int main(int argc, char **argv) {
         return 1;
     }
     carregarConfigServidor(argv[1]);
+    printf("Caminho jogos e solucoes: %s",serverConfig.ficheiroJogosESolucoesCaminho);
+    carregarFicheiroJogosSolucoes(serverConfig.ficheiroJogosESolucoesCaminho);
     logQueEventoServidor(1);
-    char solucao[]="534678912672195348198342567859761423426853791713924856961537284287419635345286179";
-    char jogo[]="530070000600195000098000060800060003400803001700020006060000280000419005000080079";
+    // char solucao[]="534678912672195348198342567859761423426853791713924856961537284287419635345286179";
+    // char jogo[]="530070000600195000098000060800060003400803001700020006060000280000419005000080079";
     //char valoresCorretos[] = "530070000600195000098000060800060003400803001700020006060000280000419005000080079";
     //char tentativa[] = "530070000600195000098000060800060003400803001700020006060000280000419005000080079";
     //printf("jogo 0 = 5? %d ", jogo[0] == '5');
@@ -323,11 +351,10 @@ int main(int argc, char **argv) {
     clock_t startTempo, endTempo;
     double tempoResolver;
     startTempo = clock();
-
     //resolveJogo(jogo,solucao);
-    //resolverJogoCompleto(jogo, solucao, 0);
-    resolverJogoParcial(jogo, solucao, 0);
-
+    //resolverJogoCompleto(jogosEsolucoes[0].jogo, jogosEsolucoes[0].solucao, 0);
+    resolverJogoParcial(jogosEsolucoes[0].jogo, jogosEsolucoes[0].solucao, 0);
+    
     endTempo = clock();
     tempoResolver = (double)(endTempo - startTempo) / CLOCKS_PER_SEC;
     printf("Tempo para resolver: %f seconds\n", tempoResolver);
