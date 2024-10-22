@@ -6,11 +6,25 @@ Para executar o servidor usamos o comando ./servidor ./servidorConfig/servidor.c
 
 Os ficheiros de texto estão organizados da seguinte maneira:
 Para o ficheiro de jogosEsolucoes:
-ID
-JOGO
-SOLUÇÃO
+<ul>
+  <li>
+    ID
+  </li>
+  <li>
+    JOGO
+  </li>
+  <li>
+    SOLUCAO
+  </li>
+</ul>
 Para o ficheiro de conf do cliente:
-ID CLIENTE
-IP DO HOST/SERVIDOR
+<ul>
+  <li>
+    ID CLIENTE
+  </li>
+  <li>
+    IP DO HOST/SERVIDOR
+  </li>
+</ul>
 Para o ficheiro de conf do servidor:
 LOCALIZACAO DO FICHEIRO DE JOGOS_E_SOLUCOES
