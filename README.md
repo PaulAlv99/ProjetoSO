@@ -1,2 +1,16 @@
-#Projeto Sistemas Operativos
-Para correr o projeto basta está no diretorio do projeto e escrever make. Se houver já ficheiros da build usar make clean e se quiser dar build outra vez use make Para começar o cliente basta ./cliente cliente1.conf (Sendo necessário especificar do cliente 1 até ao 99, sendo que pode ser alterado para mais de 99, mudando a função de regex) Para começar o servidor basta ./servidor servidor.conf
+Projeto SO
+
+Para executar o projeto é necessário fazer make. Se quisermos cliente mudamos o EXECUTAVEL para cliente ou para servidor se for ao contrario
+Para executar devemos estar na pasta do proj e executar o comando sendo X o numero do cliente ./cliente ./clienteConfigs/clienteX.conf
+Para executar o servidor usamos o comando ./servidor ./servidorConfig/servidor.conf
+
+Os ficheiros de texto estão organizados da seguinte maneira:
+Para o ficheiro de jogosEsolucoes:
+ID
+JOGO
+SOLUÇÃO
+Para o ficheiro de conf do cliente:
+ID CLIENTE
+IP DO HOST/SERVIDOR
+Para o ficheiro de conf do servidor:
+LOCALIZACAO DO FICHEIRO DE JOGOS_E_SOLUCOES
