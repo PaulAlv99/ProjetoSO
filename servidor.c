@@ -419,6 +419,58 @@ void enviarJogo(int new_socket)
         free(jsonString); // Free the JSON string after sending
     }
 }
+void receberInfoCliente(int *sock)
+{
+    // Buffer para armazenar os dados recebidos
+    char buffer[1024];
+    memset(buffer, 0, sizeof(buffer)); // Limpa o buffer
+
+    // Recebe dados do cliente
+    ssize_t bytesRecebidos = recv(*sock, buffer, sizeof(buffer) - 1, 0);
+    if (bytesRecebidos < 0)
+    {
+        perror("Erro ao receber informações do cliente");
+        exit(EXIT_FAILURE);
+    }
+    // else if (bytesRecebidos == 0)
+    // {
+    //     printf("Conexão encerrada pelo cliente.\n");
+    //     return;
+    // }
+
+    // Termina a string recebida com nulo
+    buffer[bytesRecebidos] = '\0';
+
+    // Imprime os dados recebidos
+    printf("Dados recebidos do cliente: %s\n", buffer);
+
+    // Analisa os dados JSON
+    cJSON *jsonRecebido = cJSON_Parse(buffer);
+    if (jsonRecebido == NULL)
+    {
+        fprintf(stderr, "Erro ao analisar JSON: %s\n", cJSON_GetErrorPtr());
+        exit(EXIT_FAILURE);
+    }
+
+    // Extrai dados do objeto JSON (atualize as chaves conforme a estrutura do seu JSON)
+    cJSON *idCliente = cJSON_GetObjectItem(jsonRecebido, "idCliente");
+    cJSON *tipoJogo = cJSON_GetObjectItem(jsonRecebido, "tipoJogo");
+    cJSON *metodoResolucao = cJSON_GetObjectItem(jsonRecebido, "metodoResolucao");
+
+    if (cJSON_IsNumber(idCliente) && cJSON_IsString(tipoJogo) && cJSON_IsString(metodoResolucao))
+    {
+        printf("ID Cliente: %d\n", idCliente->valueint);
+        printf("Tipo de Jogo: %s\n", tipoJogo->valuestring);
+        printf("Método de Resolução: %s\n", metodoResolucao->valuestring);
+    }
+    else
+    {
+        fprintf(stderr, "Erro: Dados JSON não estão no formato esperado.\n");
+    }
+
+    // Limpeza
+    cJSON_Delete(jsonRecebido); // Libera o objeto JSON
+}
 int main(int argc, char **argv)
 {
     int server_fd, new_socket;
@@ -440,10 +492,7 @@ int main(int argc, char **argv)
     logQueEventoServidor(1);
     ligacaoSocketS_C(&server_fd, &new_socket, address);
     enviarJogo(new_socket);
-    close(new_socket);
-    close(server_fd);
-    close(new_socket);
-    close(server_fd);
+    receberInfoCliente(&new_socket);
 
     return 0;
 }

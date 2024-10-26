@@ -305,8 +305,7 @@ int main(int argc, char **argv)
     enviarInfoCliente(&sock);
     lerJogo(sock, buffer);
     imprimirTabuleiro(jogoAtual.jogo);
-    enviarJogo(&sock);
-    close(sock);
+    // enviarJogo(&sock);
 
     return 0;
 }
