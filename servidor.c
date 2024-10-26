@@ -1,15 +1,16 @@
 #include "./headers/servidor.h"
 #define CONFIGFILE "./servidorConfig/servidor.conf"
 #include "./headers/cliente.h"
-//structs
+// structs
 struct ServidorConfig serverConfig;
 struct Jogo jogosEsolucoes[NUM_JOGOS];
-//tricos
+// tricos
 pthread_mutex_t mutexServidorLog = PTHREAD_MUTEX_INITIALIZER;
 
-//so tem o ficheiro da localizacao dos jogos e solucoes que neste caso e apenas 1 ficheiro
-void carregarConfigServidor(char* nomeFicheiro) {
-    FILE* config = abrirFicheiro(nomeFicheiro);
+// so tem o ficheiro da localizacao dos jogos e solucoes que neste caso e apenas 1 ficheiro
+void carregarConfigServidor(char *nomeFicheiro)
+{
+    FILE *config = abrirFicheiro(nomeFicheiro);
 
     fseek(config, 0, SEEK_END);
     long tamanhoFicheiro = ftell(config);
@@ -17,28 +18,32 @@ void carregarConfigServidor(char* nomeFicheiro) {
 
     char buffer[tamanhoFicheiro];
     int contadorConfigs = 0;
-    //ambas tem o \0 no final nao esquecer se tiver mais linhas de config convem tirar \n
-        if (fgets(buffer, PATH_SIZE, config) != NULL) {
-            strcpy(serverConfig.ficheiroJogosESolucoesCaminho, buffer);
-            // printf("caminho: %s", serverConfig.ficheiroJogosESolucoesCaminho);
-        }
-        contadorConfigs++;
-        fecharFicheiro(config);
-        if (contadorConfigs == 0) {
-            printf("Sem configs\n");
-            exit(1);
-        }
+    // ambas tem o \0 no final nao esquecer se tiver mais linhas de config convem tirar \n
+    if (fgets(buffer, PATH_SIZE, config) != NULL)
+    {
+        strcpy(serverConfig.ficheiroJogosESolucoesCaminho, buffer);
+        // printf("caminho: %s", serverConfig.ficheiroJogosESolucoesCaminho);
+    }
+    contadorConfigs++;
+    fecharFicheiro(config);
+    if (contadorConfigs == 0)
+    {
+        printf("Sem configs\n");
+        exit(1);
+    }
 
     return;
 }
 
-void logEventoServidor(const char* message) {
+void logEventoServidor(const char *message)
+{
 
-    //modo append
-    char* ficheiroLogs="servidorLogs/LogServidor.txt";
+    // modo append
+    char *ficheiroLogs = "servidorLogs/LogServidor.txt";
     pthread_mutex_lock(&mutexServidorLog);
     FILE *file = fopen(ficheiroLogs, "a");
-    if (file == NULL) {
+    if (file == NULL)
+    {
         perror("Erro ao abrir o ficheiro de log");
         pthread_mutex_unlock(&mutexServidorLog);
         return;
@@ -47,37 +52,19 @@ void logEventoServidor(const char* message) {
     fclose(file);
     pthread_mutex_unlock(&mutexServidorLog);
 }
-void logQueEventoServidor(int numero){
-    switch(numero){
-        case 1:
-            logEventoServidor("Servidor comecou");
-            break;
-        case 2:
-            logEventoServidor("Servidor parou");
-            break;
-        case 3:
-        //fazer outra funcao para saber ID cliente ex. novo cliente e seu id
-            logEventoServidor("O cliente id: conectou-se");
-            break;
-        case 4:
-        //fazer outra funcao para saber ID cliente
-            logEventoServidor("Servidor enviou um jogo id cliente:");
-            break;
-        case 5:
-        //fazer outra funcao para saber ID cliente
-            logEventoServidor("Servidor recebeu uma solucao.id cliente:");
-            break;
-        case 6:
-        //fazer outra funcao para saber ID cliente
-            logEventoServidor("Servidor enviou numero de erradasid cliente:");
-            break;
-        case 7:
-        //fazer outra funcao para saber ID cliente
-            logEventoServidor("O cliente id: desconectou-se");
-            break;
-        default:
-            logEventoServidor("Evento desconhecido");
-            break;
+void logQueEventoServidor(int numero)
+{
+    switch (numero)
+    {
+    case 1:
+        logEventoServidor("Servidor começou");
+        break;
+    case 2:
+        logEventoServidor("Socket começou");
+        break;
+    default:
+        logEventoServidor("Evento desconhecido");
+        break;
     }
 }
 // void verificarLinha(int linha, char* jogo, char* solucao) {
@@ -110,183 +97,223 @@ void logQueEventoServidor(int numero){
 //         verificarLinha(linha, jogo, solucao);
 //     }
 // }
+// Atualiza a tentativaAtual
+// void tentarSolucaoCompleta(char tentativaAtual[], char valoresCorretos[])
+// {
+//     for (int i = 0; i < strlen(tentativaAtual); i++)
+//     {
+//         if ((tentativaAtual[i] != '0') && (tentativaAtual[i] != valoresCorretos[i]))
+//         {
+//             char numero = tentativaAtual[i];
+//             int numeroInt = (int)(numero);
+//             int novoNumero = numeroInt + 1;
+//             char novoNumeroChar = (char)(novoNumero);
+//             tentativaAtual[i] = novoNumeroChar;
+//         }
+//         else if (tentativaAtual[i] == '0')
+//         {
+//             tentativaAtual[i] = '1';
+//         }
+//     }
+// }
 
-void imprimirTabuleiro(char jogo[]) {
-    for (int i = 0; i < NUM_LINHAS; i++) {
-        if (i % 3 == 0 && i != 0) {
-            printf("---------------------\n");  // Linha separadora horizontal
-        }
-        for (int j = 0; j < NUM_COLUNAS; j++) {
-            if (j % 3 == 0 && j != 0) {
-                printf(" | ");  // Separador vertical
-            }
-            printf("%c ", jogo[i * NUM_LINHAS + j]);
-        }
-        printf("\n");
-    }
-}
-//Atualiza a tentativaAtual
-void tentarSolucaoCompleta(char tentativaAtual[], char valoresCorretos[]){
-    for(int i=0; i<strlen(tentativaAtual); i++){
-        if((tentativaAtual[i] != '0') && (tentativaAtual[i] != valoresCorretos[i])){
-            char numero = tentativaAtual[i];
-            int numeroInt = (int)(numero);
-            int novoNumero = numeroInt + 1;
-            char novoNumeroChar = (char)(novoNumero);
-            tentativaAtual[i] = novoNumeroChar;
-        }
-        else if(tentativaAtual[i] == '0'){
-            tentativaAtual[i] = '1';
-        }
-    }
-}
+// // atualiza os valoresCorretos da Ultima Tentativa
+// void atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorretos[], char solucao[], int nTentativas)
+// {
+//     char Tentativas[100];
+//     sprintf(Tentativas, "Tentativa n: %d \n", nTentativas);
+//     logEventoCliente(Tentativas);
+//     for (int i = 0; i < strlen(tentativaAtual); i++)
+//     {
+//         if (valoresCorretos[i] == '0')
+//         {
+//             if (tentativaAtual[i] == solucao[i])
+//             {
+//                 valoresCorretos[i] = tentativaAtual[i];
+//                 char message[1024];
+//                 sprintf(message, "Valor correto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
+//                 logEventoCliente(message);
+//                 printf(message);
 
-//atualiza os valoresCorretos da Ultima Tentativa
-void atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorretos[], char solucao[], int nTentativas){
-    char Tentativas[100];
-    sprintf(Tentativas, "Tentativa n: %d \n", nTentativas);
-    logEventoCliente(Tentativas);
-    for(int i = 0; i< strlen(tentativaAtual); i++){
-        if(valoresCorretos[i] == '0'){
-            if(tentativaAtual[i] == solucao[i]){
-                valoresCorretos[i] = tentativaAtual[i];
-                char message[1024];
-                sprintf(message, "Valor correto(%d), na posição %d da String \n", tentativaAtual[i], i+1);
-                logEventoCliente(message);
-                printf(message);
+//                 // printf("%d \n", valoresCorretos);
+//             }
+//             else
+//             {
+//                 char message[1024];
+//                 sprintf(message, "Valor incorreto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
+//                 logEventoCliente(message);
+//                 printf(message);
+//             }
+//         }
+//     }
+// }
 
-                //printf("%d \n", valoresCorretos);
-            }
-            else{
-                char message[1024];
-                sprintf(message, "Valor incorreto(%d), na posição %d da String \n", tentativaAtual[i], i+1);
-                logEventoCliente(message);
-                printf(message);
-            }
-            
-        }
-    }
-}
+// // Atualiza o booleano Resolvido se o jogo tiver sido resolvido
+// bool verificaResolvido(char valoresCorretos[], char solucao[], bool resolvido)
+// {
+//     for (int i = 0; i < strlen(valoresCorretos); i++)
+//     {
+//         if (valoresCorretos[i] != solucao[i])
+//         {
+//             return false;
+//         }
+//     }
+//     return true;
+// }
 
-//Atualiza o booleano Resolvido se o jogo tiver sido resolvido
-bool verificaResolvido(char valoresCorretos[], char solucao[], bool resolvido){
-     for(int i = 0; i< strlen(valoresCorretos); i++){
-         if(valoresCorretos[i] != solucao[i]){
-             return false;
-         }
-     }
-     return true;
-}
+// // ResolveJogo
+// void resolverJogoCompleto(char jogo[], char solucao[], int nTentativas)
+// {
+//     char tentativaAtual[NUMEROS_NO_JOGO];
+//     char valoresCorretos[NUMEROS_NO_JOGO];
+//     strncpy(tentativaAtual, jogo, NUMEROS_NO_JOGO);
+//     strncpy(valoresCorretos, jogo, NUMEROS_NO_JOGO);
+//     bool resolvido;
+//     resolvido = false;
+//     printf("Jogo Inicial: \n \n");
+//     imprimirTabuleiro(jogo);
+//     while (!resolvido)
+//     {
+//         // for(int i = 0; i< 10; i++){
 
-//ResolveJogo
-void resolverJogoCompleto(char jogo[], char solucao[], int nTentativas){
-    char tentativaAtual[NUMEROS_NO_JOGO];
-    char valoresCorretos[NUMEROS_NO_JOGO];
-    strncpy(tentativaAtual, jogo, NUMEROS_NO_JOGO);
-    strncpy(valoresCorretos, jogo, NUMEROS_NO_JOGO);
-    bool resolvido;
-    resolvido = false;
-    printf("Jogo Inicial: \n \n");
-    imprimirTabuleiro(jogo);
-    while(!resolvido){
-    //for(int i = 0; i< 10; i++){
+//         nTentativas = nTentativas + 1;
+//         tentarSolucaoCompleta(tentativaAtual, valoresCorretos);
+//         atualizaValoresCorretosCompletos(tentativaAtual, valoresCorretos, solucao, nTentativas);
+//         resolvido = verificaResolvido(valoresCorretos, solucao, resolvido);
 
-        nTentativas = nTentativas + 1;
-        tentarSolucaoCompleta(tentativaAtual, valoresCorretos);
-        atualizaValoresCorretosCompletos(tentativaAtual, valoresCorretos, solucao, nTentativas);
-        resolvido = verificaResolvido(valoresCorretos, solucao, resolvido);
+//         printf("tentativaAtual: \n");
+//         imprimirTabuleiro(tentativaAtual);
 
-        printf("tentativaAtual: \n");
-        imprimirTabuleiro(tentativaAtual);
+//         printf("ValoresCorretos: \n");
+//         imprimirTabuleiro(valoresCorretos);
 
-         printf("ValoresCorretos: \n");
-        imprimirTabuleiro(valoresCorretos);
+//         printf("Solução obtida até o momento: \n");
+//         imprimirTabuleiro(valoresCorretos);
+//     }
+//     //}
+//     printf("Parabéns, esta é a resolução correta! \n");
+//     char TentativasTotais[100];
+//     sprintf(TentativasTotais, "Tentativas totais: %d \n", nTentativas);
+//     logEventoCliente(TentativasTotais);
+//     printf(TentativasTotais);
+// }
 
-        printf("Solução obtida até o momento: \n");
-        imprimirTabuleiro(valoresCorretos);
-    }
-    //}
-    printf("Parabéns, esta é a resolução correta! \n");
-    char TentativasTotais[100];    
-    sprintf(TentativasTotais, "Tentativas totais: %d \n", nTentativas);
-    logEventoCliente(TentativasTotais);
-    printf(TentativasTotais);
-}
+// // Solucao parcial (Tentar um valor por vez)
+// void tentarSolucaoParcial(char tentativaAtual[], char valoresCorretos[])
+// {
+//     for (int i = 0; i < strlen(tentativaAtual); i++)
+//     {
+//         if ((tentativaAtual[i] != '0') && (tentativaAtual[i] != valoresCorretos[i]))
+//         {
+//             char numero = tentativaAtual[i];
+//             int numeroInt = (int)(numero);
+//             int novoNumero = numeroInt + 1;
+//             char novoNumeroChar = (char)(novoNumero);
+//             tentativaAtual[i] = novoNumeroChar;
+//             break;
+//         }
+//         else if (tentativaAtual[i] == '0')
+//         {
+//             tentativaAtual[i] = '1';
+//             break;
+//         }
+//     }
+// }
 
-//Solucao parcial (Tentar um valor por vez)
-void tentarSolucaoParcial(char tentativaAtual[], char valoresCorretos[]){
-    for(int i=0; i<strlen(tentativaAtual); i++){
-        if((tentativaAtual[i] != '0') && (tentativaAtual[i] != valoresCorretos[i])){
-            char numero = tentativaAtual[i];
-            int numeroInt = (int)(numero);
-            int novoNumero = numeroInt + 1;
-            char novoNumeroChar = (char)(novoNumero);
-            tentativaAtual[i] = novoNumeroChar;
-            break;
-        }
-        else if(tentativaAtual[i] == '0'){
-            tentativaAtual[i] = '1';
-            break;
-        }
-    }
-}
+// void atualizaValoresCorretosParcial(char tentativaAtual[], char valoresCorretos[], char solucao[], int nTentativas)
+// {
+//     char Tentativas[100];
+//     sprintf(Tentativas, "Tentativa n: %d \n", nTentativas);
+//     logEventoCliente(Tentativas);
+//     for (int i = 0; i < strlen(tentativaAtual); i++)
+//     {
+//         if (valoresCorretos[i] == '0')
+//         {
+//             if (tentativaAtual[i] == solucao[i])
+//             {
+//                 valoresCorretos[i] = tentativaAtual[i];
+//                 char message[1024];
+//                 sprintf(message, "Valor correto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
+//                 logEventoCliente(message);
+//                 printf(message);
+//                 return;
+//                 // printf("%d \n", valoresCorretos);
+//             }
+//             else
+//             {
+//                 char message[1024];
+//                 sprintf(message, "Valor incorreto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
+//                 logEventoCliente(message);
+//                 printf(message);
+//                 return;
+//             }
+//         }
+//     }
+// }
+// // ResolveJogo void resolverJogoParcial(char jogo[], char solucao[], int nTentativas)
+// {
+//     char tentativaAtual[NUMEROS_NO_JOGO];
+//     char valoresCorretos[NUMEROS_NO_JOGO];
+//     strncpy(tentativaAtual, jogo, NUMEROS_NO_JOGO);
+//     strncpy(valoresCorretos, jogo, NUMEROS_NO_JOGO);
+//     bool resolvido;
+//     resolvido = false;
+//     printf("Jogo Inicial: \n \n");
+//     imprimirTabuleiro(jogo);
+//     while (!resolvido)
+//     {
+//         // for(int i = 0; i< 10; i++){
+//         nTentativas = nTentativas + 1;
+//         tentarSolucaoParcial(tentativaAtual, valoresCorretos);
+//         atualizaValoresCorretosParcial(tentativaAtual, valoresCorretos, solucao, nTentativas);
+//         resolvido = verificaResolvido(valoresCorretos, solucao, resolvido);
 
-void atualizaValoresCorretosParcial(char tentativaAtual[], char valoresCorretos[], char solucao[], int nTentativas){
-    char Tentativas[100];
-    sprintf(Tentativas, "Tentativa n: %d \n", nTentativas);
-    logEventoCliente(Tentativas);
-    for(int i = 0; i< strlen(tentativaAtual); i++){
-        if(valoresCorretos[i] == '0'){
-            if(tentativaAtual[i] == solucao[i]){
-                valoresCorretos[i] = tentativaAtual[i];
-                char message[1024];
-                sprintf(message, "Valor correto(%d), na posição %d da String \n", tentativaAtual[i], i+1);
-                logEventoCliente(message);
-                printf(message);
-                return;
-                //printf("%d \n", valoresCorretos);
-            }
-            else{
-                char message[1024];
-                sprintf(message, "Valor incorreto(%d), na posição %d da String \n", tentativaAtual[i], i+1);
-                logEventoCliente(message);
-                printf(message);
-                return;
-            }
-            
-        }
-    }
-}
+//         printf("tentativaAtual: \n");
+//         imprimirTabuleiro(tentativaAtual);
 
-void carregarFicheiroJogosSolucoes(char* nomeFicheiro) {
-    FILE* config = abrirFicheiro(nomeFicheiro);
-    
+//         printf("ValoresCorretos: \n");
+//         imprimirTabuleiro(valoresCorretos);
+
+//         printf("Solução obtida até o momento: \n");
+//         imprimirTabuleiro(valoresCorretos);
+//     }
+//     //}
+//     printf("Parabéns, esta é a resolução correta! \n");
+//     char TentativasTotais[100];
+//     sprintf(TentativasTotais, "Tentativas totais: %d \n", nTentativas);
+//     logEventoCliente(TentativasTotais);
+//     printf(TentativasTotais);
+// }
+
+void carregarFicheiroJogosSolucoes(char *nomeFicheiro)
+{
+    FILE *config = abrirFicheiro(nomeFicheiro);
+
     char buffer[BUF_SIZE];
     int contadorConfigs = 0;
-    while (fgets(buffer, BUF_SIZE, config) != NULL) {
+    while (fgets(buffer, BUF_SIZE, config) != NULL)
+    {
         // Leitura do idJogo (primeira linha)
         char *resultado = strtok(buffer, "\n");
         jogosEsolucoes[contadorConfigs].idJogo = atoi(resultado);
-        printf("ID:%ld\n",jogosEsolucoes[contadorConfigs].idJogo);
         // Leitura do IP do servidor (segunda linha)
-        if (fgets(buffer, BUF_SIZE, config) != NULL) {
+        if (fgets(buffer, BUF_SIZE, config) != NULL)
+        {
             char *resultado = strtok(buffer, "\n");
             strcpy(jogosEsolucoes[contadorConfigs].jogo, resultado);
-            printf("Jogo:%s\n",jogosEsolucoes[contadorConfigs].jogo);
-            printf("Jogo:%s\n",resultado);
-            if (fgets(buffer, BUF_SIZE, config) != NULL) {
+            if (fgets(buffer, BUF_SIZE, config) != NULL)
+            {
                 char *resultado = strtok(buffer, "\n");
                 strcpy(jogosEsolucoes[contadorConfigs].solucao, resultado);
-                printf("Jogo:%s\n",jogosEsolucoes[contadorConfigs].solucao);
-                printf("Jogo:%s\n",resultado);
             }
         }
 
-        contadorConfigs++;  // Contar o número de configurações lidas
+        contadorConfigs++; // Contar o número de configurações lidas
     }
 
     fecharFicheiro(config);
-    if (contadorConfigs == 0) {
+    if (contadorConfigs == 0)
+    {
         printf("Sem configs\n");
         exit(1);
     }
@@ -294,70 +321,129 @@ void carregarFicheiroJogosSolucoes(char* nomeFicheiro) {
     return;
 }
 
-//ResolveJogo
-void resolverJogoParcial(char jogo[], char solucao[], int nTentativas){
-    char tentativaAtual[NUMEROS_NO_JOGO];
-    char valoresCorretos[NUMEROS_NO_JOGO];
-    strncpy(tentativaAtual, jogo, NUMEROS_NO_JOGO);
-    strncpy(valoresCorretos, jogo, NUMEROS_NO_JOGO);
-    bool resolvido;
-    resolvido = false;
-    printf("Jogo Inicial: \n \n");
-    imprimirTabuleiro(jogo);
-    while(!resolvido){
-    //for(int i = 0; i< 10; i++){
-        nTentativas = nTentativas + 1;
-        tentarSolucaoParcial(tentativaAtual, valoresCorretos);
-        atualizaValoresCorretosParcial(tentativaAtual, valoresCorretos, solucao, nTentativas);
-        resolvido = verificaResolvido(valoresCorretos, solucao, resolvido);
-
-        printf("tentativaAtual: \n");
-        imprimirTabuleiro(tentativaAtual);
-
-         printf("ValoresCorretos: \n");
-        imprimirTabuleiro(valoresCorretos);
-
-        printf("Solução obtida até o momento: \n");
-        imprimirTabuleiro(valoresCorretos);
+// Função para serializar a estrutura Jogo em formato JSON
+char *JogoParaJSON(struct Jogo *jogo)
+{
+    // Cria um objeto JSON
+    cJSON *jsonJogo = cJSON_CreateObject();
+    if (jsonJogo == NULL)
+    {
+        return NULL; // Retorna NULL se a criação do objeto JSON falhar
     }
-    //}
-    printf("Parabéns, esta é a resolução correta! \n");
-    char TentativasTotais[100];    
-    sprintf(TentativasTotais, "Tentativas totais: %d \n", nTentativas);
-    logEventoCliente(TentativasTotais);
-    printf(TentativasTotais);
+
+    // Adiciona propriedades ao objeto JSON
+    cJSON_AddNumberToObject(jsonJogo, "idJogo", jogo->idJogo); // Adiciona o id do jogo
+    cJSON_AddStringToObject(jsonJogo, "jogo", jogo->jogo);     // Adiciona o estado do jogo
+
+    // Converte o objeto JSON em uma string
+    char *jsonString = cJSON_Print(jsonJogo);
+    cJSON_Delete(jsonJogo); // Libera a memória do objeto JSON criado
+
+    return jsonString; // Retorna a string JSON
 }
 
-int main(int argc, char **argv) {
-    if (argc < 2) {
+int jogoAleatorio()
+{
+    srand(time(NULL));
+    return rand() % NUM_JOGOS;
+}
+char *serializarJogo()
+{
+    // Send jogo data to client
+    int tempID = jogoAleatorio();
+    if (jogosEsolucoes[tempID].idJogo != 0)
+    { // Assuming idJogo 0 means it's empty
+        char *jsonString = JogoParaJSON(&jogosEsolucoes[tempID]);
+        return jsonString;
+    }
+    return NULL;
+}
+// Função para estabelecer a ligação do servidor com os clientes
+void ligacaoSocketS_C(int *server_fd, int *new_socket, struct sockaddr_in address)
+{
+    int opt = 1;                   // Opção para o socket
+    int addrlen = sizeof(address); // Tamanho da estrutura de endereço
+
+    // Cria o descritor de socket
+    if ((*server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
+    {
+        perror("Falha ao criar socket"); // Mensagem de erro se a criação do socket falhar
+        exit(EXIT_FAILURE);
+    }
+
+    // Configura o socket para permitir reutilização do endereço
+    if (setsockopt(*server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)))
+    {
+        perror("Falha ao configurar socket"); // Mensagem de erro se a configuração falhar
+        close(*server_fd);                    // Fecha o socket
+        exit(EXIT_FAILURE);
+    }
+
+    address.sin_family = AF_INET;          // Define a família de endereços como IPv4
+    address.sin_addr.s_addr = INADDR_ANY;  // Aceita conexões de qualquer endereço IP
+    address.sin_port = htons(SERVER_PORT); // Define a porta do servidor
+
+    // Associa o socket à porta
+    if (bind(*server_fd, (struct sockaddr *)&address, sizeof(address)) < 0)
+    {
+        perror("Falha ao associar socket"); // Mensagem de erro se a associação falhar
+        close(*server_fd);                  // Fecha o socket
+        exit(EXIT_FAILURE);
+    }
+
+    // Escuta por conexões de entrada
+    if (listen(*server_fd, NUM_CLIENTES) < 0)
+    {
+        perror("Falha ao escutar"); // Mensagem de erro se a escuta falhar
+        close(*server_fd);          // Fecha o socket
+        exit(EXIT_FAILURE);
+    }
+    printf("Servidor está escutando na porta %d\n", SERVER_PORT); // Mensagem indicando que o servidor está escutando
+
+    // Aceita uma conexão de entrada
+    if ((*new_socket = accept(*server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen)) < 0)
+    {
+        perror("Falha ao aceitar conexão"); // Mensagem de erro se a aceitação falhar
+        close(*server_fd);                  // Fecha o socket
+        exit(EXIT_FAILURE);
+    }
+}
+
+void enviarJogo(int new_socket)
+{
+    char *jsonString = serializarJogo();
+    if (jsonString != NULL)
+    {
+        send(new_socket, jsonString, strlen(jsonString), 0);
+        printf("Sent jogo to client: %s\n", jsonString);
+        free(jsonString); // Free the JSON string after sending
+    }
+}
+int main(int argc, char **argv)
+{
+    int server_fd, new_socket;
+    struct sockaddr_in address;
+
+    if (argc < 2)
+    {
         printf("Erro: Nome do ficheiro nao fornecido.\n");
         return 1;
     }
 
-    if (strcmp(argv[1], CONFIGFILE) != 0) {
+    if (strcmp(argv[1], CONFIGFILE) != 0)
+    {
         printf("Nome do ficheiro incorreto\n");
         return 1;
     }
     carregarConfigServidor(argv[1]);
-    printf("Caminho jogos e solucoes: %s",serverConfig.ficheiroJogosESolucoesCaminho);
     carregarFicheiroJogosSolucoes(serverConfig.ficheiroJogosESolucoesCaminho);
     logQueEventoServidor(1);
-    // char solucao[]="534678912672195348198342567859761423426853791713924856961537284287419635345286179";
-    // char jogo[]="530070000600195000098000060800060003400803001700020006060000280000419005000080079";
-    //char valoresCorretos[] = "530070000600195000098000060800060003400803001700020006060000280000419005000080079";
-    //char tentativa[] = "530070000600195000098000060800060003400803001700020006060000280000419005000080079";
-    //printf("jogo 0 = 5? %d ", jogo[0] == '5');
-    //printf("%d", valoresCorretos);
-    clock_t startTempo, endTempo;
-    double tempoResolver;
-    startTempo = clock();
-    //resolveJogo(jogo,solucao);
-    //resolverJogoCompleto(jogosEsolucoes[0].jogo, jogosEsolucoes[0].solucao, 0);
-    resolverJogoParcial(jogosEsolucoes[0].jogo, jogosEsolucoes[0].solucao, 0);
-    
-    endTempo = clock();
-    tempoResolver = (double)(endTempo - startTempo) / CLOCKS_PER_SEC;
-    printf("Tempo para resolver: %f seconds\n", tempoResolver);
-    //imprimirTabuleiro(jogo);
+    ligacaoSocketS_C(&server_fd, &new_socket, address);
+    enviarJogo(new_socket);
+    close(new_socket);
+    close(server_fd);
+    close(new_socket);
+    close(server_fd);
+
     return 0;
 }
