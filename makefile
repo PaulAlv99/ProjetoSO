@@ -1,7 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -g
-LDFLAGS=-L/home/2120722/Proj/ProjetoSO/lib -lcjson -lpthread
-LD_LIBRARY_PATH=/home/2120722/Proj/ProjetoSO/lib
+LDFLAGS=-lpthread
 FICHEIROS = servidor.o ficheiro.o config.o cliente.o
 EXECUTAVEL = servidor
 CLIENTE_DIR := cliente

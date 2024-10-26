@@ -8,65 +8,40 @@ struct Jogo jogosEsolucoes[NUM_JOGOS];
 pthread_mutex_t mutexServidorLog = PTHREAD_MUTEX_INITIALIZER;
 
 // so tem o ficheiro da localizacao dos jogos e solucoes que neste caso e apenas 1 ficheiro
-void carregarConfigServidor(char *nomeFicheiro)
-{
-    FILE *config = abrirFicheiro(nomeFicheiro);
 
-    fseek(config, 0, SEEK_END);
-    long tamanhoFicheiro = ftell(config);
-    rewind(config);
+// void logEventoServidor(const char *message)
+// {
 
-    char buffer[tamanhoFicheiro];
-    int contadorConfigs = 0;
-    // ambas tem o \0 no final nao esquecer se tiver mais linhas de config convem tirar \n
-    if (fgets(buffer, PATH_SIZE, config) != NULL)
-    {
-        strcpy(serverConfig.ficheiroJogosESolucoesCaminho, buffer);
-        // printf("caminho: %s", serverConfig.ficheiroJogosESolucoesCaminho);
-    }
-    contadorConfigs++;
-    fecharFicheiro(config);
-    if (contadorConfigs == 0)
-    {
-        printf("Sem configs\n");
-        exit(1);
-    }
+//     // modo append
+//     char *ficheiroLogs = "servidorLogs/LogServidor.txt";
+//     pthread_mutex_lock(&mutexServidorLog);
+//     FILE *file = fopen(ficheiroLogs, "a");
+//     if (file == NULL)
+//     {
+//         perror("Erro ao abrir o ficheiro de log");
+//         pthread_mutex_unlock(&mutexServidorLog);
+//         return;
+//     }
+//     fprintf(file, "[%s] %s\n", getTempo(), message);
+//     fclose(file);
+//     pthread_mutex_unlock(&mutexServidorLog);
+// }
 
-    return;
-}
-
-void logEventoServidor(const char *message)
-{
-
-    // modo append
-    char *ficheiroLogs = "servidorLogs/LogServidor.txt";
-    pthread_mutex_lock(&mutexServidorLog);
-    FILE *file = fopen(ficheiroLogs, "a");
-    if (file == NULL)
-    {
-        perror("Erro ao abrir o ficheiro de log");
-        pthread_mutex_unlock(&mutexServidorLog);
-        return;
-    }
-    fprintf(file, "[%s] %s\n", getTempo(), message);
-    fclose(file);
-    pthread_mutex_unlock(&mutexServidorLog);
-}
-void logQueEventoServidor(int numero)
-{
-    switch (numero)
-    {
-    case 1:
-        logEventoServidor("Servidor começou");
-        break;
-    case 2:
-        logEventoServidor("Socket começou");
-        break;
-    default:
-        logEventoServidor("Evento desconhecido");
-        break;
-    }
-}
+// void logQueEventoServidor(int numero)
+// {
+//     switch (numero)
+//     {
+//     case 1:
+//         logEventoServidor("Servidor começou");
+//         break;
+//     case 2:
+//         logEventoServidor("Socket começou");
+//         break;
+//     default:
+//         logEventoServidor("Evento desconhecido");
+//         break;
+//     }
+// }
 // void verificarLinha(int linha, char* jogo, char* solucao) {
 //     //Verifica uma linha do Sudoku (9 posições)
 //     for (int i = 0; i < NUM_LINHAS; i++) {
@@ -285,6 +260,33 @@ void logQueEventoServidor(int numero)
 //     printf(TentativasTotais);
 // }
 
+void carregarConfigServidor(char *nomeFicheiro)
+{
+    FILE *config = abrirFicheiro(nomeFicheiro);
+
+    fseek(config, 0, SEEK_END);
+    long tamanhoFicheiro = ftell(config);
+    rewind(config);
+
+    char buffer[tamanhoFicheiro];
+    int contadorConfigs = 0;
+    // ambas tem o \0 no final nao esquecer se tiver mais linhas de config convem tirar \n
+    if (fgets(buffer, PATH_SIZE, config) != NULL)
+    {
+        strcpy(serverConfig.ficheiroJogosESolucoesCaminho, buffer);
+        // printf("caminho: %s", serverConfig.ficheiroJogosESolucoesCaminho);
+    }
+    contadorConfigs++;
+    fecharFicheiro(config);
+    if (contadorConfigs == 0)
+    {
+        printf("Sem configs\n");
+        exit(1);
+    }
+
+    return;
+}
+
 void carregarFicheiroJogosSolucoes(char *nomeFicheiro)
 {
     FILE *config = abrirFicheiro(nomeFicheiro);
@@ -321,43 +323,6 @@ void carregarFicheiroJogosSolucoes(char *nomeFicheiro)
     return;
 }
 
-// Função para serializar a estrutura Jogo em formato JSON
-char *JogoParaJSON(struct Jogo *jogo)
-{
-    // Cria um objeto JSON
-    cJSON *jsonJogo = cJSON_CreateObject();
-    if (jsonJogo == NULL)
-    {
-        return NULL; // Retorna NULL se a criação do objeto JSON falhar
-    }
-
-    // Adiciona propriedades ao objeto JSON
-    cJSON_AddNumberToObject(jsonJogo, "idJogo", jogo->idJogo); // Adiciona o id do jogo
-    cJSON_AddStringToObject(jsonJogo, "jogo", jogo->jogo);     // Adiciona o estado do jogo
-
-    // Converte o objeto JSON em uma string
-    char *jsonString = cJSON_Print(jsonJogo);
-    cJSON_Delete(jsonJogo); // Libera a memória do objeto JSON criado
-
-    return jsonString; // Retorna a string JSON
-}
-
-int jogoAleatorio()
-{
-    srand(time(NULL));
-    return rand() % NUM_JOGOS;
-}
-char *serializarJogo()
-{
-    // Send jogo data to client
-    int tempID = jogoAleatorio();
-    if (jogosEsolucoes[tempID].idJogo != 0)
-    { // Assuming idJogo 0 means it's empty
-        char *jsonString = JogoParaJSON(&jogosEsolucoes[tempID]);
-        return jsonString;
-    }
-    return NULL;
-}
 // Função para estabelecer a ligação do servidor com os clientes
 void ligacaoSocketS_C(int *server_fd, int *new_socket, struct sockaddr_in address)
 {
@@ -371,14 +336,21 @@ void ligacaoSocketS_C(int *server_fd, int *new_socket, struct sockaddr_in addres
         exit(EXIT_FAILURE);
     }
 
-    // Configura o socket para permitir reutilização do endereço
-    if (setsockopt(*server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)))
+    // Configura SO_REUSEPORT
+    if (setsockopt(*server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
     {
-        perror("Falha ao configurar socket"); // Mensagem de erro se a configuração falhar
-        close(*server_fd);                    // Fecha o socket
+        perror("Falha ao configurar SO_REUSEPORT"); // Mensagem de erro se a configuração falhar
+        close(*server_fd);                          // Fecha o socket
         exit(EXIT_FAILURE);
     }
 
+    // Configura SO_KEEPALIVE
+    if (setsockopt(*server_fd, SOL_SOCKET, SO_KEEPALIVE, &opt, sizeof(opt)) < 0)
+    {
+        perror("Falha ao configurar SO_KEEPALIVE"); // Mensagem de erro se a configuração falhar
+        close(*server_fd);                          // Fecha o socket
+        exit(EXIT_FAILURE);
+    }
     address.sin_family = AF_INET;          // Define a família de endereços como IPv4
     address.sin_addr.s_addr = INADDR_ANY;  // Aceita conexões de qualquer endereço IP
     address.sin_port = htons(SERVER_PORT); // Define a porta do servidor
@@ -398,7 +370,7 @@ void ligacaoSocketS_C(int *server_fd, int *new_socket, struct sockaddr_in addres
         close(*server_fd);          // Fecha o socket
         exit(EXIT_FAILURE);
     }
-    printf("Servidor está escutando na porta %d\n", SERVER_PORT); // Mensagem indicando que o servidor está escutando
+    printf("Servidor na porta %d\n", SERVER_PORT); // Mensagem indicando que o servidor está escutando
 
     // Aceita uma conexão de entrada
     if ((*new_socket = accept(*server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen)) < 0)
@@ -409,68 +381,6 @@ void ligacaoSocketS_C(int *server_fd, int *new_socket, struct sockaddr_in addres
     }
 }
 
-void enviarJogo(int new_socket)
-{
-    char *jsonString = serializarJogo();
-    if (jsonString != NULL)
-    {
-        send(new_socket, jsonString, strlen(jsonString), 0);
-        printf("Sent jogo to client: %s\n", jsonString);
-        free(jsonString); // Free the JSON string after sending
-    }
-}
-void receberInfoCliente(int *sock)
-{
-    // Buffer para armazenar os dados recebidos
-    char buffer[1024];
-    memset(buffer, 0, sizeof(buffer)); // Limpa o buffer
-
-    // Recebe dados do cliente
-    ssize_t bytesRecebidos = recv(*sock, buffer, sizeof(buffer) - 1, 0);
-    if (bytesRecebidos < 0)
-    {
-        perror("Erro ao receber informações do cliente");
-        exit(EXIT_FAILURE);
-    }
-    // else if (bytesRecebidos == 0)
-    // {
-    //     printf("Conexão encerrada pelo cliente.\n");
-    //     return;
-    // }
-
-    // Termina a string recebida com nulo
-    buffer[bytesRecebidos] = '\0';
-
-    // Imprime os dados recebidos
-    printf("Dados recebidos do cliente: %s\n", buffer);
-
-    // Analisa os dados JSON
-    cJSON *jsonRecebido = cJSON_Parse(buffer);
-    if (jsonRecebido == NULL)
-    {
-        fprintf(stderr, "Erro ao analisar JSON: %s\n", cJSON_GetErrorPtr());
-        exit(EXIT_FAILURE);
-    }
-
-    // Extrai dados do objeto JSON (atualize as chaves conforme a estrutura do seu JSON)
-    cJSON *idCliente = cJSON_GetObjectItem(jsonRecebido, "idCliente");
-    cJSON *tipoJogo = cJSON_GetObjectItem(jsonRecebido, "tipoJogo");
-    cJSON *metodoResolucao = cJSON_GetObjectItem(jsonRecebido, "metodoResolucao");
-
-    if (cJSON_IsNumber(idCliente) && cJSON_IsString(tipoJogo) && cJSON_IsString(metodoResolucao))
-    {
-        printf("ID Cliente: %d\n", idCliente->valueint);
-        printf("Tipo de Jogo: %s\n", tipoJogo->valuestring);
-        printf("Método de Resolução: %s\n", metodoResolucao->valuestring);
-    }
-    else
-    {
-        fprintf(stderr, "Erro: Dados JSON não estão no formato esperado.\n");
-    }
-
-    // Limpeza
-    cJSON_Delete(jsonRecebido); // Libera o objeto JSON
-}
 int main(int argc, char **argv)
 {
     int server_fd, new_socket;
@@ -489,10 +399,6 @@ int main(int argc, char **argv)
     }
     carregarConfigServidor(argv[1]);
     carregarFicheiroJogosSolucoes(serverConfig.ficheiroJogosESolucoesCaminho);
-    logQueEventoServidor(1);
     ligacaoSocketS_C(&server_fd, &new_socket, address);
-    enviarJogo(new_socket);
-    receberInfoCliente(&new_socket);
-
     return 0;
 }

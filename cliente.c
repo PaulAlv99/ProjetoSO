@@ -109,76 +109,6 @@ void logEventoCliente(const char *message)
     pthread_mutex_unlock(&mutexClienteLog);
 }
 
-void lerJogo(int sock, char buffer[])
-{
-    // Read data from server
-    int valread = read(sock, buffer, BUF_SIZE);
-    buffer[valread] = '\0'; // Null-terminate the string
-
-    // Parse the received JSON
-    cJSON *jsonReceived = cJSON_Parse(buffer);
-    if (jsonReceived == NULL)
-    {
-        const char *error_ptr = cJSON_GetErrorPtr();
-        printf("Error parsing JSON: %s\n", error_ptr);
-        exit(EXIT_FAILURE);
-    }
-
-    cJSON *idJogoItem = cJSON_GetObjectItem(jsonReceived, "idJogo");
-    cJSON *TabuleiroJogoItem = cJSON_GetObjectItem(jsonReceived, "jogo");
-    if (idJogoItem == NULL || TabuleiroJogoItem == NULL)
-    {
-        printf("idJogo not found in JSON\n");
-        cJSON_Delete(jsonReceived); // Free JSON object
-        exit(EXIT_FAILURE);
-    }
-    jogoAtual.idJogo = idJogoItem->valueint;
-    strcpy(jogoAtual.jogo, TabuleiroJogoItem->valuestring);
-
-    // Cleanup
-    cJSON_Delete(jsonReceived);
-}
-
-void enviarJogo(int *sock)
-{
-    // Cria o objeto JSON para enviar o jogo
-    cJSON *jsonEnvio = cJSON_CreateObject();
-    if (jsonEnvio == NULL)
-    {
-        perror("Erro ao criar JSON");
-        exit(EXIT_FAILURE);
-    }
-
-    // Adiciona os dados do jogo ao JSON
-    cJSON_AddNumberToObject(jsonEnvio, "idJogo", jogoAtual.idJogo);
-    cJSON_AddStringToObject(jsonEnvio, "jogo", jogoAtual.jogo);
-
-    // Converte o JSON para uma string
-    char *jsonString = cJSON_PrintUnformatted(jsonEnvio);
-    if (jsonString == NULL)
-    {
-        perror("Erro ao converter JSON para string");
-        cJSON_Delete(jsonEnvio); // Libera o JSON
-        exit(EXIT_FAILURE);
-    }
-
-    // Envia o JSON para o servidor
-    ssize_t bytesEnviados = send(*sock, jsonString, strlen(jsonString), 0);
-    if (bytesEnviados < 0)
-    {
-        perror("Erro ao enviar jogo para o servidor");
-        free(jsonString);        // Libera a string JSON
-        cJSON_Delete(jsonEnvio); // Libera o JSON
-        exit(EXIT_FAILURE);
-    }
-
-    printf("Jogo enviado com sucesso para o servidor.\n");
-
-    // Limpeza
-    free(jsonString);        // Libera a string JSON
-    cJSON_Delete(jsonEnvio); // Libera o JSON
-}
-
 void ligacaoSocketC_S(int *sock, struct sockaddr_in serv_addr)
 {
     // Create socket
@@ -216,73 +146,33 @@ void logQueEventoCliente(int numero)
     switch (numero)
     {
     case 1:
-        logEventoCliente("Cliente id: iniciou");
+        logEventoCliente("Iniciou");
         break;
     case 2:
-        logEventoCliente("Cliente id: parou");
+        logEventoCliente("Parou");
         break;
     case 3:
-        logEventoCliente("Cliente id: conectou-se ao servidor");
+        logEventoCliente("Conectou-se ao servidor");
         break;
     case 4:
-        logEventoCliente("Cliente id: enviou uma mensagem ao servidor");
+        logEventoCliente("Enviou um jogo ao servidor");
         break;
     case 5:
-        logEventoCliente("Cliente id: recebeu uma resposta do servidor");
+        logEventoCliente("Recebeu uma resposta do servidor");
         break;
     case 6:
-        logEventoCliente("Cliente id: desconectou-se do servidor");
+        logEventoCliente("Desconectou-se do servidor");
         break;
     default:
         logEventoCliente("Evento desconhecido");
         break;
     }
 }
-void enviarInfoCliente(int *sock)
-{
-    // Create a JSON object to send
-    cJSON *jsonEnvio = cJSON_CreateObject();
-    if (jsonEnvio == NULL)
-    {
-        perror("Erro ao criar JSON");
-        exit(EXIT_FAILURE);
-    }
 
-    // Add client config data to the JSON
-    cJSON_AddNumberToObject(jsonEnvio, "idCliente", clienteConfig.idCliente);
-    cJSON_AddStringToObject(jsonEnvio, "tipoJogo", clienteConfig.tipoJogo);
-    cJSON_AddStringToObject(jsonEnvio, "metodoResolucao", clienteConfig.metodoResolucao);
-
-    // Convert the JSON object to a string
-    char *jsonString = cJSON_PrintUnformatted(jsonEnvio);
-    if (jsonString == NULL)
-    {
-        perror("Erro ao converter JSON para string");
-        cJSON_Delete(jsonEnvio);
-        exit(EXIT_FAILURE);
-    }
-
-    // Send the JSON string to the server
-    ssize_t bytesEnviados = send(*sock, jsonString, strlen(jsonString), 0);
-    if (bytesEnviados < 0)
-    {
-        perror("Erro ao enviar info para o servidor");
-        free(jsonString);
-        cJSON_Delete(jsonEnvio);
-        exit(EXIT_FAILURE);
-    }
-
-    printf("Informações do cliente enviadas com sucesso para o servidor.\n");
-
-    // Clean up
-    free(jsonString);        // Free the JSON string
-    cJSON_Delete(jsonEnvio); // Delete the JSON object
-}
 int main(int argc, char **argv)
 {
     int sock = 0;
     struct sockaddr_in serv_addr;
-    char buffer[BUF_SIZE] = {0};
 
     // Verifica se foi fornecido um nome de arquivo
     if (argc < 2)
@@ -299,13 +189,7 @@ int main(int argc, char **argv)
     }
 
     carregarConfigCliente(argv[1]);
-    printf("TipoJogo:%s\nMetodo:%s\nID:%d\nIP:%s\nPorta:%d\n", clienteConfig.tipoJogo, clienteConfig.metodoResolucao, clienteConfig.idCliente, clienteConfig.ipServidor, clienteConfig.portaServidor);
-    logEventoCliente("Cliente iniciado");
     ligacaoSocketC_S(&sock, serv_addr);
-    enviarInfoCliente(&sock);
-    lerJogo(sock, buffer);
-    imprimirTabuleiro(jogoAtual.jogo);
-    // enviarJogo(&sock);
 
     return 0;
 }
