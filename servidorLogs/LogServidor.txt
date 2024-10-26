@@ -77,3 +77,6 @@
 [26-10-2024 18:17:41] Servidor comecou
 [26-10-2024 18:18:03] Servidor comecou
 [26-10-2024 18:35:32] Servidor começou
+[26-10-2024 21:33:33] Servidor começou
+[26-10-2024 21:34:44] Servidor começou
+[26-10-2024 21:34:54] Servidor começou

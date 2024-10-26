@@ -10,7 +10,7 @@
 #include <unistd.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
-#include <cjson/cJSON.h>
+#include "../include/cjson/cJSON.h"
 
 #define TEMPO_TAMANHO 22
 #define BUF_SIZE 256

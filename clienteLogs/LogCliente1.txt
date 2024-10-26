@@ -8,3 +8,5 @@
 [26-10-2024 18:17:36] [Cliente ID: 1] Cliente iniciado
 [26-10-2024 18:18:01] [Cliente ID: 1] Cliente iniciado
 [26-10-2024 18:35:40] [Cliente ID: 1] Cliente iniciado
+[26-10-2024 21:32:50] [Cliente ID: 1] Cliente iniciado
+[26-10-2024 21:33:38] [Cliente ID: 1] Cliente iniciado
