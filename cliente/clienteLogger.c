@@ -1,5 +1,5 @@
 #include "../headers/cliente.h"
-struct ClienteConfig clienteConfig;
+struct Cliente cliente;
 
 // tricos
 pthread_mutex_t mutexClienteLog = PTHREAD_MUTEX_INITIALIZER;
@@ -12,7 +12,7 @@ void logEventoCliente(const char *message)
     char *nomeFicheiro = "LogCliente";
     char *tipoFicheiro = ".txt";
     // se o id for muito alto mesmo dá problema overflow mas nao dá crash por overflow
-    snprintf(str, BUF_SIZE, "%s/%s%u%s", clienteLogsDir, nomeFicheiro, clienteConfig.idCliente, tipoFicheiro);
+    snprintf(str, BUF_SIZE, "%s/%s%u%s", clienteLogsDir, nomeFicheiro, cliente.idCliente, tipoFicheiro);
     pthread_mutex_lock(&mutexClienteLog);
     FILE *file = fopen(str, "a");
     if (file == NULL)
@@ -21,7 +21,7 @@ void logEventoCliente(const char *message)
         pthread_mutex_unlock(&mutexClienteLog);
         return;
     }
-    fprintf(file, "[%s] [Cliente ID: %u] %s\n", getTempo(), clienteConfig.idCliente, message);
+    fprintf(file, "[%s] [Cliente ID: %u] %s\n", getTempo(), cliente.idCliente, message);
 
     fclose(file);
     pthread_mutex_unlock(&mutexClienteLog);

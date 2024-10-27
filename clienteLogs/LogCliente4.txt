@@ -1,0 +1,4 @@
+[27-10-2024 15:38:55] [Cliente ID: 4] Iniciou
+[27-10-2024 15:39:31] [Cliente ID: 4] Iniciou
+[27-10-2024 15:44:16] [Cliente ID: 4] Iniciou
+[27-10-2024 15:44:27] [Cliente ID: 4] Iniciou

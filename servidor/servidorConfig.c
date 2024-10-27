@@ -1,7 +1,8 @@
 #include "../headers/servidor.h"
 
-struct ServidorConfig serverConfig;
-struct Jogo jogosEsolucoes[NUM_JOGOS];
+struct Servidor servidor;
+struct Jogo jogosEsolucoes[5];
+
 // Função para carregar as configurações do servidor
 void carregarConfigServidor(char *nomeFicheiro)
 {
@@ -16,9 +17,47 @@ void carregarConfigServidor(char *nomeFicheiro)
     // ambas tem o \0 no final nao esquecer se tiver mais linhas de config convem tirar \n
     if (fgets(buffer, PATH_SIZE, config) != NULL)
     {
-        strcpy(serverConfig.ficheiroJogosESolucoesCaminho, buffer);
+        strtok(buffer, "\n");
+        strcpy(servidor.ficheiroJogosESolucoesCaminho, buffer);
         // printf("caminho: %s", serverConfig.ficheiroJogosESolucoesCaminho);
     }
+    if (fgets(buffer, PATH_SIZE, config) != NULL)
+    {
+        strtok(buffer, "\n");
+        servidor.portaServidor = atoi(buffer);
+        // printf("porta: %d", serverConfig.portaServidor);
+    }
+    if (fgets(buffer, PATH_SIZE, config) != NULL)
+    {
+        strtok(buffer, "\n");
+        servidor.numeroConexoes = atoi(buffer);
+        // printf("numeroConexoes: %d", serverConfig.numeroConexoes);
+    }
+    if (fgets(buffer, PATH_SIZE, config) != NULL)
+    {
+        strtok(buffer, "\n");
+        servidor.tamanhoTabuleiro = atoi(buffer);
+        // printf("tamanhoTabuleiro: %d", serverConfig.tamanhoTabuleiro);
+    }
+    if (fgets(buffer, PATH_SIZE, config) != NULL)
+    {
+        strtok(buffer, "\n");
+        servidor.numeroLinhas = atoi(buffer);
+        // printf("numerLinhas: %d", serverConfig.numeroLinhas);
+    }
+    if (fgets(buffer, PATH_SIZE, config) != NULL)
+    {
+        strtok(buffer, "\n");
+        servidor.numeroColunas = atoi(buffer);
+        // printf("numeroColunas: %d", serverConfig.numeroColunas);
+    }
+    if (fgets(buffer, PATH_SIZE, config) != NULL)
+    {
+        strtok(buffer, "\n");
+        servidor.numeroJogos = atoi(buffer);
+        // printf("numeroJogos: %d", serverConfig.numeroJogos);
+    }
+
     contadorConfigs++;
     fecharFicheiro(config);
     if (contadorConfigs == 0)

@@ -13,11 +13,6 @@
 
 #define TEMPO_TAMANHO 22
 #define BUF_SIZE 1024
-// 81 + \0
-#define NUMEROS_NO_JOGO 81
-#define NUM_LINHAS 9
-#define NUM_COLUNAS 9
-#define NUM_JOGOS 5
-#define NUM_CLIENTES 100
+
 // globais
 const char *getTempo();

@@ -1,4 +1,4 @@
-./cliente/cliente
-./servidor/servidor
 *.o
 .vscode/
+cliente/cliente
+servidor/servidor

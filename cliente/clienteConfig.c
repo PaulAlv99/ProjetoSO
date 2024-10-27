@@ -2,10 +2,8 @@
 #define CONFIGFILE "./clienteConfigs/cliente.conf"
 
 pthread_mutex_t mutexClienteID = PTHREAD_MUTEX_INITIALIZER;
-
-int idCliente = 0;
-
-struct ClienteConfig clienteConfig;
+int globalIdCounter = 0;
+struct Cliente cliente;
 
 void carregarConfigCliente(char *nomeFicheiro)
 {
@@ -18,23 +16,32 @@ void carregarConfigCliente(char *nomeFicheiro)
     {
         // Leitura do tipoJogo (primeira linha)
         char *resultado = strtok(buffer, "\n");
-        strcpy(clienteConfig.tipoJogo, resultado);
+        strcpy(cliente.tipoJogo, resultado);
     }
     if (fgets(buffer, BUF_SIZE, config) != NULL)
     {
         char *resultado = strtok(buffer, "\n");
-        strcpy(clienteConfig.metodoResolucao, resultado);
+        strcpy(cliente.metodoResolucao, resultado);
     }
     // Leitura do IP do servidor (segunda linha)
     if (fgets(buffer, BUF_SIZE, config) != NULL)
     {
         char *resultado = strtok(buffer, "\n");
-        strcpy(clienteConfig.ipServidor, resultado);
+        strcpy(cliente.ipServidor, resultado);
     }
     if (fgets(buffer, BUF_SIZE, config) != NULL)
     {
-        clienteConfig.portaServidor = atoi(buffer);
+        cliente.portaServidor = atoi(buffer);
     }
+    if (fgets(buffer, BUF_SIZE, config) != NULL)
+    {
+        cliente.numeroLinhas = atoi(buffer);
+    }
+    if (fgets(buffer, BUF_SIZE, config) != NULL)
+    {
+        cliente.numeroColunas = atoi(buffer);
+    }
+
     contadorConfigs++; // Contar o número de configurações lidas
 
     fecharFicheiro(config);
@@ -44,17 +51,18 @@ void carregarConfigCliente(char *nomeFicheiro)
         exit(EXIT_FAILURE);
     }
     char *vazio = "";
-    if (!strcmp(clienteConfig.ipServidor, vazio) ||
-        !clienteConfig.portaServidor ||
-        !strcmp(clienteConfig.tipoJogo, vazio) ||
-        !strcmp(clienteConfig.metodoResolucao, vazio))
+    if (!strcmp(cliente.ipServidor, vazio) ||
+        !cliente.portaServidor ||
+        !strcmp(cliente.tipoJogo, vazio) ||
+        !strcmp(cliente.metodoResolucao, vazio))
     {
         printf("Algum campo da config nao preenchido\n");
         exit(EXIT_FAILURE);
     }
     pthread_mutex_lock(&mutexClienteID);
-    idCliente += 1;
-    clienteConfig.idCliente = idCliente;
+    globalIdCounter++;
+    printf("ID do cliente: %d\n", globalIdCounter);
+    cliente.idCliente = globalIdCounter;
     pthread_mutex_unlock(&mutexClienteID);
 
     return;
