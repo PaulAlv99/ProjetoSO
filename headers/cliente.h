@@ -21,7 +21,7 @@ struct JogoAtual
     char jogo[NUMEROS_NO_JOGO + 1];
     char *tempoInicio;
     char tempoFinal[TEMPO_TAMANHO];
-    long numeroTentativas;
+    int numeroTentativas;
 };
 
 extern void logEventoCliente(const char *message);

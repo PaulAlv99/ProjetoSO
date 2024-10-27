@@ -2,6 +2,7 @@
 #define CAPACIDADE_CONFSERVER 1
 #define PATH_SIZE 32
 #define SERVER_PORT 25575
+
 struct ServidorConfig
 {
     char ficheiroJogosESolucoesCaminho[PATH_SIZE];
@@ -12,6 +13,8 @@ struct ClienteInfo
     int idCliente;
     char tipoJogo[BUF_SIZE];
     char metodoResolucao[BUF_SIZE];
+    int numeroTentativas;
+    struct Jogo *jogoAtual;
 };
 
 struct Jogo
@@ -31,9 +34,6 @@ void atualizaValoresCorretosParcial(char tentativaAtual[], char valoresCorretos[
 void carregarFicheiroJogosSolucoes(char *nomeFicheiro);
 void enviarJogo(int new_socket);
 void ligacaoSocketS_C(int *server_fd, int *new_socket, struct sockaddr_in address);
-int jogoAleatorio();
-char *serializarJogo();
-char *JogoParaJSON(struct Jogo *jogo);
 bool verificaResolvido(char valoresCorretos[], char solucao[], bool resolvido);
 void resolverJogoCompleto(char jogo[], char solucao[], int nTentativas);
 void resolverJogoParcial(char jogo[], char solucao[], int nTentativas);
