@@ -12,7 +12,7 @@
 #include <arpa/inet.h>
 
 #define TEMPO_TAMANHO 22
-#define BUF_SIZE 256
+#define BUF_SIZE 1024
 // 81 + \0
 #define NUMEROS_NO_JOGO 81
 #define NUM_LINHAS 9

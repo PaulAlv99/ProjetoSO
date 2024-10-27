@@ -7,6 +7,13 @@ struct ServidorConfig
     char ficheiroJogosESolucoesCaminho[PATH_SIZE];
 };
 
+struct ClienteInfo
+{
+    int idCliente;
+    char tipoJogo[BUF_SIZE];
+    char metodoResolucao[BUF_SIZE];
+};
+
 struct Jogo
 {
     int idJogo;
