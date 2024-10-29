@@ -1,11 +1,47 @@
-#include "./headers/servidor.h"
-#define CONFIGFILE "./servidorConfig/servidor.conf"
-#include "./headers/cliente.h"
+#include "../headers/servidor.h"
+
+
 //structs
 struct ServidorConfig serverConfig;
 struct Jogo jogosEsolucoes[NUM_JOGOS];
 //tricos
 pthread_mutex_t mutexServidorLog = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutexClienteLog = PTHREAD_MUTEX_INITIALIZER;
+
+struct ClienteConfig clienteConfig;
+
+
+//Isto nao e daqui, apagar depois
+void carregarConfigCliente(char* nomeFicheiro) {
+    FILE* config = abrirFicheiro(nomeFicheiro);
+
+    fseek(config, 0, SEEK_END);
+    long tamanhoFicheiro = ftell(config);
+    rewind(config);
+
+    char buffer[tamanhoFicheiro];
+    int contadorConfigs = 0;
+
+    while (fgets(buffer, BUF_SIZE, config) != NULL) {
+        // Leitura do IdCliente (primeira linha)
+        clienteConfig.idCliente = atoi(buffer);
+
+        // Leitura do IP do servidor (segunda linha)
+        if (fgets(buffer, BUF_SIZE, config) != NULL) {
+            char *resultado = strtok(buffer, "\n");
+            strcpy(clienteConfig.ipServidor, resultado);
+        }
+
+        contadorConfigs++;  // Contar o número de configurações lidas
+    }
+
+    fecharFicheiro(config);
+    if (contadorConfigs == 0) {
+        printf("Sem configs\n");
+        exit(1);
+    }
+    return;
+}
 
 //so tem o ficheiro da localizacao dos jogos e solucoes que neste caso e apenas 1 ficheiro
 void carregarConfigServidor(char* nomeFicheiro) {
@@ -35,7 +71,7 @@ void carregarConfigServidor(char* nomeFicheiro) {
 void logEventoServidor(const char* message) {
 
     //modo append
-    char* ficheiroLogs="servidorLogs/LogServidor.txt";
+    char* ficheiroLogs="logs/LogServidor.txt";
     pthread_mutex_lock(&mutexServidorLog);
     FILE *file = fopen(ficheiroLogs, "a");
     if (file == NULL) {
@@ -326,6 +362,48 @@ void resolverJogoParcial(char jogo[], char solucao[], int nTentativas){
     sprintf(TentativasTotais, "Tentativas totais: %d \n", nTentativas);
     logEventoCliente(TentativasTotais);
     printf(TentativasTotais);
+}
+
+void logEventoCliente(const char* message) {
+    pthread_mutex_lock(&mutexClienteLog);
+    //modo append
+    char* str = "logs/clienteLog.txt";
+    FILE *file = fopen(str, "a");
+    if (file == NULL) {
+        perror("Erro ao abrir o ficheiro de log");
+        pthread_mutex_unlock(&mutexClienteLog);
+        return;
+    }
+    fprintf(file, "[%s] [Cliente ID: %lu] %s\n", getTempo(), clienteConfig.idCliente, message);
+    
+    fclose(file);
+    pthread_mutex_unlock(&mutexClienteLog);
+}
+
+void logQueEventoCliente(int numero){
+    switch(numero){
+        case 1:
+            logEventoCliente("Cliente id: iniciou");
+            break;
+        case 2:
+            logEventoCliente("Cliente id: parou");
+            break;
+        case 3:
+            logEventoCliente("Cliente id: conectou-se ao servidor");
+            break;
+        case 4:
+            logEventoCliente("Cliente id: enviou uma mensagem ao servidor");
+            break;
+        case 5:
+            logEventoCliente("Cliente id: recebeu uma resposta do servidor");
+            break;
+        case 6:
+            logEventoCliente("Cliente id: desconectou-se do servidor");
+            break;
+        default:
+            logEventoCliente("Evento desconhecido");
+            break;
+    }
 }
 
 int main(int argc, char **argv) {

@@ -1,6 +1,24 @@
-#include "ficheiro.h"
 #define CAPACIDADE_CONFSERVER 1
 #define PATH_SIZE 32
+#define CONFIGFILE "./configs/servidor.conf"
+#include "util.h"
+#include "../headers/cliente.h"
+
+
+//So para teste apagar depois
+#define IP_SIZE 16
+
+struct ClienteConfig{
+    unsigned long idCliente;
+    char ipServidor[IP_SIZE];
+};
+//Isto nao e daqui, apagar depois
+
+struct ClienteThread{
+    struct ClienteConfig clienteConfig;
+    char tabuleiro[NUMEROS_NO_JOGO];
+};
+
 
 struct ServidorConfig{
     char ficheiroJogosESolucoesCaminho[PATH_SIZE];
@@ -34,3 +52,6 @@ bool verificaResolvido(char valoresCorretos[], char solucao[], bool resolvido);
 void resolverJogoCompleto(char jogo[], char solucao[], int nTentativas);
 void resolverJogoParcial(char jogo[], char solucao[], int nTentativas);
 void imprimirTabuleiro(char jogo[]);
+
+extern void logEventoCliente(const char* message);
+extern void logQueEventoCliente(int numero);

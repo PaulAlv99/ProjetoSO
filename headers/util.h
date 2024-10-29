@@ -15,7 +15,17 @@
 #define NUM_LINHAS 9
 #define NUM_COLUNAS 9
 #define NUM_JOGOS 5
+
+
 //globais
 const char* getTempo();
+
+
+
+
+
+int fecharFicheiro(FILE* file);
+FILE* abrirFicheiro(char* filename);
+int validarNomeFile(char* arquivoNome,char* padrao);
 
 

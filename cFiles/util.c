@@ -1,4 +1,4 @@
-#include "./headers/ficheiro.h"
+#include "../headers/util.h"
 
 int fecharFicheiro(FILE* file) {
     if (file == NULL) {
@@ -40,4 +40,11 @@ int validarNomeFile(char* arquivoNome,char* padrao){
     
     
     return (resultado == 0);
+}
+
+const char* getTempo() {
+    static char buffer[TEMPO_TAMANHO];
+    time_t now = time(NULL);
+    strftime(buffer, sizeof(buffer) - 1, "%d-%m-%Y %H:%M:%S", localtime(&now));
+    return buffer;
 }
