@@ -20,4 +20,4 @@ servidor: ./oFiles/servidor.o ./oFiles/util.o
 	$(CC) $(CFLAGS) -c ./cFiles/util.c -o ./oFiles/util.o
 
 clean:
-	rm -f ./oFiles/*.o ./cliente ./servidor
+	rm -f ./oFiles/*.o ./cliente ./servidor ./logs/*
