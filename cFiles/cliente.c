@@ -1,111 +1,252 @@
 #include "../headers/cliente.h"
 // Aceita cliente1.conf até clienteN.conf
-char *padrao = "^cliente[1-9][0-9]*\\.conf$";
+char *padrao = "./configs/cliente.conf";
 
 #define LINE_SIZE 16
 
-//tricos
+// global
 
-//struct ClienteConfig clienteConfig;
+// tricos
+pthread_mutex_t mutexClienteLog = PTHREAD_MUTEX_INITIALIZER;
 
-// void imprimirTabuleiro(char* jogo) {
-//     for (int i = 0; i < NUM_LINHAS; i++) {
-//         if (i % 3 == 0 && i != 0) {
-//             printf("---------------------\n");  // Linha separadora horizontal
-//         }
-//         for (int j = 0; j < NUM_LINHAS; j++) {
-//             if (j % 3 == 0 && j != 0) {
-//                 printf(" | ");  // Separador vertical
-//             }
-//             printf("%c ", jogo[i * NUM_LINHAS + j]);  // Imprime espaço para 0
-//         }
-//         printf("\n");
-//     }
-// }
+void carregarConfigCliente(char *nomeFicheiro, struct ClienteConfig *clienteConfig)
+{
+	FILE *config = abrirFicheiro(nomeFicheiro);
 
-// Função para carregar as configurações do cliente
-//Descomentar depois de apagar em sercidor.C
-// void carregarConfigCliente(char* nomeFicheiro) {
-//     FILE* config = abrirFicheiro(nomeFicheiro);
+	if (config == NULL)
+	{
+		fprintf(stderr, "Erro: Falha ao abrir o ficheiro de configuração.\n");
+		exit(1);
+	}
 
-//     fseek(config, 0, SEEK_END);
-//     long tamanhoFicheiro = ftell(config);
-//     rewind(config);
+	char buffer[BUF_SIZE];
 
-//     char buffer[tamanhoFicheiro];
-//     int contadorConfigs = 0;
+	if (fgets(buffer, BUF_SIZE, config) != NULL)
+	{
+		strncpy(clienteConfig->tipoJogo, strtok(buffer, "\n"), INFO_SIZE);
+	}
+	else
+	{
+		fprintf(stderr, "Erro: Falha ao ler tipoJogo.\n");
+		fecharFicheiro(config);
+		exit(1);
+	}
+	if (fgets(buffer, BUF_SIZE, config) != NULL)
+	{
+		strncpy(clienteConfig->tipoResolucao, strtok(buffer, "\n"), INFO_SIZE);
+	}
+	else
+	{
+		fprintf(stderr, "Erro: Falha ao ler tipoResolucao.\n");
+		fecharFicheiro(config);
+		exit(1);
+	}
+	if (fgets(buffer, BUF_SIZE, config) != NULL)
+	{
+		// 255.255.255.255(15)
+		strncpy(clienteConfig->ipServidor, strtok(buffer, "\n"), IP_SIZE - 1);
+	}
+	else
+	{
+		fprintf(stderr, "Erro: Falha ao ler ipServidor.\n");
+		fecharFicheiro(config);
+		exit(1);
+	}
+	if (fgets(buffer, BUF_SIZE, config) != NULL)
+	{
+		clienteConfig->porta = atoi(strtok(buffer, "\n"));
+	}
+	else
+	{
+		fprintf(stderr, "Erro: Falha ao ler ipServidor.\n");
+		fecharFicheiro(config);
+		exit(1);
+	}
 
-//     while (fgets(buffer, BUF_SIZE, config) != NULL) {
-//         // Leitura do IdCliente (primeira linha)
-//         clienteConfig.idCliente = atoi(buffer);
+	fecharFicheiro(config);
+	return;
+}
+// tricos
 
-//         // Leitura do IP do servidor (segunda linha)
-//         if (fgets(buffer, BUF_SIZE, config) != NULL) {
-//             char *resultado = strtok(buffer, "\n");
-//             strcpy(clienteConfig.ipServidor, resultado);
-//         }
-
-//         contadorConfigs++;  // Contar o número de configurações lidas
-//     }
-
-//     fecharFicheiro(config);
-//     if (contadorConfigs == 0) {
-//         printf("Sem configs\n");
-//         exit(1);
-//     }
-//     return;
-// }
-
-void enviarMensagens(){
-    int sockfd, servlen;
-	struct sockaddr_un serv_addr;
-
-	/* Cria socket stream */
-
-	if ((sockfd = socket(AF_UNIX, SOCK_STREAM, 0)) < 0)
-		err_dump("client: can't open stream socket");
-
-	/* Primeiro uma limpeza preventiva!
-	   Dados para o socket stream: tipo + nome do ficheiro.
-		 O ficheiro identifica o servidor */
-
-	bzero((char *)&serv_addr, sizeof(serv_addr));
-	serv_addr.sun_family = AF_UNIX;
-	strcpy(serv_addr.sun_path, UNIXSTR_PATH);
-	servlen = strlen(serv_addr.sun_path) + sizeof(serv_addr.sun_family);
-
-	/* Tenta estabelecer uma ligação. Só funciona se o servidor tiver
-		 sido lançado primeiro (o servidor tem de criar o ficheiro e associar
-		 o socket ao ficheiro) */
-
-	if (connect(sockfd, (struct sockaddr *)&serv_addr, servlen) < 0)
-		err_dump("client: can't connect to server");
-
-	/* Envia as linhas lidas do teclado para o socket */
-
-	str_cli(stdin, sockfd);
-
-	/* Fecha o socket e termina */
-
-	close(sockfd);
-	exit(0);
+void imprimirTabuleiro(char *jogo)
+{
+	for (int i = 0; i < NUM_LINHAS; i++)
+	{
+		if (i % 3 == 0 && i != 0)
+		{
+			printf("---------------------\n"); // Linha separadora horizontal
+		}
+		for (int j = 0; j < NUM_LINHAS; j++)
+		{
+			if (j % 3 == 0 && j != 0)
+			{
+				printf(" | "); // Separador vertical
+			}
+			printf("%c ", jogo[i * NUM_LINHAS + j]); // Imprime espaço para 0
+		}
+		printf("\n");
+	}
 }
 
-int main(int argc, char **argv) {
-    // Verifica se foi fornecido um nome de arquivo
-    if (argc < 2) {
-        printf("Erro: Nome do ficheiro de configuracao nao fornecido.\n");
-        return 1;
-    }
+void logEventoCliente(const char *message, struct ClienteConfig clienteConfig)
+{
+	pthread_mutex_lock(&mutexClienteLog);
+	// modo append
+	char *str = "logs/clienteLog.txt";
+	FILE *file = fopen(str, "a");
+	if (file == NULL)
+	{
+		perror("Erro ao abrir o ficheiro de log");
+		pthread_mutex_unlock(&mutexClienteLog);
+		return;
+	}
+	fprintf(file, "[%s] [Cliente ID: %lu] %s\n", getTempo(), clienteConfig.idCliente, message);
 
-    // Valida o nome do arquivo passado como argumento
-    if (!validarNomeFile(argv[1], padrao)) {
-        printf("Nome do ficheiro de configuracao incorreto: %s\n", argv[1]);
-        return 1;
-    }
+	fclose(file);
+	pthread_mutex_unlock(&mutexClienteLog);
+}
 
-    // carregarConfigCliente(argv[1]);
-    // imprimirTabuleiro("530070000600195000098000060800060003400803001700020006060000280000419005000080079");
-    // logEventoCliente("Cliente iniciado");
-    return 0;
+void logQueEventoCliente(int numero, struct ClienteConfig clienteConfig)
+{
+	switch (numero)
+	{
+	case 1:
+		logEventoCliente("Cliente id: iniciou", clienteConfig);
+		break;
+	case 2:
+		logEventoCliente("Cliente id: parou", clienteConfig);
+		break;
+	case 3:
+		logEventoCliente("Cliente id: conectou-se ao servidor", clienteConfig);
+		break;
+	case 4:
+		logEventoCliente("Cliente id: enviou uma mensagem ao servidor", clienteConfig);
+		break;
+	case 5:
+		logEventoCliente("Cliente id: recebeu uma resposta do servidor", clienteConfig);
+		break;
+	case 6:
+		logEventoCliente("Cliente id: desconectou-se do servidor", clienteConfig);
+		break;
+	default:
+		logEventoCliente("Evento desconhecido", clienteConfig);
+		break;
+	}
+}
+
+void construtorCliente(int dominio, int porta, __u_long interface, struct ClienteConfig *clienteConfig)
+{
+	strncpy(clienteConfig->TemJogo, "SEM_JOGO\0", sizeof("SEM_JOGO\0"));
+	clienteConfig->dominio = dominio;
+	clienteConfig->porta = porta;
+	clienteConfig->interface = interface;
+}
+void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
+{
+	clienteConfig->socket = socket(clienteConfig->dominio, SOCK_STREAM, 0);
+	if (clienteConfig->socket == -1)
+	{
+		perror("Erro ao criar socket");
+		exit(1);
+	}
+
+	struct sockaddr_in enderecoServidor;
+	enderecoServidor.sin_family = clienteConfig->dominio;
+	enderecoServidor.sin_port = htons(clienteConfig->porta);
+
+	if (inet_pton(clienteConfig->dominio, clienteConfig->ipServidor, &enderecoServidor.sin_addr) <= 0)
+	{
+		perror("Erro ao converter IP do servidor");
+		close(clienteConfig->socket);
+		exit(1);
+	}
+
+	if (connect(clienteConfig->socket, (struct sockaddr *)&enderecoServidor, sizeof(enderecoServidor)) == -1)
+	{
+		perror("Erro ao conectar ao servidor");
+		close(clienteConfig->socket);
+		exit(1);
+	}
+	char recebeIDCliente[BUF_SIZE] = {0};
+	recv(clienteConfig->socket, recebeIDCliente, BUF_SIZE, 0);
+	// cliente recebe id do servidor
+	clienteConfig->idCliente = atoi(strtok(recebeIDCliente, "|"));
+	printf("========= Ligado =========\n");
+	printf("===== IP: %s ======\n", clienteConfig->ipServidor);
+	printf("===== Porta: %d =======\n", clienteConfig->porta);
+	printf("===== Cliente ID: %lu =======\n\n", clienteConfig->idCliente);
+	while (1)
+	{
+		// SEM_JOGO|IDCLIENTE|TIPOJOGO|TIPORESOLUCAO|JOGO
+		mandarETratarMSG(clienteConfig);
+	}
+}
+void mandarETratarMSG(struct ClienteConfig *clienteConfig)
+{
+	char temp[BUF_SIZE] = {0};
+	if (strcmp(clienteConfig->TemJogo, "SEM_JOGO") == 0)
+	{
+		sprintf(temp, "SEM_JOGO|%lu|%s|%s|", clienteConfig->idCliente, clienteConfig->tipoJogo, clienteConfig->tipoResolucao);
+		send(clienteConfig->socket, temp, BUF_SIZE, 0);
+		strcpy(clienteConfig->TemJogo, "COM_JOGO");
+	}
+	else if (strcmp(clienteConfig->TemJogo, "COM_JOGO") == 0)
+	{
+		// APENAS PARA TESTE
+		int umavez = 1;
+		while (1)
+		{
+			if (umavez == 1)
+			{
+				printf("Agora tenho jogo\n");
+				umavez = 0;
+			}
+		}
+		sprintf(temp, "COM_JOGO|%lu|%s|%s|%s|", clienteConfig->idCliente, clienteConfig->tipoJogo, clienteConfig->tipoResolucao, clienteConfig->jogoAtual.jogo);
+		send(clienteConfig->socket, temp, BUF_SIZE, 0);
+	}
+
+	char buffer[BUF_SIZE] = {0};
+	int bytesReceived = recv(clienteConfig->socket, buffer, BUF_SIZE, 0);
+	if (bytesReceived > 0)
+	{
+		buffer[bytesReceived] = '\0';
+		printf("Recebido do servidor: %s\n", buffer);
+	}
+	else if (bytesReceived == 0)
+	{
+		printf("Conexão fechada pelo servidor.\n");
+		close(clienteConfig->socket);
+		exit(0);
+	}
+	else
+	{
+		perror("Erro ao receber dados do servidor");
+		close(clienteConfig->socket);
+		exit(1);
+	}
+}
+int main(int argc, char **argv)
+{
+	struct ClienteConfig clienteConfig = {0};
+	// Verifica se foi fornecido um nome de arquivo
+	if (argc < 2)
+	{
+		printf("Erro: Nome do ficheiro de configuracao nao fornecido.\n");
+		return 1;
+	}
+
+	// Valida o nome do arquivo passado como argumento
+	if (!validarNomeFile(argv[1], padrao))
+	{
+		printf("Nome do ficheiro de configuracao incorreto: %s\n", argv[1]);
+		return 1;
+	}
+
+	carregarConfigCliente(argv[1], &clienteConfig);
+	construtorCliente(AF_INET, clienteConfig.porta, INADDR_ANY, &clienteConfig);
+	iniciarClienteSocket(&clienteConfig);
+	logQueEventoCliente(1, clienteConfig);
+
+	return 0;
 }

@@ -1,19 +1,44 @@
 #include "util.h"
 
-//1KB
+// 1KB
 #define IP_SIZE 16
 
-void imprimirTabuleiro(char* jogo);
-void carregarConfigCliente(char* nomeFicheiro);
+struct Jogo
+{
+    long idJogo;
+    char jogo[NUMEROS_NO_JOGO + 1];
+    char solucao[NUMEROS_NO_JOGO + 1];
+};
 
-//Descomentar depois de apagar o mesmo em servidor.h
-// struct ClienteConfig{
-//     unsigned long idCliente;
-//     char ipServidor[IP_SIZE];
-// };
+struct JogoAtual
+{
+    long idJogo;
+    char jogo[NUMEROS_NO_JOGO];
+    char tempoInicio[TEMPO_TAMANHO];
+    char tempoFinal[TEMPO_TAMANHO];
+    long numeroTentativas;
+};
 
+struct ClienteConfig
+{
+    char TemJogo[INFO_SIZE];
+    unsigned long idCliente;
+    char tipoJogo[INFO_SIZE];
+    char tipoResolucao[INFO_SIZE];
+    char ipServidor[IP_SIZE];
+    int dominio;
+    unsigned int porta;
+    __u_long interface;
+    int socket;
+    struct JogoAtual jogoAtual;
+};
 // struct ClienteThread{
 //     struct ClienteConfig clienteConfig;
 //     char tabuleiro[NUMEROS_NO_JOGO];
 // };
-
+void logEventoCliente(const char *message, struct ClienteConfig clienteConfig);
+void logQueEventoCliente(int numero, struct ClienteConfig clienteConfig);
+void imprimirTabuleiro(char *jogo);
+void carregarConfigCliente(char *nomeFicheiro, struct ClienteConfig *clienteConfig);
+void mandarETratarMSG(struct ClienteConfig *clienteConfig);
+void iniciarClienteSocket(struct ClienteConfig *clienteConfig);

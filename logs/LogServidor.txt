@@ -1,0 +1,10 @@
+[02-11-2024 00:21:35] Cliente-22 ainda não recebeu um jogo
+[02-11-2024 00:21:35] Enviou um jogo ao cliente-22
+[02-11-2024 00:22:38] Cliente-23 ainda não recebeu um jogo
+[02-11-2024 00:22:38] Enviou um jogo ao cliente-23
+[02-11-2024 00:22:54] Cliente-25 ainda não recebeu um jogo
+[02-11-2024 00:22:54] Enviou um jogo ao cliente-25
+[02-11-2024 00:24:19] Cliente-26 ainda não recebeu um jogo
+[02-11-2024 00:24:19] Enviou um jogo ao cliente-26
+[02-11-2024 00:24:45] Cliente-27 ainda não recebeu um jogo
+[02-11-2024 00:24:45] Enviou um jogo ao cliente-27

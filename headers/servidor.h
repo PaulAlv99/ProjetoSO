@@ -4,54 +4,41 @@
 #include "util.h"
 #include "../headers/cliente.h"
 
-
-//So para teste apagar depois
+// So para teste apagar depois
 #define IP_SIZE 16
 
-struct ClienteConfig{
-    unsigned long idCliente;
-    char ipServidor[IP_SIZE];
-};
-//Isto nao e daqui, apagar depois
+// Isto nao e daqui, apagar depois
 
-struct ClienteThread{
+struct ClienteThread
+{
     struct ClienteConfig clienteConfig;
     char tabuleiro[NUMEROS_NO_JOGO];
 };
 
-
-struct ServidorConfig{
+struct ServidorConfig
+{
+    int dominio;
+    int servico;
+    int protocolo;
+    __u_long interface;
+    unsigned int porta;
+    int backlog;
     char ficheiroJogosESolucoesCaminho[PATH_SIZE];
 };
-
-
-struct Jogo{
-    long idJogo;
-    char jogo[NUMEROS_NO_JOGO+1];
-    char solucao[NUMEROS_NO_JOGO+1];
-};
-
-struct JogoAtual{
-    long idJogo;
-    char jogo[NUMEROS_NO_JOGO];
-    char tempoInicio[TEMPO_TAMANHO];
-    char tempoFinal[TEMPO_TAMANHO];
-    long numeroTentativas;
-};
-
-void carregarConfigServidor(char* nomeFicheiro);
-void logEventoServidor(const char* message) ;
+void carregarConfigServidor(char *nomeFicheiro, struct ServidorConfig *serverConfig);
+void logEventoServidor(const char *message);
 void logQueEventoServidor(int numero);
 void tentarSolucaoCompleta(char tentativaAtual[], char valoresCorretos[]);
 void tentarSolucaoParcial(char tentativaAtual[], char valoresCorretos[]);
 void atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorretos[], char solucao[], int nTentativas);
 void atualizaValoresCorretosParcial(char tentativaAtual[], char valoresCorretos[], char solucao[], int nTentativas);
-void carregarFicheiroJogosSolucoes(char* nomeFicheiro);
-
+void carregarFicheiroJogosSolucoes(char *nomeFicheiro);
+struct ServidorConfig construtorServer(int domain, int service, int protocol, __u_long interface, int port, int backlog, char *ficheiroJogosESolucoesCaminho);
+void iniciarServidorSocket(struct ServidorConfig *server);
+void receberMensagemETratarServer(char *buffer, int socketCliente);
 bool verificaResolvido(char valoresCorretos[], char solucao[], bool resolvido);
 void resolverJogoCompleto(char jogo[], char solucao[], int nTentativas);
 void resolverJogoParcial(char jogo[], char solucao[], int nTentativas);
 void imprimirTabuleiro(char jogo[]);
-
-extern void logEventoCliente(const char* message);
-extern void logQueEventoCliente(int numero);
+// extern void logEventoCliente(const char *message);
+// extern void logQueEventoCliente(int numero);
