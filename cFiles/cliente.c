@@ -136,7 +136,7 @@ void logQueEventoCliente(int numero, struct ClienteConfig clienteConfig)
 
 void construtorCliente(int dominio, int porta, __u_long interface, struct ClienteConfig *clienteConfig)
 {
-	strncpy(clienteConfig->TemJogo, "SEM_JOGO\0", sizeof("SEM_JOGO\0"));
+	strcpy(clienteConfig->TemJogo, "SEM_JOGO");
 	clienteConfig->dominio = dominio;
 	clienteConfig->porta = porta;
 	clienteConfig->interface = interface;
@@ -183,35 +183,20 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 }
 void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 {
-	char temp[BUF_SIZE] = {0};
+	char temp[BUF_SIZE];
 	if (strcmp(clienteConfig->TemJogo, "SEM_JOGO") == 0)
 	{
 		sprintf(temp, "SEM_JOGO|%lu|%s|%s|", clienteConfig->idCliente, clienteConfig->tipoJogo, clienteConfig->tipoResolucao);
 		send(clienteConfig->socket, temp, BUF_SIZE, 0);
 		strcpy(clienteConfig->TemJogo, "COM_JOGO");
 	}
-	else if (strcmp(clienteConfig->TemJogo, "COM_JOGO") == 0)
-	{
-		// APENAS PARA TESTE
-		int umavez = 1;
-		while (1)
-		{
-			if (umavez == 1)
-			{
-				printf("Agora tenho jogo\n");
-				umavez = 0;
-			}
-		}
-		sprintf(temp, "COM_JOGO|%lu|%s|%s|%s|", clienteConfig->idCliente, clienteConfig->tipoJogo, clienteConfig->tipoResolucao, clienteConfig->jogoAtual.jogo);
-		send(clienteConfig->socket, temp, BUF_SIZE, 0);
-	}
-
 	char buffer[BUF_SIZE] = {0};
 	int bytesReceived = recv(clienteConfig->socket, buffer, BUF_SIZE, 0);
 	if (bytesReceived > 0)
 	{
 		buffer[bytesReceived] = '\0';
-		printf("Recebido do servidor: %s\n", buffer);
+		// printf("Recebido do servidor: %s\n", buffer);
+		strcpy(clienteConfig->jogoAtual.jogo,buffer);
 	}
 	else if (bytesReceived == 0)
 	{
@@ -224,6 +209,23 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 		perror("Erro ao receber dados do servidor");
 		close(clienteConfig->socket);
 		exit(1);
+	}
+	if (strcmp(clienteConfig->TemJogo, "COM_JOGO") == 0)
+	{
+		// APENAS PARA TESTE
+		int umavez = 1;
+		while (1)
+		{
+			//fazer dentro deste while resolucao do jogo. processo de enviar para o servidor para validacao
+			if (umavez == 1)
+			{
+				// printf("Agora tenho jogo\n");
+				imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
+				umavez = 0;
+			}
+		}
+		sprintf(temp, "COM_JOGO|%lu|%s|%s|%s|", clienteConfig->idCliente, clienteConfig->tipoJogo, clienteConfig->tipoResolucao, clienteConfig->jogoAtual.jogo);
+		send(clienteConfig->socket, temp, BUF_SIZE, 0);
 	}
 }
 int main(int argc, char **argv)
@@ -242,11 +244,9 @@ int main(int argc, char **argv)
 		printf("Nome do ficheiro de configuracao incorreto: %s\n", argv[1]);
 		return 1;
 	}
-
 	carregarConfigCliente(argv[1], &clienteConfig);
 	construtorCliente(AF_INET, clienteConfig.porta, INADDR_ANY, &clienteConfig);
 	iniciarClienteSocket(&clienteConfig);
 	logQueEventoCliente(1, clienteConfig);
-
 	return 0;
 }

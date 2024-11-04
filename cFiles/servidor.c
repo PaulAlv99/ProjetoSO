@@ -441,14 +441,19 @@ void receberMensagemETratarServer(char *buffer, int socketCliente)
     char *tempStr = malloc(1024);
     char *TemJogo = strtok(buffer, "|");
     char *clienteID = strtok(NULL, "|");
-    char *tipoJogo = strtok(NULL, "|");
-    char *tipoResolucao = strtok(NULL, "|");
-    char *jogo = strtok(NULL, "|");
+    // char *tipoJogo = strtok(NULL, "|");
+    // char *tipoResolucao = strtok(NULL, "|");
+    // char *jogo = strtok(NULL, "|");
     if (strcmp(TemJogo, "SEM_JOGO") == 0)
     {
         sprintf(tempStr, "Cliente-%s ainda não recebeu um jogo", clienteID);
         logEventoServidor(tempStr);
-        if (send(socketCliente, jogosEsolucoes[0].jogo, strlen(jogosEsolucoes[0].jogo), 0) != -1)
+        //mudar seed para mandar jogo
+        //estou a pensar implementar semaforo e cada um dos jogos é uma sala
+        //tendo possibilidade de multiplayer ONE OU MUL
+        srand(time(NULL));
+        int idJogo=rand()%NUM_JOGOS;
+        if (send(socketCliente, jogosEsolucoes[idJogo].jogo, strlen(jogosEsolucoes[idJogo].jogo), 0) != -1)
         {
             sprintf(tempStr, "Enviou um jogo ao cliente-%s", clienteID);
             logEventoServidor(tempStr);
@@ -489,7 +494,7 @@ int main(int argc, char **argv)
     carregarConfigServidor(argv[1], &serverConfig);
     // printf("Caminho jogos e solucoes: %s", serverConfig.ficheiroJogosESolucoesCaminho);
     carregarFicheiroJogosSolucoes(serverConfig.ficheiroJogosESolucoesCaminho);
-    serverConfig = construtorServer(AF_INET, SOCK_STREAM, 0, INADDR_ANY, serverConfig.porta, 5, serverConfig.ficheiroJogosESolucoesCaminho);
+    serverConfig = construtorServer(AF_INET, SOCK_STREAM, 0, INADDR_ANY, serverConfig.porta, 1, serverConfig.ficheiroJogosESolucoesCaminho);
     logQueEventoServidor(1);
     iniciarServidorSocket(&serverConfig);
     return 0;

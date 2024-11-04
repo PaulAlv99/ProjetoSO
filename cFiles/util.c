@@ -65,7 +65,8 @@ const char *getTempo()
 
 void str_echo(int sockfd)
 {
-	int n, i;
+	// int n, i;
+	int n;
 	char line[MAXLINE];
 
 	for (;;)
