@@ -8,6 +8,12 @@
 #define IP_SIZE 16
 
 // Isto nao e daqui, apagar depois
+struct Jogo
+{
+    long idJogo;
+    char jogo[NUMEROS_NO_JOGO + 1];
+    char solucao[NUMEROS_NO_JOGO + 1];
+};
 
 struct ClienteThread
 {

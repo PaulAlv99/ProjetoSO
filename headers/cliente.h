@@ -3,13 +3,6 @@
 // 1KB
 #define IP_SIZE 16
 
-struct Jogo
-{
-    long idJogo;
-    char jogo[NUMEROS_NO_JOGO + 1];
-    char solucao[NUMEROS_NO_JOGO + 1];
-};
-
 struct JogoAtual
 {
     long idJogo;

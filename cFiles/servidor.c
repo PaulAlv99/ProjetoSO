@@ -431,6 +431,7 @@ void iniciarServidorSocket(struct ServidorConfig *server)
     }
     close(socketServidor);
 }
+
 void receberMensagemETratarServer(char *buffer, int socketCliente)
 {
     // FORMATO DAS TROCAS DE MSG
@@ -441,12 +442,13 @@ void receberMensagemETratarServer(char *buffer, int socketCliente)
     char *tempStr = malloc(1024);
     char *TemJogo = strtok(buffer, "|");
     char *clienteID = strtok(NULL, "|");
-    // char *tipoJogo = strtok(NULL, "|");
-    // char *tipoResolucao = strtok(NULL, "|");
+    char *tipoJogo = strtok(NULL, "|");
+     char *tipoResolucao = strtok(NULL, "|");
     // char *jogo = strtok(NULL, "|");
     if (strcmp(TemJogo, "SEM_JOGO") == 0)
     {
         sprintf(tempStr, "Cliente-%s ainda não recebeu um jogo", clienteID);
+        printf(tempStr);
         logEventoServidor(tempStr);
         //mudar seed para mandar jogo
         //estou a pensar implementar semaforo e cada um dos jogos é uma sala

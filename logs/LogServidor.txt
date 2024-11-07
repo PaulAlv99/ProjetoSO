@@ -1,77 +1,10 @@
-[04-11-2024 19:14:38] Servidor comecou
-[04-11-2024 19:14:44] Cliente-1 ainda não recebeu um jogo
-[04-11-2024 19:14:44] Enviou um jogo ao cliente-1
-[04-11-2024 19:16:19] Servidor comecou
-[04-11-2024 19:16:21] Cliente-1 ainda não recebeu um jogo
-[04-11-2024 19:16:21] Enviou um jogo ao cliente-1
-[04-11-2024 19:16:29] Cliente-2 ainda não recebeu um jogo
-[04-11-2024 19:16:29] Enviou um jogo ao cliente-2
-[04-11-2024 19:16:30] Cliente-3 ainda não recebeu um jogo
-[04-11-2024 19:16:30] Enviou um jogo ao cliente-3
-[04-11-2024 19:16:31] Cliente-4 ainda não recebeu um jogo
-[04-11-2024 19:16:31] Enviou um jogo ao cliente-4
-[04-11-2024 19:16:32] Cliente-5 ainda não recebeu um jogo
-[04-11-2024 19:16:32] Enviou um jogo ao cliente-5
-[04-11-2024 19:17:39] Servidor comecou
-[04-11-2024 19:17:42] Cliente-1 ainda não recebeu um jogo
-[04-11-2024 19:17:42] Enviou um jogo ao cliente-1
-[04-11-2024 19:23:56] Servidor comecou
-[04-11-2024 19:23:59] Cliente-1 ainda não recebeu um jogo
-[04-11-2024 19:23:59] Enviou um jogo ao cliente-1
-[04-11-2024 19:24:09] Cliente-2 ainda não recebeu um jogo
-[04-11-2024 19:24:09] Enviou um jogo ao cliente-2
-[04-11-2024 19:24:21] Cliente-3 ainda não recebeu um jogo
-[04-11-2024 19:24:21] Enviou um jogo ao cliente-3
-[04-11-2024 19:24:23] Cliente-4 ainda não recebeu um jogo
-[04-11-2024 19:24:23] Enviou um jogo ao cliente-4
-[04-11-2024 19:24:25] Cliente-5 ainda não recebeu um jogo
-[04-11-2024 19:24:25] Enviou um jogo ao cliente-5
-[04-11-2024 19:24:26] Cliente-6 ainda não recebeu um jogo
-[04-11-2024 19:24:26] Enviou um jogo ao cliente-6
-[04-11-2024 19:24:27] Cliente-7 ainda não recebeu um jogo
-[04-11-2024 19:24:27] Enviou um jogo ao cliente-7
-[04-11-2024 19:24:29] Cliente-8 ainda não recebeu um jogo
-[04-11-2024 19:24:29] Enviou um jogo ao cliente-8
-[04-11-2024 19:24:30] Cliente-9 ainda não recebeu um jogo
-[04-11-2024 19:24:30] Enviou um jogo ao cliente-9
-[04-11-2024 19:24:31] Cliente-10 ainda não recebeu um jogo
-[04-11-2024 19:24:31] Enviou um jogo ao cliente-10
-[04-11-2024 19:24:33] Cliente-11 ainda não recebeu um jogo
-[04-11-2024 19:24:33] Enviou um jogo ao cliente-11
-[04-11-2024 19:25:22] Servidor comecou
-[04-11-2024 19:25:27] Servidor comecou
-[04-11-2024 19:25:28] Servidor comecou
-[04-11-2024 19:25:36] Servidor comecou
-[04-11-2024 19:25:40] Cliente-1 ainda não recebeu um jogo
-[04-11-2024 19:25:40] Enviou um jogo ao cliente-1
-[04-11-2024 19:25:47] Cliente-2 ainda não recebeu um jogo
-[04-11-2024 19:25:47] Enviou um jogo ao cliente-2
-[04-11-2024 19:25:50] Cliente-3 ainda não recebeu um jogo
-[04-11-2024 19:25:50] Enviou um jogo ao cliente-3
-[04-11-2024 19:25:51] Cliente-4 ainda não recebeu um jogo
-[04-11-2024 19:25:51] Enviou um jogo ao cliente-4
-[04-11-2024 19:27:45] Servidor comecou
-[04-11-2024 19:27:53] Cliente-1 ainda não recebeu um jogo
-[04-11-2024 19:27:53] Enviou um jogo ao cliente-1
-[04-11-2024 19:27:55] Cliente-2 ainda não recebeu um jogo
-[04-11-2024 19:27:55] Enviou um jogo ao cliente-2
-[04-11-2024 19:27:56] Cliente-3 ainda não recebeu um jogo
-[04-11-2024 19:27:56] Enviou um jogo ao cliente-3
-[04-11-2024 19:27:57] Cliente-4 ainda não recebeu um jogo
-[04-11-2024 19:27:57] Enviou um jogo ao cliente-4
-[04-11-2024 19:27:59] Cliente-5 ainda não recebeu um jogo
-[04-11-2024 19:27:59] Enviou um jogo ao cliente-5
-[04-11-2024 19:28:00] Cliente-6 ainda não recebeu um jogo
-[04-11-2024 19:28:00] Enviou um jogo ao cliente-6
-[04-11-2024 19:28:01] Cliente-7 ainda não recebeu um jogo
-[04-11-2024 19:28:01] Enviou um jogo ao cliente-7
-[04-11-2024 19:28:02] Cliente-8 ainda não recebeu um jogo
-[04-11-2024 19:28:02] Enviou um jogo ao cliente-8
-[04-11-2024 19:28:03] Cliente-9 ainda não recebeu um jogo
-[04-11-2024 19:28:03] Enviou um jogo ao cliente-9
-[04-11-2024 19:28:05] Cliente-10 ainda não recebeu um jogo
-[04-11-2024 19:28:05] Enviou um jogo ao cliente-10
-[04-11-2024 19:28:05] Cliente-11 ainda não recebeu um jogo
-[04-11-2024 19:28:05] Enviou um jogo ao cliente-11
-[04-11-2024 19:28:07] Cliente-12 ainda não recebeu um jogo
-[04-11-2024 19:28:07] Enviou um jogo ao cliente-12
+[07-11-2024 16:56:25] Servidor comecou
+[07-11-2024 16:57:19] Cliente-1 ainda não recebeu um jogo
+[07-11-2024 16:57:19] Enviou um jogo ao cliente-1
+[07-11-2024 16:59:33] Servidor comecou
+[07-11-2024 16:59:52] Cliente-1 ainda não recebeu um jogo
+[07-11-2024 16:59:52] Enviou um jogo ao cliente-1
+[07-11-2024 16:59:56] Cliente-2 ainda não recebeu um jogo
+[07-11-2024 16:59:56] Enviou um jogo ao cliente-2
+[07-11-2024 17:00:01] Cliente-3 ainda não recebeu um jogo
+[07-11-2024 17:00:01] Enviou um jogo ao cliente-3
