@@ -438,12 +438,16 @@ void receberMensagemETratarServer(char *buffer, int socketCliente)
     // SEM_JOGO|IDCLIENTE|TIPOJOGO|TIPORESOLUCAO|JOGO
     // TipoJogo MUL ou ONE
     // TipoResolucao COMPLET ou PARCIAL
-    // SEM_JOGO|i|ONE|COMPLET|530070000600195000098000060800060003400803001700020006060000280000419005000080079
+    //Servidor manda o o jogo inicial so na primeira vez
+    // SEM_JOGO|i|SNG|COMPLET|idJogo|5300...(valores acertados)|false(resolvido)
     char *tempStr = malloc(1024);
     char *TemJogo = strtok(buffer, "|");
     char *clienteID = strtok(NULL, "|");
     char *tipoJogo = strtok(NULL, "|");
      char *tipoResolucao = strtok(NULL, "|");
+     char *idJogo = strtok(NULL, "|");
+     char *valoresCorretos = strtok(NULL, "|");
+     char *resolvido = strtok(NULL, "|");
     // char *jogo = strtok(NULL, "|");
     if (strcmp(TemJogo, "SEM_JOGO") == 0)
     {

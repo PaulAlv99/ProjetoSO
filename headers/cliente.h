@@ -7,8 +7,10 @@ struct JogoAtual
 {
     long idJogo;
     char jogo[NUMEROS_NO_JOGO];
+    char valoresCorretos[NUMEROS_NO_JOGO];
     char tempoInicio[TEMPO_TAMANHO];
     char tempoFinal[TEMPO_TAMANHO];
+    bool resolvido = false;
     long numeroTentativas;
 };
 

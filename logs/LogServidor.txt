@@ -1,10 +1,3 @@
-[07-11-2024 16:56:25] Servidor comecou
-[07-11-2024 16:57:19] Cliente-1 ainda não recebeu um jogo
-[07-11-2024 16:57:19] Enviou um jogo ao cliente-1
-[07-11-2024 16:59:33] Servidor comecou
-[07-11-2024 16:59:52] Cliente-1 ainda não recebeu um jogo
-[07-11-2024 16:59:52] Enviou um jogo ao cliente-1
-[07-11-2024 16:59:56] Cliente-2 ainda não recebeu um jogo
-[07-11-2024 16:59:56] Enviou um jogo ao cliente-2
-[07-11-2024 17:00:01] Cliente-3 ainda não recebeu um jogo
-[07-11-2024 17:00:01] Enviou um jogo ao cliente-3
+[07-11-2024 17:33:58] Servidor comecou
+[07-11-2024 17:34:03] Cliente-1 ainda não recebeu um jogo
+[07-11-2024 17:34:03] Enviou um jogo ao cliente-1
