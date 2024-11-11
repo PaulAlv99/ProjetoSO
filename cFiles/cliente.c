@@ -221,14 +221,14 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 			{ //Recebe correcao do servidor e depois manda outra tentativa
 			buffer[bytesReceived] = '\0';
 			// printf("Recebido do servidor: %s\n", buffer);
-			char *tempStr = malloc(1024);
+			//char *tempStr = malloc(1024);
     		char *novosValoresCorretos = strtok(buffer, "|");
     		char *logCliente = strtok(NULL, "|");
 			char *novasTentativas = strtok(NULL, "|");
 			char *novoResolvido = strtok(NULL, "|");
 			strcpy(clienteConfig->jogoAtual.valoresCorretos, novosValoresCorretos);
 			logEventoCliente(logCliente, *clienteConfig);
-			clienteConfig->jogoAtual.numeroTentativas = (int)novasTentativas;
+			clienteConfig->jogoAtual.numeroTentativas = (int)*novasTentativas;
 			clienteConfig->jogoAtual.resolvido = novoResolvido;
 			resolvido = novoResolvido;
 			}

@@ -147,10 +147,10 @@ void logQueEventoServidor(int numero)
 // atualiza os valoresCorretos da Ultima Tentativa
 char *atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorretos[], char solucao[], int nTentativas)
 {
+    char* logCliente = malloc(1024);
     char Tentativas[100];
     sprintf(Tentativas, "Tentativa n: %d \n", nTentativas);
     //Retornar tenativas para escrever no log do cliente
-    char logCliente[1024];
     for (int i = 0; i < strlen(tentativaAtual); i++)
     {
         if (valoresCorretos[i] == '0')
@@ -161,16 +161,16 @@ char *atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorret
                 char message[1024];
                 sprintf(message, "\nValor correto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
                 strcat(logCliente, message);
-                printf(message);
+                printf("%s",message);
 
                 // printf("%d \n", valoresCorretos);
             }
             else
             {
-                char message[1024];
+                char message[1024] = "";
                 sprintf(message, "Valor incorreto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
                 strcat(logCliente, message);
-                printf(message);
+                printf("%s",message);
             }
         }
     }
@@ -456,7 +456,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente)
     if (strcmp(TemJogo, "SEM_JOGO") == 0)
     {
         sprintf(tempStr, "Cliente-%s ainda não recebeu um jogo", clienteID);
-        printf(tempStr);
+        printf("%s", tempStr);
         logEventoServidor(tempStr);
         //mudar seed para mandar jogo
         //estou a pensar implementar semaforo e cada um dos jogos é uma sala
@@ -484,15 +484,15 @@ void receberMensagemETratarServer(char *buffer, int socketCliente)
                 strcpy(novosValoresCorretos, valoresCorretos);
                 char* logCliente;
                 bool novoResolvido;
-                novoResolvido = resolvido;
-                int novasTentativas = tentativas;
-                int idJogoInt = (int)idJogo; // Ensure idJogo is an integer
+                novoResolvido = *resolvido;
+                int novasTentativas = *tentativas;
+                int idJogoInt = (int)*idJogo; // Ensure idJogo is an integer
 
-                struct Jogo *novoJogo = jogosEsolucoes[idJogoInt].jogo;
+                struct Jogo *novoJogo = &jogosEsolucoes[idJogoInt];
                 logCliente = atualizaValoresCorretosCompletos(tentativaAtual, novosValoresCorretos, novoJogo->solucao, novasTentativas);
                 novoResolvido = verificaResolvido(novosValoresCorretos, novoJogo->solucao, novoResolvido);
                 char temporaria[1024];
-                sprintf(temporaria, "%d|%d|%d|%d", novosValoresCorretos, logCliente,novasTentativas, novoResolvido);//Servidor REsponde com valoresCorretos|logCliente|tentativas
+                sprintf(temporaria, "%s|%s|%d|%d", novosValoresCorretos, logCliente,novasTentativas, novoResolvido);//Servidor REsponde com valoresCorretos|logCliente|tentativas
                 if (send(socketCliente, temporaria, strlen(temporaria), 0) != -1)
                 {
                     sprintf(tempStr, "Enviou Valores corretos atualizados ao cliente-%s", clienteID);
