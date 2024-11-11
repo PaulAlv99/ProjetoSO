@@ -145,48 +145,50 @@ void logQueEventoServidor(int numero)
 // }
 
 // atualiza os valoresCorretos da Ultima Tentativa
-// void atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorretos[], char solucao[], int nTentativas)
-// {
-//     char Tentativas[100];
-//     sprintf(Tentativas, "Tentativa n: %d \n", nTentativas);
-//     logEventoCliente(Tentativas);
-//     for (int i = 0; i < strlen(tentativaAtual); i++)
-//     {
-//         if (valoresCorretos[i] == '0')
-//         {
-//             if (tentativaAtual[i] == solucao[i])
-//             {
-//                 valoresCorretos[i] = tentativaAtual[i];
-//                 char message[1024];
-//                 sprintf(message, "Valor correto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
-//                 logEventoCliente(message);
-//                 printf(message);
+char *atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorretos[], char solucao[], int nTentativas)
+{
+    char Tentativas[100];
+    sprintf(Tentativas, "Tentativa n: %d \n", nTentativas);
+    //Retornar tenativas para escrever no log do cliente
+    char logCliente[1024];
+    for (int i = 0; i < strlen(tentativaAtual); i++)
+    {
+        if (valoresCorretos[i] == '0')
+        {
+            if (tentativaAtual[i] == solucao[i])
+            {
+                valoresCorretos[i] = tentativaAtual[i];
+                char message[1024];
+                sprintf(message, "\nValor correto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
+                strcat(logCliente, message);
+                printf(message);
 
-//                 // printf("%d \n", valoresCorretos);
-//             }
-//             else
-//             {
-//                 char message[1024];
-//                 sprintf(message, "Valor incorreto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
-//                 logEventoCliente(message);
-//                 printf(message);
-//             }
-//         }
-//     }
-// }
+                // printf("%d \n", valoresCorretos);
+            }
+            else
+            {
+                char message[1024];
+                sprintf(message, "Valor incorreto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
+                strcat(logCliente, message);
+                printf(message);
+            }
+        }
+    }
+    return logCliente;
+}
 
 // Atualiza o booleano Resolvido se o jogo tiver sido resolvido
-// bool verificaResolvido(char valoresCorretos[], char solucao[], bool resolvido)
-// {
-//     for (int i = 0; i < strlen(valoresCorretos); i++)
-//     {
-//         if (valoresCorretos[i] != solucao[i])
-//         {
-//             return false;
-//         }
-//     }
-//     return true;
-// }
+bool verificaResolvido(char valoresCorretos[], char solucao[], bool resolvido)
+{
+    for (int i = 0; i < strlen(valoresCorretos); i++)
+    {
+        if (valoresCorretos[i] != solucao[i])
+        {
+            return false;
+        }
+    }
+    return true;
+}
 
 // ResolveJogo
 // void resolverJogoCompleto(char jogo[], char solucao[], int nTentativas)
@@ -439,15 +441,17 @@ void receberMensagemETratarServer(char *buffer, int socketCliente)
     // TipoJogo MUL ou ONE
     // TipoResolucao COMPLET ou PARCIAL
     //Servidor manda o o jogo inicial so na primeira vez
-    // SEM_JOGO|i|SNG|COMPLET|idJogo|5300...(valores acertados)|false(resolvido)
+    // SEM_JOGO|i|SNG|COMPLET|idJogo|tentativaAtual|5300...(valores acertados)|false(resolvido)|tentativas
     char *tempStr = malloc(1024);
     char *TemJogo = strtok(buffer, "|");
     char *clienteID = strtok(NULL, "|");
     char *tipoJogo = strtok(NULL, "|");
      char *tipoResolucao = strtok(NULL, "|");
      char *idJogo = strtok(NULL, "|");
+     char *tentativaAtual = strtok(NULL, "|");
      char *valoresCorretos = strtok(NULL, "|");
      char *resolvido = strtok(NULL, "|");
+     char *tentativas = strtok(NULL, "|");
     // char *jogo = strtok(NULL, "|");
     if (strcmp(TemJogo, "SEM_JOGO") == 0)
     {
@@ -469,11 +473,34 @@ void receberMensagemETratarServer(char *buffer, int socketCliente)
     // da do id 1 até 999999 podendo ser alterado para mais
     else if (strcmp(TemJogo, "COM_JOGO") == 0)
     {
-        sprintf(tempStr, "Recebeu uma solucao do cliente-%s", clienteID);
-        logEventoServidor(tempStr);
-        printf("Recebeu uma solucao do cliente-%s\n", clienteID);
-        printf("Verifica solucao e onde errou\n");
-    }
+        if(strcmp(tipoJogo,"SNG")){
+            if(strcmp(tipoResolucao,"COMPLET")){
+                sprintf(tempStr, "Recebeu uma solucao do cliente-%s", clienteID);
+                logEventoServidor(tempStr);
+        
+                printf("Recebeu uma solucao do cliente-%s\n", clienteID);
+                printf("Verifica solucao e onde errou\n");
+                char novosValoresCorretos[NUMEROS_NO_JOGO];
+                strcpy(novosValoresCorretos, valoresCorretos);
+                char* logCliente;
+                bool novoResolvido;
+                novoResolvido = resolvido;
+                int novasTentativas = tentativas;
+                int idJogoInt = (int)idJogo; // Ensure idJogo is an integer
+
+                struct Jogo *novoJogo = jogosEsolucoes[idJogoInt].jogo;
+                logCliente = atualizaValoresCorretosCompletos(tentativaAtual, novosValoresCorretos, novoJogo->solucao, novasTentativas);
+                novoResolvido = verificaResolvido(novosValoresCorretos, novoJogo->solucao, novoResolvido);
+                char temporaria[1024];
+                sprintf(temporaria, "%d|%d|%d|%d", novosValoresCorretos, logCliente,novasTentativas, novoResolvido);//Servidor REsponde com valoresCorretos|logCliente|tentativas
+                if (send(socketCliente, temporaria, strlen(temporaria), 0) != -1)
+                {
+                    sprintf(tempStr, "Enviou Valores corretos atualizados ao cliente-%s", clienteID);
+                    logEventoServidor(tempStr);
+                    printf("Enviou Valores corretos atualizados ao cliente-%s\n", clienteID);
+                }
+        }
+    }}
     else
     {
         logEventoServidor("Erro mensagem desconhecida");
@@ -482,6 +509,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente)
     free(tempStr);
     return;
 }
+
 int main(int argc, char **argv)
 {
     struct ServidorConfig serverConfig = {0};

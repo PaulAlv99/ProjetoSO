@@ -1,3 +1,0 @@
-[07-11-2024 17:33:58] Servidor comecou
-[07-11-2024 17:34:03] Cliente-1 ainda não recebeu um jogo
-[07-11-2024 17:34:03] Enviou um jogo ao cliente-1
