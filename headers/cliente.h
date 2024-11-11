@@ -31,6 +31,7 @@ struct ClienteConfig
 //     struct ClienteConfig clienteConfig;
 //     char tabuleiro[NUMEROS_NO_JOGO];
 // };
+void tentarSolucaoCompleta(char *jogo, char *valoresCorretos);
 void logEventoCliente(const char *message, struct ClienteConfig clienteConfig);
 void logQueEventoCliente(int numero, struct ClienteConfig clienteConfig);
 void imprimirTabuleiro(char *jogo);

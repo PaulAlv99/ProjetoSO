@@ -124,25 +124,7 @@ void logQueEventoServidor(int numero)
 //     }
 // }
 
-// Atualiza a tentativaAtual
-// void tentarSolucaoCompleta(char tentativaAtual[], char valoresCorretos[])
-// {
-//     for (int i = 0; i < strlen(tentativaAtual); i++)
-//     {
-//         if ((tentativaAtual[i] != '0') && (tentativaAtual[i] != valoresCorretos[i]))
-//         {
-//             char numero = tentativaAtual[i];
-//             int numeroInt = (int)(numero);
-//             int novoNumero = numeroInt + 1;
-//             char novoNumeroChar = (char)(novoNumero);
-//             tentativaAtual[i] = novoNumeroChar;
-//         }
-//         else if (tentativaAtual[i] == '0')
-//         {
-//             tentativaAtual[i] = '1';
-//         }
-//     }
-// }
+
 
 // atualiza os valoresCorretos da Ultima Tentativa
 char *atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorretos[], char solucao[], int nTentativas)
@@ -475,6 +457,17 @@ void receberMensagemETratarServer(char *buffer, int socketCliente)
     {
         if(strcmp(tipoJogo,"SNG")){
             if(strcmp(tipoResolucao,"COMPLET")){
+                int leitura = read(socketCliente, buffer, BUF_SIZE);
+                char *tempStr = malloc(1024);
+                char *TemJogo = strtok(buffer, "|");
+                char *clienteID = strtok(NULL, "|");
+                char *tipoJogo = strtok(NULL, "|");
+                char *tipoResolucao = strtok(NULL, "|");
+                char *idJogo = strtok(NULL, "|");
+                char *tentativaAtual = strtok(NULL, "|");
+                char *valoresCorretos = strtok(NULL, "|");
+                char *resolvido = strtok(NULL, "|");
+                char *tentativas = strtok(NULL, "|");
                 sprintf(tempStr, "Recebeu uma solucao do cliente-%s", clienteID);
                 logEventoServidor(tempStr);
         

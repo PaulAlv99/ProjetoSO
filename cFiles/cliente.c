@@ -181,12 +181,33 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 		mandarETratarMSG(clienteConfig);
 	}
 }
+
+// Atualiza a tentativaAtual
+void tentarSolucaoCompleta(char *tentativaAtual, char *valoresCorretos)
+{
+    for (int i = 0; i < strlen(tentativaAtual); i++)
+    {
+        if ((tentativaAtual[i] != '0') && (tentativaAtual[i] != valoresCorretos[i]))
+        {
+            char numero = tentativaAtual[i];
+            int numeroInt = (int)(numero);
+            int novoNumero = numeroInt + 1;
+            char novoNumeroChar = (char)(novoNumero);
+            tentativaAtual[i] = novoNumeroChar;
+        }
+        else if (tentativaAtual[i] == '0')
+        {
+            tentativaAtual[i] = '1';
+        }
+    }
+}
+
 void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 {
 	char temp[BUF_SIZE];
 	if (strcmp(clienteConfig->TemJogo, "SEM_JOGO") == 0)
 	{
-		sprintf(temp, "SEM_JOGO|%lu|%s|%s|%d", clienteConfig->idCliente, clienteConfig->tipoJogo, clienteConfig->tipoResolucao, clienteConfig->jogoAtual.resolvido);
+		sprintf(temp, "SEM_JOGO|%lu|%s|%s|%li|%s|%s|%d|%lu", clienteConfig->idCliente, clienteConfig->tipoJogo, clienteConfig->tipoResolucao, clienteConfig->jogoAtual.idJogo,"0000", "0000", clienteConfig->jogoAtual.resolvido, clienteConfig->jogoAtual.numeroTentativas);
 		send(clienteConfig->socket, temp, BUF_SIZE, 0);
 		strcpy(clienteConfig->TemJogo, "COM_JOGO");
 	}
@@ -212,7 +233,7 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 	}
 	if (strcmp(clienteConfig->TemJogo, "COM_JOGO") == 0)
 	{
-		sprintf(temp, "COM_JOGO|%lu|%s|%s|%li|%s|%d", clienteConfig->idCliente, clienteConfig->tipoJogo, clienteConfig->tipoResolucao, clienteConfig->jogoAtual.idJogo, clienteConfig->jogoAtual.valoresCorretos, clienteConfig->jogoAtual.resolvido);
+		sprintf(temp, "COM_JOGO|%lu|%s|%s|%li|%s|%s|%d|%lu", clienteConfig->idCliente, clienteConfig->tipoJogo, clienteConfig->tipoResolucao, clienteConfig->jogoAtual.idJogo,clienteConfig->jogoAtual.jogo, clienteConfig->jogoAtual.valoresCorretos, clienteConfig->jogoAtual.resolvido, clienteConfig->jogoAtual.numeroTentativas);
 		send(clienteConfig->socket, temp, BUF_SIZE, 0);
 		bool resolvido = clienteConfig->jogoAtual.resolvido;
 		while (!resolvido)
@@ -228,9 +249,17 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 			char *novoResolvido = strtok(NULL, "|");
 			strcpy(clienteConfig->jogoAtual.valoresCorretos, novosValoresCorretos);
 			logEventoCliente(logCliente, *clienteConfig);
-			clienteConfig->jogoAtual.numeroTentativas = (int)*novasTentativas;
+			clienteConfig->jogoAtual.numeroTentativas = atoi(novasTentativas);
 			clienteConfig->jogoAtual.resolvido = novoResolvido;
 			resolvido = novoResolvido;
+			imprimirTabuleiro(clienteConfig->jogoAtual.valoresCorretos);
+			//Mandar Nova tentativa
+			strcpy(clienteConfig->jogoAtual.jogo, clienteConfig->jogoAtual.valoresCorretos);
+			tentarSolucaoCompleta(clienteConfig->jogoAtual.jogo, clienteConfig->jogoAtual.valoresCorretos);
+			sprintf(temp, "COM_JOGO|%lu|%s|%s|%li|%s|%d", clienteConfig->idCliente, clienteConfig->tipoJogo, clienteConfig->tipoResolucao, clienteConfig->jogoAtual.idJogo, clienteConfig->jogoAtual.jogo, clienteConfig->jogoAtual.resolvido);
+			send(clienteConfig->socket, temp, BUF_SIZE, 0);
+			imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
+
 			}
 			else if (bytesReceived == 0)
 			{
@@ -250,6 +279,8 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 
 	}
 }
+
+
 int main(int argc, char **argv)
 {
 	struct ClienteConfig clienteConfig = {0};
