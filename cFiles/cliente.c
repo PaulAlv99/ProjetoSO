@@ -249,8 +249,8 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 			char *novoResolvido = strtok(NULL, "|");
 			strcpy(clienteConfig->jogoAtual.valoresCorretos, novosValoresCorretos);
 			logEventoCliente(logCliente, *clienteConfig);
-			//clienteConfig->jogoAtual.numeroTentativas = atoi(novasTentativas);
-			//clienteConfig->jogoAtual.resolvido = (bool)atoi(novoResolvido);
+			clienteConfig->jogoAtual.numeroTentativas = (novasTentativas);
+			clienteConfig->jogoAtual.resolvido = (bool)(novoResolvido);
 			resolvido = (bool)(novoResolvido);
 			imprimirTabuleiro(clienteConfig->jogoAtual.valoresCorretos);
 			//Mandar Nova tentativa
