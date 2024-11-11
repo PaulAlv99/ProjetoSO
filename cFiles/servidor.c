@@ -418,6 +418,7 @@ void iniciarServidorSocket(struct ServidorConfig *server)
 
 void receberMensagemETratarServer(char *buffer, int socketCliente)
 {
+    while(1){   
     // FORMATO DAS TROCAS DE MSG
     // SEM_JOGO|IDCLIENTE|TIPOJOGO|TIPORESOLUCAO|JOGO
     // TipoJogo MUL ou ONE
@@ -453,7 +454,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente)
         }
     }
     // da do id 1 até 999999 podendo ser alterado para mais
-    else if (strcmp(TemJogo, "COM_JOGO") == 0)
+    if (strcmp(TemJogo, "COM_JOGO") == 0)
     {
         if(strcmp(tipoJogo,"SNG")){
             if(strcmp(tipoResolucao,"COMPLET")){
@@ -468,6 +469,9 @@ void receberMensagemETratarServer(char *buffer, int socketCliente)
                 char *valoresCorretos = strtok(NULL, "|");
                 char *resolvido = strtok(NULL, "|");
                 char *tentativas = strtok(NULL, "|");
+                if(resolvido == 1){
+                    return;
+                }
                 sprintf(tempStr, "Recebeu uma solucao do cliente-%s", clienteID);
                 logEventoServidor(tempStr);
         
@@ -480,9 +484,12 @@ void receberMensagemETratarServer(char *buffer, int socketCliente)
                 novoResolvido = atoi(resolvido);
                 int novasTentativas = *tentativas;
                 int idJogoInt = (int)*idJogo; // Ensure idJogo is an integer
+                printf("Valores Corretos: %s\n", novosValoresCorretos);
 
                 struct Jogo *novoJogo = &jogosEsolucoes[idJogoInt];
                 logCliente = atualizaValoresCorretosCompletos(tentativaAtual, novosValoresCorretos, novoJogo->solucao, novasTentativas);
+                printf("Valores Corretos: %s\n", novosValoresCorretos);
+
                 novoResolvido = verificaResolvido(novosValoresCorretos, novoJogo->solucao, novoResolvido);
                 char temporaria[1024];
                 sprintf(temporaria, "%s|%s|%d|%d", novosValoresCorretos, logCliente,novasTentativas, novoResolvido);//Servidor REsponde com valoresCorretos|logCliente|tentativas
@@ -494,13 +501,8 @@ void receberMensagemETratarServer(char *buffer, int socketCliente)
                 }
         }
     }}
-    else
-    {
-        logEventoServidor("Erro mensagem desconhecida");
-        printf("Erro mensagem desconhecida\n");
-    }
     free(tempStr);
-    return;
+    }
 }
 
 int main(int argc, char **argv)

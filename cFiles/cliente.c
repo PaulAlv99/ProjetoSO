@@ -70,6 +70,7 @@ void carregarConfigCliente(char *nomeFicheiro, struct ClienteConfig *clienteConf
 
 void imprimirTabuleiro(char *jogo)
 {
+	printf("---------------------\n");
 	for (int i = 0; i < NUM_LINHAS; i++)
 	{
 		if (i % 3 == 0 && i != 0)
@@ -86,6 +87,7 @@ void imprimirTabuleiro(char *jogo)
 		}
 		printf("\n");
 	}
+	printf("---------------------\n");
 }
 
 void logEventoCliente(const char *message, struct ClienteConfig clienteConfig)
@@ -219,18 +221,18 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 		// printf("Recebido do servidor: %s\n", buffer);
 		strcpy(clienteConfig->jogoAtual.jogo,buffer);
 	}
-	else if (bytesReceived == 0)
-	{
-		printf("Conexão fechada pelo servidor.\n");
-		close(clienteConfig->socket);
-		exit(0);
-	}
-	else
-	{
-		perror("Erro ao receber dados do servidor");
-		close(clienteConfig->socket);
-		exit(1);
-	}
+	// else if (bytesReceived == 0)
+	// {
+	// 	printf("Conexão fechada pelo servidor.\n");
+	// 	close(clienteConfig->socket);
+	// 	exit(0);
+	// }
+	// else
+	// {
+	// 	perror("Erro ao receber dados do servidor");
+	// 	close(clienteConfig->socket);
+	// 	exit(1);
+	// }
 	if (strcmp(clienteConfig->TemJogo, "COM_JOGO") == 0)
 	{
 		sprintf(temp, "COM_JOGO|%lu|%s|%s|%li|%s|%s|%d|%lu", clienteConfig->idCliente, clienteConfig->tipoJogo, clienteConfig->tipoResolucao, clienteConfig->jogoAtual.idJogo,clienteConfig->jogoAtual.jogo, clienteConfig->jogoAtual.valoresCorretos, clienteConfig->jogoAtual.resolvido, clienteConfig->jogoAtual.numeroTentativas);
@@ -247,12 +249,16 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
     		char *logCliente = strtok(NULL, "|");
 			char *novasTentativas = strtok(NULL, "|");
 			char *novoResolvido = strtok(NULL, "|");
+			printf("%s\n", novosValoresCorretos);
 			strcpy(clienteConfig->jogoAtual.valoresCorretos, novosValoresCorretos);
+			printf("Valores Corretos: %s\n", novosValoresCorretos);
+			printf("Valores Corretos: %s\n", clienteConfig->jogoAtual.valoresCorretos);
 			logEventoCliente(logCliente, *clienteConfig);
 			clienteConfig->jogoAtual.numeroTentativas = (novasTentativas);
 			clienteConfig->jogoAtual.resolvido = (bool)(novoResolvido);
 			resolvido = (bool)(novoResolvido);
 			imprimirTabuleiro(clienteConfig->jogoAtual.valoresCorretos);
+			//printf("\n\n");
 			//Mandar Nova tentativa
 			strcpy(clienteConfig->jogoAtual.jogo, clienteConfig->jogoAtual.valoresCorretos);
 			tentarSolucaoCompleta(clienteConfig->jogoAtual.jogo, clienteConfig->jogoAtual.valoresCorretos);
@@ -261,20 +267,19 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 			imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
 
 			}
-			else if (bytesReceived == 0)
-			{
-				printf("Conexão fechada pelo servidor.\n");
-				close(clienteConfig->socket);
-				exit(0);
-			}
-			else
-			{
-				perror("Erro ao receber dados do servidor");
-				close(clienteConfig->socket);
-				exit(1);
-			}
+			// else if (bytesReceived == 0)
+			// {
+			// 	printf("Conexão fechada pelo servidor.\n");
+			// 	close(clienteConfig->socket);
+			// 	exit(0);
+			// }
+			// else
+			// {
+			// 	perror("Erro ao receber dados do servidor");
+			// 	close(clienteConfig->socket);
+			// 	exit(1);
+			// }
 			
-				imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
 	}
 
 	}
