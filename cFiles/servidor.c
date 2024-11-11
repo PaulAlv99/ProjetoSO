@@ -477,7 +477,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente)
                 strcpy(novosValoresCorretos, valoresCorretos);
                 char* logCliente;
                 bool novoResolvido;
-                novoResolvido = *resolvido;
+                novoResolvido = atoi(resolvido);
                 int novasTentativas = *tentativas;
                 int idJogoInt = (int)*idJogo; // Ensure idJogo is an integer
 
