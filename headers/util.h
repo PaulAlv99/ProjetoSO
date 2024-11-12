@@ -5,6 +5,8 @@
 #include <time.h>
 #include <errno.h>
 #include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <pthread.h>
 #include <stdbool.h>
 #include <sys/socket.h>
@@ -13,6 +15,8 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <errno.h>
+#include <semaphore.h>
+#include <signal.h>
 
 #define TEMPO_TAMANHO 22
 #define BUF_SIZE 2048
@@ -22,12 +26,13 @@
 #define NUM_COLUNAS 9
 #define NUM_JOGOS 5
 #define INFO_SIZE 256
-
+sem_t semaforoAguardaResposta;
+sem_t semAguardar;
 // globais
 const char *getTempo();
+const char *getTempoHoraMinutoSegundo();
 void enviarMensagens();
 void receberMensagens(int nUtilizadores);
-
 int fecharFicheiro(FILE *file);
 FILE *abrirFicheiro(char *filename);
 int validarNomeFile(char *arquivoNome, char *padrao);

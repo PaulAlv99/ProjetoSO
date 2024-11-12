@@ -7,6 +7,9 @@ static int idCliente = 0;
 // tricos
 pthread_mutex_t mutexServidorLog = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexClienteID = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutexNTentativas = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutexjogosAleatorios = PTHREAD_MUTEX_INITIALIZER;
+sem_t semaforoAguardaResposta;
 
 // so tem o ficheiro da localizacao dos jogos e solucoes que neste caso e apenas 1 ficheiro
 void carregarConfigServidor(char *nomeFicheiro, struct ServidorConfig *serverConfig)
@@ -124,15 +127,13 @@ void logQueEventoServidor(int numero)
 //     }
 // }
 
-
-
 // atualiza os valoresCorretos da Ultima Tentativa
-char *atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorretos[], char solucao[], int nTentativas)
+char *atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorretos[], char solucao[], int *nTentativas)
 {
-    char* logCliente = malloc(1024);
+    char *logCliente = malloc(1024);
     char Tentativas[100];
-    sprintf(Tentativas, "Tentativa n: %d \n", nTentativas);
-    //Retornar tenativas para escrever no log do cliente
+    sprintf(Tentativas, "Tentativa n: %d\n", *nTentativas);
+    // Retornar tenativas para escrever no log do cliente
     for (int i = 0; i < strlen(tentativaAtual); i++)
     {
         if (valoresCorretos[i] == '0')
@@ -141,21 +142,24 @@ char *atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorret
             {
                 valoresCorretos[i] = tentativaAtual[i];
                 char message[1024];
-                sprintf(message, "\nValor correto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
-                strcat(logCliente, message);
-                printf("%s",message);
+                // sprintf(message, "\nValor correto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
+                // strcat(logCliente, message);
+                // printf("%s", message);
 
                 // printf("%d \n", valoresCorretos);
             }
             else
             {
-                char message[1024] = "";
-                sprintf(message, "Valor incorreto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
-                strcat(logCliente, message);
-                printf("%s",message);
+                // char message[1024] = "";
+                // sprintf(message, "Valor incorreto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
+                // strcat(logCliente, message);
+                // printf("%s", message);
             }
         }
     }
+    pthread_mutex_lock(&mutexNTentativas);
+    *nTentativas = *nTentativas + 1;
+    pthread_mutex_unlock(&mutexNTentativas);
     return logCliente;
 }
 
@@ -391,19 +395,17 @@ void iniciarServidorSocket(struct ServidorConfig *server)
 
         if (fork() == 0)
         {
+            struct ClienteConfig clienteConfig = {0};
             // Processo filho
             close(socketServidor);
-            send(socketCliente, temp, BUF_SIZE, 0);
+            write(socketCliente, temp, BUF_SIZE);
             printf("Cliente-%d conectado\n", idCliente);
             char buffer[BUF_SIZE] = {0};
-            int leitura = read(socketCliente, buffer, BUF_SIZE);
-            if (leitura == -1)
-            {
-                perror("Erro ao ler do socket");
-                exit(1);
-            }
-            printf("Mensagem recebida: %s\n", buffer);
-            receberMensagemETratarServer(buffer, socketCliente);
+            // rand time dá sempre mesma seed se chegarem ao mesmo tempo
+            srand(getpid());
+            int nJogo = rand() % NUM_JOGOS;
+            char *jogoADar = jogosEsolucoes[nJogo].jogo;
+            receberMensagemETratarServer(buffer, socketCliente, clienteConfig, nJogo, jogoADar);
             close(socketCliente);
             exit(0);
         }
@@ -415,92 +417,140 @@ void iniciarServidorSocket(struct ServidorConfig *server)
     }
     close(socketServidor);
 }
-
-void receberMensagemETratarServer(char *buffer, int socketCliente)
+void receberMensagemETratarServer(char *buffer, int socketCliente, struct ClienteConfig clienteConfig, int nJogo, char *jogoADar)
 {
-    // FORMATO DAS TROCAS DE MSG
-    // SEM_JOGO|IDCLIENTE|TIPOJOGO|TIPORESOLUCAO|JOGO
-    // TipoJogo MUL ou ONE
-    // TipoResolucao COMPLET ou PARCIAL
-    //Servidor manda o o jogo inicial so na primeira vez
-    // SEM_JOGO|i|SNG|COMPLET|idJogo|tentativaAtual|5300...(valores acertados)|false(resolvido)|tentativas
-    char *tempStr = malloc(1024);
-    char *TemJogo = strtok(buffer, "|");
-    char *clienteID = strtok(NULL, "|");
-    char *tipoJogo = strtok(NULL, "|");
-     char *tipoResolucao = strtok(NULL, "|");
-     char *idJogo = strtok(NULL, "|");
-     char *tentativaAtual = strtok(NULL, "|");
-     char *valoresCorretos = strtok(NULL, "|");
-     char *resolvido = strtok(NULL, "|");
-     char *tentativas = strtok(NULL, "|");
-    // char *jogo = strtok(NULL, "|");
-    if (strcmp(TemJogo, "SEM_JOGO") == 0)
+    sem_init(&semaforoAguardaResposta, 0, 1);
+    while (recv(socketCliente, buffer, BUF_SIZE, 0) > 0)
     {
-        sprintf(tempStr, "Cliente-%s ainda não recebeu um jogo", clienteID);
-        printf("%s", tempStr);
-        logEventoServidor(tempStr);
-        //mudar seed para mandar jogo
-        //estou a pensar implementar semaforo e cada um dos jogos é uma sala
-        //tendo possibilidade de multiplayer ONE OU MUL
-        srand(time(NULL));
-        int idJogo=rand()%NUM_JOGOS;
-        if (send(socketCliente, jogosEsolucoes[idJogo].jogo, strlen(jogosEsolucoes[idJogo].jogo), 0) != -1)
+        printf("Mensagem recebida: %s\n", buffer);
+        char *idCliente = strtok(buffer, "|");
+        char *tipoJogo = strtok(NULL, "|");
+        char *tipoResolucao = strtok(NULL, "|");
+        char *temJogo = strtok(NULL, "|");
+        char *idJogo = strtok(NULL, "|");
+        char *jogo = strtok(NULL, "|");
+        char *valoresCorretos = strtok(NULL, "|");
+        char *tempoInicio = strtok(NULL, "|");
+        char *tempoFinal = strtok(NULL, "|");
+        char *resolvido = strtok(NULL, "|");
+        char *numeroTentativas = strtok(NULL, "|");
+        // Parse message components...
+        if (strcmp(temJogo, "SEM_JOGO") == 0)
         {
-            sprintf(tempStr, "Enviou um jogo ao cliente-%s", clienteID);
-            logEventoServidor(tempStr);
-            printf("Enviou um jogo ao cliente-%s\n", clienteID);
-        }
-    }
-    // da do id 1 até 999999 podendo ser alterado para mais
-    else if (strcmp(TemJogo, "COM_JOGO") == 0)
-    {
-        if(strcmp(tipoJogo,"SNG")){
-            if(strcmp(tipoResolucao,"COMPLET")){
-                int leitura = read(socketCliente, buffer, BUF_SIZE);
-                char *tempStr = malloc(1024);
-                char *TemJogo = strtok(buffer, "|");
-                char *clienteID = strtok(NULL, "|");
-                char *tipoJogo = strtok(NULL, "|");
-                char *tipoResolucao = strtok(NULL, "|");
-                char *idJogo = strtok(NULL, "|");
-                char *tentativaAtual = strtok(NULL, "|");
-                char *valoresCorretos = strtok(NULL, "|");
-                char *resolvido = strtok(NULL, "|");
-                char *tentativas = strtok(NULL, "|");
-                sprintf(tempStr, "Recebeu uma solucao do cliente-%s", clienteID);
-                logEventoServidor(tempStr);
-        
-                printf("Recebeu uma solucao do cliente-%s\n", clienteID);
-                printf("Verifica solucao e onde errou\n");
-                char novosValoresCorretos[NUMEROS_NO_JOGO];
-                strcpy(novosValoresCorretos, valoresCorretos);
-                char* logCliente;
-                bool novoResolvido;
-                novoResolvido = atoi(resolvido);
-                int novasTentativas = *tentativas;
-                int idJogoInt = (int)*idJogo; // Ensure idJogo is an integer
+            if ((idCliente || tipoJogo || tipoResolucao || temJogo || idJogo || jogo || valoresCorretos || tempoInicio || tempoFinal || resolvido || numeroTentativas) == NULL)
+            {
+                printf("Erro: Mensagem recebida com formato inválido\n");
+                break;
+            }
 
-                struct Jogo *novoJogo = &jogosEsolucoes[idJogoInt];
-                logCliente = atualizaValoresCorretosCompletos(tentativaAtual, novosValoresCorretos, novoJogo->solucao, novasTentativas);
-                novoResolvido = verificaResolvido(novosValoresCorretos, novoJogo->solucao, novoResolvido);
-                char temporaria[1024];
-                sprintf(temporaria, "%s|%s|%d|%d", novosValoresCorretos, logCliente,novasTentativas, novoResolvido);//Servidor REsponde com valoresCorretos|logCliente|tentativas
-                if (send(socketCliente, temporaria, strlen(temporaria), 0) != -1)
-                {
-                    sprintf(tempStr, "Enviou Valores corretos atualizados ao cliente-%s", clienteID);
-                    logEventoServidor(tempStr);
-                    printf("Enviou Valores corretos atualizados ao cliente-%s\n", clienteID);
-                }
+            sem_wait(&semaforoAguardaResposta);
+
+            char *temp = malloc(1024);
+            sprintf(temp, "Enviou um jogo para o cliente-%ld", clienteConfig.idCliente);
+            strcpy(clienteConfig.tipoJogo, tipoJogo);
+            strcpy(clienteConfig.tipoResolucao, tipoResolucao);
+            strcpy(clienteConfig.TemJogo, "COM_JOGO");
+            strcpy(clienteConfig.jogoAtual.jogo, jogoADar);
+            strcpy(clienteConfig.jogoAtual.valoresCorretos, jogoADar);
+            strcpy(clienteConfig.jogoAtual.tempoInicio, getTempoHoraMinutoSegundo());
+            strcpy(clienteConfig.jogoAtual.tempoFinal, tempoFinal);
+            clienteConfig.jogoAtual.resolvido = atoi(resolvido);
+            clienteConfig.jogoAtual.numeroTentativas = atoi(numeroTentativas);
+            clienteConfig.jogoAtual.idJogo = nJogo;
+            clienteConfig.idCliente = idCliente;
+
+            memset(buffer, 0, BUF_SIZE);
+            sprintf(buffer, "%lu|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d",
+                    clienteConfig.idCliente,
+                    clienteConfig.tipoJogo,
+                    clienteConfig.tipoResolucao,
+                    clienteConfig.TemJogo,
+                    clienteConfig.jogoAtual.idJogo,
+                    clienteConfig.jogoAtual.jogo,
+                    clienteConfig.jogoAtual.valoresCorretos,
+                    clienteConfig.jogoAtual.tempoInicio,
+                    clienteConfig.jogoAtual.tempoFinal,
+                    clienteConfig.jogoAtual.resolvido,
+                    clienteConfig.jogoAtual.numeroTentativas);
+
+            write(socketCliente, buffer, BUF_SIZE);
+            sem_post(&semaforoAguardaResposta);
+
+            printf("Mensagem enviada: %s\n", buffer);
+            logEventoServidor(temp);
+            free(temp);
+            memset(buffer, 0, BUF_SIZE);
         }
-    }}
-    else
-    {
-        logEventoServidor("Erro mensagem desconhecida");
-        printf("Erro mensagem desconhecida\n");
+
+        if (strcmp(temJogo, "COM_JOGO") == 0)
+        {
+            if ((idCliente || tipoJogo || tipoResolucao || temJogo || idJogo || jogo || valoresCorretos || tempoInicio || tempoFinal || resolvido || numeroTentativas) == NULL)
+            {
+                printf("Erro: Mensagem recebida com formato inválido\n");
+                break;
+            }
+
+            // Update client config outside critical section
+            clienteConfig.idCliente = atoi(idCliente);
+            strcpy(clienteConfig.TemJogo, temJogo);
+            strcpy(clienteConfig.tipoJogo, tipoJogo);
+            strcpy(clienteConfig.tipoResolucao, tipoResolucao);
+            clienteConfig.jogoAtual.idJogo = nJogo;
+            strcpy(clienteConfig.jogoAtual.jogo, jogo);
+            strcpy(clienteConfig.jogoAtual.valoresCorretos, valoresCorretos);
+            strcpy(clienteConfig.jogoAtual.tempoInicio, tempoInicio);
+            strcpy(clienteConfig.jogoAtual.tempoFinal, tempoFinal);
+            clienteConfig.jogoAtual.resolvido = atoi(resolvido);
+            clienteConfig.jogoAtual.numeroTentativas = atoi(numeroTentativas);
+
+            // Call potentially blocking function outside critical section
+            char *logCliente;
+            atualizaValoresCorretosCompletos(
+                clienteConfig.jogoAtual.jogo,
+                clienteConfig.jogoAtual.valoresCorretos,
+                jogosEsolucoes[clienteConfig.jogoAtual.idJogo].solucao,
+                &clienteConfig.jogoAtual.numeroTentativas);
+
+            if (verificaResolvido(
+                    clienteConfig.jogoAtual.valoresCorretos,
+                    jogosEsolucoes[clienteConfig.jogoAtual.idJogo].solucao,
+                    clienteConfig.jogoAtual.resolvido))
+            {
+                clienteConfig.jogoAtual.resolvido = 1;
+            }
+
+            sem_wait(&semaforoAguardaResposta);
+            char *temp = malloc(1024);
+            sprintf(temp, "Recebeu uma solução do cliente-%ld", clienteConfig.idCliente);
+
+            memset(buffer, 0, BUF_SIZE);
+            sprintf(buffer, "%lu|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d",
+                    clienteConfig.idCliente,
+                    clienteConfig.tipoJogo,
+                    clienteConfig.tipoResolucao,
+                    clienteConfig.TemJogo,
+                    clienteConfig.jogoAtual.idJogo,
+                    clienteConfig.jogoAtual.jogo,
+                    clienteConfig.jogoAtual.valoresCorretos,
+                    clienteConfig.jogoAtual.tempoInicio,
+                    clienteConfig.jogoAtual.tempoFinal,
+                    clienteConfig.jogoAtual.resolvido,
+                    clienteConfig.jogoAtual.numeroTentativas);
+
+            write(socketCliente, buffer, BUF_SIZE);
+            sem_post(&semaforoAguardaResposta);
+
+            printf("Mensagem enviada: %s\n", buffer);
+            logEventoServidor(temp);
+            free(temp);
+            memset(buffer, 0, BUF_SIZE);
+        }
+        // é preciso isto aqui :(
+        sleep(1);
     }
-    free(tempStr);
-    return;
+    char *temp;
+    sprintf(temp, "Cliente-%ld desconectado", clienteConfig.idCliente);
+    printf("%s\n", temp);
 }
 
 int main(int argc, char **argv)

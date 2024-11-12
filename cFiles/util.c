@@ -1,5 +1,4 @@
 #include "../headers/util.h"
-
 int fecharFicheiro(FILE *file)
 {
 	if (file == NULL)
@@ -55,7 +54,13 @@ const char *getTempo()
 	strftime(buffer, sizeof(buffer) - 1, "%d-%m-%Y %H:%M:%S", localtime(&now));
 	return buffer;
 }
-
+const char *getTempoHoraMinutoSegundo()
+{
+	static char buffer[TEMPO_TAMANHO];
+	time_t now = time(NULL);
+	strftime(buffer, sizeof(buffer) - 1, "%H:%M:%S", localtime(&now));
+	return buffer;
+}
 // Parte Servidor
 
 #define MAXLINE 512

@@ -5,13 +5,13 @@
 
 struct JogoAtual
 {
-    long idJogo;
-    char jogo[NUMEROS_NO_JOGO];
-    char valoresCorretos[NUMEROS_NO_JOGO];
+    int idJogo;
+    char jogo[NUMEROS_NO_JOGO + 1];
+    char valoresCorretos[NUMEROS_NO_JOGO + 1];
     char tempoInicio[TEMPO_TAMANHO];
     char tempoFinal[TEMPO_TAMANHO];
     bool resolvido;
-    long numeroTentativas;
+    int numeroTentativas;
 };
 
 struct ClienteConfig

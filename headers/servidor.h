@@ -10,7 +10,7 @@
 // Isto nao e daqui, apagar depois
 struct Jogo
 {
-    long idJogo;
+    int idJogo;
     char jogo[NUMEROS_NO_JOGO + 1];
     char solucao[NUMEROS_NO_JOGO + 1];
 };
@@ -18,7 +18,7 @@ struct Jogo
 struct ClienteThread
 {
     struct ClienteConfig clienteConfig;
-    char tabuleiro[NUMEROS_NO_JOGO];
+    char tabuleiro[NUMEROS_NO_JOGO + 1];
 };
 
 struct ServidorConfig
@@ -36,12 +36,12 @@ void logEventoServidor(const char *message);
 void logQueEventoServidor(int numero);
 void tentarSolucaoCompleta(char tentativaAtual[], char valoresCorretos[]);
 void tentarSolucaoParcial(char tentativaAtual[], char valoresCorretos[]);
-char* atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorretos[], char solucao[], int nTentativas);
+char *atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorretos[], char solucao[], int *nTentativas);
 void atualizaValoresCorretosParcial(char tentativaAtual[], char valoresCorretos[], char solucao[], int nTentativas);
 void carregarFicheiroJogosSolucoes(char *nomeFicheiro);
 struct ServidorConfig construtorServer(int domain, int service, int protocol, __u_long interface, int port, int backlog, char *ficheiroJogosESolucoesCaminho);
 void iniciarServidorSocket(struct ServidorConfig *server);
-void receberMensagemETratarServer(char *buffer, int socketCliente);
+void receberMensagemETratarServer(char *buffer, int socketCliente, struct ClienteConfig clienteConfig, int nJogo, char *jogoADar);
 bool verificaResolvido(char valoresCorretos[], char solucao[], bool resolvido);
 void resolverJogoCompleto(char jogo[], char solucao[], int nTentativas);
 void resolverJogoParcial(char jogo[], char solucao[], int nTentativas);
