@@ -44294,3 +44294,1236 @@
 [12-11-2024 14:39:53] Recebeu uma solução do cliente--1
 [12-11-2024 14:39:53] Recebeu uma solução do cliente--1
 [12-11-2024 14:39:53] Recebeu uma solução do cliente--1
+[12-11-2024 15:33:31] Enviou um jogo para o cliente-0
+[12-11-2024 15:34:03] Servidor comecou
+[12-11-2024 15:34:06] Enviou um jogo para o cliente-0
+[12-11-2024 15:34:08] Enviou um jogo para o cliente-0
+[12-11-2024 15:34:09] Recebeu uma solução do cliente-417427536
+[12-11-2024 15:34:10] Recebeu uma solução do cliente-417427536
+[12-11-2024 15:34:11] Recebeu uma solução do cliente-417427536
+[12-11-2024 15:34:12] Recebeu uma solução do cliente-417427536
+[12-11-2024 15:34:13] Recebeu uma solução do cliente-417427536
+[12-11-2024 15:34:14] Recebeu uma solução do cliente-417427536
+[12-11-2024 15:34:15] Recebeu uma solução do cliente-417427536
+[12-11-2024 15:34:16] Recebeu uma solução do cliente-417427536
+[12-11-2024 15:34:17] Recebeu uma solução do cliente-417427536
+[12-11-2024 15:34:32] Enviou um jogo para o cliente-0
+[12-11-2024 15:34:42] Enviou um jogo para o cliente-0
+[12-11-2024 15:35:28] Enviou um jogo para o cliente-0
+[12-11-2024 15:35:32] Servidor comecou
+[12-11-2024 15:35:35] Enviou um jogo para o cliente-0
+[12-11-2024 15:35:36] Recebeu uma solução do cliente--1
+[12-11-2024 15:35:37] Recebeu uma solução do cliente--1
+[12-11-2024 15:35:38] Recebeu uma solução do cliente--1
+[12-11-2024 15:35:39] Recebeu uma solução do cliente--1
+[12-11-2024 15:35:40] Recebeu uma solução do cliente--1
+[12-11-2024 15:35:41] Recebeu uma solução do cliente--1
+[12-11-2024 15:35:42] Recebeu uma solução do cliente--1
+[12-11-2024 15:35:43] Recebeu uma solução do cliente--1
+[12-11-2024 15:35:44] Recebeu uma solução do cliente--1
+[12-11-2024 15:35:46] Enviou um jogo para o cliente-0
+[12-11-2024 15:35:47] Recebeu uma solução do cliente--1
+[12-11-2024 15:35:48] Recebeu uma solução do cliente--1
+[12-11-2024 15:35:49] Recebeu uma solução do cliente--1
+[12-11-2024 15:35:50] Recebeu uma solução do cliente--1
+[12-11-2024 15:35:51] Recebeu uma solução do cliente--1
+[12-11-2024 15:35:52] Recebeu uma solução do cliente--1
+[12-11-2024 15:35:53] Recebeu uma solução do cliente--1
+[12-11-2024 15:35:54] Recebeu uma solução do cliente--1
+[12-11-2024 15:35:55] Recebeu uma solução do cliente--1
+[12-11-2024 15:35:59] Enviou um jogo para o cliente-0
+[12-11-2024 15:36:00] Recebeu uma solução do cliente--1
+[12-11-2024 15:36:01] Recebeu uma solução do cliente--1
+[12-11-2024 15:36:02] Recebeu uma solução do cliente--1
+[12-11-2024 15:36:03] Recebeu uma solução do cliente--1
+[12-11-2024 15:36:04] Recebeu uma solução do cliente--1
+[12-11-2024 15:36:05] Recebeu uma solução do cliente--1
+[12-11-2024 15:36:06] Recebeu uma solução do cliente--1
+[12-11-2024 15:36:07] Recebeu uma solução do cliente--1
+[12-11-2024 15:36:08] Recebeu uma solução do cliente--1
+[12-11-2024 15:36:25] Servidor comecou
+[12-11-2024 15:36:28] Enviou um jogo para o cliente-0
+[12-11-2024 15:36:28] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:28] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:28] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:28] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:28] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:28] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:28] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:28] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:28] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:30] Enviou um jogo para o cliente-0
+[12-11-2024 15:36:30] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:30] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:30] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:30] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:30] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:30] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:30] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:30] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:30] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:30] Enviou um jogo para o cliente-0
+[12-11-2024 15:36:30] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:30] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:30] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:30] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:30] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:30] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:30] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:30] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:30] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:31] Enviou um jogo para o cliente-0
+[12-11-2024 15:36:31] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:31] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:31] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:31] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:31] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:31] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:31] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:31] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:31] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:32] Enviou um jogo para o cliente-0
+[12-11-2024 15:36:32] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:32] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:32] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:32] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:32] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:32] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:32] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:32] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:32] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:32] Enviou um jogo para o cliente-0
+[12-11-2024 15:36:32] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:32] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:32] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:32] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:32] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:32] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:32] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:32] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:32] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:33] Enviou um jogo para o cliente-0
+[12-11-2024 15:36:33] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:33] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:33] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:33] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:33] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:33] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:33] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:33] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:33] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:33] Enviou um jogo para o cliente-0
+[12-11-2024 15:36:33] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:33] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:33] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:33] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:33] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:33] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:33] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:33] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:33] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:34] Enviou um jogo para o cliente-0
+[12-11-2024 15:36:34] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:34] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:34] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:34] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:34] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:34] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:34] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:34] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:34] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:35] Enviou um jogo para o cliente-0
+[12-11-2024 15:36:35] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:35] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:35] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:35] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:35] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:35] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:35] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:35] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:35] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:35] Enviou um jogo para o cliente-0
+[12-11-2024 15:36:35] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:35] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:35] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:35] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:35] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:35] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:35] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:35] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:35] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:36] Enviou um jogo para o cliente-0
+[12-11-2024 15:36:36] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:36] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:36] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:36] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:36] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:36] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:36] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:36] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:36] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:37] Enviou um jogo para o cliente-0
+[12-11-2024 15:36:37] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:37] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:37] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:37] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:37] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:37] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:37] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:37] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:37] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:37] Enviou um jogo para o cliente-0
+[12-11-2024 15:36:37] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:37] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:37] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:37] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:37] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:37] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:37] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:37] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:37] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:38] Enviou um jogo para o cliente-0
+[12-11-2024 15:36:38] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:38] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:38] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:38] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:38] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:38] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:38] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:38] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:38] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:38] Enviou um jogo para o cliente-0
+[12-11-2024 15:36:38] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:38] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:38] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:38] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:38] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:38] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:38] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:38] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:38] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:39] Enviou um jogo para o cliente-0
+[12-11-2024 15:36:39] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:39] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:39] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:39] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:39] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:39] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:39] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:39] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:39] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:40] Enviou um jogo para o cliente-0
+[12-11-2024 15:36:40] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:40] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:40] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:40] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:40] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:40] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:40] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:40] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:36:40] Recebeu uma solução do cliente-517827680
+[12-11-2024 15:37:00] Servidor comecou
+[12-11-2024 15:37:02] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:02] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:02] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:02] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:02] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:02] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:02] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:02] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:02] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:02] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:03] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:03] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:03] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:03] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:03] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:03] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:03] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:03] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:03] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:03] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:04] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:05] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:05] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:05] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:05] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:05] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:05] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:05] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:05] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:05] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:05] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:05] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:05] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:05] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:05] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:05] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:05] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:05] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:05] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:05] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:05] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:06] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:06] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:06] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:06] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:06] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:06] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:06] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:06] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:06] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:06] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:06] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:06] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:06] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:06] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:06] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:06] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:06] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:06] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:06] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:06] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:07] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:07] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:07] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:07] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:07] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:07] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:07] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:07] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:07] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:07] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:07] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:07] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:07] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:07] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:07] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:07] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:07] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:07] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:07] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:07] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:08] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:08] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:08] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:08] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:08] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:08] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:08] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:08] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:08] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:08] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:08] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:08] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:08] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:08] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:08] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:08] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:08] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:08] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:08] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:08] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:09] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:09] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:09] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:09] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:09] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:09] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:09] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:09] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:09] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:09] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:09] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:09] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:09] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:09] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:09] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:09] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:09] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:09] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:09] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:09] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:10] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:11] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:11] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:11] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:11] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:11] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:11] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:11] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:11] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:11] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:11] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:12] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:12] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:12] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:12] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:12] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:12] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:12] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:12] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:12] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:12] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:32] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:32] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:32] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:32] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:32] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:32] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:32] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:32] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:32] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:32] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:35] Enviou um jogo para o cliente-0
+[12-11-2024 15:37:35] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:35] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:35] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:35] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:35] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:35] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:35] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:35] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:37:35] Recebeu uma solução do cliente-1116694688
+[12-11-2024 15:39:42] Servidor comecou
+[12-11-2024 15:39:44] Servidor comecou
+[12-11-2024 15:40:19] Servidor comecou
+[12-11-2024 15:40:23] Servidor comecou
+[12-11-2024 15:40:25] Enviou um jogo para o cliente-0
+[12-11-2024 15:40:25] Recebeu uma solução do cliente-1585545008
+[12-11-2024 15:40:25] Recebeu uma solução do cliente-1585545008
+[12-11-2024 15:40:25] Recebeu uma solução do cliente-1585545008
+[12-11-2024 15:40:25] Recebeu uma solução do cliente-1585545008
+[12-11-2024 15:40:25] Recebeu uma solução do cliente-1585545008
+[12-11-2024 15:40:25] Recebeu uma solução do cliente-1585545008
+[12-11-2024 15:40:25] Recebeu uma solução do cliente-1585545008
+[12-11-2024 15:40:25] Recebeu uma solução do cliente-1585545008
+[12-11-2024 15:40:25] Recebeu uma solução do cliente-1585545008
+[12-11-2024 15:41:13] Servidor comecou
+[12-11-2024 15:41:50] Servidor comecou
+[12-11-2024 15:41:54] Enviou um jogo para o cliente-0
+[12-11-2024 15:41:54] Recebeu uma solução do cliente--772431136
+[12-11-2024 15:41:54] Recebeu uma solução do cliente--772431136
+[12-11-2024 15:41:54] Recebeu uma solução do cliente--772431136
+[12-11-2024 15:41:54] Recebeu uma solução do cliente--772431136
+[12-11-2024 15:41:54] Recebeu uma solução do cliente--772431136
+[12-11-2024 15:41:54] Recebeu uma solução do cliente--772431136
+[12-11-2024 15:41:54] Recebeu uma solução do cliente--772431136
+[12-11-2024 15:41:54] Recebeu uma solução do cliente--772431136
+[12-11-2024 15:41:54] Recebeu uma solução do cliente--772431136
+[12-11-2024 15:42:33] Servidor comecou
+[12-11-2024 15:42:40] Enviou um jogo para o cliente-0
+[12-11-2024 15:42:40] Recebeu uma solução do cliente-1
+[12-11-2024 15:42:40] Recebeu uma solução do cliente-1
+[12-11-2024 15:42:40] Recebeu uma solução do cliente-1
+[12-11-2024 15:42:40] Recebeu uma solução do cliente-1
+[12-11-2024 15:42:40] Recebeu uma solução do cliente-1
+[12-11-2024 15:42:40] Recebeu uma solução do cliente-1
+[12-11-2024 15:42:40] Recebeu uma solução do cliente-1
+[12-11-2024 15:42:40] Recebeu uma solução do cliente-1
+[12-11-2024 15:42:40] Recebeu uma solução do cliente-1
+[12-11-2024 15:42:43] Enviou um jogo para o cliente-0
+[12-11-2024 15:42:43] Recebeu uma solução do cliente-2
+[12-11-2024 15:42:43] Recebeu uma solução do cliente-2
+[12-11-2024 15:42:43] Recebeu uma solução do cliente-2
+[12-11-2024 15:42:43] Recebeu uma solução do cliente-2
+[12-11-2024 15:42:43] Recebeu uma solução do cliente-2
+[12-11-2024 15:42:43] Recebeu uma solução do cliente-2
+[12-11-2024 15:42:43] Recebeu uma solução do cliente-2
+[12-11-2024 15:42:43] Recebeu uma solução do cliente-2
+[12-11-2024 15:42:43] Recebeu uma solução do cliente-2
+[12-11-2024 15:43:26] Enviou um jogo para o cliente-0
+[12-11-2024 15:43:26] Recebeu uma solução do cliente-3
+[12-11-2024 15:43:26] Recebeu uma solução do cliente-3
+[12-11-2024 15:43:26] Recebeu uma solução do cliente-3
+[12-11-2024 15:43:26] Recebeu uma solução do cliente-3
+[12-11-2024 15:43:26] Recebeu uma solução do cliente-3
+[12-11-2024 15:43:26] Recebeu uma solução do cliente-3
+[12-11-2024 15:43:26] Recebeu uma solução do cliente-3
+[12-11-2024 15:43:26] Recebeu uma solução do cliente-3
+[12-11-2024 15:43:26] Recebeu uma solução do cliente-3
+[12-11-2024 15:43:35] Servidor comecou
+[12-11-2024 15:43:38] Enviou um jogo para o cliente-0
+[12-11-2024 15:43:38] Recebeu uma solução do cliente-1
+[12-11-2024 15:43:38] Recebeu uma solução do cliente-1
+[12-11-2024 15:43:38] Recebeu uma solução do cliente-1
+[12-11-2024 15:43:38] Recebeu uma solução do cliente-1
+[12-11-2024 15:43:38] Recebeu uma solução do cliente-1
+[12-11-2024 15:43:38] Recebeu uma solução do cliente-1
+[12-11-2024 15:43:38] Recebeu uma solução do cliente-1
+[12-11-2024 15:43:38] Recebeu uma solução do cliente-1
+[12-11-2024 15:43:38] Recebeu uma solução do cliente-1
+[12-11-2024 15:43:39] Enviou um jogo para o cliente-0
+[12-11-2024 15:43:39] Recebeu uma solução do cliente-2
+[12-11-2024 15:43:39] Recebeu uma solução do cliente-2
+[12-11-2024 15:43:39] Recebeu uma solução do cliente-2
+[12-11-2024 15:43:39] Recebeu uma solução do cliente-2
+[12-11-2024 15:43:39] Recebeu uma solução do cliente-2
+[12-11-2024 15:43:39] Recebeu uma solução do cliente-2
+[12-11-2024 15:43:39] Recebeu uma solução do cliente-2
+[12-11-2024 15:43:39] Recebeu uma solução do cliente-2
+[12-11-2024 15:43:39] Recebeu uma solução do cliente-2
+[12-11-2024 15:43:40] Enviou um jogo para o cliente-0
+[12-11-2024 15:43:40] Recebeu uma solução do cliente-3
+[12-11-2024 15:43:40] Recebeu uma solução do cliente-3
+[12-11-2024 15:43:40] Recebeu uma solução do cliente-3
+[12-11-2024 15:43:40] Recebeu uma solução do cliente-3
+[12-11-2024 15:43:40] Recebeu uma solução do cliente-3
+[12-11-2024 15:43:40] Recebeu uma solução do cliente-3
+[12-11-2024 15:43:40] Recebeu uma solução do cliente-3
+[12-11-2024 15:43:40] Recebeu uma solução do cliente-3
+[12-11-2024 15:43:40] Recebeu uma solução do cliente-3
+[12-11-2024 15:43:41] Enviou um jogo para o cliente-0
+[12-11-2024 15:43:41] Recebeu uma solução do cliente-4
+[12-11-2024 15:43:41] Recebeu uma solução do cliente-4
+[12-11-2024 15:43:41] Recebeu uma solução do cliente-4
+[12-11-2024 15:43:41] Recebeu uma solução do cliente-4
+[12-11-2024 15:43:41] Recebeu uma solução do cliente-4
+[12-11-2024 15:43:41] Recebeu uma solução do cliente-4
+[12-11-2024 15:43:41] Recebeu uma solução do cliente-4
+[12-11-2024 15:43:41] Recebeu uma solução do cliente-4
+[12-11-2024 15:43:41] Recebeu uma solução do cliente-4
+[12-11-2024 15:43:41] Enviou um jogo para o cliente-0
+[12-11-2024 15:43:41] Recebeu uma solução do cliente-5
+[12-11-2024 15:43:41] Recebeu uma solução do cliente-5
+[12-11-2024 15:43:41] Recebeu uma solução do cliente-5
+[12-11-2024 15:43:41] Recebeu uma solução do cliente-5
+[12-11-2024 15:43:41] Recebeu uma solução do cliente-5
+[12-11-2024 15:43:41] Recebeu uma solução do cliente-5
+[12-11-2024 15:43:41] Recebeu uma solução do cliente-5
+[12-11-2024 15:43:41] Recebeu uma solução do cliente-5
+[12-11-2024 15:43:41] Recebeu uma solução do cliente-5
+[12-11-2024 15:43:42] Enviou um jogo para o cliente-0
+[12-11-2024 15:43:42] Recebeu uma solução do cliente-6
+[12-11-2024 15:43:42] Recebeu uma solução do cliente-6
+[12-11-2024 15:43:42] Recebeu uma solução do cliente-6
+[12-11-2024 15:43:42] Recebeu uma solução do cliente-6
+[12-11-2024 15:43:42] Recebeu uma solução do cliente-6
+[12-11-2024 15:43:42] Recebeu uma solução do cliente-6
+[12-11-2024 15:43:42] Recebeu uma solução do cliente-6
+[12-11-2024 15:43:42] Recebeu uma solução do cliente-6
+[12-11-2024 15:43:42] Recebeu uma solução do cliente-6
+[12-11-2024 15:43:43] Enviou um jogo para o cliente-0
+[12-11-2024 15:43:43] Recebeu uma solução do cliente-7
+[12-11-2024 15:43:43] Recebeu uma solução do cliente-7
+[12-11-2024 15:43:43] Recebeu uma solução do cliente-7
+[12-11-2024 15:43:43] Recebeu uma solução do cliente-7
+[12-11-2024 15:43:43] Recebeu uma solução do cliente-7
+[12-11-2024 15:43:43] Recebeu uma solução do cliente-7
+[12-11-2024 15:43:43] Recebeu uma solução do cliente-7
+[12-11-2024 15:43:43] Recebeu uma solução do cliente-7
+[12-11-2024 15:43:43] Recebeu uma solução do cliente-7
+[12-11-2024 15:43:44] Enviou um jogo para o cliente-0
+[12-11-2024 15:43:44] Recebeu uma solução do cliente-8
+[12-11-2024 15:43:44] Recebeu uma solução do cliente-8
+[12-11-2024 15:43:44] Recebeu uma solução do cliente-8
+[12-11-2024 15:43:44] Recebeu uma solução do cliente-8
+[12-11-2024 15:43:44] Recebeu uma solução do cliente-8
+[12-11-2024 15:43:44] Recebeu uma solução do cliente-8
+[12-11-2024 15:43:44] Recebeu uma solução do cliente-8
+[12-11-2024 15:43:44] Recebeu uma solução do cliente-8
+[12-11-2024 15:43:44] Recebeu uma solução do cliente-8
+[12-11-2024 15:46:16] Enviou um jogo para o cliente-0
+[12-11-2024 15:46:16] Recebeu uma solução do cliente-9
+[12-11-2024 15:46:16] Recebeu uma solução do cliente-9
+[12-11-2024 15:46:16] Recebeu uma solução do cliente-9
+[12-11-2024 15:46:16] Recebeu uma solução do cliente-9
+[12-11-2024 15:46:16] Recebeu uma solução do cliente-9
+[12-11-2024 15:46:16] Recebeu uma solução do cliente-9
+[12-11-2024 15:46:16] Recebeu uma solução do cliente-9
+[12-11-2024 15:46:16] Recebeu uma solução do cliente-9
+[12-11-2024 15:46:16] Recebeu uma solução do cliente-9
+[12-11-2024 15:46:18] Enviou um jogo para o cliente-0
+[12-11-2024 15:46:18] Recebeu uma solução do cliente-10
+[12-11-2024 15:46:18] Recebeu uma solução do cliente-10
+[12-11-2024 15:46:18] Recebeu uma solução do cliente-10
+[12-11-2024 15:46:18] Recebeu uma solução do cliente-10
+[12-11-2024 15:46:18] Recebeu uma solução do cliente-10
+[12-11-2024 15:46:18] Recebeu uma solução do cliente-10
+[12-11-2024 15:46:18] Recebeu uma solução do cliente-10
+[12-11-2024 15:46:18] Recebeu uma solução do cliente-10
+[12-11-2024 15:46:18] Recebeu uma solução do cliente-10
+[12-11-2024 15:46:19] Enviou um jogo para o cliente-0
+[12-11-2024 15:46:19] Recebeu uma solução do cliente-11
+[12-11-2024 15:46:19] Recebeu uma solução do cliente-11
+[12-11-2024 15:46:19] Recebeu uma solução do cliente-11
+[12-11-2024 15:46:19] Recebeu uma solução do cliente-11
+[12-11-2024 15:46:19] Recebeu uma solução do cliente-11
+[12-11-2024 15:46:19] Recebeu uma solução do cliente-11
+[12-11-2024 15:46:19] Recebeu uma solução do cliente-11
+[12-11-2024 15:46:19] Recebeu uma solução do cliente-11
+[12-11-2024 15:46:19] Recebeu uma solução do cliente-11
+[12-11-2024 15:46:20] Enviou um jogo para o cliente-0
+[12-11-2024 15:46:20] Recebeu uma solução do cliente-12
+[12-11-2024 15:46:20] Recebeu uma solução do cliente-12
+[12-11-2024 15:46:20] Recebeu uma solução do cliente-12
+[12-11-2024 15:46:20] Recebeu uma solução do cliente-12
+[12-11-2024 15:46:20] Recebeu uma solução do cliente-12
+[12-11-2024 15:46:20] Recebeu uma solução do cliente-12
+[12-11-2024 15:46:20] Recebeu uma solução do cliente-12
+[12-11-2024 15:46:20] Recebeu uma solução do cliente-12
+[12-11-2024 15:46:20] Recebeu uma solução do cliente-12
+[12-11-2024 15:46:33] Servidor comecou
+[12-11-2024 15:46:36] Enviou um jogo para o cliente-0
+[12-11-2024 15:46:36] Recebeu uma solução do cliente-1
+[12-11-2024 15:46:36] Recebeu uma solução do cliente-1
+[12-11-2024 15:46:36] Recebeu uma solução do cliente-1
+[12-11-2024 15:46:36] Recebeu uma solução do cliente-1
+[12-11-2024 15:46:36] Recebeu uma solução do cliente-1
+[12-11-2024 15:46:36] Recebeu uma solução do cliente-1
+[12-11-2024 15:46:36] Recebeu uma solução do cliente-1
+[12-11-2024 15:46:36] Recebeu uma solução do cliente-1
+[12-11-2024 15:46:36] Recebeu uma solução do cliente-1
+[12-11-2024 15:46:40] Enviou um jogo para o cliente-0
+[12-11-2024 15:46:40] Recebeu uma solução do cliente-2
+[12-11-2024 15:46:40] Recebeu uma solução do cliente-2
+[12-11-2024 15:46:40] Recebeu uma solução do cliente-2
+[12-11-2024 15:46:40] Recebeu uma solução do cliente-2
+[12-11-2024 15:46:40] Recebeu uma solução do cliente-2
+[12-11-2024 15:46:40] Recebeu uma solução do cliente-2
+[12-11-2024 15:46:40] Recebeu uma solução do cliente-2
+[12-11-2024 15:46:40] Recebeu uma solução do cliente-2
+[12-11-2024 15:46:40] Recebeu uma solução do cliente-2
+[12-11-2024 16:10:35] Servidor comecou
+[12-11-2024 16:10:38] Enviou um jogo para o cliente-0
+[12-11-2024 16:10:38] Recebeu uma solução do cliente-1
+[12-11-2024 16:10:38] Recebeu uma solução do cliente-1
+[12-11-2024 16:10:38] Recebeu uma solução do cliente-1
+[12-11-2024 16:10:38] Recebeu uma solução do cliente-1
+[12-11-2024 16:10:38] Recebeu uma solução do cliente-1
+[12-11-2024 16:10:38] Recebeu uma solução do cliente-1
+[12-11-2024 16:10:38] Recebeu uma solução do cliente-1
+[12-11-2024 16:10:38] Recebeu uma solução do cliente-1
+[12-11-2024 16:10:38] Recebeu uma solução do cliente-1
+[12-11-2024 16:10:39] Enviou um jogo para o cliente-0
+[12-11-2024 16:10:39] Recebeu uma solução do cliente-2
+[12-11-2024 16:10:39] Recebeu uma solução do cliente-2
+[12-11-2024 16:10:39] Recebeu uma solução do cliente-2
+[12-11-2024 16:10:39] Recebeu uma solução do cliente-2
+[12-11-2024 16:10:39] Recebeu uma solução do cliente-2
+[12-11-2024 16:10:39] Recebeu uma solução do cliente-2
+[12-11-2024 16:10:39] Recebeu uma solução do cliente-2
+[12-11-2024 16:10:39] Recebeu uma solução do cliente-2
+[12-11-2024 16:10:39] Recebeu uma solução do cliente-2
+[12-11-2024 16:10:39] Enviou um jogo para o cliente-0
+[12-11-2024 16:10:39] Recebeu uma solução do cliente-3
+[12-11-2024 16:10:39] Recebeu uma solução do cliente-3
+[12-11-2024 16:10:39] Recebeu uma solução do cliente-3
+[12-11-2024 16:10:39] Recebeu uma solução do cliente-3
+[12-11-2024 16:10:39] Recebeu uma solução do cliente-3
+[12-11-2024 16:10:39] Recebeu uma solução do cliente-3
+[12-11-2024 16:10:39] Recebeu uma solução do cliente-3
+[12-11-2024 16:10:39] Recebeu uma solução do cliente-3
+[12-11-2024 16:10:39] Recebeu uma solução do cliente-3
+[12-11-2024 16:10:40] Enviou um jogo para o cliente-0
+[12-11-2024 16:10:40] Recebeu uma solução do cliente-4
+[12-11-2024 16:10:40] Recebeu uma solução do cliente-4
+[12-11-2024 16:10:40] Recebeu uma solução do cliente-4
+[12-11-2024 16:10:40] Recebeu uma solução do cliente-4
+[12-11-2024 16:10:40] Recebeu uma solução do cliente-4
+[12-11-2024 16:10:40] Recebeu uma solução do cliente-4
+[12-11-2024 16:10:40] Recebeu uma solução do cliente-4
+[12-11-2024 16:10:40] Recebeu uma solução do cliente-4
+[12-11-2024 16:10:40] Recebeu uma solução do cliente-4
+[12-11-2024 16:10:41] Enviou um jogo para o cliente-0
+[12-11-2024 16:10:41] Recebeu uma solução do cliente-5
+[12-11-2024 16:10:41] Recebeu uma solução do cliente-5
+[12-11-2024 16:10:41] Recebeu uma solução do cliente-5
+[12-11-2024 16:10:41] Recebeu uma solução do cliente-5
+[12-11-2024 16:10:41] Recebeu uma solução do cliente-5
+[12-11-2024 16:10:41] Recebeu uma solução do cliente-5
+[12-11-2024 16:10:41] Recebeu uma solução do cliente-5
+[12-11-2024 16:10:41] Recebeu uma solução do cliente-5
+[12-11-2024 16:10:41] Recebeu uma solução do cliente-5
+[12-11-2024 16:10:42] Enviou um jogo para o cliente-0
+[12-11-2024 16:10:42] Recebeu uma solução do cliente-6
+[12-11-2024 16:10:42] Recebeu uma solução do cliente-6
+[12-11-2024 16:10:42] Recebeu uma solução do cliente-6
+[12-11-2024 16:10:42] Recebeu uma solução do cliente-6
+[12-11-2024 16:10:42] Recebeu uma solução do cliente-6
+[12-11-2024 16:10:42] Recebeu uma solução do cliente-6
+[12-11-2024 16:10:42] Recebeu uma solução do cliente-6
+[12-11-2024 16:10:42] Recebeu uma solução do cliente-6
+[12-11-2024 16:10:42] Recebeu uma solução do cliente-6
+[12-11-2024 16:10:42] Enviou um jogo para o cliente-0
+[12-11-2024 16:10:42] Recebeu uma solução do cliente-7
+[12-11-2024 16:10:42] Recebeu uma solução do cliente-7
+[12-11-2024 16:10:42] Recebeu uma solução do cliente-7
+[12-11-2024 16:10:42] Recebeu uma solução do cliente-7
+[12-11-2024 16:10:42] Recebeu uma solução do cliente-7
+[12-11-2024 16:10:42] Recebeu uma solução do cliente-7
+[12-11-2024 16:10:42] Recebeu uma solução do cliente-7
+[12-11-2024 16:10:42] Recebeu uma solução do cliente-7
+[12-11-2024 16:10:42] Recebeu uma solução do cliente-7
+[12-11-2024 16:10:43] Enviou um jogo para o cliente-0
+[12-11-2024 16:10:43] Recebeu uma solução do cliente-8
+[12-11-2024 16:10:43] Recebeu uma solução do cliente-8
+[12-11-2024 16:10:43] Recebeu uma solução do cliente-8
+[12-11-2024 16:10:43] Recebeu uma solução do cliente-8
+[12-11-2024 16:10:43] Recebeu uma solução do cliente-8
+[12-11-2024 16:10:43] Recebeu uma solução do cliente-8
+[12-11-2024 16:10:43] Recebeu uma solução do cliente-8
+[12-11-2024 16:10:43] Recebeu uma solução do cliente-8
+[12-11-2024 16:10:43] Recebeu uma solução do cliente-8
+[12-11-2024 16:10:44] Enviou um jogo para o cliente-0
+[12-11-2024 16:10:44] Recebeu uma solução do cliente-9
+[12-11-2024 16:10:44] Recebeu uma solução do cliente-9
+[12-11-2024 16:10:44] Recebeu uma solução do cliente-9
+[12-11-2024 16:10:44] Recebeu uma solução do cliente-9
+[12-11-2024 16:10:44] Recebeu uma solução do cliente-9
+[12-11-2024 16:10:44] Recebeu uma solução do cliente-9
+[12-11-2024 16:10:44] Recebeu uma solução do cliente-9
+[12-11-2024 16:10:44] Recebeu uma solução do cliente-9
+[12-11-2024 16:10:44] Recebeu uma solução do cliente-9
+[12-11-2024 16:10:44] Enviou um jogo para o cliente-0
+[12-11-2024 16:10:44] Recebeu uma solução do cliente-10
+[12-11-2024 16:10:44] Recebeu uma solução do cliente-10
+[12-11-2024 16:10:44] Recebeu uma solução do cliente-10
+[12-11-2024 16:10:44] Recebeu uma solução do cliente-10
+[12-11-2024 16:10:44] Recebeu uma solução do cliente-10
+[12-11-2024 16:10:44] Recebeu uma solução do cliente-10
+[12-11-2024 16:10:44] Recebeu uma solução do cliente-10
+[12-11-2024 16:10:44] Recebeu uma solução do cliente-10
+[12-11-2024 16:10:44] Recebeu uma solução do cliente-10
+[12-11-2024 16:10:45] Enviou um jogo para o cliente-0
+[12-11-2024 16:10:45] Recebeu uma solução do cliente-11
+[12-11-2024 16:10:45] Recebeu uma solução do cliente-11
+[12-11-2024 16:10:45] Recebeu uma solução do cliente-11
+[12-11-2024 16:10:45] Recebeu uma solução do cliente-11
+[12-11-2024 16:10:45] Recebeu uma solução do cliente-11
+[12-11-2024 16:10:45] Recebeu uma solução do cliente-11
+[12-11-2024 16:10:45] Recebeu uma solução do cliente-11
+[12-11-2024 16:10:45] Recebeu uma solução do cliente-11
+[12-11-2024 16:10:45] Recebeu uma solução do cliente-11
+[12-11-2024 16:10:46] Enviou um jogo para o cliente-0
+[12-11-2024 16:10:46] Recebeu uma solução do cliente-12
+[12-11-2024 16:10:46] Recebeu uma solução do cliente-12
+[12-11-2024 16:10:46] Recebeu uma solução do cliente-12
+[12-11-2024 16:10:46] Recebeu uma solução do cliente-12
+[12-11-2024 16:10:46] Recebeu uma solução do cliente-12
+[12-11-2024 16:10:46] Recebeu uma solução do cliente-12
+[12-11-2024 16:10:46] Recebeu uma solução do cliente-12
+[12-11-2024 16:10:46] Recebeu uma solução do cliente-12
+[12-11-2024 16:10:46] Recebeu uma solução do cliente-12
+[12-11-2024 16:11:29] Enviou um jogo para o cliente-0
+[12-11-2024 16:11:29] Recebeu uma solução do cliente-13
+[12-11-2024 16:11:29] Recebeu uma solução do cliente-13
+[12-11-2024 16:11:29] Recebeu uma solução do cliente-13
+[12-11-2024 16:11:29] Recebeu uma solução do cliente-13
+[12-11-2024 16:11:29] Recebeu uma solução do cliente-13
+[12-11-2024 16:11:29] Recebeu uma solução do cliente-13
+[12-11-2024 16:11:29] Recebeu uma solução do cliente-13
+[12-11-2024 16:11:29] Recebeu uma solução do cliente-13
+[12-11-2024 16:11:29] Recebeu uma solução do cliente-13
+[12-11-2024 16:11:31] Enviou um jogo para o cliente-0
+[12-11-2024 16:11:31] Recebeu uma solução do cliente-14
+[12-11-2024 16:11:31] Recebeu uma solução do cliente-14
+[12-11-2024 16:11:31] Recebeu uma solução do cliente-14
+[12-11-2024 16:11:31] Recebeu uma solução do cliente-14
+[12-11-2024 16:11:31] Recebeu uma solução do cliente-14
+[12-11-2024 16:11:31] Recebeu uma solução do cliente-14
+[12-11-2024 16:11:31] Recebeu uma solução do cliente-14
+[12-11-2024 16:11:31] Recebeu uma solução do cliente-14
+[12-11-2024 16:11:31] Recebeu uma solução do cliente-14
+[12-11-2024 16:11:31] Enviou um jogo para o cliente-0
+[12-11-2024 16:11:31] Recebeu uma solução do cliente-15
+[12-11-2024 16:11:31] Recebeu uma solução do cliente-15
+[12-11-2024 16:11:31] Recebeu uma solução do cliente-15
+[12-11-2024 16:11:31] Recebeu uma solução do cliente-15
+[12-11-2024 16:11:31] Recebeu uma solução do cliente-15
+[12-11-2024 16:11:31] Recebeu uma solução do cliente-15
+[12-11-2024 16:11:31] Recebeu uma solução do cliente-15
+[12-11-2024 16:11:31] Recebeu uma solução do cliente-15
+[12-11-2024 16:11:31] Recebeu uma solução do cliente-15
+[12-11-2024 16:11:32] Enviou um jogo para o cliente-0
+[12-11-2024 16:11:32] Recebeu uma solução do cliente-16
+[12-11-2024 16:11:32] Recebeu uma solução do cliente-16
+[12-11-2024 16:11:32] Recebeu uma solução do cliente-16
+[12-11-2024 16:11:32] Recebeu uma solução do cliente-16
+[12-11-2024 16:11:32] Recebeu uma solução do cliente-16
+[12-11-2024 16:11:32] Recebeu uma solução do cliente-16
+[12-11-2024 16:11:32] Recebeu uma solução do cliente-16
+[12-11-2024 16:11:32] Recebeu uma solução do cliente-16
+[12-11-2024 16:11:32] Recebeu uma solução do cliente-16
+[12-11-2024 16:11:33] Enviou um jogo para o cliente-0
+[12-11-2024 16:11:33] Recebeu uma solução do cliente-17
+[12-11-2024 16:11:33] Recebeu uma solução do cliente-17
+[12-11-2024 16:11:33] Recebeu uma solução do cliente-17
+[12-11-2024 16:11:33] Recebeu uma solução do cliente-17
+[12-11-2024 16:11:33] Recebeu uma solução do cliente-17
+[12-11-2024 16:11:33] Recebeu uma solução do cliente-17
+[12-11-2024 16:11:33] Recebeu uma solução do cliente-17
+[12-11-2024 16:11:33] Recebeu uma solução do cliente-17
+[12-11-2024 16:11:33] Recebeu uma solução do cliente-17
+[12-11-2024 16:11:33] Enviou um jogo para o cliente-0
+[12-11-2024 16:11:33] Recebeu uma solução do cliente-18
+[12-11-2024 16:11:33] Recebeu uma solução do cliente-18
+[12-11-2024 16:11:33] Recebeu uma solução do cliente-18
+[12-11-2024 16:11:33] Recebeu uma solução do cliente-18
+[12-11-2024 16:11:33] Recebeu uma solução do cliente-18
+[12-11-2024 16:11:33] Recebeu uma solução do cliente-18
+[12-11-2024 16:11:33] Recebeu uma solução do cliente-18
+[12-11-2024 16:11:33] Recebeu uma solução do cliente-18
+[12-11-2024 16:11:33] Recebeu uma solução do cliente-18
+[12-11-2024 16:11:34] Enviou um jogo para o cliente-0
+[12-11-2024 16:11:34] Recebeu uma solução do cliente-19
+[12-11-2024 16:11:34] Recebeu uma solução do cliente-19
+[12-11-2024 16:11:34] Recebeu uma solução do cliente-19
+[12-11-2024 16:11:34] Recebeu uma solução do cliente-19
+[12-11-2024 16:11:34] Recebeu uma solução do cliente-19
+[12-11-2024 16:11:34] Recebeu uma solução do cliente-19
+[12-11-2024 16:11:34] Recebeu uma solução do cliente-19
+[12-11-2024 16:11:34] Recebeu uma solução do cliente-19
+[12-11-2024 16:11:34] Recebeu uma solução do cliente-19
+[12-11-2024 16:11:35] Enviou um jogo para o cliente-0
+[12-11-2024 16:11:35] Recebeu uma solução do cliente-20
+[12-11-2024 16:11:35] Recebeu uma solução do cliente-20
+[12-11-2024 16:11:35] Recebeu uma solução do cliente-20
+[12-11-2024 16:11:35] Recebeu uma solução do cliente-20
+[12-11-2024 16:11:35] Recebeu uma solução do cliente-20
+[12-11-2024 16:11:35] Recebeu uma solução do cliente-20
+[12-11-2024 16:11:35] Recebeu uma solução do cliente-20
+[12-11-2024 16:11:35] Recebeu uma solução do cliente-20
+[12-11-2024 16:11:35] Recebeu uma solução do cliente-20
+[12-11-2024 16:11:46] Servidor comecou
+[12-11-2024 16:11:46] Enviou um jogo para o cliente-0
+[12-11-2024 16:11:46] Recebeu uma solução do cliente-1
+[12-11-2024 16:11:46] Recebeu uma solução do cliente-1
+[12-11-2024 16:11:46] Enviou um jogo para o cliente-0
+[12-11-2024 16:11:46] Recebeu uma solução do cliente-1
+[12-11-2024 16:11:46] Recebeu uma solução do cliente-1
+[12-11-2024 16:11:46] Recebeu uma solução do cliente-1
+[12-11-2024 16:11:46] Recebeu uma solução do cliente-1
+[12-11-2024 16:11:46] Recebeu uma solução do cliente-1
+[12-11-2024 16:11:46] Recebeu uma solução do cliente-2
+[12-11-2024 16:11:46] Recebeu uma solução do cliente-1
+[12-11-2024 16:11:46] Recebeu uma solução do cliente-2
+[12-11-2024 16:11:46] Recebeu uma solução do cliente-2
+[12-11-2024 16:11:46] Recebeu uma solução do cliente-2
+[12-11-2024 16:11:46] Recebeu uma solução do cliente-1
+[12-11-2024 16:11:46] Recebeu uma solução do cliente-2
+[12-11-2024 16:11:46] Recebeu uma solução do cliente-2
+[12-11-2024 16:11:46] Recebeu uma solução do cliente-2
+[12-11-2024 16:11:46] Recebeu uma solução do cliente-2
+[12-11-2024 16:11:46] Recebeu uma solução do cliente-2
+[12-11-2024 16:12:46] Enviou um jogo para o cliente-0
+[12-11-2024 16:12:46] Recebeu uma solução do cliente-3
+[12-11-2024 16:12:46] Recebeu uma solução do cliente-3
+[12-11-2024 16:12:46] Recebeu uma solução do cliente-3
+[12-11-2024 16:12:46] Recebeu uma solução do cliente-3
+[12-11-2024 16:12:46] Recebeu uma solução do cliente-3
+[12-11-2024 16:12:46] Recebeu uma solução do cliente-3
+[12-11-2024 16:12:46] Recebeu uma solução do cliente-3
+[12-11-2024 16:12:46] Recebeu uma solução do cliente-3
+[12-11-2024 16:12:46] Recebeu uma solução do cliente-3
+[12-11-2024 16:12:47] Enviou um jogo para o cliente-0
+[12-11-2024 16:12:47] Recebeu uma solução do cliente-4
+[12-11-2024 16:12:47] Recebeu uma solução do cliente-4
+[12-11-2024 16:12:47] Recebeu uma solução do cliente-4
+[12-11-2024 16:12:47] Recebeu uma solução do cliente-4
+[12-11-2024 16:12:47] Recebeu uma solução do cliente-4
+[12-11-2024 16:12:47] Recebeu uma solução do cliente-4
+[12-11-2024 16:12:47] Recebeu uma solução do cliente-4
+[12-11-2024 16:12:47] Recebeu uma solução do cliente-4
+[12-11-2024 16:12:47] Recebeu uma solução do cliente-4
+[12-11-2024 16:13:09] Enviou um jogo para o cliente-0
+[12-11-2024 16:13:09] Recebeu uma solução do cliente-5
+[12-11-2024 16:13:09] Recebeu uma solução do cliente-5
+[12-11-2024 16:13:09] Recebeu uma solução do cliente-5
+[12-11-2024 16:13:09] Recebeu uma solução do cliente-5
+[12-11-2024 16:13:09] Recebeu uma solução do cliente-5
+[12-11-2024 16:13:09] Recebeu uma solução do cliente-5
+[12-11-2024 16:13:09] Recebeu uma solução do cliente-5
+[12-11-2024 16:13:09] Recebeu uma solução do cliente-5
+[12-11-2024 16:13:09] Recebeu uma solução do cliente-5
+[12-11-2024 16:13:10] Enviou um jogo para o cliente-0
+[12-11-2024 16:13:10] Recebeu uma solução do cliente-6
+[12-11-2024 16:13:10] Recebeu uma solução do cliente-6
+[12-11-2024 16:13:10] Recebeu uma solução do cliente-6
+[12-11-2024 16:13:10] Recebeu uma solução do cliente-6
+[12-11-2024 16:13:10] Recebeu uma solução do cliente-6
+[12-11-2024 16:13:10] Recebeu uma solução do cliente-6
+[12-11-2024 16:13:10] Recebeu uma solução do cliente-6
+[12-11-2024 16:13:10] Recebeu uma solução do cliente-6
+[12-11-2024 16:13:10] Recebeu uma solução do cliente-6
+[12-11-2024 16:13:11] Enviou um jogo para o cliente-0
+[12-11-2024 16:13:11] Recebeu uma solução do cliente-7
+[12-11-2024 16:13:11] Recebeu uma solução do cliente-7
+[12-11-2024 16:13:11] Recebeu uma solução do cliente-7
+[12-11-2024 16:13:11] Recebeu uma solução do cliente-7
+[12-11-2024 16:13:11] Recebeu uma solução do cliente-7
+[12-11-2024 16:13:11] Recebeu uma solução do cliente-7
+[12-11-2024 16:13:11] Recebeu uma solução do cliente-7
+[12-11-2024 16:13:11] Recebeu uma solução do cliente-7
+[12-11-2024 16:13:11] Recebeu uma solução do cliente-7
+[12-11-2024 16:13:12] Enviou um jogo para o cliente-0
+[12-11-2024 16:13:12] Recebeu uma solução do cliente-8
+[12-11-2024 16:13:12] Recebeu uma solução do cliente-8
+[12-11-2024 16:13:12] Recebeu uma solução do cliente-8
+[12-11-2024 16:13:12] Recebeu uma solução do cliente-8
+[12-11-2024 16:13:12] Recebeu uma solução do cliente-8
+[12-11-2024 16:13:12] Recebeu uma solução do cliente-8
+[12-11-2024 16:13:12] Recebeu uma solução do cliente-8
+[12-11-2024 16:13:12] Recebeu uma solução do cliente-8
+[12-11-2024 16:13:12] Recebeu uma solução do cliente-8
+[12-11-2024 16:13:12] Enviou um jogo para o cliente-0
+[12-11-2024 16:13:12] Recebeu uma solução do cliente-9
+[12-11-2024 16:13:12] Recebeu uma solução do cliente-9
+[12-11-2024 16:13:12] Recebeu uma solução do cliente-9
+[12-11-2024 16:13:12] Recebeu uma solução do cliente-9
+[12-11-2024 16:13:12] Recebeu uma solução do cliente-9
+[12-11-2024 16:13:12] Recebeu uma solução do cliente-9
+[12-11-2024 16:13:12] Recebeu uma solução do cliente-9
+[12-11-2024 16:13:12] Recebeu uma solução do cliente-9
+[12-11-2024 16:13:12] Recebeu uma solução do cliente-9
+[12-11-2024 16:13:13] Enviou um jogo para o cliente-0
+[12-11-2024 16:13:13] Recebeu uma solução do cliente-10
+[12-11-2024 16:13:13] Recebeu uma solução do cliente-10
+[12-11-2024 16:13:13] Recebeu uma solução do cliente-10
+[12-11-2024 16:13:13] Recebeu uma solução do cliente-10
+[12-11-2024 16:13:13] Recebeu uma solução do cliente-10
+[12-11-2024 16:13:13] Recebeu uma solução do cliente-10
+[12-11-2024 16:13:13] Recebeu uma solução do cliente-10
+[12-11-2024 16:13:13] Recebeu uma solução do cliente-10
+[12-11-2024 16:13:13] Recebeu uma solução do cliente-10
+[12-11-2024 16:13:14] Enviou um jogo para o cliente-0
+[12-11-2024 16:13:14] Recebeu uma solução do cliente-11
+[12-11-2024 16:13:14] Recebeu uma solução do cliente-11
+[12-11-2024 16:13:14] Recebeu uma solução do cliente-11
+[12-11-2024 16:13:14] Recebeu uma solução do cliente-11
+[12-11-2024 16:13:14] Recebeu uma solução do cliente-11
+[12-11-2024 16:13:14] Recebeu uma solução do cliente-11
+[12-11-2024 16:13:14] Recebeu uma solução do cliente-11
+[12-11-2024 16:13:14] Recebeu uma solução do cliente-11
+[12-11-2024 16:13:14] Recebeu uma solução do cliente-11
+[12-11-2024 16:13:40] Enviou um jogo para o cliente-0
+[12-11-2024 16:13:40] Recebeu uma solução do cliente-12
+[12-11-2024 16:13:40] Recebeu uma solução do cliente-12
+[12-11-2024 16:13:40] Recebeu uma solução do cliente-12
+[12-11-2024 16:13:40] Recebeu uma solução do cliente-12
+[12-11-2024 16:13:40] Recebeu uma solução do cliente-12
+[12-11-2024 16:13:40] Recebeu uma solução do cliente-12
+[12-11-2024 16:13:40] Recebeu uma solução do cliente-12
+[12-11-2024 16:13:40] Recebeu uma solução do cliente-12
+[12-11-2024 16:13:40] Recebeu uma solução do cliente-12
+[12-11-2024 16:13:41] Enviou um jogo para o cliente-0
+[12-11-2024 16:13:41] Recebeu uma solução do cliente-13
+[12-11-2024 16:13:41] Recebeu uma solução do cliente-13
+[12-11-2024 16:13:41] Recebeu uma solução do cliente-13
+[12-11-2024 16:13:41] Recebeu uma solução do cliente-13
+[12-11-2024 16:13:42] Recebeu uma solução do cliente-13
+[12-11-2024 16:13:42] Recebeu uma solução do cliente-13
+[12-11-2024 16:13:42] Recebeu uma solução do cliente-13
+[12-11-2024 16:13:42] Recebeu uma solução do cliente-13
+[12-11-2024 16:13:42] Recebeu uma solução do cliente-13
+[12-11-2024 16:14:34] Servidor comecou
+[12-11-2024 16:14:37] Enviou um jogo para o cliente-0
+[12-11-2024 16:14:37] Recebeu uma solução do cliente-1
+[12-11-2024 16:14:37] Recebeu uma solução do cliente-1
+[12-11-2024 16:14:37] Recebeu uma solução do cliente-1
+[12-11-2024 16:14:37] Recebeu uma solução do cliente-1
+[12-11-2024 16:14:37] Recebeu uma solução do cliente-1
+[12-11-2024 16:14:37] Recebeu uma solução do cliente-1
+[12-11-2024 16:14:37] Recebeu uma solução do cliente-1
+[12-11-2024 16:14:37] Recebeu uma solução do cliente-1
+[12-11-2024 16:14:37] Recebeu uma solução do cliente-1
+[12-11-2024 16:14:37] Enviou um jogo para o cliente-0
+[12-11-2024 16:14:37] Recebeu uma solução do cliente-2
+[12-11-2024 16:14:37] Recebeu uma solução do cliente-2
+[12-11-2024 16:14:37] Recebeu uma solução do cliente-2
+[12-11-2024 16:14:37] Recebeu uma solução do cliente-2
+[12-11-2024 16:14:37] Recebeu uma solução do cliente-2
+[12-11-2024 16:14:37] Recebeu uma solução do cliente-2
+[12-11-2024 16:14:37] Recebeu uma solução do cliente-2
+[12-11-2024 16:14:37] Recebeu uma solução do cliente-2
+[12-11-2024 16:14:37] Recebeu uma solução do cliente-2
+[12-11-2024 16:14:38] Enviou um jogo para o cliente-0
+[12-11-2024 16:14:38] Recebeu uma solução do cliente-3
+[12-11-2024 16:14:38] Recebeu uma solução do cliente-3
+[12-11-2024 16:14:38] Recebeu uma solução do cliente-3
+[12-11-2024 16:14:38] Recebeu uma solução do cliente-3
+[12-11-2024 16:14:38] Recebeu uma solução do cliente-3
+[12-11-2024 16:14:38] Recebeu uma solução do cliente-3
+[12-11-2024 16:14:38] Recebeu uma solução do cliente-3
+[12-11-2024 16:14:38] Recebeu uma solução do cliente-3
+[12-11-2024 16:14:38] Recebeu uma solução do cliente-3
+[12-11-2024 16:14:39] Enviou um jogo para o cliente-0
+[12-11-2024 16:14:39] Recebeu uma solução do cliente-4
+[12-11-2024 16:14:39] Recebeu uma solução do cliente-4
+[12-11-2024 16:14:39] Recebeu uma solução do cliente-4
+[12-11-2024 16:14:39] Recebeu uma solução do cliente-4
+[12-11-2024 16:14:39] Recebeu uma solução do cliente-4
+[12-11-2024 16:14:39] Recebeu uma solução do cliente-4
+[12-11-2024 16:14:39] Recebeu uma solução do cliente-4
+[12-11-2024 16:14:39] Recebeu uma solução do cliente-4
+[12-11-2024 16:14:39] Recebeu uma solução do cliente-4
+[12-11-2024 16:14:39] Enviou um jogo para o cliente-0
+[12-11-2024 16:14:39] Recebeu uma solução do cliente-5
+[12-11-2024 16:14:39] Recebeu uma solução do cliente-5
+[12-11-2024 16:14:39] Recebeu uma solução do cliente-5
+[12-11-2024 16:14:39] Recebeu uma solução do cliente-5
+[12-11-2024 16:14:39] Recebeu uma solução do cliente-5
+[12-11-2024 16:14:39] Recebeu uma solução do cliente-5
+[12-11-2024 16:14:39] Recebeu uma solução do cliente-5
+[12-11-2024 16:14:39] Recebeu uma solução do cliente-5
+[12-11-2024 16:14:39] Recebeu uma solução do cliente-5
+[12-11-2024 16:14:40] Enviou um jogo para o cliente-0
+[12-11-2024 16:14:40] Recebeu uma solução do cliente-6
+[12-11-2024 16:14:40] Recebeu uma solução do cliente-6
+[12-11-2024 16:14:40] Recebeu uma solução do cliente-6
+[12-11-2024 16:14:40] Recebeu uma solução do cliente-6
+[12-11-2024 16:14:40] Recebeu uma solução do cliente-6
+[12-11-2024 16:14:40] Recebeu uma solução do cliente-6
+[12-11-2024 16:14:40] Recebeu uma solução do cliente-6
+[12-11-2024 16:14:40] Recebeu uma solução do cliente-6
+[12-11-2024 16:14:40] Recebeu uma solução do cliente-6
+[12-11-2024 16:15:00] Servidor comecou
+[12-11-2024 16:15:00] Enviou um jogo para o cliente-0
+[12-11-2024 16:15:00] Recebeu uma solução do cliente-1
+[12-11-2024 16:15:00] Recebeu uma solução do cliente-1
+[12-11-2024 16:15:00] Recebeu uma solução do cliente-1
+[12-11-2024 16:15:00] Recebeu uma solução do cliente-1
+[12-11-2024 16:15:00] Recebeu uma solução do cliente-1
+[12-11-2024 16:15:00] Recebeu uma solução do cliente-1
+[12-11-2024 16:15:00] Recebeu uma solução do cliente-1
+[12-11-2024 16:15:00] Recebeu uma solução do cliente-1
+[12-11-2024 16:15:00] Recebeu uma solução do cliente-1
+[12-11-2024 16:15:00] Enviou um jogo para o cliente-0
+[12-11-2024 16:15:00] Recebeu uma solução do cliente-2
+[12-11-2024 16:15:00] Recebeu uma solução do cliente-2
+[12-11-2024 16:15:00] Recebeu uma solução do cliente-2
+[12-11-2024 16:15:00] Recebeu uma solução do cliente-2
+[12-11-2024 16:15:00] Recebeu uma solução do cliente-2
+[12-11-2024 16:15:00] Recebeu uma solução do cliente-2
+[12-11-2024 16:15:00] Recebeu uma solução do cliente-2
+[12-11-2024 16:15:00] Recebeu uma solução do cliente-2
+[12-11-2024 16:15:00] Recebeu uma solução do cliente-2
+[12-11-2024 16:19:47] Servidor comecou
+[12-11-2024 16:19:50] Enviou um jogo para o cliente-0
+[12-11-2024 16:19:50] Recebeu uma solução do cliente-1
+[12-11-2024 16:19:50] Recebeu uma solução do cliente-1
+[12-11-2024 16:19:50] Recebeu uma solução do cliente-1
+[12-11-2024 16:19:50] Recebeu uma solução do cliente-1
+[12-11-2024 16:19:50] Recebeu uma solução do cliente-1
+[12-11-2024 16:19:50] Recebeu uma solução do cliente-1
+[12-11-2024 16:19:50] Recebeu uma solução do cliente-1
+[12-11-2024 16:19:50] Recebeu uma solução do cliente-1
+[12-11-2024 16:19:50] Recebeu uma solução do cliente-1
+[12-11-2024 16:19:51] Enviou um jogo para o cliente-0
+[12-11-2024 16:19:51] Recebeu uma solução do cliente-2
+[12-11-2024 16:19:51] Recebeu uma solução do cliente-2
+[12-11-2024 16:19:51] Recebeu uma solução do cliente-2
+[12-11-2024 16:19:51] Recebeu uma solução do cliente-2
+[12-11-2024 16:19:51] Recebeu uma solução do cliente-2
+[12-11-2024 16:19:51] Recebeu uma solução do cliente-2
+[12-11-2024 16:19:51] Recebeu uma solução do cliente-2
+[12-11-2024 16:19:51] Recebeu uma solução do cliente-2
+[12-11-2024 16:19:51] Recebeu uma solução do cliente-2
+[12-11-2024 16:19:51] Enviou um jogo para o cliente-0
+[12-11-2024 16:19:51] Recebeu uma solução do cliente-3
+[12-11-2024 16:19:51] Recebeu uma solução do cliente-3
+[12-11-2024 16:19:51] Recebeu uma solução do cliente-3
+[12-11-2024 16:19:51] Recebeu uma solução do cliente-3
+[12-11-2024 16:19:51] Recebeu uma solução do cliente-3
+[12-11-2024 16:19:51] Recebeu uma solução do cliente-3
+[12-11-2024 16:19:51] Recebeu uma solução do cliente-3
+[12-11-2024 16:19:51] Recebeu uma solução do cliente-3
+[12-11-2024 16:19:51] Recebeu uma solução do cliente-3
+[12-11-2024 16:19:54] Enviou um jogo para o cliente-0
+[12-11-2024 16:19:54] Recebeu uma solução do cliente-4
+[12-11-2024 16:19:54] Recebeu uma solução do cliente-4
+[12-11-2024 16:19:54] Recebeu uma solução do cliente-4
+[12-11-2024 16:19:54] Recebeu uma solução do cliente-4
+[12-11-2024 16:19:54] Recebeu uma solução do cliente-4
+[12-11-2024 16:19:54] Recebeu uma solução do cliente-4
+[12-11-2024 16:19:54] Recebeu uma solução do cliente-4
+[12-11-2024 16:19:54] Recebeu uma solução do cliente-4
+[12-11-2024 16:19:54] Recebeu uma solução do cliente-4
+[12-11-2024 16:19:55] Enviou um jogo para o cliente-0
+[12-11-2024 16:19:55] Recebeu uma solução do cliente-5
+[12-11-2024 16:19:55] Recebeu uma solução do cliente-5
+[12-11-2024 16:19:55] Recebeu uma solução do cliente-5
+[12-11-2024 16:19:55] Recebeu uma solução do cliente-5
+[12-11-2024 16:19:55] Recebeu uma solução do cliente-5
+[12-11-2024 16:19:55] Recebeu uma solução do cliente-5
+[12-11-2024 16:19:55] Recebeu uma solução do cliente-5
+[12-11-2024 16:19:55] Recebeu uma solução do cliente-5
+[12-11-2024 16:19:55] Recebeu uma solução do cliente-5
+[12-11-2024 16:19:56] Enviou um jogo para o cliente-0
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-6
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-6
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-6
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-6
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-6
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-6
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-6
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-6
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-6
+[12-11-2024 16:19:56] Enviou um jogo para o cliente-0
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-7
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-7
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-7
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-7
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-7
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-7
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-7
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-7
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-7
+[12-11-2024 16:19:56] Enviou um jogo para o cliente-0
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-8
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-8
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-8
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-8
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-8
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-8
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-8
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-8
+[12-11-2024 16:19:56] Recebeu uma solução do cliente-8
+[12-11-2024 16:19:57] Enviou um jogo para o cliente-0
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-9
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-9
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-9
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-9
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-9
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-9
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-9
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-9
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-9
+[12-11-2024 16:19:57] Enviou um jogo para o cliente-0
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-10
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-10
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-10
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-10
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-10
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-10
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-10
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-10
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-10
+[12-11-2024 16:19:57] Enviou um jogo para o cliente-0
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-11
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-11
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-11
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-11
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-11
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-11
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-11
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-11
+[12-11-2024 16:19:57] Recebeu uma solução do cliente-11
+[12-11-2024 16:19:58] Enviou um jogo para o cliente-0
+[12-11-2024 16:19:58] Recebeu uma solução do cliente-12
+[12-11-2024 16:19:58] Recebeu uma solução do cliente-12
+[12-11-2024 16:19:58] Recebeu uma solução do cliente-12
+[12-11-2024 16:19:58] Recebeu uma solução do cliente-12
+[12-11-2024 16:19:58] Recebeu uma solução do cliente-12
+[12-11-2024 16:19:58] Recebeu uma solução do cliente-12
+[12-11-2024 16:19:58] Recebeu uma solução do cliente-12
+[12-11-2024 16:19:58] Recebeu uma solução do cliente-12
+[12-11-2024 16:19:58] Recebeu uma solução do cliente-12
+[12-11-2024 16:19:58] Enviou um jogo para o cliente-0
+[12-11-2024 16:19:58] Recebeu uma solução do cliente-13
+[12-11-2024 16:19:58] Recebeu uma solução do cliente-13
+[12-11-2024 16:19:58] Recebeu uma solução do cliente-13
+[12-11-2024 16:19:58] Recebeu uma solução do cliente-13
+[12-11-2024 16:19:58] Recebeu uma solução do cliente-13
+[12-11-2024 16:19:58] Recebeu uma solução do cliente-13
+[12-11-2024 16:19:58] Recebeu uma solução do cliente-13
+[12-11-2024 16:19:58] Recebeu uma solução do cliente-13
+[12-11-2024 16:19:58] Recebeu uma solução do cliente-13
+[12-11-2024 16:19:59] Enviou um jogo para o cliente-0
+[12-11-2024 16:19:59] Recebeu uma solução do cliente-14
+[12-11-2024 16:19:59] Recebeu uma solução do cliente-14
+[12-11-2024 16:19:59] Recebeu uma solução do cliente-14
+[12-11-2024 16:19:59] Recebeu uma solução do cliente-14
+[12-11-2024 16:19:59] Recebeu uma solução do cliente-14
+[12-11-2024 16:19:59] Recebeu uma solução do cliente-14
+[12-11-2024 16:19:59] Recebeu uma solução do cliente-14
+[12-11-2024 16:19:59] Recebeu uma solução do cliente-14
+[12-11-2024 16:19:59] Recebeu uma solução do cliente-14
+[12-11-2024 16:19:59] Enviou um jogo para o cliente-0
+[12-11-2024 16:19:59] Recebeu uma solução do cliente-15
+[12-11-2024 16:19:59] Recebeu uma solução do cliente-15
+[12-11-2024 16:19:59] Recebeu uma solução do cliente-15
+[12-11-2024 16:19:59] Recebeu uma solução do cliente-15
+[12-11-2024 16:19:59] Recebeu uma solução do cliente-15
+[12-11-2024 16:19:59] Recebeu uma solução do cliente-15
+[12-11-2024 16:19:59] Recebeu uma solução do cliente-15
+[12-11-2024 16:19:59] Recebeu uma solução do cliente-15
+[12-11-2024 16:19:59] Recebeu uma solução do cliente-15
+[12-11-2024 16:20:00] Enviou um jogo para o cliente-0
+[12-11-2024 16:20:00] Recebeu uma solução do cliente-16
+[12-11-2024 16:20:00] Recebeu uma solução do cliente-16
+[12-11-2024 16:20:00] Recebeu uma solução do cliente-16
+[12-11-2024 16:20:00] Recebeu uma solução do cliente-16
+[12-11-2024 16:20:00] Recebeu uma solução do cliente-16
+[12-11-2024 16:20:00] Recebeu uma solução do cliente-16
+[12-11-2024 16:20:00] Recebeu uma solução do cliente-16
+[12-11-2024 16:20:00] Recebeu uma solução do cliente-16
+[12-11-2024 16:20:00] Recebeu uma solução do cliente-16
+[12-11-2024 16:20:00] Enviou um jogo para o cliente-0
+[12-11-2024 16:20:00] Recebeu uma solução do cliente-17
+[12-11-2024 16:20:00] Recebeu uma solução do cliente-17
+[12-11-2024 16:20:00] Recebeu uma solução do cliente-17
+[12-11-2024 16:20:00] Recebeu uma solução do cliente-17
+[12-11-2024 16:20:00] Recebeu uma solução do cliente-17
+[12-11-2024 16:20:00] Recebeu uma solução do cliente-17
+[12-11-2024 16:20:00] Recebeu uma solução do cliente-17
+[12-11-2024 16:20:00] Recebeu uma solução do cliente-17
+[12-11-2024 16:20:00] Recebeu uma solução do cliente-17

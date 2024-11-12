@@ -24,7 +24,7 @@
 #define NUMEROS_NO_JOGO 81
 #define NUM_LINHAS 9
 #define NUM_COLUNAS 9
-#define NUM_JOGOS 5
+#define NUM_JOGOS 3
 #define INFO_SIZE 256
 sem_t semaforoAguardaResposta;
 sem_t semAguardar;

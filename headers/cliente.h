@@ -17,7 +17,7 @@ struct JogoAtual
 struct ClienteConfig
 {
     char TemJogo[INFO_SIZE];
-    unsigned long idCliente;
+    int idCliente;
     char tipoJogo[INFO_SIZE];
     char tipoResolucao[INFO_SIZE];
     char ipServidor[IP_SIZE];

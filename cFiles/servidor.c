@@ -442,7 +442,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
                 break;
             }
 
-            sem_wait(&semaforoAguardaResposta);
+            // sem_wait(&semaforoAguardaResposta);
 
             char *temp = malloc(1024);
             sprintf(temp, "Enviou um jogo para o cliente-%ld", clienteConfig.idCliente);
@@ -456,10 +456,10 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
             clienteConfig.jogoAtual.resolvido = atoi(resolvido);
             clienteConfig.jogoAtual.numeroTentativas = atoi(numeroTentativas);
             clienteConfig.jogoAtual.idJogo = nJogo;
-            clienteConfig.idCliente = idCliente;
+            clienteConfig.idCliente = atoi(idCliente);
 
             memset(buffer, 0, BUF_SIZE);
-            sprintf(buffer, "%lu|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d",
+            sprintf(buffer, "%u|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d",
                     clienteConfig.idCliente,
                     clienteConfig.tipoJogo,
                     clienteConfig.tipoResolucao,
@@ -473,7 +473,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
                     clienteConfig.jogoAtual.numeroTentativas);
 
             write(socketCliente, buffer, BUF_SIZE);
-            sem_post(&semaforoAguardaResposta);
+            // sem_post(&semaforoAguardaResposta);
 
             printf("Mensagem enviada: %s\n", buffer);
             logEventoServidor(temp);
@@ -516,12 +516,12 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
                 clienteConfig.jogoAtual.resolvido = 1;
             }
 
-            sem_wait(&semaforoAguardaResposta);
+            // sem_wait(&semaforoAguardaResposta);
             char *temp = malloc(1024);
-            sprintf(temp, "Recebeu uma solução do cliente-%ld", clienteConfig.idCliente);
+            sprintf(temp, "Recebeu uma solução do cliente-%d", clienteConfig.idCliente);
 
             memset(buffer, 0, BUF_SIZE);
-            sprintf(buffer, "%lu|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d",
+            sprintf(buffer, "%u|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d",
                     clienteConfig.idCliente,
                     clienteConfig.tipoJogo,
                     clienteConfig.tipoResolucao,
@@ -535,17 +535,16 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
                     clienteConfig.jogoAtual.numeroTentativas);
 
             write(socketCliente, buffer, BUF_SIZE);
-            sem_post(&semaforoAguardaResposta);
+            // sem_post(&semaforoAguardaResposta);
 
             printf("Mensagem enviada: %s\n", buffer);
             logEventoServidor(temp);
             free(temp);
             memset(buffer, 0, BUF_SIZE);
         }
-        sleep(1);
     }
     char *temp;
-    sprintf(temp, "Cliente-%ld desconectado", clienteConfig.idCliente);
+    sprintf(temp, "Cliente-%d desconectado", clienteConfig.idCliente);
     printf("%s\n", temp);
 }
 

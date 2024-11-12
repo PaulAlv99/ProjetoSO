@@ -103,7 +103,7 @@ void logEventoCliente(const char *message, struct ClienteConfig clienteConfig)
 		pthread_mutex_unlock(&mutexClienteLog);
 		return;
 	}
-	fprintf(file, "[%s] [Cliente ID: %lu] %s\n", getTempo(), clienteConfig.idCliente, message);
+	fprintf(file, "[%s] [Cliente ID: %u] %s\n", getTempo(), clienteConfig.idCliente, message);
 
 	fclose(file);
 	pthread_mutex_unlock(&mutexClienteLog);
@@ -193,7 +193,7 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 	printf("========= Ligado =========\n");
 	printf("===== IP: %s ======\n", clienteConfig->ipServidor);
 	printf("===== Porta: %d =======\n", clienteConfig->porta);
-	printf("===== Cliente ID: %lu =======\n\n", clienteConfig->idCliente);
+	printf("===== Cliente ID: %u =======\n\n", clienteConfig->idCliente);
 	mandarETratarMSG(clienteConfig);
 	close(clienteConfig->socket);
 	logQueEventoCliente(2, *clienteConfig);
@@ -223,7 +223,7 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 	char buffer[BUF_SIZE] = {0};
 	sem_init(&semAguardar, 0, 1);
 	// abrir sem existente
-	sprintf(buffer, "%lu|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d",
+	sprintf(buffer, "%u|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d",
 			clienteConfig->idCliente,
 			clienteConfig->tipoJogo,
 			clienteConfig->tipoResolucao,
@@ -235,13 +235,13 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 			clienteConfig->jogoAtual.tempoFinal,
 			clienteConfig->jogoAtual.resolvido,
 			clienteConfig->jogoAtual.numeroTentativas);
-	sem_wait(&semAguardar);
+	// sem_wait(&semAguardar);
 	write(clienteConfig->socket, buffer, BUF_SIZE);
-	sem_post(&semAguardar);
+	// sem_post(&semAguardar);
 	memset(buffer, 0, BUF_SIZE);
-	sem_wait(&semAguardar);
+	// sem_wait(&semAguardar);
 	read(clienteConfig->socket, buffer, BUF_SIZE);
-	sem_post(&semAguardar);
+	// sem_post(&semAguardar);
 	// printf("Mensagem recebida: %s\n", buffer);
 	char *idCliente = strtok(buffer, "|");
 	char *tipoJogo = strtok(NULL, "|");
@@ -283,7 +283,7 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 			imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
 
 			// Enviar tentativa
-			sprintf(bufferEnviar, "%lu|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d",
+			sprintf(bufferEnviar, "%u|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d",
 					clienteConfig->idCliente,
 					clienteConfig->tipoJogo,
 					clienteConfig->tipoResolucao,
@@ -296,10 +296,10 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 					clienteConfig->jogoAtual.resolvido,
 					clienteConfig->jogoAtual.numeroTentativas);
 
-			sem_wait(&semAguardar);
+			// sem_wait(&semAguardar);
 			write(clienteConfig->socket, bufferEnviar, BUF_SIZE);
 			printf("\nMensagem enviada: %s\n", bufferEnviar);
-			sem_post(&semAguardar);
+			// sem_post(&semAguardar);
 			// Limpar buffer antes de receber
 			memset(buffer, 0, BUF_SIZE);
 			// Receber resposta
@@ -342,10 +342,12 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 				{
 					printf("Erro: Mensagem recebida com formato inválido\n");
 				}
-				sem_post(&semAguardar);
+				// sem_post(&semAguardar);
 			}
 		}
+		strcpy(clienteConfig->jogoAtual.tempoFinal, getTempoHoraMinutoSegundo());
 		printf("Jogo resolvido!\n");
+		printf("Resolvido em %d tentativas\n", clienteConfig->jogoAtual.numeroTentativas);
 	}
 }
 int main(int argc, char **argv)
