@@ -434,7 +434,6 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
         char *tempoFinal = strtok(NULL, "|");
         char *resolvido = strtok(NULL, "|");
         char *numeroTentativas = strtok(NULL, "|");
-        // Parse message components...
         if (strcmp(temJogo, "SEM_JOGO") == 0)
         {
             if ((idCliente || tipoJogo || tipoResolucao || temJogo || idJogo || jogo || valoresCorretos || tempoInicio || tempoFinal || resolvido || numeroTentativas) == NULL)
@@ -490,7 +489,6 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
                 break;
             }
 
-            // Update client config outside critical section
             clienteConfig.idCliente = atoi(idCliente);
             strcpy(clienteConfig.TemJogo, temJogo);
             strcpy(clienteConfig.tipoJogo, tipoJogo);
@@ -503,7 +501,6 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
             clienteConfig.jogoAtual.resolvido = atoi(resolvido);
             clienteConfig.jogoAtual.numeroTentativas = atoi(numeroTentativas);
 
-            // Call potentially blocking function outside critical section
             char *logCliente;
             atualizaValoresCorretosCompletos(
                 clienteConfig.jogoAtual.jogo,
@@ -545,7 +542,6 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
             free(temp);
             memset(buffer, 0, BUF_SIZE);
         }
-        // é preciso isto aqui :(
         sleep(1);
     }
     char *temp;
