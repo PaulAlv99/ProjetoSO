@@ -96,44 +96,23 @@ void logQueEventoServidor(int numero)
         break;
     }
 }
-// void verificarLinha(int linha, char* jogo, char* solucao) {
-//     //Verifica uma linha do Sudoku (9 posições)
-//     for (int i = 0; i < NUM_LINHAS; i++) {
-//         int pos = linha * 9 + i;
-//         //Verifica se a célula foi preenchida no jogo
-//         if (jogo[pos] != solucao[pos]) {
-//             //Imprime posição na forma posx-y comecando em 1
-//             int coluna = (pos % 9) + 1;
-//             printf("Posição errada: pos%d-%d\n", linha + 1, coluna);
-//             //começa a contar do 0. pode ser guardado numa estrutura de dados para
-//             //posteriormente mandar para o cliente
-//             printf("Posicao na string: %d\n",pos);
-//         }
-//         else{
-//             //Imprime posição na forma posx-y comecando em 1
-//             int coluna = (pos % 9) + 1;
-//             printf("Posição Correta: pos%d-%d\n", linha + 1, coluna);
-//             //começa a contar do 0. pode ser guardado numa estrutura de dados para
-//             //posteriormente mandar para o cliente
-//             printf("Posicao na string: %d\n",pos);
-//         }
-//     }
-// }
-
-// void resolveJogo(char* jogo, char* solucao) {
-//     //Verifica linha por linha (0 a 8, correspondente às 9 linhas)
-//     for (int linha = 0; linha < 9; linha++) {
-//         verificarLinha(linha, jogo, solucao);
-//     }
-// }
 
 // atualiza os valoresCorretos da Ultima Tentativa
 char *atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorretos[], char solucao[], int *nTentativas)
 {
-    char logCliente[BUF_SIZE];
+    // Aloca dinamicamente espaço para logClienteFinal
+    char *logClienteFinal = malloc(BUF_SIZE * sizeof(char));
+    if (logClienteFinal == NULL)
+    {
+        perror("Erro ao alocar memoria para logClienteFinal");
+        exit(1);
+    }
+
+    char logCliente[BUF_SIZE] = "";
     char Tentativas[100];
     sprintf(Tentativas, "Tentativa n: %d\n", *nTentativas);
-    // Retornar tenativas para escrever no log do cliente
+
+    // Retornar tentativas para escrever no log do cliente
     for (int i = 0; i < strlen(tentativaAtual); i++)
     {
         if (valoresCorretos[i] == '0')
@@ -141,26 +120,25 @@ char *atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorret
             if (tentativaAtual[i] == solucao[i])
             {
                 valoresCorretos[i] = tentativaAtual[i];
-                // char message[1024];
-                // sprintf(message, "\nValor correto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
-                // strcat(logCliente, message);
-                // printf("%s", message);
-
-                // printf("%d \n", valoresCorretos);
+                char message[BUF_SIZE] = "";
+                sprintf(message, "\nValor correto(%c), na posição %d da String \n", tentativaAtual[i], i + 1);
+                strcat(logCliente, message);
             }
             else
             {
-                char message[1024] = "";
-                // sprintf(message, "Valor incorreto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
-                // strcat(logCliente, message);
-                // printf("%s", message);
+                char message[BUF_SIZE] = "";
+                sprintf(message, "Valor incorreto(%c), na posição %d da String \n", tentativaAtual[i], i + 1);
+                strcat(logCliente, message);
             }
         }
     }
+
     pthread_mutex_lock(&mutexNTentativas);
     *nTentativas = *nTentativas + 1;
     pthread_mutex_unlock(&mutexNTentativas);
-    return logCliente;
+
+    snprintf(logClienteFinal, BUF_SIZE, "%s", logCliente);
+    return logClienteFinal;
 }
 
 // Atualiza o booleano Resolvido se o jogo tiver sido resolvido
@@ -514,14 +492,17 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
             clienteConfig.jogoAtual.resolvido = atoi(resolvido);
             clienteConfig.jogoAtual.numeroTentativas = atoi(numeroTentativas);
 
-            char *logCliente;
+            char *logClienteEnviar;
             if (strcmp(clienteConfig.tipoResolucao, "COMPLET") == 0)
             {
-                atualizaValoresCorretosCompletos(
+                logClienteEnviar = atualizaValoresCorretosCompletos(
                     clienteConfig.jogoAtual.jogo,
                     clienteConfig.jogoAtual.valoresCorretos,
                     jogosEsolucoes[clienteConfig.jogoAtual.idJogo].solucao,
                     &clienteConfig.jogoAtual.numeroTentativas);
+                if (logClienteEnviar == NULL) {
+                    logClienteEnviar = "";
+                }
             }
             if (strcmp(clienteConfig.tipoResolucao, "PARCIAL") == 0)
             {
@@ -545,7 +526,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
             sprintf(temp, "Recebeu uma solução do cliente-%d", clienteConfig.idCliente);
 
             memset(buffer, 0, BUF_SIZE);
-            sprintf(buffer, "%u|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d",
+            sprintf(buffer, "%u|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d|%s",
                     clienteConfig.idCliente,
                     clienteConfig.tipoJogo,
                     clienteConfig.tipoResolucao,
@@ -556,9 +537,11 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
                     clienteConfig.jogoAtual.tempoInicio,
                     clienteConfig.jogoAtual.tempoFinal,
                     clienteConfig.jogoAtual.resolvido,
-                    clienteConfig.jogoAtual.numeroTentativas);
+                    clienteConfig.jogoAtual.numeroTentativas,
+                    logClienteEnviar);
 
             write(socketCliente, buffer, BUF_SIZE);
+            free(logClienteEnviar);
             // sem_post(&semaforoAguardaResposta);
 
             printf("Mensagem enviada: %s\n", buffer);

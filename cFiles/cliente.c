@@ -349,11 +349,12 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 				char *tempoFinal = strtok(NULL, "|");
 				char *resolvido = strtok(NULL, "|");
 				char *numeroTentativas = strtok(NULL, "|");
+				char *logCliente = strtok(NULL, "|");
 
 				// Verificar se todos os campos foram lidos corretamente
 				if (idCliente && tipoJogo && tipoResolucao && temJogo &&
 					idJogo && jogo && valoresCorretos && tempoInicio &&
-					tempoFinal && resolvido && numeroTentativas)
+					tempoFinal && resolvido && numeroTentativas && logCliente)
 				{
 					clienteConfig->idCliente = atoi(idCliente);
 					strcpy(clienteConfig->TemJogo, temJogo);
@@ -364,7 +365,7 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 					strcpy(clienteConfig->jogoAtual.tempoFinal, tempoFinal);
 					clienteConfig->jogoAtual.resolvido = atoi(resolvido);
 					clienteConfig->jogoAtual.numeroTentativas = atoi(numeroTentativas);
-
+					logEventoCliente(logCliente, clienteConfig);
 					printf("Valores corretos:\n\n");
 					imprimirTabuleiro(clienteConfig->jogoAtual.valoresCorretos);
 				}
