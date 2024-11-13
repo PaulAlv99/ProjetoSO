@@ -37,7 +37,7 @@ void logQueEventoServidor(int numero);
 void tentarSolucaoCompleta(char tentativaAtual[], char valoresCorretos[]);
 void tentarSolucaoParcial(char tentativaAtual[], char valoresCorretos[]);
 char *atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorretos[], char solucao[], int *nTentativas);
-void atualizaValoresCorretosParcial(char tentativaAtual[], char valoresCorretos[], char solucao[], int nTentativas);
+void atualizaValoresCorretosParcial(char tentativaAtual[], char valoresCorretos[], char solucao[], int *nTentativas);
 void carregarFicheiroJogosSolucoes(char *nomeFicheiro);
 struct ServidorConfig construtorServer(int domain, int service, int protocol, __u_long interface, int port, int backlog, char *ficheiroJogosESolucoesCaminho);
 void iniciarServidorSocket(struct ServidorConfig *server);

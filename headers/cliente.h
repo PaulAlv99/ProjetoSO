@@ -38,3 +38,4 @@ void imprimirTabuleiro(char *jogo);
 void carregarConfigCliente(char *nomeFicheiro, struct ClienteConfig *clienteConfig);
 void mandarETratarMSG(struct ClienteConfig *clienteConfig);
 void iniciarClienteSocket(struct ClienteConfig *clienteConfig);
+void tentarSolucaoParcial(char tentativaAtual[], char valoresCorretos[]);

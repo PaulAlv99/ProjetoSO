@@ -235,36 +235,39 @@ bool verificaResolvido(char valoresCorretos[], char solucao[], bool resolvido)
 //     }
 // }
 
-// void atualizaValoresCorretosParcial(char tentativaAtual[], char valoresCorretos[], char solucao[], int nTentativas)
-// {
-//     char Tentativas[100];
-//     sprintf(Tentativas, "Tentativa n: %d \n", nTentativas);
-//     logEventoCliente(Tentativas);
-//     for (int i = 0; i < strlen(tentativaAtual); i++)
-//     {
-//         if (valoresCorretos[i] == '0')
-//         {
-//             if (tentativaAtual[i] == solucao[i])
-//             {
-//                 valoresCorretos[i] = tentativaAtual[i];
-//                 char message[1024];
-//                 sprintf(message, "Valor correto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
-//                 logEventoCliente(message);
-//                 printf(message);
-//                 return;
-//                 // printf("%d \n", valoresCorretos);
-//             }
-//             else
-//             {
-//                 char message[1024];
-//                 sprintf(message, "Valor incorreto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
-//                 logEventoCliente(message);
-//                 printf(message);
-//                 return;
-//             }
-//         }
-//     }
-// }
+void atualizaValoresCorretosParcial(char tentativaAtual[], char valoresCorretos[], char solucao[], int *nTentativas)
+{
+    char Tentativas[100];
+    sprintf(Tentativas, "Tentativa n: %ls \n", nTentativas);
+    // logEventoCliente(Tentativas);
+    for (int i = 0; i < strlen(tentativaAtual); i++)
+    {
+        if (valoresCorretos[i] == '0')
+        {
+            if (tentativaAtual[i] == solucao[i])
+            {
+                valoresCorretos[i] = tentativaAtual[i];
+                char message[1024];
+                // sprintf(message, "Valor correto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
+                // logEventoCliente(message);
+                // printf(message);
+                return;
+                // printf("%d \n", valoresCorretos);
+            }
+            else
+            {
+                char message[1024];
+                // sprintf(message, "Valor incorreto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
+                // logEventoCliente(message);
+                // printf(message);
+                return;
+            }
+        }
+    }
+    pthread_mutex_lock(&mutexNTentativas);
+    *nTentativas = *nTentativas + 1;
+    pthread_mutex_unlock(&mutexNTentativas);
+}
 
 void carregarFicheiroJogosSolucoes(char *nomeFicheiro)
 {
@@ -445,7 +448,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
             // sem_wait(&semaforoAguardaResposta);
 
             char *temp = malloc(1024);
-            sprintf(temp, "Enviou um jogo para o cliente-%ld", clienteConfig.idCliente);
+            sprintf(temp, "Enviou um jogo para o cliente-%d", clienteConfig.idCliente);
             strcpy(clienteConfig.tipoJogo, tipoJogo);
             strcpy(clienteConfig.tipoResolucao, tipoResolucao);
             strcpy(clienteConfig.TemJogo, "COM_JOGO");
@@ -502,11 +505,22 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
             clienteConfig.jogoAtual.numeroTentativas = atoi(numeroTentativas);
 
             char *logCliente;
-            atualizaValoresCorretosCompletos(
-                clienteConfig.jogoAtual.jogo,
-                clienteConfig.jogoAtual.valoresCorretos,
-                jogosEsolucoes[clienteConfig.jogoAtual.idJogo].solucao,
-                &clienteConfig.jogoAtual.numeroTentativas);
+            if (strcmp(clienteConfig.tipoResolucao, "COMPLET") == 0)
+            {
+                atualizaValoresCorretosCompletos(
+                    clienteConfig.jogoAtual.jogo,
+                    clienteConfig.jogoAtual.valoresCorretos,
+                    jogosEsolucoes[clienteConfig.jogoAtual.idJogo].solucao,
+                    &clienteConfig.jogoAtual.numeroTentativas);
+            }
+            if (strcmp(clienteConfig.tipoResolucao, "PARCIAL") == 0)
+            {
+                atualizaValoresCorretosParcial(
+                    clienteConfig.jogoAtual.jogo,
+                    clienteConfig.jogoAtual.valoresCorretos,
+                    jogosEsolucoes[clienteConfig.jogoAtual.idJogo].solucao,
+                    &clienteConfig.jogoAtual.numeroTentativas);
+            }
 
             if (verificaResolvido(
                     clienteConfig.jogoAtual.valoresCorretos,

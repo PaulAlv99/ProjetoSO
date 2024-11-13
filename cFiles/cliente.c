@@ -198,6 +198,26 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 	close(clienteConfig->socket);
 	logQueEventoCliente(2, *clienteConfig);
 }
+void tentarSolucaoParcial(char tentativaAtual[], char valoresCorretos[])
+{
+	for (int i = 0; i < strlen(tentativaAtual); i++)
+	{
+		if ((tentativaAtual[i] != '0') && (tentativaAtual[i] != valoresCorretos[i]))
+		{
+			char numero = tentativaAtual[i];
+			int numeroInt = (int)(numero);
+			int novoNumero = numeroInt + 1;
+			char novoNumeroChar = (char)(novoNumero);
+			tentativaAtual[i] = novoNumeroChar;
+			break;
+		}
+		else if (tentativaAtual[i] == '0')
+		{
+			tentativaAtual[i] = '1';
+			break;
+		}
+	}
+}
 
 // Atualiza a tentativaAtual
 void tentarSolucaoCompleta(char tentativaAtual[], char valoresCorretos[])
@@ -278,7 +298,15 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 		while (!clienteConfig->jogoAtual.resolvido)
 		{
 			char bufferEnviar[BUF_SIZE] = {0};
-			tentarSolucaoCompleta(clienteConfig->jogoAtual.jogo, clienteConfig->jogoAtual.valoresCorretos);
+			if (strcmp(clienteConfig->tipoResolucao, "COMPLET") == 0)
+			{
+				tentarSolucaoCompleta(clienteConfig->jogoAtual.jogo, clienteConfig->jogoAtual.valoresCorretos);
+			}
+			else
+			{
+				tentarSolucaoParcial(clienteConfig->jogoAtual.jogo, clienteConfig->jogoAtual.valoresCorretos);
+				// clienteConfig->jogoAtual.numeroTentativas++;
+			}
 			printf("\nTentativa %d:\n\n", clienteConfig->jogoAtual.numeroTentativas);
 			imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
 
