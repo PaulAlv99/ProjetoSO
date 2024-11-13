@@ -1,6 +1,6 @@
 #include "../headers/cliente.h"
 // Aceita cliente1.conf até clienteN.conf
-char *padrao = "./configs/cliente.conf";
+char *padrao = "./configs/cliente";
 
 #define LINE_SIZE 16
 
@@ -91,11 +91,12 @@ void imprimirTabuleiro(char *jogo)
 	}
 }
 
-void logEventoCliente(const char *message, struct ClienteConfig clienteConfig)
+void logEventoCliente(const char *message, struct ClienteConfig *clienteConfig)
 {
-	pthread_mutex_lock(&mutexClienteLog);
+
 	// modo append
 	char *str = "logs/clienteLog.txt";
+	pthread_mutex_lock(&mutexClienteLog);
 	FILE *file = fopen(str, "a");
 	if (file == NULL)
 	{
@@ -103,7 +104,7 @@ void logEventoCliente(const char *message, struct ClienteConfig clienteConfig)
 		pthread_mutex_unlock(&mutexClienteLog);
 		return;
 	}
-	fprintf(file, "[%s] [Cliente ID: %u] %s\n", getTempo(), clienteConfig.idCliente, message);
+	fprintf(file, "[%s] [Cliente ID: %u] %s\n", getTempo(), clienteConfig->idCliente, message);
 
 	fclose(file);
 	pthread_mutex_unlock(&mutexClienteLog);
@@ -114,25 +115,25 @@ void logQueEventoCliente(int numero, struct ClienteConfig clienteConfig)
 	switch (numero)
 	{
 	case 1:
-		logEventoCliente("Cliente id: iniciou", clienteConfig);
+		logEventoCliente("Cliente comecou o programa", &clienteConfig);
 		break;
 	case 2:
-		logEventoCliente("Cliente id: parou", clienteConfig);
+		logEventoCliente("Cliente desconectou-se", &clienteConfig);
 		break;
 	case 3:
-		logEventoCliente("Cliente id: conectou-se ao servidor", clienteConfig);
+		logEventoCliente("Cliente conectou-se ao servidor", &clienteConfig);
 		break;
 	case 4:
-		logEventoCliente("Cliente id: enviou uma mensagem ao servidor", clienteConfig);
+		logEventoCliente("Cliente enviou uma mensagem ao servidor", &clienteConfig);
 		break;
 	case 5:
-		logEventoCliente("Cliente id: recebeu uma resposta do servidor", clienteConfig);
+		logEventoCliente("Cliente recebeu uma resposta do servidor", &clienteConfig);
 		break;
 	case 6:
-		logEventoCliente("Cliente id: desconectou-se do servidor", clienteConfig);
+		logEventoCliente("Cliente desconectou-se do servidor", &clienteConfig);
 		break;
 	default:
-		logEventoCliente("Evento desconhecido", clienteConfig);
+		logEventoCliente("Evento desconhecido", &clienteConfig);
 		break;
 	}
 }
@@ -190,6 +191,7 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 	read(clienteConfig->socket, recebeIDCliente, BUF_SIZE);
 	// cliente recebe id do servidor
 	clienteConfig->idCliente = atoi(strtok(recebeIDCliente, "|"));
+	logQueEventoCliente(1, *clienteConfig);
 	printf("========= Ligado =========\n");
 	printf("===== IP: %s ======\n", clienteConfig->ipServidor);
 	printf("===== Porta: %d =======\n", clienteConfig->porta);
@@ -274,7 +276,7 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 	char *tempoFinal = strtok(NULL, "|");
 	char *resolvido = strtok(NULL, "|");
 	char *numeroTentativas = strtok(NULL, "|");
-	if ((idCliente || tipoJogo || tipoResolucao || temJogo || jogo || valoresCorretos || tempoInicio || tempoFinal || resolvido || numeroTentativas) == NULL)
+	if (idCliente == NULL || tipoJogo == NULL || tipoResolucao == NULL || temJogo == NULL || idJogo == NULL || jogo == NULL || valoresCorretos == NULL || tempoInicio == NULL || tempoFinal == NULL || resolvido == NULL || numeroTentativas == NULL)
 	{
 		printf("Erro: Falha ao ler\n");
 		exit(1);
@@ -302,7 +304,7 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 			{
 				tentarSolucaoCompleta(clienteConfig->jogoAtual.jogo, clienteConfig->jogoAtual.valoresCorretos);
 			}
-			else
+			else if (strcmp(clienteConfig->tipoResolucao, "PARCIAL") == 0)
 			{
 				tentarSolucaoParcial(clienteConfig->jogoAtual.jogo, clienteConfig->jogoAtual.valoresCorretos);
 				// clienteConfig->jogoAtual.numeroTentativas++;
@@ -397,6 +399,5 @@ int main(int argc, char **argv)
 	carregarConfigCliente(argv[1], &clienteConfig);
 	construtorCliente(AF_INET, clienteConfig.porta, INADDR_ANY, &clienteConfig);
 	iniciarClienteSocket(&clienteConfig);
-	logQueEventoCliente(1, clienteConfig);
 	return 0;
 }

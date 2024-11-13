@@ -130,7 +130,7 @@ void logQueEventoServidor(int numero)
 // atualiza os valoresCorretos da Ultima Tentativa
 char *atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorretos[], char solucao[], int *nTentativas)
 {
-    char *logCliente = malloc(1024);
+    char logCliente[BUF_SIZE];
     char Tentativas[100];
     sprintf(Tentativas, "Tentativa n: %d\n", *nTentativas);
     // Retornar tenativas para escrever no log do cliente
@@ -141,7 +141,7 @@ char *atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorret
             if (tentativaAtual[i] == solucao[i])
             {
                 valoresCorretos[i] = tentativaAtual[i];
-                char message[1024];
+                // char message[1024];
                 // sprintf(message, "\nValor correto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
                 // strcat(logCliente, message);
                 // printf("%s", message);
@@ -150,7 +150,7 @@ char *atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorret
             }
             else
             {
-                // char message[1024] = "";
+                char message[1024] = "";
                 // sprintf(message, "Valor incorreto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
                 // strcat(logCliente, message);
                 // printf("%s", message);
@@ -402,12 +402,22 @@ void iniciarServidorSocket(struct ServidorConfig *server)
             // Processo filho
             close(socketServidor);
             write(socketCliente, temp, BUF_SIZE);
-            printf("Cliente-%d conectado\n", idCliente);
+            char *msgLog = malloc(BUF_SIZE);
+            if (msgLog == NULL)
+            {
+                perror("Erro ao alocar memoria");
+                exit(1);
+            }
+            sprintf(msgLog, "Cliente-%d conectado", idCliente);
+            logEventoServidor(msgLog);
+            printf("%s/n", msgLog);
+
             char buffer[BUF_SIZE] = {0};
             // rand time dá sempre mesma seed se chegarem ao mesmo tempo
             srand(getpid());
             int nJogo = rand() % NUM_JOGOS;
             char *jogoADar = jogosEsolucoes[nJogo].jogo;
+            free(msgLog);
             receberMensagemETratarServer(buffer, socketCliente, clienteConfig, nJogo, jogoADar);
             close(socketCliente);
             exit(0);
@@ -447,8 +457,6 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
 
             // sem_wait(&semaforoAguardaResposta);
 
-            char *temp = malloc(1024);
-            sprintf(temp, "Enviou um jogo para o cliente-%d", clienteConfig.idCliente);
             strcpy(clienteConfig.tipoJogo, tipoJogo);
             strcpy(clienteConfig.tipoResolucao, tipoResolucao);
             strcpy(clienteConfig.TemJogo, "COM_JOGO");
@@ -460,6 +468,8 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
             clienteConfig.jogoAtual.numeroTentativas = atoi(numeroTentativas);
             clienteConfig.jogoAtual.idJogo = nJogo;
             clienteConfig.idCliente = atoi(idCliente);
+            char *temp = malloc(1024);
+            sprintf(temp, "Enviou um jogo para o cliente-%d", clienteConfig.idCliente);
 
             memset(buffer, 0, BUF_SIZE);
             sprintf(buffer, "%u|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d",
