@@ -98,7 +98,7 @@ void logQueEventoServidor(int numero)
 }
 
 // atualiza os valoresCorretos da Ultima Tentativa
-char *atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorretos[], char solucao[], int *nTentativas)
+char *atualizaValoresCorretos(char tentativaAtual[], char valoresCorretos[], char solucao[], int *nTentativas)
 {
     // Aloca dinamicamente espaço para logClienteFinal
     char *logClienteFinal = malloc(BUF_SIZE * sizeof(char));
@@ -115,7 +115,7 @@ char *atualizaValoresCorretosCompletos(char tentativaAtual[], char valoresCorret
     // Retornar tentativas para escrever no log do cliente
     for (int i = 0; i < strlen(tentativaAtual); i++)
     {
-        if (valoresCorretos[i] == '0')
+        if (valoresCorretos[i] == '0' && tentativaAtual[i] != '0')
         {
             if (tentativaAtual[i] == solucao[i])
             {
@@ -213,39 +213,49 @@ bool verificaResolvido(char valoresCorretos[], char solucao[], bool resolvido)
 //     }
 // }
 
-void atualizaValoresCorretosParcial(char tentativaAtual[], char valoresCorretos[], char solucao[], int *nTentativas)
-{
-    char Tentativas[100];
-    sprintf(Tentativas, "Tentativa n: %ls \n", nTentativas);
-    // logEventoCliente(Tentativas);
-    for (int i = 0; i < strlen(tentativaAtual); i++)
-    {
-        if (valoresCorretos[i] == '0')
-        {
-            if (tentativaAtual[i] == solucao[i])
-            {
-                valoresCorretos[i] = tentativaAtual[i];
-                char message[1024];
-                // sprintf(message, "Valor correto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
-                // logEventoCliente(message);
-                // printf(message);
-                return;
-                // printf("%d \n", valoresCorretos);
-            }
-            else
-            {
-                char message[1024];
-                // sprintf(message, "Valor incorreto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
-                // logEventoCliente(message);
-                // printf(message);
-                return;
-            }
-        }
-    }
-    pthread_mutex_lock(&mutexNTentativas);
-    *nTentativas = *nTentativas + 1;
-    pthread_mutex_unlock(&mutexNTentativas);
-}
+// char * atualizaValoresCorretosParcial(char tentativaAtual[], char valoresCorretos[], char solucao[], int *nTentativas)
+// {
+//         // Aloca dinamicamente espaço para logClienteFinal
+//     char *logClienteFinal = malloc(BUF_SIZE * sizeof(char));
+//     if (logClienteFinal == NULL)
+//     {
+//         perror("Erro ao alocar memoria para logClienteFinal");
+//         exit(1);
+//     }
+
+//     char logCliente[BUF_SIZE] = "";
+//     char Tentativas[100];
+//     sprintf(Tentativas, "Tentativa n: %d\n", *nTentativas);
+
+//     // logEventoCliente(Tentativas);
+//     for (int i = 0; i < strlen(tentativaAtual); i++)
+//     {
+//         if (valoresCorretos[i] == '0')
+//         {
+//             if (tentativaAtual[i] == solucao[i])
+//             {
+//                 valoresCorretos[i] = tentativaAtual[i];
+//                 char message[1024];
+//                 // sprintf(message, "Valor correto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
+//                 // logEventoCliente(message);
+//                 // printf(message);
+//                 return;
+//                 // printf("%d \n", valoresCorretos);
+//             }
+//             else
+//             {
+//                 char message[1024];
+//                 // sprintf(message, "Valor incorreto(%d), na posição %d da String \n", tentativaAtual[i], i + 1);
+//                 // logEventoCliente(message);
+//                 // printf(message);
+//                 return;
+//             }
+//         }
+//     }
+//     pthread_mutex_lock(&mutexNTentativas);
+//     *nTentativas = *nTentativas + 1;
+//     pthread_mutex_unlock(&mutexNTentativas);
+// }
 
 void carregarFicheiroJogosSolucoes(char *nomeFicheiro)
 {
@@ -495,7 +505,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
             char *logClienteEnviar;
             if (strcmp(clienteConfig.tipoResolucao, "COMPLET") == 0)
             {
-                logClienteEnviar = atualizaValoresCorretosCompletos(
+                logClienteEnviar = atualizaValoresCorretos(
                     clienteConfig.jogoAtual.jogo,
                     clienteConfig.jogoAtual.valoresCorretos,
                     jogosEsolucoes[clienteConfig.jogoAtual.idJogo].solucao,
@@ -506,11 +516,14 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
             }
             if (strcmp(clienteConfig.tipoResolucao, "PARCIAL") == 0)
             {
-                atualizaValoresCorretosParcial(
+                logClienteEnviar = atualizaValoresCorretos(
                     clienteConfig.jogoAtual.jogo,
                     clienteConfig.jogoAtual.valoresCorretos,
                     jogosEsolucoes[clienteConfig.jogoAtual.idJogo].solucao,
                     &clienteConfig.jogoAtual.numeroTentativas);
+                if (logClienteEnviar == NULL) {
+                    logClienteEnviar = "";
+                }
             }
 
             if (verificaResolvido(

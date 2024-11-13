@@ -1,629 +1,5 @@
-[13-11-2024 02:38:52] [Cliente ID: 1] Cliente comecou o programa
-[13-11-2024 02:38:52] [Cliente ID: 1] Valor incorreto(1), na posição 1 da String 
-Valor incorreto(1), na posição 2 da String 
-Valor incorreto(1), na posição 3 da String 
-Valor incorreto(1), na posição 5 da String 
-Valor incorreto(1), na posição 6 da String 
-Valor incorreto(1), na posição 7 da String 
-
-Valor correto(1), na posição 8 da String 
-Valor incorreto(1), na posição 9 da String 
-Valor incorreto(1), na posição 10 da String 
-
-Valor correto(1), na posição 12 da String 
-Valor incorreto(1), na posição 13 da String 
-Valor incorreto(1), na posição 14 da String 
-Valor incorreto(1), na posição 15 da String 
-Valor incorreto(1), na posição 19 da String 
-Valor incorreto(1), na posição 22 da String 
-Valor incorreto(1), na posição 23 da String 
-
-Valor correto(1), na posição 24 da String 
-Valor incorreto(1), na posição 25 da String 
-Valor incorreto(1), na posição 28 da String 
-Valor incorreto(1), na posição 29 da String 
-Valor incorreto(1), na posição 30 da String 
-Valor incorreto(1), na posição 31 da String 
-Valor incorreto(1), na posição 33 da String 
-
-Valor correto(1), na posição 34 da String 
-Valor incorreto(1), na posição 35 da String 
-Valor incorreto(1), na posição 36 da String 
-Valor incorreto(1), na posição 37 da String 
-Valor incorreto(1), na posição 39 da String 
-Valor incorreto(1), na posição 41 da String 
-Valor incorreto(1), na posição 43 da String 
-Valor incorreto(1), na posição 45 da String 
-Valor incorreto(1), na posição 46 da String 
-
-Valor correto(1), na posição 47 da String 
-Valor incorreto(1), na posição 48 da String 
-Valor incorreto(1), na posição 49 da String 
-Valor incorreto(1), na posição 51 da String 
-Valor incorreto(1), na posição 52 da String 
-Valor incorreto(1), na posição 53 da String 
-Valor incorreto(1), na posição 54 da String 
-Valor incorreto(1), na p1
-[13-11-2024 02:38:52] [Cliente ID: 1] Valor incorreto(2), na posição 1 da String 
-
-Valor correto(2), na posição 2 da String 
-Valor incorreto(2), na posição 3 da String 
-Valor incorreto(2), na posição 5 da String 
-Valor incorreto(2), na posição 6 da String 
-Valor incorreto(2), na posição 7 da String 
-Valor incorreto(2), na posição 9 da String 
-Valor incorreto(2), na posição 10 da String 
-Valor incorreto(2), na posição 13 da String 
-
-Valor correto(2), na posição 14 da String 
-Valor incorreto(2), na posição 15 da String 
-Valor incorreto(2), na posição 19 da String 
-Valor incorreto(2), na posição 22 da String 
-Valor incorreto(2), na posição 23 da String 
-Valor incorreto(2), na posição 25 da String 
-Valor incorreto(2), na posição 28 da String 
-Valor incorreto(2), na posição 29 da String 
-Valor incorreto(2), na posição 30 da String 
-Valor incorreto(2), na posição 31 da String 
-Valor incorreto(2), na posição 33 da String 
-Valor incorreto(2), na posição 35 da String 
-Valor incorreto(2), na posição 36 da String 
-Valor incorreto(2), na posição 37 da String 
-Valor incorreto(2), na posição 39 da String 
-Valor incorreto(2), na posição 41 da String 
-
-Valor correto(2), na posição 43 da String 
-Valor incorreto(2), na posição 45 da String 
-
-Valor correto(2), na posição 46 da String 
-Valor incorreto(2), na posição 48 da String 
-Valor incorreto(2), na posição 49 da String 
-Valor incorreto(2), na posição 51 da String 
-Valor incorreto(2), na posição 52 da String 
-Valor incorreto(2), na posição 53 da String 
-Valor incorreto(2), na posição 54 da String 
-Valor incorreto(2), na posição 57 da String 
-Valor incorreto(2), na posição 58 da String 
-Valor incorreto(2), na posição 59 da String 
-Valor incorreto(2), na posição 60 da String 
-Valor incorreto(2), na posição 67 da String 
-Valor incorreto(2), na1
-[13-11-2024 02:38:52] [Cliente ID: 1] Valor incorreto(3), na posição 1 da String 
-Valor incorreto(3), na posição 3 da String 
-Valor incorreto(3), na posição 5 da String 
-Valor incorreto(3), na posição 6 da String 
-
-Valor correto(3), na posição 7 da String 
-Valor incorreto(3), na posição 9 da String 
-Valor incorreto(3), na posição 10 da String 
-Valor incorreto(3), na posição 13 da String 
-Valor incorreto(3), na posição 15 da String 
-Valor incorreto(3), na posição 19 da String 
-Valor incorreto(3), na posição 22 da String 
-
-Valor correto(3), na posição 23 da String 
-Valor incorreto(3), na posição 25 da String 
-Valor incorreto(3), na posição 28 da String 
-Valor incorreto(3), na posição 29 da String 
-Valor incorreto(3), na posição 30 da String 
-Valor incorreto(3), na posição 31 da String 
-Valor incorreto(3), na posição 33 da String 
-Valor incorreto(3), na posição 35 da String 
-
-Valor correto(3), na posição 36 da String 
-Valor incorreto(3), na posição 37 da String 
-Valor incorreto(3), na posição 39 da String 
-
-Valor correto(3), na posição 41 da String 
-Valor incorreto(3), na posição 45 da String 
-
-Valor correto(3), na posição 48 da String 
-Valor incorreto(3), na posição 49 da String 
-Valor incorreto(3), na posição 51 da String 
-Valor incorreto(3), na posição 52 da String 
-Valor incorreto(3), na posição 53 da String 
-Valor incorreto(3), na posição 54 da String 
-Valor incorreto(3), na posição 57 da String 
-Valor incorreto(3), na posição 58 da String 
-Valor incorreto(3), na posição 59 da String 
-
-Valor correto(3), na posição 60 da String 
-Valor incorreto(3), na posição 67 da String 
-Valor incorreto(3), na posição 68 da String 
-Valor incorreto(3), na posição 69 da String 
-Valor incorreto(3), na posição 70 da String 
-Valor incorreto(3), na posição 72 da String 
-Valor incorreto(3), na 1
-[13-11-2024 02:38:52] [Cliente ID: 1] Valor incorreto(4), na posição 1 da String 
-Valor incorreto(4), na posição 3 da String 
-Valor incorreto(4), na posição 5 da String 
-Valor incorreto(4), na posição 6 da String 
-Valor incorreto(4), na posição 9 da String 
-
-Valor correto(4), na posição 10 da String 
-Valor incorreto(4), na posição 13 da String 
-Valor incorreto(4), na posição 15 da String 
-Valor incorreto(4), na posição 19 da String 
-Valor incorreto(4), na posição 22 da String 
-
-Valor correto(4), na posição 25 da String 
-Valor incorreto(4), na posição 28 da String 
-Valor incorreto(4), na posição 29 da String 
-Valor incorreto(4), na posição 30 da String 
-Valor incorreto(4), na posição 31 da String 
-
-Valor correto(4), na posição 33 da String 
-Valor incorreto(4), na posição 35 da String 
-Valor incorreto(4), na posição 37 da String 
-
-Valor correto(4), na posição 39 da String 
-Valor incorreto(4), na posição 45 da String 
-Valor incorreto(4), na posição 49 da String 
-Valor incorreto(4), na posição 51 da String 
-Valor incorreto(4), na posição 52 da String 
-Valor incorreto(4), na posição 53 da String 
-
-Valor correto(4), na posição 54 da String 
-Valor incorreto(4), na posição 57 da String 
-Valor incorreto(4), na posição 58 da String 
-Valor incorreto(4), na posição 59 da String 
-
-Valor correto(4), na posição 67 da String 
-Valor incorreto(4), na posição 68 da String 
-Valor incorreto(4), na posição 69 da String 
-Valor incorreto(4), na posição 70 da String 
-Valor incorreto(4), na posição 72 da String 
-Valor incorreto(4), na posição 73 da String 
-
-Valor correto(4), na posição 74 da String 
-Valor incorreto(4), na posição 75 da String 
-Valor incorreto(4), na posição 77 da String 
-Valor incorreto(4), na posição 79 da String 
-Valor incorreto(4), na posição 80 da String 
-
-[13-11-2024 02:38:52] [Cliente ID: 1] Valor incorreto(5), na posição 1 da String 
-Valor incorreto(5), na posição 3 da String 
-
-Valor correto(5), na posição 5 da String 
-Valor incorreto(5), na posição 6 da String 
-Valor incorreto(5), na posição 9 da String 
-Valor incorreto(5), na posição 13 da String 
-Valor incorreto(5), na posição 15 da String 
-
-Valor correto(5), na posição 19 da String 
-Valor incorreto(5), na posição 22 da String 
-Valor incorreto(5), na posição 28 da String 
-
-Valor correto(5), na posição 29 da String 
-Valor incorreto(5), na posição 30 da String 
-Valor incorreto(5), na posição 31 da String 
-Valor incorreto(5), na posição 35 da String 
-Valor incorreto(5), na posição 37 da String 
-Valor incorreto(5), na posição 45 da String 
-Valor incorreto(5), na posição 49 da String 
-Valor incorreto(5), na posição 51 da String 
-
-Valor correto(5), na posição 52 da String 
-Valor incorreto(5), na posição 53 da String 
-Valor incorreto(5), na posição 57 da String 
-
-Valor correto(5), na posição 58 da String 
-Valor incorreto(5), na posição 59 da String 
-Valor incorreto(5), na posição 68 da String 
-Valor incorreto(5), na posição 69 da String 
-Valor incorreto(5), na posição 70 da String 
-
-Valor correto(5), na posição 72 da String 
-Valor incorreto(5), na posição 73 da String 
-
-Valor correto(5), na posição 75 da String 
-Valor incorreto(5), na posição 77 da String 
-Valor incorreto(5), na posição 79 da String 
-Valor incorreto(5), na posição 80 da String 
-
-[13-11-2024 02:38:52] [Cliente ID: 1] Valor incorreto(6), na posição 1 da String 
-Valor incorreto(6), na posição 3 da String 
-Valor incorreto(6), na posição 6 da String 
-
-Valor correto(6), na posição 9 da String 
-Valor incorreto(6), na posição 13 da String 
-
-Valor correto(6), na posição 15 da String 
-Valor incorreto(6), na posição 22 da String 
-Valor incorreto(6), na posição 28 da String 
-Valor incorreto(6), na posição 30 da String 
-
-Valor correto(6), na posição 31 da String 
-Valor incorreto(6), na posição 35 da String 
-
-Valor correto(6), na posição 37 da String 
-Valor incorreto(6), na posição 45 da String 
-Valor incorreto(6), na posição 49 da String 
-Valor incorreto(6), na posição 51 da String 
-
-Valor correto(6), na posição 53 da String 
-Valor incorreto(6), na posição 57 da String 
-Valor incorreto(6), na posição 59 da String 
-
-Valor correto(6), na posição 68 da String 
-Valor incorreto(6), na posição 69 da String 
-Valor incorreto(6), na posição 70 da String 
-Valor incorreto(6), na posição 73 da String 
-Valor incorreto(6), na posição 77 da String 
-Valor incorreto(6), na posição 79 da String 
-
-Valor correto(6), na posição 80 da String 
-
-[13-11-2024 02:38:52] [Cliente ID: 1] Valor incorreto(7), na posição 1 da String 
-
-Valor correto(7), na posição 3 da String 
-Valor incorreto(7), na posição 6 da String 
-
-Valor correto(7), na posição 13 da String 
-Valor incorreto(7), na posição 22 da String 
-Valor incorreto(7), na posição 28 da String 
-Valor incorreto(7), na posição 30 da String 
-
-Valor correto(7), na posição 35 da String 
-Valor incorreto(7), na posição 45 da String 
-Valor incorreto(7), na posição 49 da String 
-
-Valor correto(7), na posição 51 da String 
-Valor incorreto(7), na posição 57 da String 
-
-Valor correto(7), na posição 59 da String 
-Valor incorreto(7), na posição 69 da String 
-
-Valor correto(7), na posição 70 da String 
-
-Valor correto(7), na posição 73 da String 
-Valor incorreto(7), na posição 77 da String 
-Valor incorreto(7), na posição 79 da String 
-
-[13-11-2024 02:38:52] [Cliente ID: 1] Valor incorreto(8), na posição 1 da String 
-
-Valor correto(8), na posição 6 da String 
-Valor incorreto(8), na posição 22 da String 
-
-Valor correto(8), na posição 28 da String 
-Valor incorreto(8), na posição 30 da String 
-
-Valor correto(8), na posição 45 da String 
-
-Valor correto(8), na posição 49 da String 
-
-Valor correto(8), na posição 57 da String 
-Valor incorreto(8), na posição 69 da String 
-
-Valor correto(8), na posição 77 da String 
-Valor incorreto(8), na posição 79 da String 
-
-[13-11-2024 02:38:52] [Cliente ID: 1] 
-Valor correto(9), na posição 1 da String 
-
-Valor correto(9), na posição 22 da String 
-
-Valor correto(9), na posição 30 da String 
-
-Valor correto(9), na posição 69 da String 
-
-Valor correto(9), na posição 79 da String 
-
-[13-11-2024 02:38:52] [Cliente ID: 1] Cliente desconectou-se
-[13-11-2024 02:40:29] [Cliente ID: 2] Cliente comecou o programa
-[13-11-2024 02:40:29] [Cliente ID: 2] Valor incorreto(1), na posição 1 da String 
-Valor incorreto(1), na posição 2 da String 
-Valor incorreto(1), na posição 3 da String 
-Valor incorreto(1), na posição 5 da String 
-Valor incorreto(1), na posição 6 da String 
-Valor incorreto(1), na posição 7 da String 
-
-Valor correto(1), na posição 8 da String 
-Valor incorreto(1), na posição 9 da String 
-Valor incorreto(1), na posição 10 da String 
-
-Valor correto(1), na posição 12 da String 
-Valor incorreto(1), na posição 13 da String 
-Valor incorreto(1), na posição 14 da String 
-Valor incorreto(1), na posição 15 da String 
-Valor incorreto(1), na posição 19 da String 
-Valor incorreto(1), na posição 22 da String 
-Valor incorreto(1), na posição 23 da String 
-
-Valor correto(1), na posição 24 da String 
-Valor incorreto(1), na posição 25 da String 
-Valor incorreto(1), na posição 28 da String 
-Valor incorreto(1), na posição 29 da String 
-Valor incorreto(1), na posição 30 da String 
-Valor incorreto(1), na posição 31 da String 
-Valor incorreto(1), na posição 33 da String 
-
-Valor correto(1), na posição 34 da String 
-Valor incorreto(1), na posição 35 da String 
-Valor incorreto(1), na posição 36 da String 
-Valor incorreto(1), na posição 37 da String 
-Valor incorreto(1), na posição 39 da String 
-Valor incorreto(1), na posição 41 da String 
-Valor incorreto(1), na posição 43 da String 
-Valor incorreto(1), na posição 45 da String 
-Valor incorreto(1), na posição 46 da String 
-
-Valor correto(1), na posição 47 da String 
-Valor incorreto(1), na posição 48 da String 
-Valor incorreto(1), na posição 49 da String 
-Valor incorreto(1), na posição 51 da String 
-Valor incorreto(1), na posição 52 da String 
-Valor incorreto(1), na posição 53 da String 
-Valor incorreto(1), na posição 54 da String 
-Valor incorreto(1), na p2
-[13-11-2024 02:40:29] [Cliente ID: 2] Valor incorreto(2), na posição 1 da String 
-
-Valor correto(2), na posição 2 da String 
-Valor incorreto(2), na posição 3 da String 
-Valor incorreto(2), na posição 5 da String 
-Valor incorreto(2), na posição 6 da String 
-Valor incorreto(2), na posição 7 da String 
-Valor incorreto(2), na posição 9 da String 
-Valor incorreto(2), na posição 10 da String 
-Valor incorreto(2), na posição 13 da String 
-
-Valor correto(2), na posição 14 da String 
-Valor incorreto(2), na posição 15 da String 
-Valor incorreto(2), na posição 19 da String 
-Valor incorreto(2), na posição 22 da String 
-Valor incorreto(2), na posição 23 da String 
-Valor incorreto(2), na posição 25 da String 
-Valor incorreto(2), na posição 28 da String 
-Valor incorreto(2), na posição 29 da String 
-Valor incorreto(2), na posição 30 da String 
-Valor incorreto(2), na posição 31 da String 
-Valor incorreto(2), na posição 33 da String 
-Valor incorreto(2), na posição 35 da String 
-Valor incorreto(2), na posição 36 da String 
-Valor incorreto(2), na posição 37 da String 
-Valor incorreto(2), na posição 39 da String 
-Valor incorreto(2), na posição 41 da String 
-
-Valor correto(2), na posição 43 da String 
-Valor incorreto(2), na posição 45 da String 
-
-Valor correto(2), na posição 46 da String 
-Valor incorreto(2), na posição 48 da String 
-Valor incorreto(2), na posição 49 da String 
-Valor incorreto(2), na posição 51 da String 
-Valor incorreto(2), na posição 52 da String 
-Valor incorreto(2), na posição 53 da String 
-Valor incorreto(2), na posição 54 da String 
-Valor incorreto(2), na posição 57 da String 
-Valor incorreto(2), na posição 58 da String 
-Valor incorreto(2), na posição 59 da String 
-Valor incorreto(2), na posição 60 da String 
-Valor incorreto(2), na posição 67 da String 
-Valor incorreto(2), na2
-[13-11-2024 02:40:29] [Cliente ID: 2] Valor incorreto(3), na posição 1 da String 
-Valor incorreto(3), na posição 3 da String 
-Valor incorreto(3), na posição 5 da String 
-Valor incorreto(3), na posição 6 da String 
-
-Valor correto(3), na posição 7 da String 
-Valor incorreto(3), na posição 9 da String 
-Valor incorreto(3), na posição 10 da String 
-Valor incorreto(3), na posição 13 da String 
-Valor incorreto(3), na posição 15 da String 
-Valor incorreto(3), na posição 19 da String 
-Valor incorreto(3), na posição 22 da String 
-
-Valor correto(3), na posição 23 da String 
-Valor incorreto(3), na posição 25 da String 
-Valor incorreto(3), na posição 28 da String 
-Valor incorreto(3), na posição 29 da String 
-Valor incorreto(3), na posição 30 da String 
-Valor incorreto(3), na posição 31 da String 
-Valor incorreto(3), na posição 33 da String 
-Valor incorreto(3), na posição 35 da String 
-
-Valor correto(3), na posição 36 da String 
-Valor incorreto(3), na posição 37 da String 
-Valor incorreto(3), na posição 39 da String 
-
-Valor correto(3), na posição 41 da String 
-Valor incorreto(3), na posição 45 da String 
-
-Valor correto(3), na posição 48 da String 
-Valor incorreto(3), na posição 49 da String 
-Valor incorreto(3), na posição 51 da String 
-Valor incorreto(3), na posição 52 da String 
-Valor incorreto(3), na posição 53 da String 
-Valor incorreto(3), na posição 54 da String 
-Valor incorreto(3), na posição 57 da String 
-Valor incorreto(3), na posição 58 da String 
-Valor incorreto(3), na posição 59 da String 
-
-Valor correto(3), na posição 60 da String 
-Valor incorreto(3), na posição 67 da String 
-Valor incorreto(3), na posição 68 da String 
-Valor incorreto(3), na posição 69 da String 
-Valor incorreto(3), na posição 70 da String 
-Valor incorreto(3), na posição 72 da String 
-Valor incorreto(3), na 2
-[13-11-2024 02:40:29] [Cliente ID: 2] Valor incorreto(4), na posição 1 da String 
-Valor incorreto(4), na posição 3 da String 
-Valor incorreto(4), na posição 5 da String 
-Valor incorreto(4), na posição 6 da String 
-Valor incorreto(4), na posição 9 da String 
-
-Valor correto(4), na posição 10 da String 
-Valor incorreto(4), na posição 13 da String 
-Valor incorreto(4), na posição 15 da String 
-Valor incorreto(4), na posição 19 da String 
-Valor incorreto(4), na posição 22 da String 
-
-Valor correto(4), na posição 25 da String 
-Valor incorreto(4), na posição 28 da String 
-Valor incorreto(4), na posição 29 da String 
-Valor incorreto(4), na posição 30 da String 
-Valor incorreto(4), na posição 31 da String 
-
-Valor correto(4), na posição 33 da String 
-Valor incorreto(4), na posição 35 da String 
-Valor incorreto(4), na posição 37 da String 
-
-Valor correto(4), na posição 39 da String 
-Valor incorreto(4), na posição 45 da String 
-Valor incorreto(4), na posição 49 da String 
-Valor incorreto(4), na posição 51 da String 
-Valor incorreto(4), na posição 52 da String 
-Valor incorreto(4), na posição 53 da String 
-
-Valor correto(4), na posição 54 da String 
-Valor incorreto(4), na posição 57 da String 
-Valor incorreto(4), na posição 58 da String 
-Valor incorreto(4), na posição 59 da String 
-
-Valor correto(4), na posição 67 da String 
-Valor incorreto(4), na posição 68 da String 
-Valor incorreto(4), na posição 69 da String 
-Valor incorreto(4), na posição 70 da String 
-Valor incorreto(4), na posição 72 da String 
-Valor incorreto(4), na posição 73 da String 
-
-Valor correto(4), na posição 74 da String 
-Valor incorreto(4), na posição 75 da String 
-Valor incorreto(4), na posição 77 da String 
-Valor incorreto(4), na posição 79 da String 
-Valor incorreto(4), na posição 80 da String 
-
-[13-11-2024 02:40:29] [Cliente ID: 2] Valor incorreto(5), na posição 1 da String 
-Valor incorreto(5), na posição 3 da String 
-
-Valor correto(5), na posição 5 da String 
-Valor incorreto(5), na posição 6 da String 
-Valor incorreto(5), na posição 9 da String 
-Valor incorreto(5), na posição 13 da String 
-Valor incorreto(5), na posição 15 da String 
-
-Valor correto(5), na posição 19 da String 
-Valor incorreto(5), na posição 22 da String 
-Valor incorreto(5), na posição 28 da String 
-
-Valor correto(5), na posição 29 da String 
-Valor incorreto(5), na posição 30 da String 
-Valor incorreto(5), na posição 31 da String 
-Valor incorreto(5), na posição 35 da String 
-Valor incorreto(5), na posição 37 da String 
-Valor incorreto(5), na posição 45 da String 
-Valor incorreto(5), na posição 49 da String 
-Valor incorreto(5), na posição 51 da String 
-
-Valor correto(5), na posição 52 da String 
-Valor incorreto(5), na posição 53 da String 
-Valor incorreto(5), na posição 57 da String 
-
-Valor correto(5), na posição 58 da String 
-Valor incorreto(5), na posição 59 da String 
-Valor incorreto(5), na posição 68 da String 
-Valor incorreto(5), na posição 69 da String 
-Valor incorreto(5), na posição 70 da String 
-
-Valor correto(5), na posição 72 da String 
-Valor incorreto(5), na posição 73 da String 
-
-Valor correto(5), na posição 75 da String 
-Valor incorreto(5), na posição 77 da String 
-Valor incorreto(5), na posição 79 da String 
-Valor incorreto(5), na posição 80 da String 
-
-[13-11-2024 02:40:29] [Cliente ID: 2] Valor incorreto(6), na posição 1 da String 
-Valor incorreto(6), na posição 3 da String 
-Valor incorreto(6), na posição 6 da String 
-
-Valor correto(6), na posição 9 da String 
-Valor incorreto(6), na posição 13 da String 
-
-Valor correto(6), na posição 15 da String 
-Valor incorreto(6), na posição 22 da String 
-Valor incorreto(6), na posição 28 da String 
-Valor incorreto(6), na posição 30 da String 
-
-Valor correto(6), na posição 31 da String 
-Valor incorreto(6), na posição 35 da String 
-
-Valor correto(6), na posição 37 da String 
-Valor incorreto(6), na posição 45 da String 
-Valor incorreto(6), na posição 49 da String 
-Valor incorreto(6), na posição 51 da String 
-
-Valor correto(6), na posição 53 da String 
-Valor incorreto(6), na posição 57 da String 
-Valor incorreto(6), na posição 59 da String 
-
-Valor correto(6), na posição 68 da String 
-Valor incorreto(6), na posição 69 da String 
-Valor incorreto(6), na posição 70 da String 
-Valor incorreto(6), na posição 73 da String 
-Valor incorreto(6), na posição 77 da String 
-Valor incorreto(6), na posição 79 da String 
-
-Valor correto(6), na posição 80 da String 
-
-[13-11-2024 02:40:29] [Cliente ID: 2] Valor incorreto(7), na posição 1 da String 
-
-Valor correto(7), na posição 3 da String 
-Valor incorreto(7), na posição 6 da String 
-
-Valor correto(7), na posição 13 da String 
-Valor incorreto(7), na posição 22 da String 
-Valor incorreto(7), na posição 28 da String 
-Valor incorreto(7), na posição 30 da String 
-
-Valor correto(7), na posição 35 da String 
-Valor incorreto(7), na posição 45 da String 
-Valor incorreto(7), na posição 49 da String 
-
-Valor correto(7), na posição 51 da String 
-Valor incorreto(7), na posição 57 da String 
-
-Valor correto(7), na posição 59 da String 
-Valor incorreto(7), na posição 69 da String 
-
-Valor correto(7), na posição 70 da String 
-
-Valor correto(7), na posição 73 da String 
-Valor incorreto(7), na posição 77 da String 
-Valor incorreto(7), na posição 79 da String 
-
-[13-11-2024 02:40:29] [Cliente ID: 2] Valor incorreto(8), na posição 1 da String 
-
-Valor correto(8), na posição 6 da String 
-Valor incorreto(8), na posição 22 da String 
-
-Valor correto(8), na posição 28 da String 
-Valor incorreto(8), na posição 30 da String 
-
-Valor correto(8), na posição 45 da String 
-
-Valor correto(8), na posição 49 da String 
-
-Valor correto(8), na posição 57 da String 
-Valor incorreto(8), na posição 69 da String 
-
-Valor correto(8), na posição 77 da String 
-Valor incorreto(8), na posição 79 da String 
-
-[13-11-2024 02:40:29] [Cliente ID: 2] 
-Valor correto(9), na posição 1 da String 
-
-Valor correto(9), na posição 22 da String 
-
-Valor correto(9), na posição 30 da String 
-
-Valor correto(9), na posição 69 da String 
-
-Valor correto(9), na posição 79 da String 
-
-[13-11-2024 02:40:29] [Cliente ID: 2] Cliente desconectou-se
-[13-11-2024 02:40:37] [Cliente ID: 3] Cliente comecou o programa
-[13-11-2024 02:40:37] [Cliente ID: 3] Valor incorreto(1), na posição 3 da String 
+[13-11-2024 02:51:25] [Cliente ID: 1] Cliente comecou o programa
+[13-11-2024 02:51:25] [Cliente ID: 1] Valor incorreto(1), na posição 3 da String 
 Valor incorreto(1), na posição 4 da String 
 Valor incorreto(1), na posição 6 da String 
 Valor incorreto(1), na posição 7 da String 
@@ -667,8 +43,8 @@ Valor correto(1), na posição 57 da String
 Valor incorreto(1), na posição 58 da String 
 Valor incorreto(1), na posição 59 da String 
 Valor incorreto(1), na posição 60 da String 
-Valor incorreto(1), na3
-[13-11-2024 02:40:37] [Cliente ID: 3] Valor incorreto(2), na posição 3 da String 
+Valor incorreto(1), na1
+[13-11-2024 02:51:25] [Cliente ID: 1] Valor incorreto(2), na posição 3 da String 
 Valor incorreto(2), na posição 4 da String 
 Valor incorreto(2), na posição 6 da String 
 Valor incorreto(2), na posição 7 da String 
@@ -713,8 +89,8 @@ Valor correto(2), na posição 64 da String
 Valor incorreto(2), na posição 65 da String 
 Valor incorreto(2), na posição 66 da String 
 Valor incorreto(2), na posição 70 da String 
-Valor incorreto(2), na3
-[13-11-2024 02:40:37] [Cliente ID: 3] Valor incorreto(3), na posição 3 da String 
+Valor incorreto(2), na1
+[13-11-2024 02:51:25] [Cliente ID: 1] Valor incorreto(3), na posição 3 da String 
 Valor incorreto(3), na posição 4 da String 
 Valor incorreto(3), na posição 6 da String 
 Valor incorreto(3), na posição 7 da String 
@@ -759,7 +135,7 @@ Valor incorreto(3), na posição 74 da String
 Valor incorreto(3), na posição 75 da String 
 Valor incorreto(3), na posição 78 da String 
 
-[13-11-2024 02:40:37] [Cliente ID: 3] 
+[13-11-2024 02:51:25] [Cliente ID: 1] 
 Valor correto(4), na posição 3 da String 
 Valor incorreto(4), na posição 4 da String 
 Valor incorreto(4), na posição 6 da String 
@@ -799,7 +175,7 @@ Valor correto(4), na posição 74 da String
 Valor incorreto(4), na posição 75 da String 
 Valor incorreto(4), na posição 78 da String 
 
-[13-11-2024 02:40:37] [Cliente ID: 3] Valor incorreto(5), na posição 4 da String 
+[13-11-2024 02:51:25] [Cliente ID: 1] Valor incorreto(5), na posição 4 da String 
 Valor incorreto(5), na posição 6 da String 
 Valor incorreto(5), na posição 7 da String 
 Valor incorreto(5), na posição 11 da String 
@@ -831,7 +207,7 @@ Valor incorreto(5), na posição 70 da String
 Valor correto(5), na posição 75 da String 
 Valor incorreto(5), na posição 78 da String 
 
-[13-11-2024 02:40:37] [Cliente ID: 3] 
+[13-11-2024 02:51:25] [Cliente ID: 1] 
 Valor correto(6), na posição 4 da String 
 Valor incorreto(6), na posição 6 da String 
 Valor incorreto(6), na posição 7 da String 
@@ -855,7 +231,7 @@ Valor correto(6), na posição 70 da String
 
 Valor correto(6), na posição 78 da String 
 
-[13-11-2024 02:40:37] [Cliente ID: 3] Valor incorreto(7), na posição 6 da String 
+[13-11-2024 02:51:25] [Cliente ID: 1] Valor incorreto(7), na posição 6 da String 
 Valor incorreto(7), na posição 7 da String 
 
 Valor correto(7), na posição 11 da String 
@@ -877,7 +253,7 @@ Valor incorreto(7), na posição 65 da String
 
 Valor correto(7), na posição 66 da String 
 
-[13-11-2024 02:40:37] [Cliente ID: 3] 
+[13-11-2024 02:51:25] [Cliente ID: 1] 
 Valor correto(8), na posição 6 da String 
 Valor incorreto(8), na posição 7 da String 
 
@@ -891,7 +267,7 @@ Valor incorreto(8), na posição 55 da String
 
 Valor correto(8), na posição 65 da String 
 
-[13-11-2024 02:40:37] [Cliente ID: 3] 
+[13-11-2024 02:51:25] [Cliente ID: 1] 
 Valor correto(9), na posição 7 da String 
 
 Valor correto(9), na posição 30 da String 
@@ -902,4 +278,613 @@ Valor correto(9), na posição 49 da String
 
 Valor correto(9), na posição 55 da String 
 
-[13-11-2024 02:40:37] [Cliente ID: 3] Cliente desconectou-se
+[13-11-2024 02:51:25] [Cliente ID: 1] Cliente desconectou-se
+[13-11-2024 02:53:03] [Cliente ID: 2] Cliente comecou o programa
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 2 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 2 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 2 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 2 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 2 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 2 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(7), na posição 2 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(8), na posição 2 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(9), na posição 2 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 3 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 3 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 3 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(4), na posição 3 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 4 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 4 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 4 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 4 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 4 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(6), na posição 4 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 5 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(2), na posição 5 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 7 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 7 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 7 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 7 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 7 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 7 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(7), na posição 7 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(8), na posição 7 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(1), na posição 9 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 10 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 10 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 10 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 10 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 10 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(6), na posição 10 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 11 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 11 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 11 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 11 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 11 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 11 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(7), na posição 11 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(8), na posição 11 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 14 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 14 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 14 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 14 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 14 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 14 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(7), na posição 14 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 15 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 15 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 15 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(4), na posição 15 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 17 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 17 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(3), na posição 17 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 18 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 18 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 18 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 18 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 18 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 18 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(7), na posição 18 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(8), na posição 18 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(9), na posição 18 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 20 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 20 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 20 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 20 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 20 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 20 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(7), na posição 20 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 21 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 21 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(3), na posição 21 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 22 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 22 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 22 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 22 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 22 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 22 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(7), na posição 22 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(8), na posição 22 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 24 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 24 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 24 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 24 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(5), na posição 24 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 25 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 25 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 25 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(4), na posição 25 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 26 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(2), na posição 26 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 28 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 28 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 28 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 28 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 28 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 28 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(7), na posição 28 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 30 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 30 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 30 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 30 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 30 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 30 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(7), na posição 30 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(8), na posição 30 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(9), na posição 30 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 31 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 31 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(3), na posição 31 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 32 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 32 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 32 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 32 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 32 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 32 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(7), na posição 32 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(8), na posição 32 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(1), na posição 34 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 37 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 37 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 37 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(4), na posição 37 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 39 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 39 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 39 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 39 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 39 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 39 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(7), na posição 39 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(8), na posição 39 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 40 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(2), na posição 40 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 41 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 41 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 41 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 41 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(5), na posição 41 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 42 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 42 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 42 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 42 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 42 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 42 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(7), na posição 42 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(8), na posição 42 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(9), na posição 42 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 43 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 43 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 43 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 43 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 43 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 43 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(7), na posição 43 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 45 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 45 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(3), na posição 45 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 48 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 48 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 48 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 48 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 48 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 48 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(7), na posição 48 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(1), na posição 50 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 51 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 51 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 51 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 51 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 51 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 51 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(7), na posição 51 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 52 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 52 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 52 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 52 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 52 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(6), na posição 52 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 54 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 54 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 54 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(4), na posição 54 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 56 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 56 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(3), na posição 56 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 57 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 57 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 57 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 57 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(5), na posição 57 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 58 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 58 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 58 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 58 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 58 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 58 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(7), na posição 58 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(8), na posição 58 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(9), na posição 58 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 60 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(2), na posição 60 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 61 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 61 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 61 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 61 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 61 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 61 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(7), na posição 61 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(1), na posição 62 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 64 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(2), na posição 64 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 65 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 65 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 65 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(4), na posição 65 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 67 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 67 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 67 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 67 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(5), na posição 67 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 68 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 68 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 68 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 68 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 68 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 68 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(7), na posição 68 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(8), na posição 68 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(9), na posição 68 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 71 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 71 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 71 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 71 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 71 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 71 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(7), na posição 71 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 72 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 72 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(3), na posição 72 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 73 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 73 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 73 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 73 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 73 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 73 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(7), na posição 73 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(8), na posição 73 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(9), na posição 73 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 75 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 75 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 75 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 75 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 75 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(6), na posição 75 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(7), na posição 75 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(8), na posição 75 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 77 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 77 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(3), na posição 77 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 78 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(2), na posição 78 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 79 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 79 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 79 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 79 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(5), na posição 79 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(1), na posição 80 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(2), na posição 80 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(3), na posição 80 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(4), na posição 80 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Valor incorreto(5), na posição 80 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] 
+Valor correto(6), na posição 80 da String 
+
+[13-11-2024 02:53:03] [Cliente ID: 2] Cliente desconectou-se
