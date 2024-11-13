@@ -14,7 +14,7 @@ sem_t semAguardar;
 
 void carregarConfigCliente(char *nomeFicheiro, struct ClienteConfig *clienteConfig)
 {
-	FILE *config = abrirFicheiro(nomeFicheiro);
+	FILE *config = abrirFicheiroRead(nomeFicheiro);
 
 	if (config == NULL)
 	{

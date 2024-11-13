@@ -34,7 +34,7 @@ const char *getTempoHoraMinutoSegundo();
 void enviarMensagens();
 void receberMensagens(int nUtilizadores);
 int fecharFicheiro(FILE *file);
-FILE *abrirFicheiro(char *filename);
+FILE *abrirFicheiroRead(char *filename);
 int validarNomeFile(char *arquivoNome, char *padrao);
 void err_dump(char *msg);
 int readline(int fd, char *ptr, int maxlen);

@@ -14,7 +14,7 @@ sem_t semaforoAguardaResposta;
 // so tem o ficheiro da localizacao dos jogos e solucoes que neste caso e apenas 1 ficheiro
 void carregarConfigServidor(char *nomeFicheiro, struct ServidorConfig *serverConfig)
 {
-    FILE *config = abrirFicheiro(nomeFicheiro);
+    FILE *config = abrirFicheiroRead(nomeFicheiro);
 
     fseek(config, 0, SEEK_END);
     long tamanhoFicheiro = ftell(config);
@@ -58,41 +58,62 @@ void logEventoServidor(const char *message)
         return;
     }
     fprintf(file, "[%s] %s\n", getTempo(), message);
-    fclose(file);
+    fecharFicheiro(file);
     pthread_mutex_unlock(&mutexServidorLog);
 }
-void logQueEventoServidor(int numero)
+
+void logQueEventoServidor(int numero, int clienteID)
 {
+    char *mensagem = malloc(BUF_SIZE * sizeof(char));
+    if (mensagem == NULL)
+    {
+        perror("Erro ao alocar memoria para mensagem");
+        exit(1);
+    }
+    // case 1 e 2 mesmo que nao usem memoria é necessário libertar
     switch (numero)
     {
     case 1:
         logEventoServidor("Servidor comecou");
+        free(mensagem);
         break;
     case 2:
         logEventoServidor("Servidor parou");
+        free(mensagem);
         break;
     case 3:
-        // fazer outra funcao para saber ID cliente ex. novo cliente e seu id
-        logEventoServidor("O cliente id: conectou-se");
+        sprintf(mensagem, "Cliente-%d conectado", clienteID);
+        logEventoServidor(mensagem);
+        free(mensagem);
         break;
     case 4:
-        // fazer outra funcao para saber ID cliente
-        logEventoServidor("Servidor enviou um jogo id cliente:");
+        sprintf(mensagem, "Servidor enviou um jogo para o cliente-%d", clienteID);
+        logEventoServidor(mensagem);
+        free(mensagem);
         break;
     case 5:
-        // fazer outra funcao para saber ID cliente
-        logEventoServidor("Servidor recebeu uma solucao.id cliente:");
+        sprintf(mensagem, "Servidor recebeu uma solucao do cliente-%d", clienteID);
+        logEventoServidor(mensagem);
+        free(mensagem);
         break;
     case 6:
-        // fazer outra funcao para saber ID cliente
-        logEventoServidor("Servidor enviou numero de erradasid cliente:");
+        sprintf(mensagem, "Servidor enviou uma solucao para o cliente-%d", clienteID);
+        logEventoServidor(mensagem);
+        free(mensagem);
         break;
     case 7:
-        // fazer outra funcao para saber ID cliente
-        logEventoServidor("O cliente id: desconectou-se");
+        sprintf(mensagem, "Cliente-%d desconectado", clienteID);
+        logEventoServidor(mensagem);
+        free(mensagem);
+        break;
+    case 8:
+        sprintf(mensagem, "Cliente-%d resolveu o jogo", clienteID);
+        logEventoServidor(mensagem);
+        free(mensagem);
         break;
     default:
         logEventoServidor("Evento desconhecido");
+        free(mensagem);
         break;
     }
 }
@@ -101,7 +122,7 @@ void logQueEventoServidor(int numero)
 char *atualizaValoresCorretos(char tentativaAtual[], char valoresCorretos[], char solucao[], int *nTentativas)
 {
     // Aloca dinamicamente espaço para logClienteFinal
-    char *logClienteFinal = malloc(BUF_SIZE * sizeof(char));
+    char *logClienteFinal = malloc(2 * BUF_SIZE * sizeof(char));
     if (logClienteFinal == NULL)
     {
         perror("Erro ao alocar memoria para logClienteFinal");
@@ -121,7 +142,7 @@ char *atualizaValoresCorretos(char tentativaAtual[], char valoresCorretos[], cha
             {
                 valoresCorretos[i] = tentativaAtual[i];
                 char message[BUF_SIZE] = "";
-                sprintf(message, "\nValor correto(%c), na posição %d da String \n", tentativaAtual[i], i + 1);
+                sprintf(message, "Valor correto(%c), na posição %d da String \n", tentativaAtual[i], i + 1);
                 strcat(logCliente, message);
             }
             else
@@ -156,24 +177,26 @@ bool verificaResolvido(char valoresCorretos[], char solucao[], bool resolvido)
 
 void carregarFicheiroJogosSolucoes(char *nomeFicheiro)
 {
-    FILE *config = abrirFicheiro(nomeFicheiro);
+    FILE *config = abrirFicheiroRead(nomeFicheiro);
 
     char buffer[BUF_SIZE];
     int contadorConfigs = 0;
+    // le todos os jogos
     while (fgets(buffer, BUF_SIZE, config) != NULL)
     {
         // Leitura do idJogo (primeira linha)
-        char *resultado = strtok(buffer, "\n");
-        jogosEsolucoes[contadorConfigs].idJogo = atoi(resultado);
-        // Leitura do IP do servidor (segunda linha)
+        char *IDJogo = strtok(buffer, "\n");
+        jogosEsolucoes[contadorConfigs].idJogo = atoi(IDJogo);
+        // Leitura jogo (segunda linha)
         if (fgets(buffer, BUF_SIZE, config) != NULL)
         {
-            char *resultado = strtok(buffer, "\n");
-            strcpy(jogosEsolucoes[contadorConfigs].jogo, resultado);
+            char *Jogo = strtok(buffer, "\n");
+            strcpy(jogosEsolucoes[contadorConfigs].jogo, Jogo);
+            // Leitura solucao (terceira linha)
             if (fgets(buffer, BUF_SIZE, config) != NULL)
             {
-                char *resultado = strtok(buffer, "\n");
-                strcpy(jogosEsolucoes[contadorConfigs].solucao, resultado);
+                char *Solucao = strtok(buffer, "\n");
+                strcpy(jogosEsolucoes[contadorConfigs].solucao, Solucao);
             }
         }
 
@@ -202,6 +225,7 @@ struct ServidorConfig construtorServer(int dominio, int servico, int protocolo, 
     strcpy(servidor.ficheiroJogosESolucoesCaminho, ficheiroJogosESolucoesCaminho);
     return servidor;
 }
+
 void iniciarServidorSocket(struct ServidorConfig *server)
 {
     int socketServidor = socket(server->dominio, server->servico, server->protocolo);
@@ -231,10 +255,11 @@ void iniciarServidorSocket(struct ServidorConfig *server)
 
     while (1)
     {
+        // sempre a aceitar novas conexoes
         struct sockaddr_in enderecoCliente;
         int tamanhoEndereco = sizeof(enderecoCliente);
         int socketCliente = accept(socketServidor, (struct sockaddr *)&enderecoCliente, (socklen_t *)&tamanhoEndereco);
-
+        // aceitar conexao se falhar volta para o inicio while e tenta aceitar outras conexoes
         if (socketCliente == -1)
         {
             perror("Erro ao aceitar conexão");
@@ -246,21 +271,23 @@ void iniciarServidorSocket(struct ServidorConfig *server)
         sprintf(temp, "%d|", idCliente);
         pthread_mutex_unlock(&mutexClienteID);
 
+        // cria filho para tratar do cliente e fecha o pai
         if (fork() == 0)
         {
-            struct ClienteConfig clienteConfig = {0};
             // Processo filho
+            struct ClienteConfig clienteConfig = {0};
             close(socketServidor);
+
+            // enviar para o cliente o seu ID
             write(socketCliente, temp, BUF_SIZE);
-            char *msgLog = malloc(BUF_SIZE);
+            char *msgLog = malloc(2 * BUF_SIZE * sizeof(char));
             if (msgLog == NULL)
             {
                 perror("Erro ao alocar memoria");
                 exit(1);
             }
-            sprintf(msgLog, "Cliente-%d conectado", idCliente);
-            logEventoServidor(msgLog);
-            printf("%s/n", msgLog);
+            logQueEventoServidor(3, idCliente);
+            printf("%s\n", msgLog);
 
             char buffer[BUF_SIZE] = {0};
             // rand time dá sempre mesma seed se chegarem ao mesmo tempo
@@ -280,9 +307,9 @@ void iniciarServidorSocket(struct ServidorConfig *server)
     }
     close(socketServidor);
 }
+
 void receberMensagemETratarServer(char *buffer, int socketCliente, struct ClienteConfig clienteConfig, int nJogo, char *jogoADar)
 {
-    sem_init(&semaforoAguardaResposta, 0, 1);
     while (recv(socketCliente, buffer, BUF_SIZE, 0) > 0)
     {
         printf("Mensagem recebida: %s\n", buffer);
@@ -318,8 +345,6 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
             clienteConfig.jogoAtual.numeroTentativas = atoi(numeroTentativas);
             clienteConfig.jogoAtual.idJogo = nJogo;
             clienteConfig.idCliente = atoi(idCliente);
-            char *temp = malloc(1024);
-            sprintf(temp, "Enviou um jogo para o cliente-%d", clienteConfig.idCliente);
 
             memset(buffer, 0, BUF_SIZE);
             sprintf(buffer, "%u|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d",
@@ -339,8 +364,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
             // sem_post(&semaforoAguardaResposta);
 
             printf("Mensagem enviada: %s\n", buffer);
-            logEventoServidor(temp);
-            free(temp);
+            logQueEventoServidor(4, clienteConfig.idCliente);
             memset(buffer, 0, BUF_SIZE);
         }
 
@@ -364,6 +388,8 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
             clienteConfig.jogoAtual.resolvido = atoi(resolvido);
             clienteConfig.jogoAtual.numeroTentativas = atoi(numeroTentativas);
 
+            logQueEventoServidor(5, clienteConfig.idCliente);
+
             char *logClienteEnviar;
             if (strcmp(clienteConfig.tipoResolucao, "COMPLET") == 0)
             {
@@ -372,7 +398,8 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
                     clienteConfig.jogoAtual.valoresCorretos,
                     jogosEsolucoes[clienteConfig.jogoAtual.idJogo].solucao,
                     &clienteConfig.jogoAtual.numeroTentativas);
-                if (logClienteEnviar == NULL) {
+                if (logClienteEnviar == NULL)
+                {
                     logClienteEnviar = "";
                 }
             }
@@ -383,7 +410,8 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
                     clienteConfig.jogoAtual.valoresCorretos,
                     jogosEsolucoes[clienteConfig.jogoAtual.idJogo].solucao,
                     &clienteConfig.jogoAtual.numeroTentativas);
-                if (logClienteEnviar == NULL) {
+                if (logClienteEnviar == NULL)
+                {
                     logClienteEnviar = "";
                 }
             }
@@ -394,11 +422,8 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
                     clienteConfig.jogoAtual.resolvido))
             {
                 clienteConfig.jogoAtual.resolvido = 1;
+                logQueEventoServidor(8, clienteConfig.idCliente);
             }
-
-            // sem_wait(&semaforoAguardaResposta);
-            char *temp = malloc(1024);
-            sprintf(temp, "Recebeu uma solução do cliente-%d", clienteConfig.idCliente);
 
             memset(buffer, 0, BUF_SIZE);
             sprintf(buffer, "%u|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d|%s",
@@ -420,8 +445,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
             // sem_post(&semaforoAguardaResposta);
 
             printf("Mensagem enviada: %s\n", buffer);
-            logEventoServidor(temp);
-            free(temp);
+            logQueEventoServidor(6, clienteConfig.idCliente);
             memset(buffer, 0, BUF_SIZE);
         }
     }
@@ -449,7 +473,8 @@ int main(int argc, char **argv)
     // printf("Caminho jogos e solucoes: %s", serverConfig.ficheiroJogosESolucoesCaminho);
     carregarFicheiroJogosSolucoes(serverConfig.ficheiroJogosESolucoesCaminho);
     serverConfig = construtorServer(AF_INET, SOCK_STREAM, 0, INADDR_ANY, serverConfig.porta, 1, serverConfig.ficheiroJogosESolucoesCaminho);
-    logQueEventoServidor(1);
+    // server posso considerar id 0 que nao vou usar para nada
+    logQueEventoServidor(1, 0);
     iniciarServidorSocket(&serverConfig);
     return 0;
 }

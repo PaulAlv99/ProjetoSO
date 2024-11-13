@@ -33,11 +33,11 @@ struct ServidorConfig
 };
 void carregarConfigServidor(char *nomeFicheiro, struct ServidorConfig *serverConfig);
 void logEventoServidor(const char *message);
-void logQueEventoServidor(int numero);
+void logQueEventoServidor(int numero, int clienteID);
 void tentarSolucaoCompleta(char tentativaAtual[], char valoresCorretos[]);
 void tentarSolucaoParcial(char tentativaAtual[], char valoresCorretos[]);
-char * atualizaValoresCorretos(char tentativaAtual[], char valoresCorretos[], char solucao[], int *nTentativas);
-//void atualizaValoresCorretosParcial(char tentativaAtual[], char valoresCorretos[], char solucao[], int *nTentativas);
+char *atualizaValoresCorretos(char tentativaAtual[], char valoresCorretos[], char solucao[], int *nTentativas);
+// void atualizaValoresCorretosParcial(char tentativaAtual[], char valoresCorretos[], char solucao[], int *nTentativas);
 void carregarFicheiroJogosSolucoes(char *nomeFicheiro);
 struct ServidorConfig construtorServer(int domain, int service, int protocol, __u_long interface, int port, int backlog, char *ficheiroJogosESolucoesCaminho);
 void iniciarServidorSocket(struct ServidorConfig *server);

@@ -17,7 +17,7 @@ int fecharFicheiro(FILE *file)
 	return 0; // Indica sucesso.
 }
 
-FILE *abrirFicheiro(char *filename)
+FILE *abrirFicheiroRead(char *filename)
 {
 	FILE *conf = fopen(filename, "r");
 
