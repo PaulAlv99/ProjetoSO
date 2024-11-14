@@ -19,7 +19,7 @@
 #include <signal.h>
 
 #define TEMPO_TAMANHO 22
-#define BUF_SIZE 4096
+#define BUF_SIZE 8192
 // 81 + \0
 #define NUMEROS_NO_JOGO 81
 #define NUM_LINHAS 9
@@ -39,3 +39,4 @@ int validarNomeFile(char *arquivoNome, char *padrao);
 void err_dump(char *msg);
 int readline(int fd, char *ptr, int maxlen);
 int writen(int fd, char *ptr, int nbytes);
+const time_t converterTempoStringParaTimeT(char *tempo);

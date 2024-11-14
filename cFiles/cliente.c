@@ -327,6 +327,7 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 					clienteConfig->jogoAtual.numeroTentativas);
 
 			// sem_wait(&semAguardar);
+			sleep(1);
 			write(clienteConfig->socket, bufferEnviar, BUF_SIZE);
 			char bufferEnviarFinal[BUF_SIZE] = {0};
 
@@ -381,11 +382,12 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 				// sem_post(&semAguardar);
 			}
 		}
-		strcpy(clienteConfig->jogoAtual.tempoFinal, getTempoHoraMinutoSegundo());
 		printf("Jogo resolvido!\n");
 		printf("Resolvido em %d tentativas\n", clienteConfig->jogoAtual.numeroTentativas);
+		printf("Hora de fim: %s\n", clienteConfig->jogoAtual.tempoFinal);
 	}
 }
+
 int main(int argc, char **argv)
 {
 	struct ClienteConfig clienteConfig = {0};

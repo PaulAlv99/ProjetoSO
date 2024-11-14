@@ -425,6 +425,11 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
                     clienteConfig.jogoAtual.resolvido))
             {
                 clienteConfig.jogoAtual.resolvido = 1;
+                strcpy(clienteConfig.jogoAtual.tempoFinal, getTempoHoraMinutoSegundo());
+                time_t tempoInicioConvertido = converterTempoStringParaTimeT(clienteConfig.jogoAtual.tempoInicio);
+                time_t tempoFinalConvertido = converterTempoStringParaTimeT(clienteConfig.jogoAtual.tempoFinal);
+                time_t tempoDemorado = difftime(tempoFinalConvertido, tempoInicioConvertido);
+                printf("Tempo demorado: %ld segundos\n", tempoDemorado);
                 logQueEventoServidor(8, clienteConfig.idCliente);
             }
 

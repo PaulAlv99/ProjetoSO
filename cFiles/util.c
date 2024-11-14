@@ -61,6 +61,16 @@ const char *getTempoHoraMinutoSegundo()
 	strftime(buffer, sizeof(buffer) - 1, "%H:%M:%S", localtime(&now));
 	return buffer;
 }
+
+//Funcao converter tempo em String para temp em time_t
+const time_t converterTempoStringParaTimeT(char *tempo)
+{
+	struct tm tm;
+	time_t t;
+	strptime(tempo, "%H:%M:%S", &tm);
+	t = mktime(&tm);
+	return t;
+}
 // Parte Servidor
 
 #define MAXLINE 512
