@@ -1,43 +1,600 @@
-[13-11-2024 11:54:55] Servidor comecou
-[13-11-2024 11:55:02] Cliente-1 conectado
-[13-11-2024 11:55:02] Servidor enviou um jogo para o cliente-1
-[13-11-2024 11:55:02] Servidor recebeu uma solucao do cliente-1
-[13-11-2024 11:55:02] Servidor enviou uma solucao para o cliente-1
-[13-11-2024 11:55:02] Servidor recebeu uma solucao do cliente-1
-[13-11-2024 11:55:02] Servidor enviou uma solucao para o cliente-1
-[13-11-2024 11:55:02] Servidor recebeu uma solucao do cliente-1
-[13-11-2024 11:55:02] Servidor enviou uma solucao para o cliente-1
-[13-11-2024 11:55:02] Servidor recebeu uma solucao do cliente-1
-[13-11-2024 11:55:02] Servidor enviou uma solucao para o cliente-1
-[13-11-2024 11:55:02] Servidor recebeu uma solucao do cliente-1
-[13-11-2024 11:55:02] Servidor enviou uma solucao para o cliente-1
-[13-11-2024 11:55:02] Servidor recebeu uma solucao do cliente-1
-[13-11-2024 11:55:02] Servidor enviou uma solucao para o cliente-1
-[13-11-2024 11:55:02] Servidor recebeu uma solucao do cliente-1
-[13-11-2024 11:55:02] Servidor enviou uma solucao para o cliente-1
-[13-11-2024 11:55:02] Servidor recebeu uma solucao do cliente-1
-[13-11-2024 11:55:02] Servidor enviou uma solucao para o cliente-1
-[13-11-2024 11:55:02] Servidor recebeu uma solucao do cliente-1
-[13-11-2024 11:55:02] Servidor enviou uma solucao para o cliente-1
-[13-11-2024 11:56:30] Servidor comecou
-[13-11-2024 11:56:31] Cliente-1 conectado
-[13-11-2024 11:56:31] Servidor enviou um jogo para o cliente-1
-[13-11-2024 11:56:31] Servidor recebeu uma solucao do cliente-1
-[13-11-2024 11:56:31] Servidor enviou uma solucao para o cliente-1
-[13-11-2024 11:56:31] Servidor recebeu uma solucao do cliente-1
-[13-11-2024 11:56:31] Servidor enviou uma solucao para o cliente-1
-[13-11-2024 11:56:31] Servidor recebeu uma solucao do cliente-1
-[13-11-2024 11:56:31] Servidor enviou uma solucao para o cliente-1
-[13-11-2024 11:56:31] Servidor recebeu uma solucao do cliente-1
-[13-11-2024 11:56:31] Servidor enviou uma solucao para o cliente-1
-[13-11-2024 11:56:31] Servidor recebeu uma solucao do cliente-1
-[13-11-2024 11:56:31] Servidor enviou uma solucao para o cliente-1
-[13-11-2024 11:56:31] Servidor recebeu uma solucao do cliente-1
-[13-11-2024 11:56:31] Servidor enviou uma solucao para o cliente-1
-[13-11-2024 11:56:31] Servidor recebeu uma solucao do cliente-1
-[13-11-2024 11:56:31] Servidor enviou uma solucao para o cliente-1
-[13-11-2024 11:56:31] Servidor recebeu uma solucao do cliente-1
-[13-11-2024 11:56:31] Servidor enviou uma solucao para o cliente-1
-[13-11-2024 11:56:31] Servidor recebeu uma solucao do cliente-1
-[13-11-2024 11:56:31] Cliente-1 resolveu o jogo
-[13-11-2024 11:56:31] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor comecou
+[13-11-2024 13:54:48] Cliente-2 conectado
+[13-11-2024 13:54:48] Servidor enviou um jogo para o cliente-2
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-2
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-2
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-2
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-2
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-2
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-2
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-2
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-2
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-2
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-2
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-2
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-2
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-2
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-2
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-2
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-2
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-2
+[13-11-2024 13:54:48] Cliente-2 resolveu o jogo
+[13-11-2024 13:54:48] Cliente-1 conectado
+[13-11-2024 13:54:48] Servidor enviou um jogo para o cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-2
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:48] Servidor recebeu uma solucao do cliente-1
+[13-11-2024 13:54:48] Cliente-1 resolveu o jogo
+[13-11-2024 13:54:48] Servidor enviou uma solucao para o cliente-1
+[13-11-2024 13:54:49] Cliente-3 conectado
+[13-11-2024 13:54:49] Servidor enviou um jogo para o cliente-3
+[13-11-2024 13:54:49] Servidor recebeu uma solucao do cliente-3
+[13-11-2024 13:54:49] Servidor enviou uma solucao para o cliente-3
+[13-11-2024 13:54:49] Servidor recebeu uma solucao do cliente-3
+[13-11-2024 13:54:49] Servidor enviou uma solucao para o cliente-3
+[13-11-2024 13:54:49] Servidor recebeu uma solucao do cliente-3
+[13-11-2024 13:54:49] Servidor enviou uma solucao para o cliente-3
+[13-11-2024 13:54:49] Servidor recebeu uma solucao do cliente-3
+[13-11-2024 13:54:49] Servidor enviou uma solucao para o cliente-3
+[13-11-2024 13:54:49] Servidor recebeu uma solucao do cliente-3
+[13-11-2024 13:54:49] Servidor enviou uma solucao para o cliente-3
+[13-11-2024 13:54:49] Servidor recebeu uma solucao do cliente-3
+[13-11-2024 13:54:49] Servidor enviou uma solucao para o cliente-3
+[13-11-2024 13:54:49] Servidor recebeu uma solucao do cliente-3
+[13-11-2024 13:54:49] Servidor enviou uma solucao para o cliente-3
+[13-11-2024 13:54:49] Servidor recebeu uma solucao do cliente-3
+[13-11-2024 13:54:49] Servidor enviou uma solucao para o cliente-3
+[13-11-2024 13:54:49] Servidor recebeu uma solucao do cliente-3
+[13-11-2024 13:54:49] Cliente-3 resolveu o jogo
+[13-11-2024 13:54:49] Servidor enviou uma solucao para o cliente-3

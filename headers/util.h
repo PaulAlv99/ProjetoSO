@@ -19,7 +19,7 @@
 #include <signal.h>
 
 #define TEMPO_TAMANHO 22
-#define BUF_SIZE 2048
+#define BUF_SIZE 4096
 // 81 + \0
 #define NUMEROS_NO_JOGO 81
 #define NUM_LINHAS 9
