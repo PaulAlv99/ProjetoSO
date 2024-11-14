@@ -129,7 +129,7 @@ char *atualizaValoresCorretos(char tentativaAtual[], char valoresCorretos[], cha
         exit(1);
     }
 
-    char logCliente[BUF_SIZE] = "";
+    char logCliente[BUF_SIZE] = "\n";
     char Tentativas[100];
     sprintf(Tentativas, "Tentativa n: %d\n", *nTentativas);
 
@@ -311,8 +311,10 @@ void iniciarServidorSocket(struct ServidorConfig *server)
 void receberMensagemETratarServer(char *buffer, int socketCliente, struct ClienteConfig clienteConfig, int nJogo, char *jogoADar)
 {
     while (recv(socketCliente, buffer, BUF_SIZE, 0) > 0)
-    {
-        printf("Mensagem recebida: %s\n", buffer);
+    {  
+        char bufferFinal[BUF_SIZE] = {0};
+        sprintf(bufferFinal, "Mensagem recebida: %s\n", buffer);
+        logEventoServidor(bufferFinal);
         char *idCliente = strtok(buffer, "|");
         char *tipoJogo = strtok(NULL, "|");
         char *tipoResolucao = strtok(NULL, "|");
@@ -362,9 +364,10 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
 
             write(socketCliente, buffer, BUF_SIZE);
             // sem_post(&semaforoAguardaResposta);
-
-            printf("Mensagem enviada: %s\n", buffer);
+            char bufferEnviarFinal[BUF_SIZE] = {0};
+            sprintf(bufferEnviarFinal, "Mensagem enviada: %s\n", buffer);
             logQueEventoServidor(4, clienteConfig.idCliente);
+            logEventoServidor(bufferEnviarFinal);
             memset(buffer, 0, BUF_SIZE);
         }
 
@@ -443,9 +446,10 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
             write(socketCliente, buffer, BUF_SIZE);
             free(logClienteEnviar);
             // sem_post(&semaforoAguardaResposta);
-
-            printf("Mensagem enviada: %s\n", buffer);
+            char bufferFinal[BUF_SIZE] = {0};
+            sprintf(bufferFinal, "Mensagem enviada: %s\n", buffer);
             logQueEventoServidor(6, clienteConfig.idCliente);
+            logEventoServidor(bufferFinal);
             memset(buffer, 0, BUF_SIZE);
         }
     }

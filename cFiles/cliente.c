@@ -328,14 +328,19 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 
 			// sem_wait(&semAguardar);
 			write(clienteConfig->socket, bufferEnviar, BUF_SIZE);
-			printf("\nMensagem enviada: %s\n", bufferEnviar);
+			char bufferEnviarFinal[BUF_SIZE] = {0};
+
+			sprintf(bufferEnviarFinal, "\nMensagem enviada: %s\n", bufferEnviar);
+			logEventoCliente(bufferEnviarFinal, clienteConfig);
 			// sem_post(&semAguardar);
 			// Limpar buffer antes de receber
 			memset(buffer, 0, BUF_SIZE);
 			// Receber resposta
 			if (recv(clienteConfig->socket, buffer, BUF_SIZE, 0) > 0)
 			{
-				printf("Mensagem recebida: %s\n", buffer);
+				char bufferFinal[BUF_SIZE] = {0};
+				sprintf(bufferFinal, "Mensagem recebida: %s\n", buffer);
+				logEventoCliente(bufferFinal, clienteConfig);
 
 				// Parse da mensagem recebida (uma única vez)
 				char *idCliente = strtok(buffer, "|");
