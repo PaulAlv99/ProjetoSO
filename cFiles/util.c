@@ -62,11 +62,12 @@ const char *getTempoHoraMinutoSegundo()
 	return buffer;
 }
 
-//Funcao converter tempo em String para temp em time_t
+// Funcao converter tempo em String para temp em time_t
 const time_t converterTempoStringParaTimeT(char *tempo)
 {
 	struct tm tm;
-	time_t t;
+	memset(&tm, 0, sizeof(struct tm));
+	time_t t = 0;
 	strptime(tempo, "%H:%M:%S", &tm);
 	t = mktime(&tm);
 	return t;

@@ -329,20 +329,30 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 			// sem_wait(&semAguardar);
 			sleep(1);
 			write(clienteConfig->socket, bufferEnviar, BUF_SIZE);
-			char bufferEnviarFinal[BUF_SIZE] = {0};
-
+			char *bufferEnviarFinal = malloc(BUF_SIZE * sizeof(char));
+			if (bufferEnviarFinal == NULL)
+			{
+				perror("Erro ao alocar memoria");
+				exit(1);
+			}
 			sprintf(bufferEnviarFinal, "\nMensagem enviada: %s\n", bufferEnviar);
 			logEventoCliente(bufferEnviarFinal, clienteConfig);
+			free(bufferEnviarFinal);
 			// sem_post(&semAguardar);
 			// Limpar buffer antes de receber
 			memset(buffer, 0, BUF_SIZE);
 			// Receber resposta
 			if (recv(clienteConfig->socket, buffer, BUF_SIZE, 0) > 0)
 			{
-				char bufferFinal[BUF_SIZE] = {0};
+				char *bufferFinal = malloc(BUF_SIZE * sizeof(char));
+				if (bufferFinal == NULL)
+				{
+					perror("Erro ao alocar memoria");
+					exit(1);
+				}
 				sprintf(bufferFinal, "Mensagem recebida: %s\n", buffer);
 				logEventoCliente(bufferFinal, clienteConfig);
-
+				free(bufferFinal);
 				// Parse da mensagem recebida (uma única vez)
 				char *idCliente = strtok(buffer, "|");
 				char *tipoJogo = strtok(NULL, "|");

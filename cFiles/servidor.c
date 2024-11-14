@@ -280,21 +280,13 @@ void iniciarServidorSocket(struct ServidorConfig *server)
 
             // enviar para o cliente o seu ID
             write(socketCliente, temp, BUF_SIZE);
-            char *msgLog = malloc(2 * BUF_SIZE * sizeof(char));
-            if (msgLog == NULL)
-            {
-                perror("Erro ao alocar memoria");
-                exit(1);
-            }
             logQueEventoServidor(3, idCliente);
-            printf("%s\n", msgLog);
 
             char buffer[BUF_SIZE] = {0};
             // rand time dá sempre mesma seed se chegarem ao mesmo tempo
             srand(getpid());
             int nJogo = rand() % NUM_JOGOS;
             char *jogoADar = jogosEsolucoes[nJogo].jogo;
-            free(msgLog);
             receberMensagemETratarServer(buffer, socketCliente, clienteConfig, nJogo, jogoADar);
             close(socketCliente);
             exit(0);
@@ -311,7 +303,7 @@ void iniciarServidorSocket(struct ServidorConfig *server)
 void receberMensagemETratarServer(char *buffer, int socketCliente, struct ClienteConfig clienteConfig, int nJogo, char *jogoADar)
 {
     while (recv(socketCliente, buffer, BUF_SIZE, 0) > 0)
-    {  
+    {
         char bufferFinal[BUF_SIZE] = {0};
         sprintf(bufferFinal, "Mensagem recebida: %s\n", buffer);
         logEventoServidor(bufferFinal);
@@ -328,7 +320,18 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
         char *numeroTentativas = strtok(NULL, "|");
         if (strcmp(temJogo, "SEM_JOGO") == 0)
         {
-            if ((idCliente || tipoJogo || tipoResolucao || temJogo || idJogo || jogo || valoresCorretos || tempoInicio || tempoFinal || resolvido || numeroTentativas) == NULL)
+            // macro no util.h
+            if (CHECK_NULL(idCliente) ||
+                CHECK_NULL(tipoJogo) ||
+                CHECK_NULL(tipoResolucao) ||
+                CHECK_NULL(temJogo) ||
+                CHECK_NULL(idJogo) ||
+                CHECK_NULL(jogo) ||
+                CHECK_NULL(valoresCorretos) ||
+                CHECK_NULL(tempoInicio) ||
+                CHECK_NULL(tempoFinal) ||
+                CHECK_NULL(resolvido) ||
+                CHECK_NULL(numeroTentativas))
             {
                 printf("Erro: Mensagem recebida com formato inválido\n");
                 break;
@@ -373,7 +376,18 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
 
         if (strcmp(temJogo, "COM_JOGO") == 0)
         {
-            if ((idCliente || tipoJogo || tipoResolucao || temJogo || idJogo || jogo || valoresCorretos || tempoInicio || tempoFinal || resolvido || numeroTentativas) == NULL)
+            // macro no util.h
+            if (CHECK_NULL(idCliente) ||
+                CHECK_NULL(tipoJogo) ||
+                CHECK_NULL(tipoResolucao) ||
+                CHECK_NULL(temJogo) ||
+                CHECK_NULL(idJogo) ||
+                CHECK_NULL(jogo) ||
+                CHECK_NULL(valoresCorretos) ||
+                CHECK_NULL(tempoInicio) ||
+                CHECK_NULL(tempoFinal) ||
+                CHECK_NULL(resolvido) ||
+                CHECK_NULL(numeroTentativas))
             {
                 printf("Erro: Mensagem recebida com formato inválido\n");
                 break;
@@ -458,9 +472,15 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
             memset(buffer, 0, BUF_SIZE);
         }
     }
-    char *temp;
+    char *temp = malloc(BUF_SIZE * sizeof(char));
+    if (temp == NULL)
+    {
+        perror("Erro ao alocar memoria para temp");
+        exit(1);
+    }
     sprintf(temp, "Cliente-%d desconectado", clienteConfig.idCliente);
     printf("%s\n", temp);
+    free(temp);
 }
 
 int main(int argc, char **argv)

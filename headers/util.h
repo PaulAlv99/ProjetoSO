@@ -17,6 +17,7 @@
 #include <errno.h>
 #include <semaphore.h>
 #include <signal.h>
+#define CHECK_NULL(x) ((x) == NULL)
 
 #define TEMPO_TAMANHO 22
 #define BUF_SIZE 8192
