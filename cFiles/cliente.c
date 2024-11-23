@@ -9,9 +9,6 @@ char *padrao = "./configs/cliente";
 // tricos
 pthread_mutex_t mutexClienteLog = PTHREAD_MUTEX_INITIALIZER;
 
-// semaforo
-sem_t semAguardar;
-
 void carregarConfigCliente(char *nomeFicheiro, struct ClienteConfig *clienteConfig)
 {
 	FILE *config = abrirFicheiroRead(nomeFicheiro);
@@ -243,8 +240,7 @@ void tentarSolucaoCompleta(char tentativaAtual[], char valoresCorretos[])
 void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 {
 	char buffer[BUF_SIZE] = {0};
-	sem_init(&semAguardar, 0, 1);
-	// abrir sem existente
+
 	sprintf(buffer, "%u|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d",
 			clienteConfig->idCliente,
 			clienteConfig->tipoJogo,
@@ -257,14 +253,13 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 			clienteConfig->jogoAtual.tempoFinal,
 			clienteConfig->jogoAtual.resolvido,
 			clienteConfig->jogoAtual.numeroTentativas);
-	// sem_wait(&semAguardar);
+
 	write(clienteConfig->socket, buffer, BUF_SIZE);
-	// sem_post(&semAguardar);
+
 	memset(buffer, 0, BUF_SIZE);
-	// sem_wait(&semAguardar);
+
 	read(clienteConfig->socket, buffer, BUF_SIZE);
-	// sem_post(&semAguardar);
-	// printf("Mensagem recebida: %s\n", buffer);
+
 	char *idCliente = strtok(buffer, "|");
 	char *tipoJogo = strtok(NULL, "|");
 	char *tipoResolucao = strtok(NULL, "|");

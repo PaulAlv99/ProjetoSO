@@ -27,15 +27,21 @@ struct ClienteConfig
     int socket;
     struct JogoAtual jogoAtual;
 };
-// struct ClienteThread{
-//     struct ClienteConfig clienteConfig;
-//     char tabuleiro[NUMEROS_NO_JOGO];
-// };
-void tentarSolucaoCompleta(char *jogo, char *valoresCorretos);
-void logEventoCliente(const char *message, struct ClienteConfig *clienteConfig);
-void logQueEventoCliente(int numero, struct ClienteConfig clienteConfig);
-void imprimirTabuleiro(char *jogo);
+
 void carregarConfigCliente(char *nomeFicheiro, struct ClienteConfig *clienteConfig);
-void mandarETratarMSG(struct ClienteConfig *clienteConfig);
+
+void imprimirTabuleiro(char *jogo);
+
+void logEventoCliente(const char *message, struct ClienteConfig *clienteConfig);
+
+void logQueEventoCliente(int numero, struct ClienteConfig clienteConfig);
+
+void construtorCliente(int dominio, int porta, __u_long interface, struct ClienteConfig *clienteConfig);
+
 void iniciarClienteSocket(struct ClienteConfig *clienteConfig);
+
 void tentarSolucaoParcial(char tentativaAtual[], char valoresCorretos[]);
+
+void tentarSolucaoCompleta(char tentativaAtual[], char valoresCorretos[]);
+
+void mandarETratarMSG(struct ClienteConfig *clienteConfig);

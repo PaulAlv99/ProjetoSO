@@ -1,5 +1,4 @@
 cliente
 servidor
-*.o
 .vscode/
 .gitkeep

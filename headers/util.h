@@ -31,8 +31,6 @@
 #define INFO_SIZE 256
 #define SHM_SIZE 1024
 #define NUM_MAX_CLIENTES_FILA_SINGLEPLAYER 200
-sem_t semaforoAguardaResposta;
-sem_t semAguardar;
 // globais
 const char *getTempo();
 const char *getTempoHoraMinutoSegundo();

@@ -67,34 +67,41 @@ struct filaClientesSinglePlayer
 };
 
 void carregarConfigServidor(char *nomeFicheiro, struct ServidorConfig *serverConfig);
+
 void logEventoServidor(const char *message);
+
 void logQueEventoServidor(int numero, int clienteID);
-void tentarSolucaoCompleta(char tentativaAtual[], char valoresCorretos[]);
-void tentarSolucaoParcial(char tentativaAtual[], char valoresCorretos[]);
+
 char *atualizaValoresCorretos(char tentativaAtual[], char valoresCorretos[], char solucao[], int *nTentativas);
-// void atualizaValoresCorretosParcial(char tentativaAtual[], char valoresCorretos[], char solucao[], int *nTentativas);
-void carregarFicheiroJogosSolucoes(char *nomeFicheiro);
-struct ServidorConfig construtorServer(int domain, int service, int protocol, __u_long interface, int port, int backlog, char *ficheiroJogosESolucoesCaminho);
-void *criaClienteThread(void *arg);
-void *criaClienteThreadEnviarMSG(void *arg);
-void *criaClienteThreadReceberMSG(void *arg);
-void iniciarServidorSocket(struct ServidorConfig *server);
-void receberMensagemETratarServer(char *buffer, int socketCliente, struct ClienteConfig clienteConfig, int nJogo, char *jogoADar, struct ServidorConfig serverConfig);
+
 bool verificaResolvido(char valoresCorretos[], char solucao[], bool resolvido);
-void resolverJogoCompleto(char jogo[], char solucao[], int nTentativas);
-void resolverJogoParcial(char jogo[], char solucao[], int nTentativas);
-void imprimirTabuleiro(char jogo[]);
+
+void carregarFicheiroJogosSolucoes(char *nomeFicheiro);
+
+struct ServidorConfig construtorServer(int dominio, int servico, int protocolo, __u_long interface, int porta, int backlog, char *ficheiroJogosESolucoesCaminho);
+
+void *criaClienteThread(void *arg);
+
+void iniciarServidorSocket(struct ServidorConfig *server);
+
+void receberMensagemETratarServer(char *buffer, int socketCliente, struct ClienteConfig clienteConfig, int nJogo, char *jogoADar, struct ServidorConfig serverConfig);
+
 struct filaClientesSinglePlayer *criarFila();
-void delete_queue(struct filaClientesSinglePlayer *queue);
-bool bolEstaFilaCheia(struct filaClientesSinglePlayer *queue);
-bool boolFilaVazia(struct filaClientesSinglePlayer *queue);
-bool estaFilaCheiaTrS(struct filaClientesSinglePlayer *queue);
-bool estaFilaVaziaTrSafe(struct filaClientesSinglePlayer *queue);
-void print_fila(struct filaClientesSinglePlayer *queue);
-int getTamanhoFila(struct filaClientesSinglePlayer *queue);
-bool enqueue(struct filaClientesSinglePlayer *queue, int value);
-int dequeue(struct filaClientesSinglePlayer *queue);
-void processarNovoJogo(struct ClienteConfig *config, char *jogoADar, int nJogo);
-void processarAtualizacaoJogo(struct ClienteConfig *config, int nJogo);
-// extern void logEventoCliente(const char *message);
-// extern void logQueEventoCliente(int numero);
+
+void delete_queue(struct filaClientesSinglePlayer *fila);
+
+bool boolEstaFilaCheia(struct filaClientesSinglePlayer *fila);
+
+bool estaFilaCheiaTrSafe(struct filaClientesSinglePlayer *fila);
+
+bool boolEstaFilaVazia(struct filaClientesSinglePlayer *fila);
+
+bool estaFilaVaziaTrSafe(struct filaClientesSinglePlayer *fila);
+
+bool enqueue(struct filaClientesSinglePlayer *fila, int clientID);
+
+int dequeue(struct filaClientesSinglePlayer *fila);
+
+void print_fila(struct filaClientesSinglePlayer *fila);
+
+int getFilaTamanho(struct filaClientesSinglePlayer *fila);

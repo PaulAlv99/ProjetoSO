@@ -2,7 +2,7 @@
 
 // structs
 struct Jogo jogosEsolucoes[NUM_JOGOS];
-struct pilhaClientesSinglePlayer *filaClientesSinglePlayer;
+struct filaClientesSinglePlayer *filaClientesSinglePlayer;
 
 // globais
 static int idCliente = 0;
@@ -238,17 +238,17 @@ void *criaClienteThread(void *arg)
     struct ThreadCliente *args = (struct ThreadCliente *)arg;
     int socketCliente = args->socketCliente;
     // struct ServidorConfig *server = args->server;
-    int clientId = args->clienteId;
+    int clientID = args->clienteId;
 
     struct ClienteConfig clienteConfig = {0};
     // char buffer[BUF_SIZE] = {0};
 
     // Send client ID
     char temp[BUF_SIZE] = {0};
-    sprintf(temp, "%d|", clientId);
+    sprintf(temp, "%d|", clientID);
 
     write(socketCliente, temp, BUF_SIZE);
-    logQueEventoServidor(3, clientId);
+    logQueEventoServidor(3, clientID);
 
     // gerar seed com tempo e id thread
     unsigned int seed = (unsigned int)time(NULL) ^ (unsigned int)pthread_self();
@@ -412,7 +412,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
                     clienteConfig.jogoAtual.numeroTentativas);
 
             write(socketCliente, buffer, BUF_SIZE);
-            // sem_post(&semaforoAguardaResposta);
+
             char bufferEnviarFinal[BUF_SIZE] = {0};
             sprintf(bufferEnviarFinal, "Mensagem enviada: %s\n", buffer);
             logQueEventoServidor(4, clienteConfig.idCliente);
