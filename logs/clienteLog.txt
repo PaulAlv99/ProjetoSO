@@ -1,0 +1,1259 @@
+[23-11-2024 01:52:36] [Cliente ID: 1] Cliente comecou o programa
+[23-11-2024 11:08:16] [Cliente ID: 0] Cliente comecou o programa
+[23-11-2024 11:08:46] [Cliente ID: 0] Cliente comecou o programa
+[23-11-2024 11:38:45] [Cliente ID: 1] Cliente comecou o programa
+[23-11-2024 11:38:46] [Cliente ID: 1] 
+Mensagem enviada: 1|ONE|COMPLET|COM_JOGO|1|511113171112111511111191116151116142161111181321411191811141115116118211111711118|500003070002100500100090006050006042060000080320400090800040005006008200010700008|11:38:45|0|0|0
+
+[23-11-2024 11:38:46] [Cliente ID: 1] Mensagem recebida: 1|ONE|COMPLET|COM_JOGO|1|511113171112111511111191116151116142161111181321411191811141115116118211111711118|500003071002100500100090006050006142060000080320410090800040015006008200010700008|11:38:45|0|0|1|
+Valor incorreto(1), na posição 2 da String 
+Valor incorreto(1), na posição 3 da String 
+Valor incorreto(1), na posição 4 da String 
+Valor incorreto(1), na posição 5 da String 
+Valor incorreto(1), na posição 7 da String 
+Valor correto(1), na posição 9 da String 
+Valor incorreto(1), na posição 10 da String 
+Valor incorreto(1), na posição 11 da String 
+Valor incorreto(1), na posição 14 da String 
+Valor incorreto(1), na posição 15 da String 
+Valor incorreto(1), na posição 17 da String 
+Valor incorreto(1), na posição 18 da String 
+Valor incorreto(1), na posição 20 da String 
+Valor incorreto(1), na posição 21 da String 
+Valor incorreto(1), na posição 22 da String 
+Valor incorreto(1), na posição 24 da String 
+Valor incorreto(1), na posição 25 da String 
+Valor incorreto(1), na posição 26 da String 
+Valor incorreto(1), na posição 28 da String 
+Valor incorreto(1), na posição 30 da String 
+Valor incorreto(1), na posição 31 da String 
+Valor incorreto(1), na posição 32 da String 
+Valor correto(1), na posição 34 da String 
+Valor incorreto(1), na posição 37 da String 
+Valor incorreto(1), na posição 39 da String 
+Valor incorreto(1), na posição 40 da String 
+Valor incorreto(1), na posição 41 da String 
+Valor incorreto(1), na posição 42 da String 
+Valor incorreto(1), na posição 43 da String 
+Valor incorreto(1), na posição 45 da String 
+Valor incorreto(1), na posição 48 da String 
+Valor correto(1), na posição 50 da String 
+Valor incorreto(1), na posição 51 da String 
+Valor incorreto(1), na posição 52 da String 
+Valor incorreto(1), na posição 54 da String 
+Valor incorreto(1), na posição 56 da String 
+Valor incorreto(1), na posição 57 da String 
+Valor incorreto(1), na posição 58 da String 
+Valor incorreto(1), na posição 60 da String 
+Valor incorreto(1), na posição 61 da String 
+Valor correto(1), na posição 62 da String 
+Valor incorreto(1), na posição 64 da String 
+Valor incorreto(1), na posição 65 da String 
+Valor incorreto(1), na posição 67 da String 
+Valor incorreto(1), na posição 68 da String 
+Valor incorreto(1), na posição 71 da String 
+Valor incorreto(1), na posição 72 da String 
+Valor incorreto(1), na posição 73 da String 
+Valor incorreto(1), na posição 75 da String 
+Valor incorreto(1), na posição 77 da String 
+Valor incorreto(1), na posição 78 da String 
+Valor incorreto(1), na posição 79 da String 
+Valor incorreto(1), na posição 80 da String 
+
+
+[23-11-2024 11:38:46] [Cliente ID: 1] 
+Valor incorreto(1), na posição 2 da String 
+Valor incorreto(1), na posição 3 da String 
+Valor incorreto(1), na posição 4 da String 
+Valor incorreto(1), na posição 5 da String 
+Valor incorreto(1), na posição 7 da String 
+Valor correto(1), na posição 9 da String 
+Valor incorreto(1), na posição 10 da String 
+Valor incorreto(1), na posição 11 da String 
+Valor incorreto(1), na posição 14 da String 
+Valor incorreto(1), na posição 15 da String 
+Valor incorreto(1), na posição 17 da String 
+Valor incorreto(1), na posição 18 da String 
+Valor incorreto(1), na posição 20 da String 
+Valor incorreto(1), na posição 21 da String 
+Valor incorreto(1), na posição 22 da String 
+Valor incorreto(1), na posição 24 da String 
+Valor incorreto(1), na posição 25 da String 
+Valor incorreto(1), na posição 26 da String 
+Valor incorreto(1), na posição 28 da String 
+Valor incorreto(1), na posição 30 da String 
+Valor incorreto(1), na posição 31 da String 
+Valor incorreto(1), na posição 32 da String 
+Valor correto(1), na posição 34 da String 
+Valor incorreto(1), na posição 37 da String 
+Valor incorreto(1), na posição 39 da String 
+Valor incorreto(1), na posição 40 da String 
+Valor incorreto(1), na posição 41 da String 
+Valor incorreto(1), na posição 42 da String 
+Valor incorreto(1), na posição 43 da String 
+Valor incorreto(1), na posição 45 da String 
+Valor incorreto(1), na posição 48 da String 
+Valor correto(1), na posição 50 da String 
+Valor incorreto(1), na posição 51 da String 
+Valor incorreto(1), na posição 52 da String 
+Valor incorreto(1), na posição 54 da String 
+Valor incorreto(1), na posição 56 da String 
+Valor incorreto(1), na posição 57 da String 
+Valor incorreto(1), na posição 58 da String 
+Valor incorreto(1), na posição 60 da String 
+Valor incorreto(1), na posição 61 da String 
+Valor correto(1), na posição 62 da String 
+Valor incorreto(1), na posição 64 da String 
+Valor incorreto(1), na posição 65 da String 
+Valor incorreto(1), na posição 67 da String 
+Valor incorreto(1), na posição 68 da String 
+Valor incorreto(1), na posição 71 da String 
+Valor incorreto(1), na posição 72 da String 
+Valor incorreto(1), na posição 73 da String 
+Valor incorreto(1), na posição 75 da String 
+Valor incorreto(1), na posição 77 da String 
+Valor incorreto(1), na posição 78 da String 
+Valor incorreto(1), na posição 79 da String 
+Valor incorreto(1), na posição 80 da String 
+
+[23-11-2024 11:38:47] [Cliente ID: 1] 
+Mensagem enviada: 1|ONE|COMPLET|COM_JOGO|1|522223271222122522122292226252226142262222282322412292822242215226228222212722228|500003071002100500100090006050006142060000080320410090800040015006008200010700008|11:38:45|0|0|1
+
+[23-11-2024 11:38:47] [Cliente ID: 1] Mensagem recebida: 1|ONE|COMPLET|COM_JOGO|1|522223271222122522122292226252226142262222282322412292822242215226228222212722228|500023071002100500100090026050006142060200080320410090800042015206008200010702008|11:38:45|0|0|2|
+Valor incorreto(2), na posição 2 da String 
+Valor incorreto(2), na posição 3 da String 
+Valor incorreto(2), na posição 4 da String 
+Valor correto(2), na posição 5 da String 
+Valor incorreto(2), na posição 7 da String 
+Valor incorreto(2), na posição 10 da String 
+Valor incorreto(2), na posição 11 da String 
+Valor incorreto(2), na posição 14 da String 
+Valor incorreto(2), na posição 15 da String 
+Valor incorreto(2), na posição 17 da String 
+Valor incorreto(2), na posição 18 da String 
+Valor incorreto(2), na posição 20 da String 
+Valor incorreto(2), na posição 21 da String 
+Valor incorreto(2), na posição 22 da String 
+Valor incorreto(2), na posição 24 da String 
+Valor incorreto(2), na posição 25 da String 
+Valor correto(2), na posição 26 da String 
+Valor incorreto(2), na posição 28 da String 
+Valor incorreto(2), na posição 30 da String 
+Valor incorreto(2), na posição 31 da String 
+Valor incorreto(2), na posição 32 da String 
+Valor incorreto(2), na posição 37 da String 
+Valor incorreto(2), na posição 39 da String 
+Valor correto(2), na posição 40 da String 
+Valor incorreto(2), na posição 41 da String 
+Valor incorreto(2), na posição 42 da String 
+Valor incorreto(2), na posição 43 da String 
+Valor incorreto(2), na posição 45 da String 
+Valor incorreto(2), na posição 48 da String 
+Valor incorreto(2), na posição 51 da String 
+Valor incorreto(2), na posição 52 da String 
+Valor incorreto(2), na posição 54 da String 
+Valor incorreto(2), na posição 56 da String 
+Valor incorreto(2), na posição 57 da String 
+Valor incorreto(2), na posição 58 da String 
+Valor correto(2), na posição 60 da String 
+Valor incorreto(2), na posição 61 da String 
+Valor correto(2), na posição 64 da String 
+Valor incorreto(2), na posição 65 da String 
+Valor incorreto(2), na posição 67 da String 
+Valor incorreto(2), na posição 68 da String 
+Valor incorreto(2), na posição 71 da String 
+Valor incorreto(2), na posição 72 da String 
+Valor incorreto(2), na posição 73 da String 
+Valor incorreto(2), na posição 75 da String 
+Valor incorreto(2), na posição 77 da String 
+Valor correto(2), na posição 78 da String 
+Valor incorreto(2), na posição 79 da String 
+Valor incorreto(2), na posição 80 da String 
+
+
+[23-11-2024 11:38:47] [Cliente ID: 1] 
+Valor incorreto(2), na posição 2 da String 
+Valor incorreto(2), na posição 3 da String 
+Valor incorreto(2), na posição 4 da String 
+Valor correto(2), na posição 5 da String 
+Valor incorreto(2), na posição 7 da String 
+Valor incorreto(2), na posição 10 da String 
+Valor incorreto(2), na posição 11 da String 
+Valor incorreto(2), na posição 14 da String 
+Valor incorreto(2), na posição 15 da String 
+Valor incorreto(2), na posição 17 da String 
+Valor incorreto(2), na posição 18 da String 
+Valor incorreto(2), na posição 20 da String 
+Valor incorreto(2), na posição 21 da String 
+Valor incorreto(2), na posição 22 da String 
+Valor incorreto(2), na posição 24 da String 
+Valor incorreto(2), na posição 25 da String 
+Valor correto(2), na posição 26 da String 
+Valor incorreto(2), na posição 28 da String 
+Valor incorreto(2), na posição 30 da String 
+Valor incorreto(2), na posição 31 da String 
+Valor incorreto(2), na posição 32 da String 
+Valor incorreto(2), na posição 37 da String 
+Valor incorreto(2), na posição 39 da String 
+Valor correto(2), na posição 40 da String 
+Valor incorreto(2), na posição 41 da String 
+Valor incorreto(2), na posição 42 da String 
+Valor incorreto(2), na posição 43 da String 
+Valor incorreto(2), na posição 45 da String 
+Valor incorreto(2), na posição 48 da String 
+Valor incorreto(2), na posição 51 da String 
+Valor incorreto(2), na posição 52 da String 
+Valor incorreto(2), na posição 54 da String 
+Valor incorreto(2), na posição 56 da String 
+Valor incorreto(2), na posição 57 da String 
+Valor incorreto(2), na posição 58 da String 
+Valor correto(2), na posição 60 da String 
+Valor incorreto(2), na posição 61 da String 
+Valor correto(2), na posição 64 da String 
+Valor incorreto(2), na posição 65 da String 
+Valor incorreto(2), na posição 67 da String 
+Valor incorreto(2), na posição 68 da String 
+Valor incorreto(2), na posição 71 da String 
+Valor incorreto(2), na posição 72 da String 
+Valor incorreto(2), na posição 73 da String 
+Valor incorreto(2), na posição 75 da String 
+Valor incorreto(2), na posição 77 da String 
+Valor correto(2), na posição 78 da String 
+Valor incorreto(2), na posição 79 da String 
+Valor incorreto(2), na posição 80 da String 
+
+[23-11-2024 11:38:48] [Cliente ID: 1] 
+Mensagem enviada: 1|ONE|COMPLET|COM_JOGO|1|533323371332133533133393326353336142363233383323413393833342315236338233313732338|500023071002100500100090026050006142060200080320410090800042015206008200010702008|11:38:45|0|0|2
+
+[23-11-2024 11:38:48] [Cliente ID: 1] Mensagem recebida: 1|ONE|COMPLET|COM_JOGO|1|533323371332133533133393326353336142363233383323413393833342315236338233313732338|500023071002100530103090026050306142060200083320410090830042015206008203010732008|11:38:45|0|0|3|
+Valor incorreto(3), na posição 2 da String 
+Valor incorreto(3), na posição 3 da String 
+Valor incorreto(3), na posição 4 da String 
+Valor incorreto(3), na posição 7 da String 
+Valor incorreto(3), na posição 10 da String 
+Valor incorreto(3), na posição 11 da String 
+Valor incorreto(3), na posição 14 da String 
+Valor incorreto(3), na posição 15 da String 
+Valor correto(3), na posição 17 da String 
+Valor incorreto(3), na posição 18 da String 
+Valor incorreto(3), na posição 20 da String 
+Valor correto(3), na posição 21 da String 
+Valor incorreto(3), na posição 22 da String 
+Valor incorreto(3), na posição 24 da String 
+Valor incorreto(3), na posição 25 da String 
+Valor incorreto(3), na posição 28 da String 
+Valor incorreto(3), na posição 30 da String 
+Valor correto(3), na posição 31 da String 
+Valor incorreto(3), na posição 32 da String 
+Valor incorreto(3), na posição 37 da String 
+Valor incorreto(3), na posição 39 da String 
+Valor incorreto(3), na posição 41 da String 
+Valor incorreto(3), na posição 42 da String 
+Valor incorreto(3), na posição 43 da String 
+Valor correto(3), na posição 45 da String 
+Valor incorreto(3), na posição 48 da String 
+Valor incorreto(3), na posição 51 da String 
+Valor incorreto(3), na posição 52 da String 
+Valor incorreto(3), na posição 54 da String 
+Valor correto(3), na posição 56 da String 
+Valor incorreto(3), na posição 57 da String 
+Valor incorreto(3), na posição 58 da String 
+Valor incorreto(3), na posição 61 da String 
+Valor incorreto(3), na posição 65 da String 
+Valor incorreto(3), na posição 67 da String 
+Valor incorreto(3), na posição 68 da String 
+Valor incorreto(3), na posição 71 da String 
+Valor correto(3), na posição 72 da String 
+Valor incorreto(3), na posição 73 da String 
+Valor incorreto(3), na posição 75 da String 
+Valor correto(3), na posição 77 da String 
+Valor incorreto(3), na posição 79 da String 
+Valor incorreto(3), na posição 80 da String 
+
+
+[23-11-2024 11:38:48] [Cliente ID: 1] 
+Valor incorreto(3), na posição 2 da String 
+Valor incorreto(3), na posição 3 da String 
+Valor incorreto(3), na posição 4 da String 
+Valor incorreto(3), na posição 7 da String 
+Valor incorreto(3), na posição 10 da String 
+Valor incorreto(3), na posição 11 da String 
+Valor incorreto(3), na posição 14 da String 
+Valor incorreto(3), na posição 15 da String 
+Valor correto(3), na posição 17 da String 
+Valor incorreto(3), na posição 18 da String 
+Valor incorreto(3), na posição 20 da String 
+Valor correto(3), na posição 21 da String 
+Valor incorreto(3), na posição 22 da String 
+Valor incorreto(3), na posição 24 da String 
+Valor incorreto(3), na posição 25 da String 
+Valor incorreto(3), na posição 28 da String 
+Valor incorreto(3), na posição 30 da String 
+Valor correto(3), na posição 31 da String 
+Valor incorreto(3), na posição 32 da String 
+Valor incorreto(3), na posição 37 da String 
+Valor incorreto(3), na posição 39 da String 
+Valor incorreto(3), na posição 41 da String 
+Valor incorreto(3), na posição 42 da String 
+Valor incorreto(3), na posição 43 da String 
+Valor correto(3), na posição 45 da String 
+Valor incorreto(3), na posição 48 da String 
+Valor incorreto(3), na posição 51 da String 
+Valor incorreto(3), na posição 52 da String 
+Valor incorreto(3), na posição 54 da String 
+Valor correto(3), na posição 56 da String 
+Valor incorreto(3), na posição 57 da String 
+Valor incorreto(3), na posição 58 da String 
+Valor incorreto(3), na posição 61 da String 
+Valor incorreto(3), na posição 65 da String 
+Valor incorreto(3), na posição 67 da String 
+Valor incorreto(3), na posição 68 da String 
+Valor incorreto(3), na posição 71 da String 
+Valor correto(3), na posição 72 da String 
+Valor incorreto(3), na posição 73 da String 
+Valor incorreto(3), na posição 75 da String 
+Valor correto(3), na posição 77 da String 
+Valor incorreto(3), na posição 79 da String 
+Valor incorreto(3), na posição 80 da String 
+
+[23-11-2024 11:38:49] [Cliente ID: 1] 
+Mensagem enviada: 1|ONE|COMPLET|COM_JOGO|1|544423471442144534143494426454346142464244483324414494834442415246448243414732448|500023071002100530103090026050306142060200083320410090830042015206008203010732008|11:38:45|0|0|3
+
+[23-11-2024 11:38:49] [Cliente ID: 1] Mensagem recebida: 1|ONE|COMPLET|COM_JOGO|1|544423471442144534143494426454346142464244483324414494834442415246448243414732448|504023071002104530103090426050306142460200083320410094830042015246008203010732008|11:38:45|0|0|4|
+Valor incorreto(4), na posição 2 da String 
+Valor correto(4), na posição 3 da String 
+Valor incorreto(4), na posição 4 da String 
+Valor incorreto(4), na posição 7 da String 
+Valor incorreto(4), na posição 10 da String 
+Valor incorreto(4), na posição 11 da String 
+Valor incorreto(4), na posição 14 da String 
+Valor correto(4), na posição 15 da String 
+Valor incorreto(4), na posição 18 da String 
+Valor incorreto(4), na posição 20 da String 
+Valor incorreto(4), na posição 22 da String 
+Valor incorreto(4), na posição 24 da String 
+Valor correto(4), na posição 25 da String 
+Valor incorreto(4), na posição 28 da String 
+Valor incorreto(4), na posição 30 da String 
+Valor incorreto(4), na posição 32 da String 
+Valor correto(4), na posição 37 da String 
+Valor incorreto(4), na posição 39 da String 
+Valor incorreto(4), na posição 41 da String 
+Valor incorreto(4), na posição 42 da String 
+Valor incorreto(4), na posição 43 da String 
+Valor incorreto(4), na posição 48 da String 
+Valor incorreto(4), na posição 51 da String 
+Valor incorreto(4), na posição 52 da String 
+Valor correto(4), na posição 54 da String 
+Valor incorreto(4), na posição 57 da String 
+Valor incorreto(4), na posição 58 da String 
+Valor incorreto(4), na posição 61 da String 
+Valor correto(4), na posição 65 da String 
+Valor incorreto(4), na posição 67 da String 
+Valor incorreto(4), na posição 68 da String 
+Valor incorreto(4), na posição 71 da String 
+Valor incorreto(4), na posição 73 da String 
+Valor incorreto(4), na posição 75 da String 
+Valor incorreto(4), na posição 79 da String 
+Valor incorreto(4), na posição 80 da String 
+
+
+[23-11-2024 11:38:49] [Cliente ID: 1] 
+Valor incorreto(4), na posição 2 da String 
+Valor correto(4), na posição 3 da String 
+Valor incorreto(4), na posição 4 da String 
+Valor incorreto(4), na posição 7 da String 
+Valor incorreto(4), na posição 10 da String 
+Valor incorreto(4), na posição 11 da String 
+Valor incorreto(4), na posição 14 da String 
+Valor correto(4), na posição 15 da String 
+Valor incorreto(4), na posição 18 da String 
+Valor incorreto(4), na posição 20 da String 
+Valor incorreto(4), na posição 22 da String 
+Valor incorreto(4), na posição 24 da String 
+Valor correto(4), na posição 25 da String 
+Valor incorreto(4), na posição 28 da String 
+Valor incorreto(4), na posição 30 da String 
+Valor incorreto(4), na posição 32 da String 
+Valor correto(4), na posição 37 da String 
+Valor incorreto(4), na posição 39 da String 
+Valor incorreto(4), na posição 41 da String 
+Valor incorreto(4), na posição 42 da String 
+Valor incorreto(4), na posição 43 da String 
+Valor incorreto(4), na posição 48 da String 
+Valor incorreto(4), na posição 51 da String 
+Valor incorreto(4), na posição 52 da String 
+Valor correto(4), na posição 54 da String 
+Valor incorreto(4), na posição 57 da String 
+Valor incorreto(4), na posição 58 da String 
+Valor incorreto(4), na posição 61 da String 
+Valor correto(4), na posição 65 da String 
+Valor incorreto(4), na posição 67 da String 
+Valor incorreto(4), na posição 68 da String 
+Valor incorreto(4), na posição 71 da String 
+Valor incorreto(4), na posição 73 da String 
+Valor incorreto(4), na posição 75 da String 
+Valor incorreto(4), na posição 79 da String 
+Valor incorreto(4), na posição 80 da String 
+
+[23-11-2024 11:38:50] [Cliente ID: 1] 
+Mensagem enviada: 1|ONE|COMPLET|COM_JOGO|1|554523571552154535153595426555356142465255583325415594835542515246558253515732558|504023071002104530103090426050306142460200083320410094830042015246008203010732008|11:38:45|0|0|4
+
+[23-11-2024 11:38:50] [Cliente ID: 1] Mensagem recebida: 1|ONE|COMPLET|COM_JOGO|1|554523571552154535153595426555356142465255583325415594835542515246558253515732558|504023071002104530103095426050306142460250083320410094835042015246508203010732508|11:38:45|0|0|5|
+Valor incorreto(5), na posição 2 da String 
+Valor incorreto(5), na posição 4 da String 
+Valor incorreto(5), na posição 7 da String 
+Valor incorreto(5), na posição 10 da String 
+Valor incorreto(5), na posição 11 da String 
+Valor incorreto(5), na posição 14 da String 
+Valor incorreto(5), na posição 18 da String 
+Valor incorreto(5), na posição 20 da String 
+Valor incorreto(5), na posição 22 da String 
+Valor correto(5), na posição 24 da String 
+Valor incorreto(5), na posição 28 da String 
+Valor incorreto(5), na posição 30 da String 
+Valor incorreto(5), na posição 32 da String 
+Valor incorreto(5), na posição 39 da String 
+Valor correto(5), na posição 41 da String 
+Valor incorreto(5), na posição 42 da String 
+Valor incorreto(5), na posição 43 da String 
+Valor incorreto(5), na posição 48 da String 
+Valor incorreto(5), na posição 51 da String 
+Valor incorreto(5), na posição 52 da String 
+Valor correto(5), na posição 57 da String 
+Valor incorreto(5), na posição 58 da String 
+Valor incorreto(5), na posição 61 da String 
+Valor correto(5), na posição 67 da String 
+Valor incorreto(5), na posição 68 da String 
+Valor incorreto(5), na posição 71 da String 
+Valor incorreto(5), na posição 73 da String 
+Valor incorreto(5), na posição 75 da String 
+Valor correto(5), na posição 79 da String 
+Valor incorreto(5), na posição 80 da String 
+
+
+[23-11-2024 11:38:50] [Cliente ID: 1] 
+Valor incorreto(5), na posição 2 da String 
+Valor incorreto(5), na posição 4 da String 
+Valor incorreto(5), na posição 7 da String 
+Valor incorreto(5), na posição 10 da String 
+Valor incorreto(5), na posição 11 da String 
+Valor incorreto(5), na posição 14 da String 
+Valor incorreto(5), na posição 18 da String 
+Valor incorreto(5), na posição 20 da String 
+Valor incorreto(5), na posição 22 da String 
+Valor correto(5), na posição 24 da String 
+Valor incorreto(5), na posição 28 da String 
+Valor incorreto(5), na posição 30 da String 
+Valor incorreto(5), na posição 32 da String 
+Valor incorreto(5), na posição 39 da String 
+Valor correto(5), na posição 41 da String 
+Valor incorreto(5), na posição 42 da String 
+Valor incorreto(5), na posição 43 da String 
+Valor incorreto(5), na posição 48 da String 
+Valor incorreto(5), na posição 51 da String 
+Valor incorreto(5), na posição 52 da String 
+Valor correto(5), na posição 57 da String 
+Valor incorreto(5), na posição 58 da String 
+Valor incorreto(5), na posição 61 da String 
+Valor correto(5), na posição 67 da String 
+Valor incorreto(5), na posição 68 da String 
+Valor incorreto(5), na posição 71 da String 
+Valor incorreto(5), na posição 73 da String 
+Valor incorreto(5), na posição 75 da String 
+Valor correto(5), na posição 79 da String 
+Valor incorreto(5), na posição 80 da String 
+
+[23-11-2024 11:38:51] [Cliente ID: 1] 
+Mensagem enviada: 1|ONE|COMPLET|COM_JOGO|1|564623671662164536163695426656366142466256683326416694835642615246568263616732568|504023071002104530103095426050306142460250083320410094835042015246508203010732508|11:38:45|0|0|5
+
+[23-11-2024 11:38:51] [Cliente ID: 1] Mensagem recebida: 1|ONE|COMPLET|COM_JOGO|1|564623671662164536163695426656366142466256683326416694835642615246568263616732568|504623071602104530103095426050306142460250083320410694835042015246508203010732568|11:38:45|0|0|6|
+Valor incorreto(6), na posição 2 da String 
+Valor correto(6), na posição 4 da String 
+Valor incorreto(6), na posição 7 da String 
+Valor correto(6), na posição 10 da String 
+Valor incorreto(6), na posição 11 da String 
+Valor incorreto(6), na posição 14 da String 
+Valor incorreto(6), na posição 18 da String 
+Valor incorreto(6), na posição 20 da String 
+Valor incorreto(6), na posição 22 da String 
+Valor incorreto(6), na posição 28 da String 
+Valor incorreto(6), na posição 30 da String 
+Valor incorreto(6), na posição 32 da String 
+Valor incorreto(6), na posição 39 da String 
+Valor incorreto(6), na posição 42 da String 
+Valor incorreto(6), na posição 43 da String 
+Valor incorreto(6), na posição 48 da String 
+Valor incorreto(6), na posição 51 da String 
+Valor correto(6), na posição 52 da String 
+Valor incorreto(6), na posição 58 da String 
+Valor incorreto(6), na posição 61 da String 
+Valor incorreto(6), na posição 68 da String 
+Valor incorreto(6), na posição 71 da String 
+Valor incorreto(6), na posição 73 da String 
+Valor incorreto(6), na posição 75 da String 
+Valor correto(6), na posição 80 da String 
+
+
+[23-11-2024 11:38:51] [Cliente ID: 1] 
+Valor incorreto(6), na posição 2 da String 
+Valor correto(6), na posição 4 da String 
+Valor incorreto(6), na posição 7 da String 
+Valor correto(6), na posição 10 da String 
+Valor incorreto(6), na posição 11 da String 
+Valor incorreto(6), na posição 14 da String 
+Valor incorreto(6), na posição 18 da String 
+Valor incorreto(6), na posição 20 da String 
+Valor incorreto(6), na posição 22 da String 
+Valor incorreto(6), na posição 28 da String 
+Valor incorreto(6), na posição 30 da String 
+Valor incorreto(6), na posição 32 da String 
+Valor incorreto(6), na posição 39 da String 
+Valor incorreto(6), na posição 42 da String 
+Valor incorreto(6), na posição 43 da String 
+Valor incorreto(6), na posição 48 da String 
+Valor incorreto(6), na posição 51 da String 
+Valor correto(6), na posição 52 da String 
+Valor incorreto(6), na posição 58 da String 
+Valor incorreto(6), na posição 61 da String 
+Valor incorreto(6), na posição 68 da String 
+Valor incorreto(6), na posição 71 da String 
+Valor incorreto(6), na posição 73 da String 
+Valor incorreto(6), na posição 75 da String 
+Valor correto(6), na posição 80 da String 
+
+[23-11-2024 11:38:52] [Cliente ID: 1] 
+Mensagem enviada: 1|ONE|COMPLET|COM_JOGO|1|574623771672174537173795426757376142467257783327417694835742715246578273717732568|504623071602104530103095426050306142460250083320410694835042015246508203010732568|11:38:45|0|0|6
+
+[23-11-2024 11:38:52] [Cliente ID: 1] Mensagem recebida: 1|ONE|COMPLET|COM_JOGO|1|574623771672174537173795426757376142467257783327417694835742715246578273717732568|504623071602174530173095426750306142460250783327417694835042715246508273010732568|11:38:45|0|0|7|
+Valor incorreto(7), na posição 2 da String 
+Valor incorreto(7), na posição 7 da String 
+Valor incorreto(7), na posição 11 da String 
+Valor correto(7), na posição 14 da String 
+Valor incorreto(7), na posição 18 da String 
+Valor correto(7), na posição 20 da String 
+Valor incorreto(7), na posição 22 da String 
+Valor correto(7), na posição 28 da String 
+Valor incorreto(7), na posição 30 da String 
+Valor incorreto(7), na posição 32 da String 
+Valor incorreto(7), na posição 39 da String 
+Valor incorreto(7), na posição 42 da String 
+Valor correto(7), na posição 43 da String 
+Valor correto(7), na posição 48 da String 
+Valor correto(7), na posição 51 da String 
+Valor incorreto(7), na posição 58 da String 
+Valor correto(7), na posição 61 da String 
+Valor incorreto(7), na posição 68 da String 
+Valor correto(7), na posição 71 da String 
+Valor incorreto(7), na posição 73 da String 
+Valor incorreto(7), na posição 75 da String 
+
+
+[23-11-2024 11:38:52] [Cliente ID: 1] 
+Valor incorreto(7), na posição 2 da String 
+Valor incorreto(7), na posição 7 da String 
+Valor incorreto(7), na posição 11 da String 
+Valor correto(7), na posição 14 da String 
+Valor incorreto(7), na posição 18 da String 
+Valor correto(7), na posição 20 da String 
+Valor incorreto(7), na posição 22 da String 
+Valor correto(7), na posição 28 da String 
+Valor incorreto(7), na posição 30 da String 
+Valor incorreto(7), na posição 32 da String 
+Valor incorreto(7), na posição 39 da String 
+Valor incorreto(7), na posição 42 da String 
+Valor correto(7), na posição 43 da String 
+Valor correto(7), na posição 48 da String 
+Valor correto(7), na posição 51 da String 
+Valor incorreto(7), na posição 58 da String 
+Valor correto(7), na posição 61 da String 
+Valor incorreto(7), na posição 68 da String 
+Valor correto(7), na posição 71 da String 
+Valor incorreto(7), na posição 73 da String 
+Valor incorreto(7), na posição 75 da String 
+
+[23-11-2024 11:38:53] [Cliente ID: 1] 
+Mensagem enviada: 1|ONE|COMPLET|COM_JOGO|1|584623871682174538173895426758386142468258783327417694835842715246588273818732568|504623071602174530173095426750306142460250783327417694835042715246508273010732568|11:38:45|0|0|7
+
+[23-11-2024 11:38:53] [Cliente ID: 1] Mensagem recebida: 1|ONE|COMPLET|COM_JOGO|1|584623871682174538173895426758386142468258783327417694835842715246588273818732568|504623871682174530173895426750386142468250783327417694835042715246508273018732568|11:38:45|0|0|8|
+Valor incorreto(8), na posição 2 da String 
+Valor correto(8), na posição 7 da String 
+Valor correto(8), na posição 11 da String 
+Valor incorreto(8), na posição 18 da String 
+Valor correto(8), na posição 22 da String 
+Valor incorreto(8), na posição 30 da String 
+Valor correto(8), na posição 32 da String 
+Valor correto(8), na posição 39 da String 
+Valor incorreto(8), na posição 42 da String 
+Valor incorreto(8), na posição 58 da String 
+Valor incorreto(8), na posição 68 da String 
+Valor incorreto(8), na posição 73 da String 
+Valor correto(8), na posição 75 da String 
+
+
+[23-11-2024 11:38:53] [Cliente ID: 1] 
+Valor incorreto(8), na posição 2 da String 
+Valor correto(8), na posição 7 da String 
+Valor correto(8), na posição 11 da String 
+Valor incorreto(8), na posição 18 da String 
+Valor correto(8), na posição 22 da String 
+Valor incorreto(8), na posição 30 da String 
+Valor correto(8), na posição 32 da String 
+Valor correto(8), na posição 39 da String 
+Valor incorreto(8), na posição 42 da String 
+Valor incorreto(8), na posição 58 da String 
+Valor incorreto(8), na posição 68 da String 
+Valor incorreto(8), na posição 73 da String 
+Valor correto(8), na posição 75 da String 
+
+[23-11-2024 11:38:54] [Cliente ID: 1] 
+Mensagem enviada: 1|ONE|COMPLET|COM_JOGO|1|594623871682174539173895426759386142468259783327417694835942715246598273918732568|504623871682174530173895426750386142468250783327417694835042715246508273018732568|11:38:45|0|0|8
+
+[23-11-2024 11:38:54] [Cliente ID: 1] Mensagem recebida: 1|ONE|COMPLET|COM_JOGO|1|594623871682174539173895426759386142468259783327417694835942715246598273918732568|594623871682174539173895426759386142468259783327417694835942715246598273918732568|11:38:45|11:38:54|1|9|
+Valor correto(9), na posição 2 da String 
+Valor correto(9), na posição 18 da String 
+Valor correto(9), na posição 30 da String 
+Valor correto(9), na posição 42 da String 
+Valor correto(9), na posição 58 da String 
+Valor correto(9), na posição 68 da String 
+Valor correto(9), na posição 73 da String 
+
+
+[23-11-2024 11:38:54] [Cliente ID: 1] 
+Valor correto(9), na posição 2 da String 
+Valor correto(9), na posição 18 da String 
+Valor correto(9), na posição 30 da String 
+Valor correto(9), na posição 42 da String 
+Valor correto(9), na posição 58 da String 
+Valor correto(9), na posição 68 da String 
+Valor correto(9), na posição 73 da String 
+
+[23-11-2024 11:38:54] [Cliente ID: 1] Cliente desconectou-se
+[23-11-2024 11:44:11] [Cliente ID: 1] Cliente comecou o programa
+[23-11-2024 11:44:12] [Cliente ID: 1] 
+Mensagem enviada: 1|ONE|COMPLET|COM_JOGO|1|511113171112111511111191116151116142161111181321411191811141115116118211111711118|500003070002100500100090006050006042060000080320400090800040005006008200010700008|11:44:11|0|0|0
+
+[23-11-2024 11:44:12] [Cliente ID: 1] Mensagem recebida: 1|ONE|COMPLET|COM_JOGO|1|511113171112111511111191116151116142161111181321411191811141115116118211111711118|500003071002100500100090006050006142060000080320410090800040015006008200010700008|11:44:11|0|0|1|
+Valor incorreto(1), na posição 2 da String 
+Valor incorreto(1), na posição 3 da String 
+Valor incorreto(1), na posição 4 da String 
+Valor incorreto(1), na posição 5 da String 
+Valor incorreto(1), na posição 7 da String 
+Valor correto(1), na posição 9 da String 
+Valor incorreto(1), na posição 10 da String 
+Valor incorreto(1), na posição 11 da String 
+Valor incorreto(1), na posição 14 da String 
+Valor incorreto(1), na posição 15 da String 
+Valor incorreto(1), na posição 17 da String 
+Valor incorreto(1), na posição 18 da String 
+Valor incorreto(1), na posição 20 da String 
+Valor incorreto(1), na posição 21 da String 
+Valor incorreto(1), na posição 22 da String 
+Valor incorreto(1), na posição 24 da String 
+Valor incorreto(1), na posição 25 da String 
+Valor incorreto(1), na posição 26 da String 
+Valor incorreto(1), na posição 28 da String 
+Valor incorreto(1), na posição 30 da String 
+Valor incorreto(1), na posição 31 da String 
+Valor incorreto(1), na posição 32 da String 
+Valor correto(1), na posição 34 da String 
+Valor incorreto(1), na posição 37 da String 
+Valor incorreto(1), na posição 39 da String 
+Valor incorreto(1), na posição 40 da String 
+Valor incorreto(1), na posição 41 da String 
+Valor incorreto(1), na posição 42 da String 
+Valor incorreto(1), na posição 43 da String 
+Valor incorreto(1), na posição 45 da String 
+Valor incorreto(1), na posição 48 da String 
+Valor correto(1), na posição 50 da String 
+Valor incorreto(1), na posição 51 da String 
+Valor incorreto(1), na posição 52 da String 
+Valor incorreto(1), na posição 54 da String 
+Valor incorreto(1), na posição 56 da String 
+Valor incorreto(1), na posição 57 da String 
+Valor incorreto(1), na posição 58 da String 
+Valor incorreto(1), na posição 60 da String 
+Valor incorreto(1), na posição 61 da String 
+Valor correto(1), na posição 62 da String 
+Valor incorreto(1), na posição 64 da String 
+Valor incorreto(1), na posição 65 da String 
+Valor incorreto(1), na posição 67 da String 
+Valor incorreto(1), na posição 68 da String 
+Valor incorreto(1), na posição 71 da String 
+Valor incorreto(1), na posição 72 da String 
+Valor incorreto(1), na posição 73 da String 
+Valor incorreto(1), na posição 75 da String 
+Valor incorreto(1), na posição 77 da String 
+Valor incorreto(1), na posição 78 da String 
+Valor incorreto(1), na posição 79 da String 
+Valor incorreto(1), na posição 80 da String 
+
+
+[23-11-2024 11:44:12] [Cliente ID: 1] 
+Valor incorreto(1), na posição 2 da String 
+Valor incorreto(1), na posição 3 da String 
+Valor incorreto(1), na posição 4 da String 
+Valor incorreto(1), na posição 5 da String 
+Valor incorreto(1), na posição 7 da String 
+Valor correto(1), na posição 9 da String 
+Valor incorreto(1), na posição 10 da String 
+Valor incorreto(1), na posição 11 da String 
+Valor incorreto(1), na posição 14 da String 
+Valor incorreto(1), na posição 15 da String 
+Valor incorreto(1), na posição 17 da String 
+Valor incorreto(1), na posição 18 da String 
+Valor incorreto(1), na posição 20 da String 
+Valor incorreto(1), na posição 21 da String 
+Valor incorreto(1), na posição 22 da String 
+Valor incorreto(1), na posição 24 da String 
+Valor incorreto(1), na posição 25 da String 
+Valor incorreto(1), na posição 26 da String 
+Valor incorreto(1), na posição 28 da String 
+Valor incorreto(1), na posição 30 da String 
+Valor incorreto(1), na posição 31 da String 
+Valor incorreto(1), na posição 32 da String 
+Valor correto(1), na posição 34 da String 
+Valor incorreto(1), na posição 37 da String 
+Valor incorreto(1), na posição 39 da String 
+Valor incorreto(1), na posição 40 da String 
+Valor incorreto(1), na posição 41 da String 
+Valor incorreto(1), na posição 42 da String 
+Valor incorreto(1), na posição 43 da String 
+Valor incorreto(1), na posição 45 da String 
+Valor incorreto(1), na posição 48 da String 
+Valor correto(1), na posição 50 da String 
+Valor incorreto(1), na posição 51 da String 
+Valor incorreto(1), na posição 52 da String 
+Valor incorreto(1), na posição 54 da String 
+Valor incorreto(1), na posição 56 da String 
+Valor incorreto(1), na posição 57 da String 
+Valor incorreto(1), na posição 58 da String 
+Valor incorreto(1), na posição 60 da String 
+Valor incorreto(1), na posição 61 da String 
+Valor correto(1), na posição 62 da String 
+Valor incorreto(1), na posição 64 da String 
+Valor incorreto(1), na posição 65 da String 
+Valor incorreto(1), na posição 67 da String 
+Valor incorreto(1), na posição 68 da String 
+Valor incorreto(1), na posição 71 da String 
+Valor incorreto(1), na posição 72 da String 
+Valor incorreto(1), na posição 73 da String 
+Valor incorreto(1), na posição 75 da String 
+Valor incorreto(1), na posição 77 da String 
+Valor incorreto(1), na posição 78 da String 
+Valor incorreto(1), na posição 79 da String 
+Valor incorreto(1), na posição 80 da String 
+
+[23-11-2024 11:44:13] [Cliente ID: 1] 
+Mensagem enviada: 1|ONE|COMPLET|COM_JOGO|1|522223271222122522122292226252226142262222282322412292822242215226228222212722228|500003071002100500100090006050006142060000080320410090800040015006008200010700008|11:44:11|0|0|1
+
+[23-11-2024 11:44:13] [Cliente ID: 1] Mensagem recebida: 1|ONE|COMPLET|COM_JOGO|1|522223271222122522122292226252226142262222282322412292822242215226228222212722228|500023071002100500100090026050006142060200080320410090800042015206008200010702008|11:44:11|0|0|2|
+Valor incorreto(2), na posição 2 da String 
+Valor incorreto(2), na posição 3 da String 
+Valor incorreto(2), na posição 4 da String 
+Valor correto(2), na posição 5 da String 
+Valor incorreto(2), na posição 7 da String 
+Valor incorreto(2), na posição 10 da String 
+Valor incorreto(2), na posição 11 da String 
+Valor incorreto(2), na posição 14 da String 
+Valor incorreto(2), na posição 15 da String 
+Valor incorreto(2), na posição 17 da String 
+Valor incorreto(2), na posição 18 da String 
+Valor incorreto(2), na posição 20 da String 
+Valor incorreto(2), na posição 21 da String 
+Valor incorreto(2), na posição 22 da String 
+Valor incorreto(2), na posição 24 da String 
+Valor incorreto(2), na posição 25 da String 
+Valor correto(2), na posição 26 da String 
+Valor incorreto(2), na posição 28 da String 
+Valor incorreto(2), na posição 30 da String 
+Valor incorreto(2), na posição 31 da String 
+Valor incorreto(2), na posição 32 da String 
+Valor incorreto(2), na posição 37 da String 
+Valor incorreto(2), na posição 39 da String 
+Valor correto(2), na posição 40 da String 
+Valor incorreto(2), na posição 41 da String 
+Valor incorreto(2), na posição 42 da String 
+Valor incorreto(2), na posição 43 da String 
+Valor incorreto(2), na posição 45 da String 
+Valor incorreto(2), na posição 48 da String 
+Valor incorreto(2), na posição 51 da String 
+Valor incorreto(2), na posição 52 da String 
+Valor incorreto(2), na posição 54 da String 
+Valor incorreto(2), na posição 56 da String 
+Valor incorreto(2), na posição 57 da String 
+Valor incorreto(2), na posição 58 da String 
+Valor correto(2), na posição 60 da String 
+Valor incorreto(2), na posição 61 da String 
+Valor correto(2), na posição 64 da String 
+Valor incorreto(2), na posição 65 da String 
+Valor incorreto(2), na posição 67 da String 
+Valor incorreto(2), na posição 68 da String 
+Valor incorreto(2), na posição 71 da String 
+Valor incorreto(2), na posição 72 da String 
+Valor incorreto(2), na posição 73 da String 
+Valor incorreto(2), na posição 75 da String 
+Valor incorreto(2), na posição 77 da String 
+Valor correto(2), na posição 78 da String 
+Valor incorreto(2), na posição 79 da String 
+Valor incorreto(2), na posição 80 da String 
+
+
+[23-11-2024 11:44:13] [Cliente ID: 1] 
+Valor incorreto(2), na posição 2 da String 
+Valor incorreto(2), na posição 3 da String 
+Valor incorreto(2), na posição 4 da String 
+Valor correto(2), na posição 5 da String 
+Valor incorreto(2), na posição 7 da String 
+Valor incorreto(2), na posição 10 da String 
+Valor incorreto(2), na posição 11 da String 
+Valor incorreto(2), na posição 14 da String 
+Valor incorreto(2), na posição 15 da String 
+Valor incorreto(2), na posição 17 da String 
+Valor incorreto(2), na posição 18 da String 
+Valor incorreto(2), na posição 20 da String 
+Valor incorreto(2), na posição 21 da String 
+Valor incorreto(2), na posição 22 da String 
+Valor incorreto(2), na posição 24 da String 
+Valor incorreto(2), na posição 25 da String 
+Valor correto(2), na posição 26 da String 
+Valor incorreto(2), na posição 28 da String 
+Valor incorreto(2), na posição 30 da String 
+Valor incorreto(2), na posição 31 da String 
+Valor incorreto(2), na posição 32 da String 
+Valor incorreto(2), na posição 37 da String 
+Valor incorreto(2), na posição 39 da String 
+Valor correto(2), na posição 40 da String 
+Valor incorreto(2), na posição 41 da String 
+Valor incorreto(2), na posição 42 da String 
+Valor incorreto(2), na posição 43 da String 
+Valor incorreto(2), na posição 45 da String 
+Valor incorreto(2), na posição 48 da String 
+Valor incorreto(2), na posição 51 da String 
+Valor incorreto(2), na posição 52 da String 
+Valor incorreto(2), na posição 54 da String 
+Valor incorreto(2), na posição 56 da String 
+Valor incorreto(2), na posição 57 da String 
+Valor incorreto(2), na posição 58 da String 
+Valor correto(2), na posição 60 da String 
+Valor incorreto(2), na posição 61 da String 
+Valor correto(2), na posição 64 da String 
+Valor incorreto(2), na posição 65 da String 
+Valor incorreto(2), na posição 67 da String 
+Valor incorreto(2), na posição 68 da String 
+Valor incorreto(2), na posição 71 da String 
+Valor incorreto(2), na posição 72 da String 
+Valor incorreto(2), na posição 73 da String 
+Valor incorreto(2), na posição 75 da String 
+Valor incorreto(2), na posição 77 da String 
+Valor correto(2), na posição 78 da String 
+Valor incorreto(2), na posição 79 da String 
+Valor incorreto(2), na posição 80 da String 
+
+[23-11-2024 11:44:14] [Cliente ID: 1] 
+Mensagem enviada: 1|ONE|COMPLET|COM_JOGO|1|533323371332133533133393326353336142363233383323413393833342315236338233313732338|500023071002100500100090026050006142060200080320410090800042015206008200010702008|11:44:11|0|0|2
+
+[23-11-2024 11:44:14] [Cliente ID: 1] Mensagem recebida: 1|ONE|COMPLET|COM_JOGO|1|533323371332133533133393326353336142363233383323413393833342315236338233313732338|500023071002100530103090026050306142060200083320410090830042015206008203010732008|11:44:11|0|0|3|
+Valor incorreto(3), na posição 2 da String 
+Valor incorreto(3), na posição 3 da String 
+Valor incorreto(3), na posição 4 da String 
+Valor incorreto(3), na posição 7 da String 
+Valor incorreto(3), na posição 10 da String 
+Valor incorreto(3), na posição 11 da String 
+Valor incorreto(3), na posição 14 da String 
+Valor incorreto(3), na posição 15 da String 
+Valor correto(3), na posição 17 da String 
+Valor incorreto(3), na posição 18 da String 
+Valor incorreto(3), na posição 20 da String 
+Valor correto(3), na posição 21 da String 
+Valor incorreto(3), na posição 22 da String 
+Valor incorreto(3), na posição 24 da String 
+Valor incorreto(3), na posição 25 da String 
+Valor incorreto(3), na posição 28 da String 
+Valor incorreto(3), na posição 30 da String 
+Valor correto(3), na posição 31 da String 
+Valor incorreto(3), na posição 32 da String 
+Valor incorreto(3), na posição 37 da String 
+Valor incorreto(3), na posição 39 da String 
+Valor incorreto(3), na posição 41 da String 
+Valor incorreto(3), na posição 42 da String 
+Valor incorreto(3), na posição 43 da String 
+Valor correto(3), na posição 45 da String 
+Valor incorreto(3), na posição 48 da String 
+Valor incorreto(3), na posição 51 da String 
+Valor incorreto(3), na posição 52 da String 
+Valor incorreto(3), na posição 54 da String 
+Valor correto(3), na posição 56 da String 
+Valor incorreto(3), na posição 57 da String 
+Valor incorreto(3), na posição 58 da String 
+Valor incorreto(3), na posição 61 da String 
+Valor incorreto(3), na posição 65 da String 
+Valor incorreto(3), na posição 67 da String 
+Valor incorreto(3), na posição 68 da String 
+Valor incorreto(3), na posição 71 da String 
+Valor correto(3), na posição 72 da String 
+Valor incorreto(3), na posição 73 da String 
+Valor incorreto(3), na posição 75 da String 
+Valor correto(3), na posição 77 da String 
+Valor incorreto(3), na posição 79 da String 
+Valor incorreto(3), na posição 80 da String 
+
+
+[23-11-2024 11:44:14] [Cliente ID: 1] 
+Valor incorreto(3), na posição 2 da String 
+Valor incorreto(3), na posição 3 da String 
+Valor incorreto(3), na posição 4 da String 
+Valor incorreto(3), na posição 7 da String 
+Valor incorreto(3), na posição 10 da String 
+Valor incorreto(3), na posição 11 da String 
+Valor incorreto(3), na posição 14 da String 
+Valor incorreto(3), na posição 15 da String 
+Valor correto(3), na posição 17 da String 
+Valor incorreto(3), na posição 18 da String 
+Valor incorreto(3), na posição 20 da String 
+Valor correto(3), na posição 21 da String 
+Valor incorreto(3), na posição 22 da String 
+Valor incorreto(3), na posição 24 da String 
+Valor incorreto(3), na posição 25 da String 
+Valor incorreto(3), na posição 28 da String 
+Valor incorreto(3), na posição 30 da String 
+Valor correto(3), na posição 31 da String 
+Valor incorreto(3), na posição 32 da String 
+Valor incorreto(3), na posição 37 da String 
+Valor incorreto(3), na posição 39 da String 
+Valor incorreto(3), na posição 41 da String 
+Valor incorreto(3), na posição 42 da String 
+Valor incorreto(3), na posição 43 da String 
+Valor correto(3), na posição 45 da String 
+Valor incorreto(3), na posição 48 da String 
+Valor incorreto(3), na posição 51 da String 
+Valor incorreto(3), na posição 52 da String 
+Valor incorreto(3), na posição 54 da String 
+Valor correto(3), na posição 56 da String 
+Valor incorreto(3), na posição 57 da String 
+Valor incorreto(3), na posição 58 da String 
+Valor incorreto(3), na posição 61 da String 
+Valor incorreto(3), na posição 65 da String 
+Valor incorreto(3), na posição 67 da String 
+Valor incorreto(3), na posição 68 da String 
+Valor incorreto(3), na posição 71 da String 
+Valor correto(3), na posição 72 da String 
+Valor incorreto(3), na posição 73 da String 
+Valor incorreto(3), na posição 75 da String 
+Valor correto(3), na posição 77 da String 
+Valor incorreto(3), na posição 79 da String 
+Valor incorreto(3), na posição 80 da String 
+
+[23-11-2024 11:44:15] [Cliente ID: 1] 
+Mensagem enviada: 1|ONE|COMPLET|COM_JOGO|1|544423471442144534143494426454346142464244483324414494834442415246448243414732448|500023071002100530103090026050306142060200083320410090830042015206008203010732008|11:44:11|0|0|3
+
+[23-11-2024 11:44:15] [Cliente ID: 1] Mensagem recebida: 1|ONE|COMPLET|COM_JOGO|1|544423471442144534143494426454346142464244483324414494834442415246448243414732448|504023071002104530103090426050306142460200083320410094830042015246008203010732008|11:44:11|0|0|4|
+Valor incorreto(4), na posição 2 da String 
+Valor correto(4), na posição 3 da String 
+Valor incorreto(4), na posição 4 da String 
+Valor incorreto(4), na posição 7 da String 
+Valor incorreto(4), na posição 10 da String 
+Valor incorreto(4), na posição 11 da String 
+Valor incorreto(4), na posição 14 da String 
+Valor correto(4), na posição 15 da String 
+Valor incorreto(4), na posição 18 da String 
+Valor incorreto(4), na posição 20 da String 
+Valor incorreto(4), na posição 22 da String 
+Valor incorreto(4), na posição 24 da String 
+Valor correto(4), na posição 25 da String 
+Valor incorreto(4), na posição 28 da String 
+Valor incorreto(4), na posição 30 da String 
+Valor incorreto(4), na posição 32 da String 
+Valor correto(4), na posição 37 da String 
+Valor incorreto(4), na posição 39 da String 
+Valor incorreto(4), na posição 41 da String 
+Valor incorreto(4), na posição 42 da String 
+Valor incorreto(4), na posição 43 da String 
+Valor incorreto(4), na posição 48 da String 
+Valor incorreto(4), na posição 51 da String 
+Valor incorreto(4), na posição 52 da String 
+Valor correto(4), na posição 54 da String 
+Valor incorreto(4), na posição 57 da String 
+Valor incorreto(4), na posição 58 da String 
+Valor incorreto(4), na posição 61 da String 
+Valor correto(4), na posição 65 da String 
+Valor incorreto(4), na posição 67 da String 
+Valor incorreto(4), na posição 68 da String 
+Valor incorreto(4), na posição 71 da String 
+Valor incorreto(4), na posição 73 da String 
+Valor incorreto(4), na posição 75 da String 
+Valor incorreto(4), na posição 79 da String 
+Valor incorreto(4), na posição 80 da String 
+
+
+[23-11-2024 11:44:15] [Cliente ID: 1] 
+Valor incorreto(4), na posição 2 da String 
+Valor correto(4), na posição 3 da String 
+Valor incorreto(4), na posição 4 da String 
+Valor incorreto(4), na posição 7 da String 
+Valor incorreto(4), na posição 10 da String 
+Valor incorreto(4), na posição 11 da String 
+Valor incorreto(4), na posição 14 da String 
+Valor correto(4), na posição 15 da String 
+Valor incorreto(4), na posição 18 da String 
+Valor incorreto(4), na posição 20 da String 
+Valor incorreto(4), na posição 22 da String 
+Valor incorreto(4), na posição 24 da String 
+Valor correto(4), na posição 25 da String 
+Valor incorreto(4), na posição 28 da String 
+Valor incorreto(4), na posição 30 da String 
+Valor incorreto(4), na posição 32 da String 
+Valor correto(4), na posição 37 da String 
+Valor incorreto(4), na posição 39 da String 
+Valor incorreto(4), na posição 41 da String 
+Valor incorreto(4), na posição 42 da String 
+Valor incorreto(4), na posição 43 da String 
+Valor incorreto(4), na posição 48 da String 
+Valor incorreto(4), na posição 51 da String 
+Valor incorreto(4), na posição 52 da String 
+Valor correto(4), na posição 54 da String 
+Valor incorreto(4), na posição 57 da String 
+Valor incorreto(4), na posição 58 da String 
+Valor incorreto(4), na posição 61 da String 
+Valor correto(4), na posição 65 da String 
+Valor incorreto(4), na posição 67 da String 
+Valor incorreto(4), na posição 68 da String 
+Valor incorreto(4), na posição 71 da String 
+Valor incorreto(4), na posição 73 da String 
+Valor incorreto(4), na posição 75 da String 
+Valor incorreto(4), na posição 79 da String 
+Valor incorreto(4), na posição 80 da String 
+
+[23-11-2024 11:44:16] [Cliente ID: 1] 
+Mensagem enviada: 1|ONE|COMPLET|COM_JOGO|1|554523571552154535153595426555356142465255583325415594835542515246558253515732558|504023071002104530103090426050306142460200083320410094830042015246008203010732008|11:44:11|0|0|4
+
+[23-11-2024 11:44:16] [Cliente ID: 1] Mensagem recebida: 1|ONE|COMPLET|COM_JOGO|1|554523571552154535153595426555356142465255583325415594835542515246558253515732558|504023071002104530103095426050306142460250083320410094835042015246508203010732508|11:44:11|0|0|5|
+Valor incorreto(5), na posição 2 da String 
+Valor incorreto(5), na posição 4 da String 
+Valor incorreto(5), na posição 7 da String 
+Valor incorreto(5), na posição 10 da String 
+Valor incorreto(5), na posição 11 da String 
+Valor incorreto(5), na posição 14 da String 
+Valor incorreto(5), na posição 18 da String 
+Valor incorreto(5), na posição 20 da String 
+Valor incorreto(5), na posição 22 da String 
+Valor correto(5), na posição 24 da String 
+Valor incorreto(5), na posição 28 da String 
+Valor incorreto(5), na posição 30 da String 
+Valor incorreto(5), na posição 32 da String 
+Valor incorreto(5), na posição 39 da String 
+Valor correto(5), na posição 41 da String 
+Valor incorreto(5), na posição 42 da String 
+Valor incorreto(5), na posição 43 da String 
+Valor incorreto(5), na posição 48 da String 
+Valor incorreto(5), na posição 51 da String 
+Valor incorreto(5), na posição 52 da String 
+Valor correto(5), na posição 57 da String 
+Valor incorreto(5), na posição 58 da String 
+Valor incorreto(5), na posição 61 da String 
+Valor correto(5), na posição 67 da String 
+Valor incorreto(5), na posição 68 da String 
+Valor incorreto(5), na posição 71 da String 
+Valor incorreto(5), na posição 73 da String 
+Valor incorreto(5), na posição 75 da String 
+Valor correto(5), na posição 79 da String 
+Valor incorreto(5), na posição 80 da String 
+
+
+[23-11-2024 11:44:16] [Cliente ID: 1] 
+Valor incorreto(5), na posição 2 da String 
+Valor incorreto(5), na posição 4 da String 
+Valor incorreto(5), na posição 7 da String 
+Valor incorreto(5), na posição 10 da String 
+Valor incorreto(5), na posição 11 da String 
+Valor incorreto(5), na posição 14 da String 
+Valor incorreto(5), na posição 18 da String 
+Valor incorreto(5), na posição 20 da String 
+Valor incorreto(5), na posição 22 da String 
+Valor correto(5), na posição 24 da String 
+Valor incorreto(5), na posição 28 da String 
+Valor incorreto(5), na posição 30 da String 
+Valor incorreto(5), na posição 32 da String 
+Valor incorreto(5), na posição 39 da String 
+Valor correto(5), na posição 41 da String 
+Valor incorreto(5), na posição 42 da String 
+Valor incorreto(5), na posição 43 da String 
+Valor incorreto(5), na posição 48 da String 
+Valor incorreto(5), na posição 51 da String 
+Valor incorreto(5), na posição 52 da String 
+Valor correto(5), na posição 57 da String 
+Valor incorreto(5), na posição 58 da String 
+Valor incorreto(5), na posição 61 da String 
+Valor correto(5), na posição 67 da String 
+Valor incorreto(5), na posição 68 da String 
+Valor incorreto(5), na posição 71 da String 
+Valor incorreto(5), na posição 73 da String 
+Valor incorreto(5), na posição 75 da String 
+Valor correto(5), na posição 79 da String 
+Valor incorreto(5), na posição 80 da String 
+
+[23-11-2024 11:44:17] [Cliente ID: 1] 
+Mensagem enviada: 1|ONE|COMPLET|COM_JOGO|1|564623671662164536163695426656366142466256683326416694835642615246568263616732568|504023071002104530103095426050306142460250083320410094835042015246508203010732508|11:44:11|0|0|5
+
+[23-11-2024 11:44:17] [Cliente ID: 1] Mensagem recebida: 1|ONE|COMPLET|COM_JOGO|1|564623671662164536163695426656366142466256683326416694835642615246568263616732568|504623071602104530103095426050306142460250083320410694835042015246508203010732568|11:44:11|0|0|6|
+Valor incorreto(6), na posição 2 da String 
+Valor correto(6), na posição 4 da String 
+Valor incorreto(6), na posição 7 da String 
+Valor correto(6), na posição 10 da String 
+Valor incorreto(6), na posição 11 da String 
+Valor incorreto(6), na posição 14 da String 
+Valor incorreto(6), na posição 18 da String 
+Valor incorreto(6), na posição 20 da String 
+Valor incorreto(6), na posição 22 da String 
+Valor incorreto(6), na posição 28 da String 
+Valor incorreto(6), na posição 30 da String 
+Valor incorreto(6), na posição 32 da String 
+Valor incorreto(6), na posição 39 da String 
+Valor incorreto(6), na posição 42 da String 
+Valor incorreto(6), na posição 43 da String 
+Valor incorreto(6), na posição 48 da String 
+Valor incorreto(6), na posição 51 da String 
+Valor correto(6), na posição 52 da String 
+Valor incorreto(6), na posição 58 da String 
+Valor incorreto(6), na posição 61 da String 
+Valor incorreto(6), na posição 68 da String 
+Valor incorreto(6), na posição 71 da String 
+Valor incorreto(6), na posição 73 da String 
+Valor incorreto(6), na posição 75 da String 
+Valor correto(6), na posição 80 da String 
+
+
+[23-11-2024 11:44:17] [Cliente ID: 1] 
+Valor incorreto(6), na posição 2 da String 
+Valor correto(6), na posição 4 da String 
+Valor incorreto(6), na posição 7 da String 
+Valor correto(6), na posição 10 da String 
+Valor incorreto(6), na posição 11 da String 
+Valor incorreto(6), na posição 14 da String 
+Valor incorreto(6), na posição 18 da String 
+Valor incorreto(6), na posição 20 da String 
+Valor incorreto(6), na posição 22 da String 
+Valor incorreto(6), na posição 28 da String 
+Valor incorreto(6), na posição 30 da String 
+Valor incorreto(6), na posição 32 da String 
+Valor incorreto(6), na posição 39 da String 
+Valor incorreto(6), na posição 42 da String 
+Valor incorreto(6), na posição 43 da String 
+Valor incorreto(6), na posição 48 da String 
+Valor incorreto(6), na posição 51 da String 
+Valor correto(6), na posição 52 da String 
+Valor incorreto(6), na posição 58 da String 
+Valor incorreto(6), na posição 61 da String 
+Valor incorreto(6), na posição 68 da String 
+Valor incorreto(6), na posição 71 da String 
+Valor incorreto(6), na posição 73 da String 
+Valor incorreto(6), na posição 75 da String 
+Valor correto(6), na posição 80 da String 
+
+[23-11-2024 11:44:18] [Cliente ID: 1] 
+Mensagem enviada: 1|ONE|COMPLET|COM_JOGO|1|574623771672174537173795426757376142467257783327417694835742715246578273717732568|504623071602104530103095426050306142460250083320410694835042015246508203010732568|11:44:11|0|0|6
+
+[23-11-2024 11:44:18] [Cliente ID: 1] Mensagem recebida: 1|ONE|COMPLET|COM_JOGO|1|574623771672174537173795426757376142467257783327417694835742715246578273717732568|504623071602174530173095426750306142460250783327417694835042715246508273010732568|11:44:11|0|0|7|
+Valor incorreto(7), na posição 2 da String 
+Valor incorreto(7), na posição 7 da String 
+Valor incorreto(7), na posição 11 da String 
+Valor correto(7), na posição 14 da String 
+Valor incorreto(7), na posição 18 da String 
+Valor correto(7), na posição 20 da String 
+Valor incorreto(7), na posição 22 da String 
+Valor correto(7), na posição 28 da String 
+Valor incorreto(7), na posição 30 da String 
+Valor incorreto(7), na posição 32 da String 
+Valor incorreto(7), na posição 39 da String 
+Valor incorreto(7), na posição 42 da String 
+Valor correto(7), na posição 43 da String 
+Valor correto(7), na posição 48 da String 
+Valor correto(7), na posição 51 da String 
+Valor incorreto(7), na posição 58 da String 
+Valor correto(7), na posição 61 da String 
+Valor incorreto(7), na posição 68 da String 
+Valor correto(7), na posição 71 da String 
+Valor incorreto(7), na posição 73 da String 
+Valor incorreto(7), na posição 75 da String 
+
+
+[23-11-2024 11:44:18] [Cliente ID: 1] 
+Valor incorreto(7), na posição 2 da String 
+Valor incorreto(7), na posição 7 da String 
+Valor incorreto(7), na posição 11 da String 
+Valor correto(7), na posição 14 da String 
+Valor incorreto(7), na posição 18 da String 
+Valor correto(7), na posição 20 da String 
+Valor incorreto(7), na posição 22 da String 
+Valor correto(7), na posição 28 da String 
+Valor incorreto(7), na posição 30 da String 
+Valor incorreto(7), na posição 32 da String 
+Valor incorreto(7), na posição 39 da String 
+Valor incorreto(7), na posição 42 da String 
+Valor correto(7), na posição 43 da String 
+Valor correto(7), na posição 48 da String 
+Valor correto(7), na posição 51 da String 
+Valor incorreto(7), na posição 58 da String 
+Valor correto(7), na posição 61 da String 
+Valor incorreto(7), na posição 68 da String 
+Valor correto(7), na posição 71 da String 
+Valor incorreto(7), na posição 73 da String 
+Valor incorreto(7), na posição 75 da String 
+
+[23-11-2024 11:44:19] [Cliente ID: 1] 
+Mensagem enviada: 1|ONE|COMPLET|COM_JOGO|1|584623871682174538173895426758386142468258783327417694835842715246588273818732568|504623071602174530173095426750306142460250783327417694835042715246508273010732568|11:44:11|0|0|7
+
+[23-11-2024 11:44:19] [Cliente ID: 1] Mensagem recebida: 1|ONE|COMPLET|COM_JOGO|1|584623871682174538173895426758386142468258783327417694835842715246588273818732568|504623871682174530173895426750386142468250783327417694835042715246508273018732568|11:44:11|0|0|8|
+Valor incorreto(8), na posição 2 da String 
+Valor correto(8), na posição 7 da String 
+Valor correto(8), na posição 11 da String 
+Valor incorreto(8), na posição 18 da String 
+Valor correto(8), na posição 22 da String 
+Valor incorreto(8), na posição 30 da String 
+Valor correto(8), na posição 32 da String 
+Valor correto(8), na posição 39 da String 
+Valor incorreto(8), na posição 42 da String 
+Valor incorreto(8), na posição 58 da String 
+Valor incorreto(8), na posição 68 da String 
+Valor incorreto(8), na posição 73 da String 
+Valor correto(8), na posição 75 da String 
+
+
+[23-11-2024 11:44:19] [Cliente ID: 1] 
+Valor incorreto(8), na posição 2 da String 
+Valor correto(8), na posição 7 da String 
+Valor correto(8), na posição 11 da String 
+Valor incorreto(8), na posição 18 da String 
+Valor correto(8), na posição 22 da String 
+Valor incorreto(8), na posição 30 da String 
+Valor correto(8), na posição 32 da String 
+Valor correto(8), na posição 39 da String 
+Valor incorreto(8), na posição 42 da String 
+Valor incorreto(8), na posição 58 da String 
+Valor incorreto(8), na posição 68 da String 
+Valor incorreto(8), na posição 73 da String 
+Valor correto(8), na posição 75 da String 
+
+[23-11-2024 11:44:20] [Cliente ID: 1] 
+Mensagem enviada: 1|ONE|COMPLET|COM_JOGO|1|594623871682174539173895426759386142468259783327417694835942715246598273918732568|504623871682174530173895426750386142468250783327417694835042715246508273018732568|11:44:11|0|0|8
+
+[23-11-2024 11:44:20] [Cliente ID: 1] Mensagem recebida: 1|ONE|COMPLET|COM_JOGO|1|594623871682174539173895426759386142468259783327417694835942715246598273918732568|594623871682174539173895426759386142468259783327417694835942715246598273918732568|11:44:11|11:44:20|1|9|
+Valor correto(9), na posição 2 da String 
+Valor correto(9), na posição 18 da String 
+Valor correto(9), na posição 30 da String 
+Valor correto(9), na posição 42 da String 
+Valor correto(9), na posição 58 da String 
+Valor correto(9), na posição 68 da String 
+Valor correto(9), na posição 73 da String 
+
+
+[23-11-2024 11:44:20] [Cliente ID: 1] 
+Valor correto(9), na posição 2 da String 
+Valor correto(9), na posição 18 da String 
+Valor correto(9), na posição 30 da String 
+Valor correto(9), na posição 42 da String 
+Valor correto(9), na posição 58 da String 
+Valor correto(9), na posição 68 da String 
+Valor correto(9), na posição 73 da String 
+
+[23-11-2024 11:44:20] [Cliente ID: 1] Cliente desconectou-se

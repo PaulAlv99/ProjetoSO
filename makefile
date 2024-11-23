@@ -1,5 +1,5 @@
 CFLAGS:=-Wall -g
-LDFLAGS:=-lpthread
+LDFLAGS:=-lpthread -pthread
 
 all: cliente servidor
 

@@ -17,6 +17,8 @@
 #include <errno.h>
 #include <semaphore.h>
 #include <signal.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
 #define CHECK_NULL(x) ((x) == NULL)
 
 #define TEMPO_TAMANHO 22
@@ -27,6 +29,8 @@
 #define NUM_COLUNAS 9
 #define NUM_JOGOS 3
 #define INFO_SIZE 256
+#define SHM_SIZE 1024
+#define NUM_MAX_CLIENTES_FILA_SINGLEPLAYER 200
 sem_t semaforoAguardaResposta;
 sem_t semAguardar;
 // globais
