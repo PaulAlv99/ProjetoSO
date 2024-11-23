@@ -410,7 +410,38 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	carregarConfigCliente(argv[1], &clienteConfig);
-	construtorCliente(AF_INET, clienteConfig.porta, INADDR_ANY, &clienteConfig);
-	iniciarClienteSocket(&clienteConfig);
+	// Número de processos/jogadores a serem simulados
+	int numJogadores = 5;
+
+	for (int i = 0; i < numJogadores; i++)
+	{
+		pid_t pid = fork();
+
+		if (pid < 0)
+		{
+			perror("Erro ao criar processo");
+			return 1;
+		}
+
+		if (pid == 0)
+		{
+			// Processo filho
+			printf("Iniciando jogador %d\n", i + 1);
+
+			// Personalizar configurações do cliente para este jogador
+			clienteConfig.idCliente = i + 1;
+
+			// Inicializa o cliente
+			construtorCliente(AF_INET, clienteConfig.porta, INADDR_ANY, &clienteConfig);
+			iniciarClienteSocket(&clienteConfig);
+
+			printf("Finalizando jogador %d\n", i + 1);
+
+			exit(0); // Termina o processo filho
+		}
+	}
+	// nao chega aqui pq tem processos bloqueados
+	// estao bloqueados pq nao entram na fila
+	printf("Todos os jogadores terminaram.\n");
 	return 0;
 }

@@ -36,8 +36,8 @@ struct SalaSinglePlayer
     int nClientes;
     bool jogadorAResolver;
     pthread_mutex_t mutexSala;
-    char *clientesID;
     struct Jogo jogo;
+    int clienteAtualID; // Add this to track current client
 };
 
 struct filaClientesSinglePlayer
@@ -48,6 +48,24 @@ struct filaClientesSinglePlayer
     int tamanho;
     int capacidade;
     pthread_mutex_t mutex;
+    sem_t customers; // Semaphore for number of customers in queue
+    sem_t seatMutex; // Mutex for accessing seats
+    sem_t smfBarber; // Semaphore for barber availability
+};
+
+struct FormatoMensagens
+{
+    char *idCliente;
+    char *tipoJogo;
+    char *tipoResolucao;
+    char *temJogo;
+    char *idJogo;
+    char *jogo;
+    char *valoresCorretos;
+    char *tempoInicio;
+    char *tempoFinal;
+    char *resolvido;
+    char *numeroTentativas;
 };
 
 void carregarConfigServidor(char *nomeFicheiro, struct ServidorConfig *serverConfig);

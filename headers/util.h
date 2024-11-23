@@ -68,6 +68,7 @@ struct ServidorConfig
     unsigned int porta;
     int backlog;
     char ficheiroJogosESolucoesCaminho[PATH_SIZE];
+    struct GeneralQueue *generalQueue; // Add this field
     struct SalaSinglePlayer *sala;
 };
 
