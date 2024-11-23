@@ -4,8 +4,6 @@ char *padrao = "./configs/cliente";
 
 #define LINE_SIZE 16
 
-// global
-
 // tricos
 pthread_mutex_t mutexClienteLog = PTHREAD_MUTEX_INITIALIZER;
 
@@ -66,7 +64,6 @@ void carregarConfigCliente(char *nomeFicheiro, struct ClienteConfig *clienteConf
 	fecharFicheiro(config);
 	return;
 }
-// tricos
 
 void imprimirTabuleiro(char *jogo)
 {
@@ -155,6 +152,7 @@ void construtorCliente(int dominio, int porta, __u_long interface, struct Client
 	clienteConfig->porta = porta;
 	clienteConfig->interface = interface;
 }
+
 void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 {
 	clienteConfig->socket = socket(clienteConfig->dominio, SOCK_STREAM, 0);
@@ -197,6 +195,7 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 	close(clienteConfig->socket);
 	logQueEventoCliente(2, *clienteConfig);
 }
+
 void tentarSolucaoParcial(char tentativaAtual[], char valoresCorretos[])
 {
 	for (int i = 0; i < strlen(tentativaAtual); i++)
@@ -237,6 +236,7 @@ void tentarSolucaoCompleta(char tentativaAtual[], char valoresCorretos[])
 		}
 	}
 }
+
 void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 {
 	char buffer[BUF_SIZE] = {0};

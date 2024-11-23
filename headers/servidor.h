@@ -1,11 +1,6 @@
 #define CAPACIDADE_CONFSERVER 1
-#define PATH_SIZE 32
 #define CONFIGFILE "./configs/servidor.conf"
 #include "util.h"
-#include "../headers/cliente.h"
-
-// So para teste apagar depois
-#define IP_SIZE 16
 
 // Isto nao e daqui, apagar depois
 struct Jogo
@@ -33,27 +28,16 @@ struct ThreadMsgArgs
     int nJogo;
 };
 
-struct ServidorConfig
-{
-    int dominio;
-    int servico;
-    int protocolo;
-    __u_long interface;
-    unsigned int porta;
-    int backlog;
-    char ficheiroJogosESolucoesCaminho[PATH_SIZE];
-    struct SalaSinglePlayer *sala;
-};
-
 struct SalaSinglePlayer
 {
     int idSala;
     int clientesMax;
     int clienteMin;
     int nClientes;
+    bool jogadorAResolver;
+    pthread_mutex_t mutexSala;
     char *clientesID;
     struct Jogo jogo;
-    pthread_mutex_t mutexSala;
 };
 
 struct filaClientesSinglePlayer

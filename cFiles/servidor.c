@@ -410,9 +410,10 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
                     clienteConfig.jogoAtual.tempoFinal,
                     clienteConfig.jogoAtual.resolvido,
                     clienteConfig.jogoAtual.numeroTentativas);
-
             write(socketCliente, buffer, BUF_SIZE);
-
+            char temp[BUF_SIZE];
+            sprintf(temp, "Cliente-%d conectado", clienteConfig.idCliente);
+            printf("%s\n", temp);
             char bufferEnviarFinal[BUF_SIZE] = {0};
             sprintf(bufferEnviarFinal, "Mensagem enviada: %s\n", buffer);
             logQueEventoServidor(4, clienteConfig.idCliente);
@@ -648,7 +649,7 @@ void print_fila(struct filaClientesSinglePlayer *fila)
 
     while (count > 0)
     {
-        printf("%d--", fila->clientesID[indice]);
+        printf("%d ", fila->clientesID[indice]);
         indice = (indice + 1) % fila->capacidade;
         count--;
     }

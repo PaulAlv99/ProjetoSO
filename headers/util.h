@@ -31,6 +31,46 @@
 #define INFO_SIZE 256
 #define SHM_SIZE 1024
 #define NUM_MAX_CLIENTES_FILA_SINGLEPLAYER 200
+#define IP_SIZE 16
+#define PATH_SIZE 32
+
+struct JogoAtual
+{
+    int idJogo;
+    char jogo[NUMEROS_NO_JOGO + 1];
+    char valoresCorretos[NUMEROS_NO_JOGO + 1];
+    char tempoInicio[TEMPO_TAMANHO];
+    char tempoFinal[TEMPO_TAMANHO];
+    bool resolvido;
+    int numeroTentativas;
+};
+
+struct ClienteConfig
+{
+    char TemJogo[INFO_SIZE];
+    int idCliente;
+    char tipoJogo[INFO_SIZE];
+    char tipoResolucao[INFO_SIZE];
+    char ipServidor[IP_SIZE];
+    int dominio;
+    unsigned int porta;
+    __u_long interface;
+    int socket;
+    struct JogoAtual jogoAtual;
+};
+
+struct ServidorConfig
+{
+    int dominio;
+    int servico;
+    int protocolo;
+    __u_long interface;
+    unsigned int porta;
+    int backlog;
+    char ficheiroJogosESolucoesCaminho[PATH_SIZE];
+    struct SalaSinglePlayer *sala;
+};
+
 // globais
 const char *getTempo();
 const char *getTempoHoraMinutoSegundo();
@@ -39,7 +79,3 @@ void receberMensagens(int nUtilizadores);
 int fecharFicheiro(FILE *file);
 FILE *abrirFicheiroRead(char *filename);
 int validarNomeFile(char *arquivoNome, char *padrao);
-void err_dump(char *msg);
-int readline(int fd, char *ptr, int maxlen);
-int writen(int fd, char *ptr, int nbytes);
-const time_t converterTempoStringParaTimeT(char *tempo);
