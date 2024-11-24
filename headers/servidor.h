@@ -84,7 +84,7 @@ void *criaClienteThread(void *arg);
 
 void iniciarServidorSocket(struct ServidorConfig *server);
 
-void receberMensagemETratarServer(char *buffer, int socketCliente, struct ClienteConfig clienteConfig, int nJogo, char *jogoADar, struct ServidorConfig serverConfig);
+void receberMensagemETratarServer(char *buffer, int socketCliente, struct ClienteConfig clienteConfig, struct ServidorConfig serverConfig);
 
 struct filaClientesSinglePlayer *criarFila();
 

@@ -74,3 +74,66 @@ const time_t converterTempoStringParaTimeT(char *tempo)
 	t = mktime(&tm);
 	return t;
 }
+
+ssize_t readSocket(int socket, void *buffer, size_t length)
+{
+	ssize_t totalRead = 0;
+	char *ptr = (char *)buffer;
+
+	while (length > 0)
+	{
+		ssize_t n = recv(socket, ptr, length, 0);
+
+		if (n < 0)
+		{
+			if (errno == EINTR)
+			{
+				continue; // Interrompido por sinal
+			}
+			if (errno == ECONNRESET || errno == EPIPE)
+			{
+				printf("[Sistema] Conexão encerrada pelo cliente\n");
+				return -1;
+			}
+			return -1; // Erro na leitura
+		}
+
+		if (n == 0)
+		{
+			// EOF - conexão fechada pelo cliente
+			return totalRead;
+		}
+
+		totalRead += n;
+		ptr += n;
+		length -= n;
+	}
+
+	return totalRead;
+}
+
+ssize_t writeSocket(int socket, const void *buffer, size_t length)
+{
+	ssize_t written = 0;
+	const char *ptr = (const char *)buffer;
+
+	while (length > 0)
+	{
+		ssize_t n = send(socket, ptr, length, MSG_NOSIGNAL);
+		if (n <= 0)
+		{
+			if (errno == EINTR)
+				continue; // Interrompido por sinal
+			if (errno == EPIPE)
+			{
+				printf("[Sistema] Cliente desconectou abruptamente\n");
+				return -1; // Conexão fechada
+			}
+			return -1; // Erro na escrita
+		}
+		written += n;
+		ptr += n;
+		length -= n;
+	}
+	return written;
+}

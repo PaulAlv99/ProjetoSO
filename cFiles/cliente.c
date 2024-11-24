@@ -183,7 +183,7 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 		}
 	}
 	char recebeIDCliente[BUF_SIZE] = {0};
-	read(clienteConfig->socket, recebeIDCliente, BUF_SIZE);
+	readSocket(clienteConfig->socket, recebeIDCliente, BUF_SIZE);
 	// cliente recebe id do servidor
 	clienteConfig->idCliente = atoi(strtok(recebeIDCliente, "|"));
 	logQueEventoCliente(1, *clienteConfig);
@@ -254,11 +254,11 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 			clienteConfig->jogoAtual.resolvido,
 			clienteConfig->jogoAtual.numeroTentativas);
 
-	write(clienteConfig->socket, buffer, BUF_SIZE);
+	writeSocket(clienteConfig->socket, buffer, BUF_SIZE);
 
 	memset(buffer, 0, BUF_SIZE);
 
-	read(clienteConfig->socket, buffer, BUF_SIZE);
+	readSocket(clienteConfig->socket, buffer, BUF_SIZE);
 
 	char *idCliente = strtok(buffer, "|");
 	char *tipoJogo = strtok(NULL, "|");
@@ -287,10 +287,10 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 	clienteConfig->jogoAtual.numeroTentativas = atoi(numeroTentativas);
 	if (strcmp(clienteConfig->TemJogo, "COM_JOGO") == 0)
 	{
-		printf("Iniciando tentativa de solução...\n");
-		printf("Jogo Inicial:\n\n");
-		printf("Hora de inicio: %s\n\n", clienteConfig->jogoAtual.tempoInicio);
-		imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
+		// printf("Iniciando tentativa de solução...\n");
+		// printf("Jogo Inicial:\n\n");
+		// printf("Hora de inicio: %s\n\n", clienteConfig->jogoAtual.tempoInicio);
+		// imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
 
 		while (!clienteConfig->jogoAtual.resolvido)
 		{
@@ -304,8 +304,8 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 				tentarSolucaoParcial(clienteConfig->jogoAtual.jogo, clienteConfig->jogoAtual.valoresCorretos);
 				// clienteConfig->jogoAtual.numeroTentativas++;
 			}
-			printf("\nTentativa %d:\n\n", clienteConfig->jogoAtual.numeroTentativas);
-			imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
+			// printf("\nTentativa %d:\n\n", clienteConfig->jogoAtual.numeroTentativas);
+			// imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
 
 			// Enviar tentativa
 			sprintf(bufferEnviar, "%u|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d",
@@ -322,8 +322,8 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 					clienteConfig->jogoAtual.numeroTentativas);
 
 			// sem_wait(&semAguardar);
-			// sleep(1);
-			write(clienteConfig->socket, bufferEnviar, BUF_SIZE);
+			sleep(1);
+			writeSocket(clienteConfig->socket, bufferEnviar, BUF_SIZE);
 			char *bufferEnviarFinal = malloc(BUF_SIZE * sizeof(char));
 			if (bufferEnviarFinal == NULL)
 			{
@@ -377,8 +377,8 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 					clienteConfig->jogoAtual.resolvido = atoi(resolvido);
 					clienteConfig->jogoAtual.numeroTentativas = atoi(numeroTentativas);
 					logEventoCliente(logCliente, clienteConfig);
-					printf("Valores corretos:\n\n");
-					imprimirTabuleiro(clienteConfig->jogoAtual.valoresCorretos);
+					// printf("Valores corretos:\n\n");
+					// imprimirTabuleiro(clienteConfig->jogoAtual.valoresCorretos);
 				}
 				else
 				{
@@ -392,56 +392,194 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 		printf("Hora de fim: %s\n", clienteConfig->jogoAtual.tempoFinal);
 	}
 }
+// Estrutura para passar argumentos para a thread
+struct ThreadArgs
+{
+	struct ClienteConfig config;
+	int playerNumber;
+};
+
+// Função que será executada por cada thread
+void *playerThread(void *arg)
+{
+	struct ThreadArgs *args = (struct ThreadArgs *)arg;
+	struct ClienteConfig clienteConfig = args->config;
+
+	printf("Iniciando jogador %d\n", args->playerNumber);
+
+	// Configura este jogador específico
+	clienteConfig.idCliente = args->playerNumber;
+
+	// Inicia o cliente
+	construtorCliente(AF_INET, clienteConfig.porta, INADDR_ANY, &clienteConfig);
+	iniciarClienteSocket(&clienteConfig);
+
+	printf("Finalizando jogador %d\n", args->playerNumber);
+
+	free(args); // Libera a memória alocada para os argumentos
+	return NULL;
+}
 
 int main(int argc, char **argv)
 {
 	struct ClienteConfig clienteConfig = {0};
-	// Verifica se foi fornecido um nome de arquivo
+
+	// Validação dos argumentos da linha de comando
 	if (argc < 2)
 	{
 		printf("Erro: Nome do ficheiro de configuracao nao fornecido.\n");
 		return 1;
 	}
 
-	// Valida o nome do arquivo passado como argumento
+	// Validação do nome do arquivo de configuração
 	if (!validarNomeFile(argv[1], padrao))
 	{
 		printf("Nome do ficheiro de configuracao incorreto: %s\n", argv[1]);
 		return 1;
 	}
-	carregarConfigCliente(argv[1], &clienteConfig);
-	// Número de processos/jogadores a serem simulados
-	int numJogadores = 1;
 
+	// Carrega configurações do arquivo
+	carregarConfigCliente(argv[1], &clienteConfig);
+
+	// Número de threads jogadores a criar
+	int numJogadores = 100;
+	pthread_t threads[numJogadores];
+	int thread_status[numJogadores]; // Array para controlar status das threads
+
+	printf("Iniciando %d jogadores...\n", numJogadores);
+
+	// Cria as threads jogadores
 	for (int i = 0; i < numJogadores; i++)
 	{
-		pid_t pid = fork();
+		// Aloca memória para os argumentos da thread
+		struct ThreadArgs *args = malloc(sizeof(struct ThreadArgs));
+		// if (args == NULL)
+		// {
+		// 	perror("Erro ao alocar memória para argumentos da thread");
+		// 	// Espera threads já criadas terminarem
+		// 	for (int j = 0; j < i; j++)
+		// 	{
+		// 		if (thread_status[j] == 1)
+		// 		{
+		// 			pthread_join(threads[j], NULL);
+		// 		}
+		// 	}
+		// 	return 1;
+		// }
 
-		if (pid < 0)
+		// Configura argumentos
+		args->config = clienteConfig;
+		args->playerNumber = i + 1;
+
+		// Cria a thread
+		int rc = pthread_create(&threads[i], NULL, playerThread, args);
+		if (rc != 0)
 		{
-			perror("Erro ao criar processo");
+			perror("Erro ao criar thread");
+			free(args);
+			// Espera threads já criadas terminarem
+			for (int j = 0; j < i; j++)
+			{
+				if (thread_status[j] == 1)
+				{
+					pthread_join(threads[j], NULL);
+				}
+			}
 			return 1;
 		}
+		thread_status[i] = 1; // Marca thread como criada
+	}
 
-		if (pid == 0)
+	printf("Todas as threads criadas. Aguardando conclusão...\n");
+
+	// Espera todas as threads terminarem
+	for (int i = 0; i < numJogadores; i++)
+	{
+		if (thread_status[i] == 1)
 		{
-			// Processo filho
-			printf("Iniciando jogador %d\n", i + 1);
-
-			// Personalizar configurações do cliente para este jogador
-			clienteConfig.idCliente = i + 1;
-
-			// Inicializa o cliente
-			construtorCliente(AF_INET, clienteConfig.porta, INADDR_ANY, &clienteConfig);
-			iniciarClienteSocket(&clienteConfig);
-
-			printf("Finalizando jogador %d\n", i + 1);
-
-			exit(0); // Termina o processo filho
+			if (pthread_join(threads[i], NULL) == 0)
+			{
+				printf("Jogador %d terminou\n", i + 1);
+			}
 		}
 	}
-	// nao chega aqui pq tem processos bloqueados
-	// estao bloqueados pq nao entram na fila
+
 	printf("Todos os jogadores terminaram.\n");
 	return 0;
 }
+
+// int main(int argc, char **argv)
+// {
+// 	struct ClienteConfig clienteConfig = {0};
+// 	int status;
+// 	pid_t wpid;
+
+// 	// Validação dos argumentos da linha de comando
+// 	if (argc < 2)
+// 	{
+// 		printf("Erro: Nome do ficheiro de configuracao nao fornecido.\n");
+// 		return 1;
+// 	}
+
+// 	// Validação do nome do arquivo de configuração
+// 	if (!validarNomeFile(argv[1], padrao))
+// 	{
+// 		printf("Nome do ficheiro de configuracao incorreto: %s\n", argv[1]);
+// 		return 1;
+// 	}
+
+// 	// Carrega configurações do arquivo
+// 	carregarConfigCliente(argv[1], &clienteConfig);
+
+// 	// Número de processos jogadores a criar
+// 	int numJogadores = 5;
+// 	pid_t pids[numJogadores]; // Array para guardar PIDs dos filhos
+
+// 	// Cria os processos jogadores
+// 	for (int i = 0; i < numJogadores; i++)
+// 	{
+// 		pids[i] = fork();
+
+// 		if (pids[i] < 0)
+// 		{
+// 			perror("Erro ao criar processo");
+// 			// Mata processos já criados
+// 			for (int j = 0; j < i; j++)
+// 			{
+// 				kill(pids[j], SIGTERM);
+// 			}
+// 			return 1;
+// 		}
+
+// 		if (pids[i] == 0) // Processo filho
+// 		{
+// 			printf("Iniciando jogador %d\n", i + 1);
+
+// 			// Configura este jogador específico
+// 			clienteConfig.idCliente = i + 1;
+
+// 			// Inicia o cliente
+// 			construtorCliente(AF_INET, clienteConfig.porta, INADDR_ANY, &clienteConfig);
+// 			iniciarClienteSocket(&clienteConfig);
+
+// 			printf("Finalizando jogador %d\n", i + 1);
+// 			exit(0); // Importante: filho termina aqui
+// 		}
+// 	}
+
+// 	// Processo pai espera por todos os filhos
+// 	int jogadoresTerminados = 0;
+// 	while (jogadoresTerminados < numJogadores)
+// 	{
+// 		wpid = wait(&status);
+// 		if (wpid > 0)
+// 		{
+// 			jogadoresTerminados++;
+// 			printf("Jogador com PID %d terminou. (%d/%d)\n",
+// 				   wpid, jogadoresTerminados, numJogadores);
+// 		}
+// 	}
+
+// 	printf("Todos os jogadores terminaram.\n");
+// 	return 0;
+// }

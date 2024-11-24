@@ -80,3 +80,5 @@ void receberMensagens(int nUtilizadores);
 int fecharFicheiro(FILE *file);
 FILE *abrirFicheiroRead(char *filename);
 int validarNomeFile(char *arquivoNome, char *padrao);
+ssize_t readSocket(int socket, void *buffer, size_t length);
+ssize_t writeSocket(int socket, const void *buffer, size_t length);
