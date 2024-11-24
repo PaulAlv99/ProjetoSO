@@ -48,9 +48,7 @@ struct filaClientesSinglePlayer
     int tamanho;
     int capacidade;
     pthread_mutex_t mutex;
-    sem_t customers; // Semaphore for number of customers in queue
-    sem_t seatMutex; // Mutex for accessing seats
-    sem_t smfBarber; // Semaphore for barber availability
+    sem_t customers;
 };
 
 struct FormatoMensagens

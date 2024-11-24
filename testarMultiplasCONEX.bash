@@ -1,5 +1,5 @@
 #!/bin/bash
-for N in {1..3}
+for N in {1..250}
 do
     ./cliente ./configs/cliente.conf &
 done

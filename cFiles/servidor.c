@@ -389,21 +389,34 @@ bool validarMensagemVazia(struct FormatoMensagens *msg)
 
 struct SalaSinglePlayer *handleSinglePlayerFila(int idCliente, struct ServidorConfig *serverConfig)
 {
-    for (int i = 0; i < NUM_JOGOS; i++)
+    // Add client to queue and wait to be served by a barber (room)
+    if (!enqueue(filaClientesSinglePlayer, idCliente))
     {
-        pthread_mutex_lock(&serverConfig->sala[i].mutexSala);
-        if (serverConfig->sala[i].nClientes == 0)
-        {
-
-            serverConfig->sala[i].nClientes = 1;
-            serverConfig->sala[i].clienteAtualID = idCliente;
-            pthread_mutex_unlock(&serverConfig->sala[i].mutexSala);
-            printf("Cliente %d atribuído à sala %d\n", idCliente, i);
-            return &serverConfig->sala[i];
-        }
-        pthread_mutex_unlock(&serverConfig->sala[i].mutexSala);
+        printf("[Sistema] Cliente %d não pôde ser adicionado (fila cheia)\n", idCliente);
+        return NULL;
     }
-    printf("Nenhuma sala disponível para o cliente %d\n", idCliente);
+
+    // Signal that a new client is waiting
+    sem_post(&filaClientesSinglePlayer->customers);
+
+    // Client waits to be assigned to a room/barber
+    while (1)
+    {
+        for (int i = 0; i < NUM_JOGOS; i++)
+        {
+            pthread_mutex_lock(&serverConfig->sala[i].mutexSala);
+            if (serverConfig->sala[i].clienteAtualID == idCliente &&
+                serverConfig->sala[i].nClientes == 1)
+            {
+                // This barber/room has taken us
+                pthread_mutex_unlock(&serverConfig->sala[i].mutexSala);
+                return &serverConfig->sala[i];
+            }
+            pthread_mutex_unlock(&serverConfig->sala[i].mutexSala);
+        }
+        usleep(100000);
+    }
+
     return NULL;
 }
 
@@ -526,17 +539,17 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 salaAtual = handleSinglePlayerFila(atoi(msgData.idCliente), &serverConfig);
                 if (!salaAtual)
                 {
-                    printf("Erro: Nenhuma sala disponível para o cliente %d\n", atoi(msgData.idCliente));
-                    logQueEventoServidor(3, clienteConfig.idCliente);
+                    printf("Erro: Cliente %d não pode ser atendido no momento\n", atoi(msgData.idCliente));
+                    // Inform client they are in queue or couldn't be added
+                    char queueMessage[BUF_SIZE];
+                    sprintf(queueMessage, "%d|SIG|WAIT|SEM_JOGO|0|0|0|0|0|0|0",
+                            atoi(msgData.idCliente));
+                    write(socketCliente, queueMessage, BUF_SIZE);
                     continue;
                 }
 
-                pthread_mutex_lock(&salaAtual->mutexSala);
                 jogoADar = salaAtual->jogo.jogo;
                 nJogo = salaAtual->jogo.idJogo;
-                salaAtual->clienteAtualID = msgData.idCliente;
-                salaAtual->jogadorAResolver = true;
-                pthread_mutex_unlock(&salaAtual->mutexSala);
             }
 
             updateClientConfig(&clienteConfig, &msgData, jogoADar, nJogo);
@@ -634,6 +647,7 @@ struct filaClientesSinglePlayer *criarFila()
     struct filaClientesSinglePlayer *fila = (struct filaClientesSinglePlayer *)malloc(sizeof(struct filaClientesSinglePlayer));
     if (!fila)
     {
+        perror("Erro ao alocar memoria para fila");
         return NULL;
     }
 
@@ -641,6 +655,7 @@ struct filaClientesSinglePlayer *criarFila()
     if (!fila->clientesID)
     {
         free(fila);
+        perror("Erro ao alocar memoria para clientesID");
         return NULL;
     }
 
@@ -653,18 +668,17 @@ struct filaClientesSinglePlayer *criarFila()
     {
         free(fila->clientesID);
         free(fila);
+        perror("Erro ao inicializar mutex");
         return NULL;
     }
 
-    // se todos os semaforos deram
-    if (sem_init(&fila->customers, 0, 0) != 0 ||
-        sem_init(&fila->seatMutex, 0, 1) != 0 ||
-        sem_init(&fila->smfBarber, 0, 0) != 0) // barbeiro a dormir
+    // Initialize semaphore to 0 (no clients waiting initially)
+    if (sem_init(&fila->customers, 0, 0) != 0) // Changed to 0 for inter-thread communication
     {
-
         pthread_mutex_destroy(&fila->mutex);
         free(fila->clientesID);
         free(fila);
+        perror("Erro ao inicializar semaforo");
         return NULL;
     }
 
@@ -675,8 +689,12 @@ void delete_queue(struct filaClientesSinglePlayer *fila)
 {
     if (fila)
     {
+        sem_destroy(&fila->customers);
         pthread_mutex_destroy(&fila->mutex);
-        free(fila->clientesID);
+        if (fila->clientesID)
+        {
+            free(fila->clientesID);
+        }
         free(fila);
     }
 }
@@ -711,17 +729,22 @@ bool enqueue(struct filaClientesSinglePlayer *fila, int clientID)
 {
     pthread_mutex_lock(&fila->mutex);
 
-    if (boolEstaFilaCheia(fila))
+    // Check if queue is full
+    if (fila->tamanho >= fila->capacidade)
     {
+        printf("[Fila] Rejeitado cliente %d - fila cheia (tamanho: %d)\n",
+               clientID, fila->tamanho);
         pthread_mutex_unlock(&fila->mutex);
         return false;
     }
 
+    // Add client to queue
     fila->rear = (fila->rear + 1) % fila->capacidade;
     fila->clientesID[fila->rear] = clientID;
     fila->tamanho++;
 
-    sem_post(&fila->customers);
+    printf("[Fila] Cliente %d entrou na fila (posição: %d, tamanho: %d)\n",
+           clientID, fila->rear, fila->tamanho);
 
     pthread_mutex_unlock(&fila->mutex);
     return true;
@@ -731,20 +754,24 @@ int dequeue(struct filaClientesSinglePlayer *fila)
 {
     pthread_mutex_lock(&fila->mutex);
 
-    if (boolEstaFilaVazia(fila))
+    // Check if queue is empty
+    if (fila->tamanho == 0)
     {
         pthread_mutex_unlock(&fila->mutex);
         return -1;
     }
 
+    // Remove and return client from front of queue
     int clientID = fila->clientesID[fila->front];
     fila->front = (fila->front + 1) % fila->capacidade;
     fila->tamanho--;
 
+    printf("[Fila] Cliente %d removido da fila (tamanho restante: %d)\n",
+           clientID, fila->tamanho);
+
     pthread_mutex_unlock(&fila->mutex);
     return clientID;
 }
-
 void print_fila(struct filaClientesSinglePlayer *fila)
 {
     pthread_mutex_lock(&fila->mutex);
@@ -786,67 +813,63 @@ void *barber(void *arg)
     struct SalaSinglePlayer *sala = (struct SalaSinglePlayer *)arg;
     struct filaClientesSinglePlayer *fila = filaClientesSinglePlayer;
 
+    printf("[Barbeiro-%d] Iniciado\n", sala->idSala);
+
     while (1)
     {
-        printf("Sala %d aguardando jogador...\n", sala->idSala);
+        // Barber (room) is ready for next client
+        sem_wait(&fila->customers); // Wait for customer to arrive
 
-        sem_wait(&fila->customers);
-        sem_wait(&fila->seatMutex);
-
-        int clienteID = dequeue(fila);
-        if (clienteID == -1)
+        pthread_mutex_lock(&sala->mutexSala);
+        if (sala->nClientes > 0)
         {
-            sem_post(&fila->seatMutex);
+            // Another barber got to this client first
+            pthread_mutex_unlock(&sala->mutexSala);
+            sem_post(&fila->customers); // Put the signal back
             continue;
         }
 
-        pthread_mutex_lock(&sala->mutexSala);
+        // Try to get next client from queue
+        int clienteID = dequeue(fila);
+        if (clienteID == -1)
+        {
+            pthread_mutex_unlock(&sala->mutexSala);
+            sem_post(&fila->customers); // Put the signal back
+            continue;
+        }
+
+        // Barber (room) takes client
         sala->nClientes = 1;
         sala->jogadorAResolver = true;
+        sala->clienteAtualID = clienteID;
 
+        // Prepare game for client
         unsigned int seed = (unsigned int)time(NULL) ^ (unsigned int)pthread_self();
         int jogoIndex = rand_r(&seed) % NUM_JOGOS;
         sala->jogo = jogosEsolucoes[jogoIndex];
 
-        printf("Sala %d: Jogador %d entrou para resolver jogo %d\n",
+        printf("[Barbeiro-%d] Atendendo cliente %d com jogo %d\n",
                sala->idSala, clienteID, sala->jogo.idJogo);
+
         pthread_mutex_unlock(&sala->mutexSala);
 
-        sem_post(&fila->smfBarber);
-        sem_post(&fila->seatMutex);
-
-        pthread_mutex_lock(&sala->mutexSala);
-        while (sala->jogadorAResolver)
+        // Barber (room) waits for client to finish
+        while (1)
         {
-            pthread_mutex_unlock(&sala->mutexSala);
-
-            if (verificaResolvido(
-                    sala->jogo.jogo,
-                    jogosEsolucoes[jogoIndex].solucao,
-                    true))
+            pthread_mutex_lock(&sala->mutexSala);
+            if (!sala->jogadorAResolver)
             {
-
-                pthread_mutex_lock(&sala->mutexSala);
-                sala->jogadorAResolver = false;
-
-                logQueEventoServidor(8, clienteID);
+                // Client finished, clean up
+                sala->nClientes = 0;
+                sala->clienteAtualID = -1;
                 pthread_mutex_unlock(&sala->mutexSala);
-
-                printf("Sala %d: Jogador %d resolveu o jogo!\n", sala->idSala, clienteID);
+                printf("[Barbeiro-%d] Cliente %d finalizou\n",
+                       sala->idSala, clienteID);
                 break;
             }
-
-            pthread_mutex_lock(&sala->mutexSala);
+            pthread_mutex_unlock(&sala->mutexSala);
+            usleep(100000);
         }
-        pthread_mutex_unlock(&sala->mutexSala);
-
-        // resetar sala
-        pthread_mutex_lock(&sala->mutexSala);
-        sala->nClientes = 0;
-        sala->jogadorAResolver = false;
-        pthread_mutex_unlock(&sala->mutexSala);
-
-        printf("Sala %d: Jogador %d finalizou. Sala disponível.\n", sala->idSala, clienteID);
     }
 
     return NULL;
@@ -878,11 +901,13 @@ struct SalaSinglePlayer *criarSalaSinglePlayer(int idSala)
 void *iniciarSalaSinglePlayer(void *arg)
 {
     struct SalaSinglePlayer *sala = (struct SalaSinglePlayer *)arg;
-    barber(sala);
+    barber(sala); // Room operates as a barber
     return NULL;
 }
 void iniciarSalasJogoSinglePlayer(struct ServidorConfig *serverConfig)
 {
+    printf("[Sistema] Iniciando %d barbeiros (salas)\n", NUM_JOGOS);
+
     if (!serverConfig || !serverConfig->sala)
     {
         perror("Server config or rooms not initialized");
@@ -898,19 +923,21 @@ void iniciarSalasJogoSinglePlayer(struct ServidorConfig *serverConfig)
         serverConfig->sala[i].jogadorAResolver = false;
         serverConfig->sala[i].clienteAtualID = -1;
 
+        // Each room starts with a different game
         serverConfig->sala[i].jogo = jogosEsolucoes[i];
 
         if (pthread_mutex_init(&serverConfig->sala[i].mutexSala, NULL) != 0)
         {
-            perror("Erro ao inicializar mutex da sala");
+            perror("Failed to initialize room mutex");
             exit(1);
         }
 
+        // Create barber thread for this room
         pthread_t threadSala;
         void *roomPtr = &serverConfig->sala[i];
         if (pthread_create(&threadSala, NULL, iniciarSalaSinglePlayer, roomPtr) != 0)
         {
-            perror("Erro ao criar thread da sala");
+            perror("Failed to create barber thread");
             exit(1);
         }
         pthread_detach(threadSala);
@@ -934,14 +961,7 @@ int main(int argc, char **argv)
     carregarFicheiroJogosSolucoes(serverConfig.ficheiroJogosESolucoesCaminho);
     serverConfig = construtorServer(AF_INET, SOCK_STREAM, 0, INADDR_ANY, serverConfig.porta, 1, serverConfig.ficheiroJogosESolucoesCaminho);
     logQueEventoServidor(1, 0);
-
-    // iniciar fila para jogos singleplayer
     filaClientesSinglePlayer = malloc(sizeof(struct filaClientesSinglePlayer));
-    if (filaClientesSinglePlayer == NULL)
-    {
-        perror("Erro ao alocar memoria para filaClientesSinglePlayer");
-        exit(1);
-    }
     filaClientesSinglePlayer = criarFila();
     iniciarServidorSocket(&serverConfig);
     return 0;

@@ -322,7 +322,7 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 					clienteConfig->jogoAtual.numeroTentativas);
 
 			// sem_wait(&semAguardar);
-			sleep(1);
+			// sleep(1);
 			write(clienteConfig->socket, bufferEnviar, BUF_SIZE);
 			char *bufferEnviarFinal = malloc(BUF_SIZE * sizeof(char));
 			if (bufferEnviarFinal == NULL)
@@ -411,7 +411,7 @@ int main(int argc, char **argv)
 	}
 	carregarConfigCliente(argv[1], &clienteConfig);
 	// Número de processos/jogadores a serem simulados
-	int numJogadores = 5;
+	int numJogadores = 1;
 
 	for (int i = 0; i < numJogadores; i++)
 	{
