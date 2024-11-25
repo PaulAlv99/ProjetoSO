@@ -389,19 +389,9 @@ struct SalaSinglePlayer *handleSinglePlayerFila(int idCliente, struct ServidorCo
     // Tenta adicionar o cliente à fila de espera
     if (!enqueue(filaClientesSinglePlayer, idCliente))
     {
-        // Se a fila está cheia, esperar um pouco e tentar novamente
-        int retries = 3;
-        while (retries > 0)
-        {
-            usleep(100000); // 100ms
-            if (enqueue(filaClientesSinglePlayer, idCliente))
-            {
-                return true;
-            }
-            retries--;
-        }
-        printf("[Sistema] Cliente %d rejeitado após %d tentativas\n",
-               idCliente, 3);
+
+        printf("[Sistema] Cliente %d rejeitado \n",
+               idCliente);
         return NULL;
     }
 
@@ -541,8 +531,8 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                                   struct ServidorConfig serverConfig)
 {
     struct SalaSinglePlayer *salaAtual = NULL;
-    char *jogoADar;
-    int nJogo;
+    char *jogoADar = "";
+    int nJogo = -1;
     while (recv(socketCliente, buffer, BUF_SIZE, 0) > 0)
     {
         char bufferFinal[BUF_SIZE] = {0};
@@ -565,13 +555,14 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 salaAtual = handleSinglePlayerFila(atoi(msgData.idCliente), &serverConfig);
                 if (!salaAtual)
                 {
-                    printf("Erro: Cliente %d não pode ser atendido no momento\n", atoi(msgData.idCliente));
+                    break;
+                    // printf("Erro: Cliente %d não pode ser atendido no momento\n", atoi(msgData.idCliente));
 
-                    char queueMessage[BUF_SIZE];
-                    sprintf(queueMessage, "%d|SIG|WAIT|SEM_JOGO|0|0|0|0|0|0|0",
-                            atoi(msgData.idCliente));
-                    writeSocket(socketCliente, queueMessage, BUF_SIZE);
-                    continue;
+                    // char queueMessage[BUF_SIZE];
+                    // sprintf(queueMessage, "%d|SIG|WAIT|SEM_JOGO|0|0|0|0|0|0|0",
+                    //         atoi(msgData.idCliente));
+                    // writeSocket(socketCliente, queueMessage, BUF_SIZE);
+                    // continue;
                 }
 
                 jogoADar = salaAtual->jogo.jogo;
@@ -780,12 +771,23 @@ int dequeue(struct filaClientesSinglePlayer *fila)
     if (fila->tamanho == 0)
     {
         pthread_mutex_unlock(&fila->mutex);
-        return -1;
+        return -1; // Queue is empty
     }
 
-    int clientID = fila->clientesID[fila->front];
-    fila->front = (fila->front + 1) % fila->capacidade;
+    // Save the client ID of the first element
+    int clientID = fila->clientesID[0];
+
+    // Shift all the elements to the left
+    for (int i = 1; i < fila->tamanho; i++)
+    {
+        fila->clientesID[i - 1] = fila->clientesID[i];
+    }
+
+    // Decrease the size of the queue
     fila->tamanho--;
+
+    // Update rear pointer
+    fila->rear = fila->tamanho - 1;
 
     printf("[Fila] Cliente %d removido da fila (tamanho restante: %d)\n",
            clientID, fila->tamanho);
