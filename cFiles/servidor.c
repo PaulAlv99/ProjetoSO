@@ -834,29 +834,29 @@ int getFilaTamanho(struct filaClientesSinglePlayer *fila)
 void *Sala(void *arg)
 {
     struct SalaSinglePlayer *sala = (struct SalaSinglePlayer *)arg;
-    struct filaClientesSinglePlayer *fila = filaClientesSinglePlayer;
+    // struct filaClientesSinglePlayer *fila = ;
 
     printf("[Sala-%d] Iniciado\n", sala->idSala);
 
     while (1)
     {
         // Sala pronta para proximo cliente
-        sem_wait(&fila->customers);
+        sem_wait(&filaClientesSinglePlayer->customers);
 
         pthread_mutex_lock(&sala->mutexSala);
         if (sala->nClientes > 0)
         {
             pthread_mutex_unlock(&sala->mutexSala);
-            sem_post(&fila->customers);
+            sem_post(&filaClientesSinglePlayer->customers);
             continue;
         }
 
         // Proximo cliente na fila
-        int clienteID = dequeue(fila);
+        int clienteID = dequeue(filaClientesSinglePlayer);
         if (clienteID == -1)
         {
             pthread_mutex_unlock(&sala->mutexSala);
-            sem_post(&fila->customers);
+            sem_post(&filaClientesSinglePlayer->customers);
             continue;
         }
 
@@ -883,9 +883,10 @@ void *Sala(void *arg)
                 // reset depois cliente acabar
                 sala->nClientes = 0;
                 sala->clienteAtualID = -1;
-                pthread_mutex_unlock(&sala->mutexSala);
                 printf("[Sala-%d] Cliente %d finalizou\n",
                        sala->idSala, clienteID);
+                pthread_mutex_unlock(&sala->mutexSala);
+
                 break;
             }
             pthread_mutex_unlock(&sala->mutexSala);
