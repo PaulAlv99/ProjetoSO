@@ -1,6 +1,8 @@
 #include "../headers/servidor.h"
-
-// structs
+// TODO CLIENTE sai da sala mas tem probalidade de voltar a entrar na fila-SINGLEPLAYER
+// TODO GUARDAR INFO DE CADA LEADERBOARD DA SALA-SINGLEPLAYER
+// TODO FAZER CADA SALA COM JOGO FIXO QUANDO INICIA-SINGLEPLAYER
+//  structs
 struct Jogo jogosEsolucoes[NUM_JOGOS];
 struct filaClientesSinglePlayer *filaClientesSinglePlayer;
 
