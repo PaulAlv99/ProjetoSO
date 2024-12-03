@@ -1,11 +1,13 @@
 #include "../headers/cliente.h"
 // Aceita cliente1.conf até clienteN.conf
+// TODO locks para escrever no stdout
 char *padrao = "./configs/cliente";
 
 #define LINE_SIZE 16
 
 // tricos
 pthread_mutex_t mutexClienteLog = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutexSTDOUT = PTHREAD_MUTEX_INITIALIZER;
 
 void carregarConfigCliente(char *nomeFicheiro, struct ClienteConfig *clienteConfig)
 {
@@ -288,11 +290,13 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 	clienteConfig->jogoAtual.numeroTentativas = atoi(numeroTentativas);
 	if (strcmp(clienteConfig->TemJogo, "COM_JOGO") == 0)
 	{
-		// printf("Iniciando tentativa de solução...\n");
-		// printf("Jogo Inicial:\n\n");
-		// printf("Hora de inicio: %s\n\n", clienteConfig->jogoAtual.tempoInicio);
-		// imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
-
+		pthread_mutex_lock(&mutexSTDOUT);
+		printf("Cliente ID:%d\n", clienteConfig->idCliente);
+		printf("Iniciando tentativa de solução...\n");
+		printf("Jogo Inicial:\n\n");
+		printf("Hora de inicio: %s\n\n", clienteConfig->jogoAtual.tempoInicio);
+		imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
+		pthread_mutex_unlock(&mutexSTDOUT);
 		while (!clienteConfig->jogoAtual.resolvido)
 		{
 			char bufferEnviar[BUF_SIZE] = {0};
@@ -305,8 +309,11 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 				tentarSolucaoParcial(clienteConfig->jogoAtual.jogo, clienteConfig->jogoAtual.valoresCorretos);
 				// clienteConfig->jogoAtual.numeroTentativas++;
 			}
-			// printf("\nTentativa %d:\n\n", clienteConfig->jogoAtual.numeroTentativas);
-			// imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
+			pthread_mutex_lock(&mutexSTDOUT);
+			printf("Cliente ID:%d\n", clienteConfig->idCliente);
+			printf("\nTentativa %d:\n\n", clienteConfig->jogoAtual.numeroTentativas);
+			imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
+			pthread_mutex_unlock(&mutexSTDOUT);
 
 			// Enviar tentativa
 			sprintf(bufferEnviar, "%u|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d",
@@ -378,8 +385,11 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 					clienteConfig->jogoAtual.resolvido = atoi(resolvido);
 					clienteConfig->jogoAtual.numeroTentativas = atoi(numeroTentativas);
 					logEventoCliente(logCliente, clienteConfig);
-					// printf("Valores corretos:\n\n");
-					// imprimirTabuleiro(clienteConfig->jogoAtual.valoresCorretos);
+					pthread_mutex_lock(&mutexSTDOUT);
+					printf("Cliente ID:%d\n", clienteConfig->idCliente);
+					printf("Valores corretos:\n\n");
+					imprimirTabuleiro(clienteConfig->jogoAtual.valoresCorretos);
+					pthread_mutex_unlock(&mutexSTDOUT);
 				}
 				else
 				{
@@ -387,9 +397,11 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 				}
 			}
 		}
+		pthread_mutex_lock(&mutexSTDOUT);
 		printf("Jogo resolvido!\n");
 		printf("Resolvido em %d tentativas\n", clienteConfig->jogoAtual.numeroTentativas);
 		printf("Hora de fim: %s\n", clienteConfig->jogoAtual.tempoFinal);
+		pthread_mutex_unlock(&mutexSTDOUT);
 	}
 }
 

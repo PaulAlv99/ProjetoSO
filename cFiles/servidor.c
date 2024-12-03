@@ -1,7 +1,9 @@
 #include "../headers/servidor.h"
 // TODO CLIENTE sai da sala mas tem probalidade de voltar a entrar na fila-SINGLEPLAYER
 // TODO GUARDAR INFO DE CADA LEADERBOARD DA SALA-SINGLEPLAYER
-// TODO FAZER CADA SALA COM JOGO FIXO QUANDO INICIA-SINGLEPLAYER
+// TODO FAZER CADA SALA COM JOGO FIXO QUANDO INICIA-SINGLEPLAYER-FEITO CADA SALA TEM O JOGO COM O ID DO NUMERO DA SALA
+// TODO QUANDO ELE TERMINA O JOGO O CLIENTE ENCERRA A COMUNICACAO. TENHO DE FAZER DE MODO A QUE NAO
+// ENCERRE COMUNICACAO PARA O CLIENTE CONSEGUIR ENTRAR NA FILA OUTRA VEZ
 //  structs
 struct Jogo jogosEsolucoes[NUM_JOGOS];
 struct filaClientesSinglePlayer *filaClientesSinglePlayer;
@@ -642,6 +644,11 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
             {
                 printf("Jogo concluído na sala %d. Encerrando sessão do cliente %d.\n",
                        salaAtual->idSala, clienteConfig.idCliente);
+                // 20% de entrar na sala outra vez
+                // if (entrarNaSalaOutraVez() <= 20)
+                // {
+                //     printf("Jogador %d voltou a entrar na fila de jogos singleplayer\n", clienteConfig.idCliente);
+                // }
                 break;
             }
         }
@@ -868,9 +875,9 @@ void *Sala(void *arg)
         sala->clienteAtualID = clienteID;
 
         // Preparar jogo
-        unsigned int seed = (unsigned int)time(NULL) ^ (unsigned int)pthread_self();
-        int jogoIndex = rand_r(&seed) % NUM_JOGOS;
-        sala->jogo = jogosEsolucoes[jogoIndex];
+        // unsigned int seed = (unsigned int)time(NULL) ^ (unsigned int)pthread_self();
+        // int jogoIndex = rand_r(&seed) % NUM_JOGOS;
+        // sala->jogo = jogosEsolucoes[jogoIndex];
 
         printf("[Sala-%d] Atendendo cliente %d com jogo %d\n",
                sala->idSala, clienteID, sala->jogo.idJogo);
@@ -967,6 +974,12 @@ void iniciarSalasJogoSinglePlayer(struct ServidorConfig *serverConfig)
         }
         pthread_detach(threadSala);
     }
+}
+int entrarNaSalaOutraVez()
+{
+    unsigned int seed = (unsigned int)time(NULL) ^ (unsigned int)pthread_self();
+    int probalidade = rand_r(&seed) % 100;
+    return probalidade;
 }
 int main(int argc, char **argv)
 {
