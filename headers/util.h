@@ -19,6 +19,7 @@
 #include <signal.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
+#include <sys/wait.h>
 #define CHECK_NULL(x) ((x) == NULL)
 
 #define TEMPO_TAMANHO 22
@@ -27,10 +28,8 @@
 #define NUMEROS_NO_JOGO 81
 #define NUM_LINHAS 9
 #define NUM_COLUNAS 9
-#define NUM_JOGOS 3
 #define INFO_SIZE 256
 #define SHM_SIZE 1024
-#define NUM_MAX_CLIENTES_FILA_SINGLEPLAYER 200
 #define IP_SIZE 16
 #define PATH_SIZE 32
 
@@ -57,6 +56,7 @@ struct ClienteConfig
     __u_long interface;
     int socket;
     struct JogoAtual jogoAtual;
+    int numJogadores;
 };
 
 struct ServidorConfig
@@ -68,8 +68,9 @@ struct ServidorConfig
     unsigned int porta;
     int backlog;
     char ficheiroJogosESolucoesCaminho[PATH_SIZE];
-    struct GeneralQueue *generalQueue; // Add this field
     struct SalaSinglePlayer *sala;
+    int numeroJogos;
+    int NUM_MAX_CLIENTES_FILA_SINGLEPLAYER;
 };
 
 // globais
@@ -82,3 +83,5 @@ FILE *abrirFicheiroRead(char *filename);
 int validarNomeFile(char *arquivoNome, char *padrao);
 ssize_t readSocket(int socket, void *buffer, size_t length);
 ssize_t writeSocket(int socket, const void *buffer, size_t length);
+// Funcao converter tempo em String para temp em time_t
+const time_t converterTempoStringParaTimeT(char *tempo);

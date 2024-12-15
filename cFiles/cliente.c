@@ -9,62 +9,60 @@ char *padrao = "./configs/cliente";
 pthread_mutex_t mutexClienteLog = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexSTDOUT = PTHREAD_MUTEX_INITIALIZER;
 
-void carregarConfigCliente(char *nomeFicheiro, struct ClienteConfig *clienteConfig)
-{
-	FILE *config = abrirFicheiroRead(nomeFicheiro);
+void carregarConfigCliente(char *nomeFicheiro, struct ClienteConfig *clienteConfig) {
+    FILE *config = abrirFicheiroRead(nomeFicheiro);
+    if (config == NULL) {
+        fprintf(stderr, "Erro: Falha ao abrir o ficheiro de configuração.\n");
+        exit(1);
+    }
 
-	if (config == NULL)
-	{
-		fprintf(stderr, "Erro: Falha ao abrir o ficheiro de configuração.\n");
-		exit(1);
-	}
+    char buffer[BUF_SIZE];
+    int linhaAtual = 0;
+    
+    while (fgets(buffer, BUF_SIZE, config) != NULL) {
+        char *valor = strtok(buffer, "\n");
+        if (valor == NULL) {
+            perror("Erro: Linha vazia encontrada.\n");
+            fecharFicheiro(config);
+            exit(1);
+        }
 
-	char buffer[BUF_SIZE];
+        switch(linhaAtual) {
+            case 0: // tipoJogo
+                strncpy(clienteConfig->tipoJogo, valor, INFO_SIZE);
+                break;
+                
+            case 1: // tipoResolucao
+                strncpy(clienteConfig->tipoResolucao, valor, INFO_SIZE);
+                break;
+                
+            case 2: // ipServidor
+                strncpy(clienteConfig->ipServidor, valor, IP_SIZE - 1);
+                break;
+                
+            case 3: // porta
+                clienteConfig->porta = atoi(valor);
+                break;
+            case 4:
+				clienteConfig->numJogadores = atoi(valor);
+				break;
+            default:
+                perror("Erro ao ler ficheiro de configuração.\n");
+                fecharFicheiro(config);
+                exit(1);
+        }
+        
+        linhaAtual++;
+    }
 
-	if (fgets(buffer, BUF_SIZE, config) != NULL)
-	{
-		strncpy(clienteConfig->tipoJogo, strtok(buffer, "\n"), INFO_SIZE);
-	}
-	else
-	{
-		fprintf(stderr, "Erro: Falha ao ler tipoJogo.\n");
-		fecharFicheiro(config);
-		exit(1);
-	}
-	if (fgets(buffer, BUF_SIZE, config) != NULL)
-	{
-		strncpy(clienteConfig->tipoResolucao, strtok(buffer, "\n"), INFO_SIZE);
-	}
-	else
-	{
-		fprintf(stderr, "Erro: Falha ao ler tipoResolucao.\n");
-		fecharFicheiro(config);
-		exit(1);
-	}
-	if (fgets(buffer, BUF_SIZE, config) != NULL)
-	{
-		// 255.255.255.255(15)
-		strncpy(clienteConfig->ipServidor, strtok(buffer, "\n"), IP_SIZE - 1);
-	}
-	else
-	{
-		fprintf(stderr, "Erro: Falha ao ler ipServidor.\n");
-		fecharFicheiro(config);
-		exit(1);
-	}
-	if (fgets(buffer, BUF_SIZE, config) != NULL)
-	{
-		clienteConfig->porta = atoi(strtok(buffer, "\n"));
-	}
-	else
-	{
-		fprintf(stderr, "Erro: Falha ao ler ipServidor.\n");
-		fecharFicheiro(config);
-		exit(1);
-	}
+    // Verifica se todas as configurações necessárias foram lidas
+    if (linhaAtual < 4) {
+        perror("Erro: Configuração incompleta\n");
+        fecharFicheiro(config);
+        exit(1);
+    }
 
-	fecharFicheiro(config);
-	return;
+    fecharFicheiro(config);
 }
 
 void imprimirTabuleiro(char *jogo)
@@ -85,6 +83,7 @@ void imprimirTabuleiro(char *jogo)
 		}
 		printf("\n");
 	}
+	printf("\n");
 }
 
 void logEventoCliente(const char *message, struct ClienteConfig *clienteConfig)
@@ -138,7 +137,7 @@ void construtorCliente(int dominio, int porta, __u_long interface, struct Client
 {
 	strcpy(clienteConfig->TemJogo, "SEM_JOGO");
 	clienteConfig->jogoAtual.resolvido = false;
-	clienteConfig->jogoAtual.numeroTentativas = 0;
+	clienteConfig->jogoAtual.numeroTentativas = 1;
 	clienteConfig->jogoAtual.idJogo = 0;
 	size_t tamanhoStringJogo = strlen(clienteConfig->jogoAtual.jogo);
 	memset(clienteConfig->jogoAtual.jogo + tamanhoStringJogo, '0', NUMEROS_NO_JOGO);
@@ -189,10 +188,12 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 	// cliente recebe id do servidor
 	clienteConfig->idCliente = atoi(strtok(recebeIDCliente, "|"));
 	logQueEventoCliente(1, *clienteConfig);
+	pthread_mutex_lock(&mutexSTDOUT);
 	printf("========= Ligado =========\n");
 	printf("===== IP: %s ======\n", clienteConfig->ipServidor);
 	printf("===== Porta: %d =======\n", clienteConfig->porta);
 	printf("===== Cliente ID: %u =======\n\n", clienteConfig->idCliente);
+	pthread_mutex_unlock(&mutexSTDOUT);
 	mandarETratarMSG(clienteConfig);
 	close(clienteConfig->socket);
 	logQueEventoCliente(2, *clienteConfig);
@@ -262,7 +263,13 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 	memset(buffer, 0, BUF_SIZE);
 
 	readSocket(clienteConfig->socket, buffer, BUF_SIZE);
-
+	char* filaCheia="FILA CHEIA SINGLEPLAYER";
+	if(strcmp(buffer,filaCheia)==0){
+		pthread_mutex_lock(&mutexSTDOUT);
+		printf("Fila singleplayer está cheia\n");
+		pthread_mutex_unlock(&mutexSTDOUT);
+		return;
+	}
 	char *idCliente = strtok(buffer, "|");
 	char *tipoJogo = strtok(NULL, "|");
 	char *tipoResolucao = strtok(NULL, "|");
@@ -332,13 +339,13 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 			// sem_wait(&semAguardar);
 			usleep(100000);
 			writeSocket(clienteConfig->socket, bufferEnviar, BUF_SIZE);
-			char *bufferEnviarFinal = malloc(BUF_SIZE * sizeof(char));
+			char *bufferEnviarFinal = malloc(2*BUF_SIZE * sizeof(char));
 			if (bufferEnviarFinal == NULL)
 			{
 				perror("Erro ao alocar memoria");
 				exit(1);
 			}
-			sprintf(bufferEnviarFinal, "\nMensagem enviada: %s\n", bufferEnviar);
+			sprintf(bufferEnviarFinal, "Mensagem enviada: %s", bufferEnviar);
 			logEventoCliente(bufferEnviarFinal, clienteConfig);
 			free(bufferEnviarFinal);
 			// sem_post(&semAguardar);
@@ -347,13 +354,13 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 			// Receber resposta
 			if (recv(clienteConfig->socket, buffer, BUF_SIZE, 0) > 0)
 			{
-				char *bufferFinal = malloc(BUF_SIZE * sizeof(char));
+				char *bufferFinal = malloc(2*BUF_SIZE * sizeof(char));
 				if (bufferFinal == NULL)
 				{
 					perror("Erro ao alocar memoria");
 					exit(1);
 				}
-				sprintf(bufferFinal, "Mensagem recebida: %s\n", buffer);
+				sprintf(bufferFinal, "Mensagem recebida: %s", buffer);
 				logEventoCliente(bufferFinal, clienteConfig);
 				free(bufferFinal);
 				// Parse da mensagem recebida (uma única vez)
@@ -399,12 +406,11 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 		}
 		pthread_mutex_lock(&mutexSTDOUT);
 		printf("Jogo resolvido!\n");
-		printf("Resolvido em %d tentativas\n", clienteConfig->jogoAtual.numeroTentativas);
+		printf("Resolvido em %d tentativas\n", clienteConfig->jogoAtual.numeroTentativas - 1);
 		printf("Hora de fim: %s\n", clienteConfig->jogoAtual.tempoFinal);
 		pthread_mutex_unlock(&mutexSTDOUT);
 	}
 }
-
 int main(int argc, char **argv)
 {
 	struct ClienteConfig clienteConfig = {0};
@@ -450,8 +456,9 @@ int main(int argc, char **argv)
 
 		if (pids[i] == 0) // Processo filho
 		{
+			pthread_mutex_lock(&mutexSTDOUT);
 			printf("Iniciando jogador %d\n", i + 1);
-
+			pthread_mutex_unlock(&mutexSTDOUT);
 			// Configura este jogador específico
 			clienteConfig.idCliente = i + 1;
 
@@ -459,7 +466,9 @@ int main(int argc, char **argv)
 			construtorCliente(AF_INET, clienteConfig.porta, INADDR_ANY, &clienteConfig);
 			iniciarClienteSocket(&clienteConfig);
 
+			pthread_mutex_lock(&mutexSTDOUT);
 			printf("Finalizando jogador %d\n", i + 1);
+			pthread_mutex_unlock(&mutexSTDOUT);
 			exit(0); // Importante: filho termina aqui
 		}
 	}
