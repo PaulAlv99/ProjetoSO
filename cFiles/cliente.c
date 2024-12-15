@@ -435,7 +435,7 @@ int main(int argc, char **argv)
 	carregarConfigCliente(argv[1], &clienteConfig);
 
 	// Número de processos jogadores a criar
-	int numJogadores = 350;
+	int numJogadores = clienteConfig.numJogadores;
 	pid_t pids[numJogadores]; // Array para guardar PIDs dos filhos
 
 	// Cria os processos jogadores
