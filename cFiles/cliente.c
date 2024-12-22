@@ -44,7 +44,10 @@ void carregarConfigCliente(char *nomeFicheiro, struct ClienteConfig *clienteConf
                 clienteConfig->porta = atoi(valor);
                 break;
             case 4:
-				clienteConfig->numJogadores = atoi(valor);
+				clienteConfig->numJogadoresASimular = atoi(valor);
+				break;
+			case 5:
+				clienteConfig->tempoEntreTentativas = atoi(valor);
 				break;
             default:
                 perror("Erro ao ler ficheiro de configuração.\n");
@@ -337,7 +340,11 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 					clienteConfig->jogoAtual.numeroTentativas);
 
 			// sem_wait(&semAguardar);
-			usleep(100000);
+			//tempo entre tentativas
+			printf("Tempo entre tentativas: %d\n", clienteConfig->tempoEntreTentativas);
+			struct timespec tempo;
+			tempo.tv_nsec = (clienteConfig->tempoEntreTentativas % 1000) * 1000000;
+			nanosleep(&tempo, NULL);
 			writeSocket(clienteConfig->socket, bufferEnviar, BUF_SIZE);
 			char *bufferEnviarFinal = malloc(2*BUF_SIZE * sizeof(char));
 			if (bufferEnviarFinal == NULL)
@@ -403,6 +410,11 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 					printf("Erro: Mensagem recebida com formato inválido\n");
 				}
 			}
+			else
+			{
+				perror("Erro ao receber mensagem do servidor");
+				exit(1);
+			}
 		}
 		pthread_mutex_lock(&mutexSTDOUT);
 		printf("Jogo resolvido!\n");
@@ -435,7 +447,7 @@ int main(int argc, char **argv)
 	carregarConfigCliente(argv[1], &clienteConfig);
 
 	// Número de processos jogadores a criar
-	int numJogadores = clienteConfig.numJogadores;
+	int numJogadores = clienteConfig.numJogadoresASimular;
 	pid_t pids[numJogadores]; // Array para guardar PIDs dos filhos
 
 	// Cria os processos jogadores

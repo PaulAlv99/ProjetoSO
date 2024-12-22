@@ -19,8 +19,7 @@ pthread_mutex_t mutexjogosAleatorios = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexIDSala = PTHREAD_MUTEX_INITIALIZER;
 
 // semaforos
-sem_t semaforoEntrarFila;
-
+sem_t semaforoSingleJogador;
 //carregar configs do servidor
 
 void carregarConfigServidor(char *nomeFicheiro, struct ServidorConfig *serverConfig)
@@ -277,7 +276,7 @@ void construtorServer(struct ServidorConfig *servidor,
     }
 }
 
-//Sempre que um cliente se conecta, é criada uma thread para ele
+//Sempre que um cliente faz a ligacao ao servidor, é criada uma thread para ele
 // ficando o cliente na funcao recebeMensagemETratarServer
 // ate acabar o jogo, depois de acabar é fechado o socket e a thread
 void *criaClienteThread(void *arg)
@@ -288,7 +287,7 @@ void *criaClienteThread(void *arg)
     pthread_mutex_lock(&mutexClienteID);
         idCliente++;
         args->clienteId = idCliente;
-    pthread_mutex_unlock(&mutexClienteID);
+   
 
     int clientID = args->clienteId;
 
@@ -300,8 +299,9 @@ void *criaClienteThread(void *arg)
     sprintf(temp, "%d|", clientID);
 
     writeSocket(socketCliente, temp, BUF_SIZE);
+    
     logQueEventoServidor(3, clientID);
-
+    pthread_mutex_unlock(&mutexClienteID);
     receberMensagemETratarServer(temp, socketCliente, clienteConfig, *args->server);
 
     close(socketCliente);
@@ -357,8 +357,7 @@ void iniciarServidorSocket(struct ServidorConfig *server,struct Jogo jogosEsoluc
     printf("==== Servidor Iniciado ====\n");
     printf("====== Porta: %d =======\n\n", server->porta);
 
-    //para entrar um a um na fila
-    sem_init(&semaforoEntrarFila, 1, 1);
+    sem_init(&semaforoSingleJogador,1,server->numeroJogos);
     //inicializa salas dos dois tipos de jogo singleplayer e multiplayer
     iniciarSalasJogoSinglePlayer(server,jogosEsolucoes);
     while (1)
@@ -440,6 +439,7 @@ bool validarMensagemVazia(struct FormatoMensagens *msg)
 struct SalaSinglePlayer *handleSinglePlayerFila(int idCliente, struct ServidorConfig *serverConfig)
 {
     // Tenta adicionar o cliente à fila de espera
+    // Se a fila estiver cheia, retorna NULL ou seja foi rejeitado
     if (!enqueue(filaClientesSinglePlayer, idCliente))
     {
 
@@ -451,7 +451,12 @@ struct SalaSinglePlayer *handleSinglePlayerFila(int idCliente, struct ServidorCo
     // O sem_post acorda uma das threads barbeiro que esteja esperando em sem_wait
     sem_post(&filaClientesSinglePlayer->customers);
 
-    // Espera ser atribuido a uma sala
+    //clientes que estao na fila de espera estao em espera dentro deste while
+    //à espera de serem selecionados pelas salas
+    sem_wait(&semaforoSingleJogador);
+    //apenas os num_jogos à frente da fila verificam se foram chamados
+    printf("Cliente %d a verificar se foi chamado\n", idCliente);
+    //estao dentro de um while(1) porque têm de estar constantemente a verificar se foram chamados
     while (1)
     {
         // Percorre todas as salas disponíveis procurando por a sala que
@@ -470,7 +475,8 @@ struct SalaSinglePlayer *handleSinglePlayerFila(int idCliente, struct ServidorCo
             {
                 // Libera o mutex antes de retornar
                 pthread_mutex_unlock(&serverConfig->sala[i].mutexSala);
-
+                printf("Cliente %d foi chamado para a sala %d\n", idCliente, i);
+                sem_post(&semaforoSingleJogador);
                 return &serverConfig->sala[i];
             }
 
@@ -700,6 +706,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
         pthread_mutex_unlock(&salaAtual->mutexSala);
         printf("Cliente %d saiu da sala %d\n", clienteConfig.idCliente, salaAtual->idSala);
     }
+    removerFilaPorID(filaClientesSinglePlayer, clienteConfig.idCliente);
     char temp[BUF_SIZE] = {0};
     sprintf(temp, "Cliente-%d saiu do servidor", clienteConfig.idCliente);
     printf("%s\n", temp);
@@ -877,6 +884,28 @@ int getFilaTamanho(struct filaClientesSinglePlayer *fila)
     int size = fila->tamanho;
     pthread_mutex_unlock(&fila->mutex);
     return size;
+}
+
+void removerFilaPorID(struct filaClientesSinglePlayer *fila, int clientID) {
+    pthread_mutex_lock(&fila->mutex);
+    
+    for (int i = 0; i < fila->tamanho; i++) {
+        if (fila->clientesID[i] == clientID) {
+            // deslocar todos os elementos para a esquerda
+            for (int j = i; j < fila->tamanho - 1; j++) {
+                fila->clientesID[j] = fila->clientesID[j + 1];
+            }
+            fila->tamanho--;
+            fila->rear = (fila->tamanho > 0) ? fila->tamanho - 1 : -1;
+            
+            pthread_mutex_unlock(&fila->mutex);
+            printf("[Fila] Cliente %d removido da fila após desconexão\n", clientID);
+            return;
+        }
+    }
+    
+    pthread_mutex_unlock(&fila->mutex);
+    
 }
 
 void *Sala(void *arg)

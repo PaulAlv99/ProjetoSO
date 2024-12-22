@@ -46,17 +46,18 @@ struct JogoAtual
 
 struct ClienteConfig
 {
-    char TemJogo[INFO_SIZE];
     int idCliente;
-    char tipoJogo[INFO_SIZE];
-    char tipoResolucao[INFO_SIZE];
-    char ipServidor[IP_SIZE];
+    int numJogadoresASimular;
+    int tempoEntreTentativas;
     int dominio;
-    unsigned int porta;
+     unsigned int porta;
     __u_long interface;
     int socket;
     struct JogoAtual jogoAtual;
-    int numJogadores;
+    char TemJogo[INFO_SIZE];
+    char tipoJogo[INFO_SIZE];
+    char tipoResolucao[INFO_SIZE];
+    char ipServidor[IP_SIZE];
 };
 
 struct ServidorConfig
