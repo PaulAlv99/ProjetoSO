@@ -5,4 +5,4 @@ servidor
 vgcore.*
 .idea/
 LogServidor.txt
-LogCliente.txt
+clienteLog.txt
