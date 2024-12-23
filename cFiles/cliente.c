@@ -9,6 +9,7 @@ char *padrao = "./configs/cliente";
 pthread_mutex_t mutexClienteLog = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexSTDOUT = PTHREAD_MUTEX_INITIALIZER;
 
+
 void carregarConfigCliente(char *nomeFicheiro, struct ClienteConfig *clienteConfig) {
     FILE *config = abrirFicheiroRead(nomeFicheiro);
     if (config == NULL) {
@@ -191,7 +192,7 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 	// cliente recebe id do servidor
 	clienteConfig->idCliente = atoi(strtok(recebeIDCliente, "|"));
 	logQueEventoCliente(1, *clienteConfig);
-	pthread_mutex_lock(&mutexSTDOUT);
+	
 	printf("========= Ligado =========\n");
 	printf("===== IP: %s ======\n", clienteConfig->ipServidor);
 	printf("===== Porta: %d =======\n", clienteConfig->porta);
@@ -339,10 +340,12 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 					clienteConfig->jogoAtual.resolvido,
 					clienteConfig->jogoAtual.numeroTentativas);
 
-			// sem_wait(&semAguardar);
 			//tempo entre tentativas
 			printf("Tempo entre tentativas: %d\n", clienteConfig->tempoEntreTentativas);
 			struct timespec tempo;
+			//convert ms da config para timespec- em sec e ns
+			//para retirar do numero em ms os segundos primeiro e os ns
+			tempo.tv_sec = clienteConfig->tempoEntreTentativas / 1000;
 			tempo.tv_nsec = (clienteConfig->tempoEntreTentativas % 1000) * 1000000;
 			nanosleep(&tempo, NULL);
 			writeSocket(clienteConfig->socket, bufferEnviar, BUF_SIZE);
@@ -449,12 +452,11 @@ int main(int argc, char **argv)
 	// Número de processos jogadores a criar
 	int numJogadores = clienteConfig.numJogadoresASimular;
 	pid_t pids[numJogadores]; // Array para guardar PIDs dos filhos
-
+	
 	// Cria os processos jogadores
 	for (int i = 0; i < numJogadores; i++)
 	{
 		pids[i] = fork();
-		usleep(100000); // Importante: evita que os processos filhos sejam criados ao mesmo tempo
 		if (pids[i] < 0)
 		{
 			perror("Erro ao criar processo");
@@ -470,7 +472,6 @@ int main(int argc, char **argv)
 		{
 			pthread_mutex_lock(&mutexSTDOUT);
 			printf("Iniciando jogador %d\n", i + 1);
-			pthread_mutex_unlock(&mutexSTDOUT);
 			// Configura este jogador específico
 			clienteConfig.idCliente = i + 1;
 

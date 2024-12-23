@@ -40,9 +40,6 @@ void carregarConfigServidor(char *nomeFicheiro, struct ServidorConfig *serverCon
             serverConfig->porta = atoi(strtok(buffer, "\n"));
             break;
         case 2:
-            serverConfig->numeroJogos = atoi(strtok(buffer, "\n"));
-            break;
-        case 3:
             serverConfig->NUM_MAX_CLIENTES_FILA_SINGLEPLAYER = atoi(strtok(buffer, "\n"));
             break;
         default:
@@ -192,6 +189,28 @@ bool verificaResolvido(char valoresCorretos[], char solucao[], bool resolvido)
     return true;
 }
 
+int lerNumeroJogos(char *nomeFicheiro)
+{
+    FILE *config = abrirFicheiroRead(nomeFicheiro);
+    char buffer[BUF_SIZE];
+    int contadorConfigs = 0;
+    int numeroJogos = 0;
+    while (fgets(buffer, BUF_SIZE, config) != NULL)
+    {
+        if (contadorConfigs % 3 == 2) {
+            numeroJogos++;
+        }
+        contadorConfigs++;
+    }
+    fecharFicheiro(config);
+    if (contadorConfigs == 0)
+    {
+        printf("Sem configs\n");
+        exit(1);
+    }
+    return numeroJogos;
+}
+
 void carregarFicheiroJogosSolucoes(char *nomeFicheiro, struct Jogo jogosEsolucoes[]) {
     FILE *config = abrirFicheiroRead(nomeFicheiro);
     char buffer[BUF_SIZE];
@@ -216,7 +235,6 @@ void carregarFicheiroJogosSolucoes(char *nomeFicheiro, struct Jogo jogosEsolucoe
                 linhaAtual = 0;  // Reset para próximo jogo
                 contadorConfigs++;  // Incrementa apenas quando um jogo completo é lido
                 break;
-                
             default:
                 perror("Erro ao ler ficheiro de jogos e soluções");
                 fecharFicheiro(config);
@@ -285,8 +303,8 @@ void *criaClienteThread(void *arg)
     int socketCliente = args->socketCliente;
 
     pthread_mutex_lock(&mutexClienteID);
-        idCliente++;
-        args->clienteId = idCliente;
+    idCliente++;
+    args->clienteId = idCliente;
    
 
     int clientID = args->clienteId;
@@ -359,6 +377,7 @@ void iniciarServidorSocket(struct ServidorConfig *server,struct Jogo jogosEsoluc
 
     sem_init(&semaforoSingleJogador,1,server->numeroJogos);
     //inicializa salas dos dois tipos de jogo singleplayer e multiplayer
+    //cada sala é uma tarefa
     iniciarSalasJogoSinglePlayer(server,jogosEsolucoes);
     while (1)
     {
@@ -459,7 +478,7 @@ struct SalaSinglePlayer *handleSinglePlayerFila(int idCliente, struct ServidorCo
     //estao dentro de um while(1) porque têm de estar constantemente a verificar se foram chamados
     while (1)
     {
-        // Percorre todas as salas disponíveis procurando por a sala que
+        // Percorre todas as salas disponíveis procurando a sala que
         // aceitou o cliente
         for (int i = 0; i < serverConfig->numeroJogos; i++)
         {
@@ -590,7 +609,8 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
     struct SalaSinglePlayer *salaAtual = NULL;
     char *jogoADar = "";
     int nJogo = -1;
-    while (recv(socketCliente, buffer, BUF_SIZE, 0) > 0)
+    int bytesRecebidos;
+    while ((bytesRecebidos = recv(socketCliente, buffer, BUF_SIZE, 0)) > 0)
     {
         char bufferFinal[BUF_SIZE] = {0};
         sprintf(bufferFinal, "Mensagem recebida: %s\n", buffer);
@@ -679,6 +699,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
             if (writeSocket(socketCliente, buffer, BUF_SIZE) < 0)
             {
                 perror("Erro ao enviar mensagem para o cliente");
+                printf("Erro ao enviar mensagem para o cliente");
                 free(logClienteEnviar);
                 break;
             }
@@ -706,11 +727,12 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
         pthread_mutex_unlock(&salaAtual->mutexSala);
         printf("Cliente %d saiu da sala %d\n", clienteConfig.idCliente, salaAtual->idSala);
     }
-    removerFilaPorID(filaClientesSinglePlayer, clienteConfig.idCliente);
     char temp[BUF_SIZE] = {0};
     sprintf(temp, "Cliente-%d saiu do servidor", clienteConfig.idCliente);
     printf("%s\n", temp);
     logQueEventoServidor(7, clienteConfig.idCliente);
+    
+    
     
 }
 
@@ -913,7 +935,7 @@ void *Sala(void *arg)
     struct SalaSinglePlayer *sala = (struct SalaSinglePlayer *)arg;
     // struct filaClientesSinglePlayer *fila = ;
 
-    printf("[Sala-%d] Iniciado\n", sala->idSala);
+    printf("[Sala-%d] Iniciada-Singleplayer\n", sala->idSala);
 
     while (1)
     {
@@ -955,7 +977,7 @@ void *Sala(void *arg)
         while (1)
         {
             pthread_mutex_lock(&sala->mutexSala);
-            if (!sala->jogadorAResolver)
+            if (!sala->jogadorAResolver && sala->nClientes == 1)
             {
                 // reset depois cliente acabar
                 sala->nClientes = 0;
@@ -964,6 +986,10 @@ void *Sala(void *arg)
                        sala->idSala, clienteID);
                 pthread_mutex_unlock(&sala->mutexSala);
 
+                break;
+            }
+            if(sala->nClientes == 0){
+                pthread_mutex_unlock(&sala->mutexSala);
                 break;
             }
             pthread_mutex_unlock(&sala->mutexSala);
@@ -987,7 +1013,7 @@ void iniciarSalasJogoSinglePlayer(struct ServidorConfig *serverConfig, struct Jo
 
     if (!serverConfig || !serverConfig->sala)
     {
-        perror("Server config or rooms not initialized");
+        perror("Server config ou salas nao inicializadas");
         exit(1);
     }
 
@@ -1037,7 +1063,9 @@ int main(int argc, char **argv)
         return 1;
     }
     carregarConfigServidor(argv[1], &serverConfig);
-    struct Jogo jogosEsolucoes[serverConfig.numeroJogos];
+    int numeroJogos = lerNumeroJogos(serverConfig.ficheiroJogosESolucoesCaminho);
+    struct Jogo jogosEsolucoes[numeroJogos];
+    serverConfig.numeroJogos = numeroJogos;
     carregarFicheiroJogosSolucoes(serverConfig.ficheiroJogosESolucoesCaminho,jogosEsolucoes);
     construtorServer(&serverConfig,AF_INET, SOCK_STREAM, 0, INADDR_ANY, serverConfig.porta, 1, serverConfig.ficheiroJogosESolucoesCaminho);
     logQueEventoServidor(1, 0);
