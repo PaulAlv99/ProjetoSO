@@ -484,6 +484,7 @@ int main(int argc, char **argv)
 			pthread_mutex_unlock(&mutexSTDOUT);
 			exit(0); // Importante: filho termina aqui
 		}
+		usleep(1000);
 	}
 
 	// Processo pai espera por todos os filhos
