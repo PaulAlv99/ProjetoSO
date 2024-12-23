@@ -4,4 +4,5 @@ servidor
 .gitkeep
 vgcore.*
 .idea/
-.logs/
+LogServidor.txt
+LogCliente.txt
