@@ -700,11 +700,8 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
             {
                 perror("Erro ao enviar mensagem para o cliente");
                 printf("Erro ao enviar mensagem para o cliente");
-                free(logClienteEnviar);
                 break;
             }
-
-            free(logClienteEnviar);
 
             char bufferFinal[BUF_SIZE] = {0};
             sprintf(bufferFinal, "Mensagem enviada: %s", buffer);
