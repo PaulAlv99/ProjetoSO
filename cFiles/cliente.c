@@ -426,80 +426,89 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 		pthread_mutex_unlock(&mutexSTDOUT);
 	}
 }
-int main(int argc, char **argv)
-{
-	struct ClienteConfig clienteConfig = {0};
-	int status;
-	pid_t wpid;
+// Thread function that will replace the child process logic
+void* jogadorThread(void* arg) {
+    struct ClienteConfig* config = (struct ClienteConfig*)arg;
+    
+    pthread_mutex_lock(&mutexSTDOUT);
+    printf("Iniciando jogador %d\n", config->idCliente);
+    pthread_mutex_unlock(&mutexSTDOUT);
 
-	// Validação dos argumentos da linha de comando
-	if (argc < 2)
-	{
-		printf("Erro: Nome do ficheiro de configuracao nao fornecido.\n");
-		return 1;
-	}
+    // Inicia o cliente
+    construtorCliente(AF_INET, config->porta, INADDR_ANY, config);
+    iniciarClienteSocket(config);
 
-	// Validação do nome do arquivo de configuração
-	if (!validarNomeFile(argv[1], padrao))
-	{
-		printf("Nome do ficheiro de configuracao incorreto: %s\n", argv[1]);
-		return 1;
-	}
+    pthread_mutex_lock(&mutexSTDOUT);
+    printf("Finalizando jogador %d\n", config->idCliente);
+    pthread_mutex_unlock(&mutexSTDOUT);
 
-	// Carrega configurações do arquivo
-	carregarConfigCliente(argv[1], &clienteConfig);
+    pthread_exit(NULL);
+}
 
-	// Número de processos jogadores a criar
-	int numJogadores = clienteConfig.numJogadoresASimular;
-	pid_t pids[numJogadores]; // Array para guardar PIDs dos filhos
-	
-	// Cria os processos jogadores
-	for (int i = 0; i < numJogadores; i++)
-	{
-		pids[i] = fork();
-		if (pids[i] < 0)
-		{
-			perror("Erro ao criar processo");
-			// Mata processos já criados
-			for (int j = 0; j < i; j++)
-			{
-				kill(pids[j], SIGTERM);
-			}
-			return 1;
-		}
+int main(int argc, char **argv) {
+    struct ClienteConfig clienteConfig = {0};
 
-		if (pids[i] == 0) // Processo filho
-		{
-			pthread_mutex_lock(&mutexSTDOUT);
-			printf("Iniciando jogador %d\n", i + 1);
-			// Configura este jogador específico
-			clienteConfig.idCliente = i + 1;
+    // Validação dos argumentos da linha de comando
+    if (argc < 2) {
+        printf("Erro: Nome do ficheiro de configuracao nao fornecido.\n");
+        return 1;
+    }
 
-			// Inicia o cliente
-			construtorCliente(AF_INET, clienteConfig.porta, INADDR_ANY, &clienteConfig);
-			iniciarClienteSocket(&clienteConfig);
+    // Validação do nome do arquivo de configuração
+    if (!validarNomeFile(argv[1], padrao)) {
+        printf("Nome do ficheiro de configuracao incorreto: %s\n", argv[1]);
+        return 1;
+    }
 
-			pthread_mutex_lock(&mutexSTDOUT);
-			printf("Finalizando jogador %d\n", i + 1);
-			pthread_mutex_unlock(&mutexSTDOUT);
-			exit(0); // Importante: filho termina aqui
-		}
-		usleep(1000);
-	}
+    // Carrega configurações do arquivo
+    carregarConfigCliente(argv[1], &clienteConfig);
 
-	// Processo pai espera por todos os filhos
-	int jogadoresTerminados = 0;
-	while (jogadoresTerminados < numJogadores)
-	{
-		wpid = wait(&status);
-		if (wpid > 0)
-		{
-			jogadoresTerminados++;
-			printf("Jogador com PID %d terminou. (%d/%d)\n",
-				   wpid, jogadoresTerminados, numJogadores);
-		}
-	}
+    // Número de threads jogadores a criar
+    int numJogadores = clienteConfig.numJogadoresASimular;
+    
+    // Array para guardar os IDs das threads
+    pthread_t* threads = malloc(numJogadores * sizeof(pthread_t));
+    // Array para configurações específicas de cada thread
+    struct ClienteConfig* configsJogadores = malloc(numJogadores * sizeof(struct ClienteConfig));
+    
+    if (!threads || !configsJogadores) {
+        perror("Erro na alocação de memória");
+        free(threads);
+        free(configsJogadores);
+        return 1;
+    }
 
-	printf("Todos os jogadores terminaram.\n");
-	return 0;
+    // Cria as threads jogadoras
+    for (int i = 0; i < numJogadores; i++) {
+        // Copia a configuração base para cada jogador
+        configsJogadores[i] = clienteConfig;
+        configsJogadores[i].idCliente = i + 1;
+
+        int result = pthread_create(&threads[i], NULL, jogadorThread, &configsJogadores[i]);
+        if (result != 0) {
+            fprintf(stderr, "Erro ao criar thread: %s\n", strerror(result));
+            // Espera pelas threads já criadas terminarem
+            for (int j = 0; j < i; j++) {
+                pthread_join(threads[j], NULL);
+            }
+            free(threads);
+            free(configsJogadores);
+            return 1;
+        }
+        usleep(10000); // Mantém o pequeno delay entre criação de jogadores
+    }
+
+    // Espera todas as threads terminarem
+    for (int i = 0; i < numJogadores; i++) {
+        pthread_join(threads[i], NULL);
+        printf("Jogador %d terminou. (%d/%d)\n", 
+               i + 1, i + 1, numJogadores);
+    }
+
+    // Limpa a memória alocada
+    free(threads);
+    free(configsJogadores);
+
+    printf("Todos os jogadores terminaram.\n");
+    return 0;
 }
