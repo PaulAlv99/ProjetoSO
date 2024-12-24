@@ -7,7 +7,7 @@ char *padrao = "./configs/cliente";
 
 // tricos
 pthread_mutex_t mutexClienteLog = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t mutexSTDOUT = PTHREAD_MUTEX_INITIALIZER;
+sem_t semSTDOUT;
 
 
 void carregarConfigCliente(char *nomeFicheiro, struct ClienteConfig *clienteConfig) {
@@ -197,7 +197,7 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 	printf("===== IP: %s ======\n", clienteConfig->ipServidor);
 	printf("===== Porta: %d =======\n", clienteConfig->porta);
 	printf("===== Cliente ID: %u =======\n\n", clienteConfig->idCliente);
-	pthread_mutex_unlock(&mutexSTDOUT);
+	sem_post(&semSTDOUT);
 	mandarETratarMSG(clienteConfig);
 	close(clienteConfig->socket);
 	logQueEventoCliente(2, *clienteConfig);
@@ -269,9 +269,9 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 	readSocket(clienteConfig->socket, buffer, BUF_SIZE);
 	char* filaCheia="FILA CHEIA SINGLEPLAYER";
 	if(strcmp(buffer,filaCheia)==0){
-		pthread_mutex_lock(&mutexSTDOUT);
+		sem_wait(&semSTDOUT);
 		printf("Fila singleplayer está cheia\n");
-		pthread_mutex_unlock(&mutexSTDOUT);
+		sem_post(&semSTDOUT);
 		return;
 	}
 	char *idCliente = strtok(buffer, "|");
@@ -301,13 +301,13 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 	clienteConfig->jogoAtual.numeroTentativas = atoi(numeroTentativas);
 	if (strcmp(clienteConfig->TemJogo, "COM_JOGO") == 0)
 	{
-		pthread_mutex_lock(&mutexSTDOUT);
+		sem_wait(&semSTDOUT);
 		printf("Cliente ID:%d\n", clienteConfig->idCliente);
 		printf("Iniciando tentativa de solução...\n");
 		printf("Jogo Inicial:\n\n");
 		printf("Hora de inicio: %s\n\n", clienteConfig->jogoAtual.tempoInicio);
 		imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
-		pthread_mutex_unlock(&mutexSTDOUT);
+		sem_post(&semSTDOUT);
 		while (!clienteConfig->jogoAtual.resolvido)
 		{
 			char bufferEnviar[BUF_SIZE] = {0};
@@ -320,11 +320,11 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 				tentarSolucaoParcial(clienteConfig->jogoAtual.jogo, clienteConfig->jogoAtual.valoresCorretos);
 				// clienteConfig->jogoAtual.numeroTentativas++;
 			}
-			pthread_mutex_lock(&mutexSTDOUT);
+			sem_wait(&semSTDOUT);
 			printf("Cliente ID:%d\n", clienteConfig->idCliente);
 			printf("\nTentativa %d:\n\n", clienteConfig->jogoAtual.numeroTentativas);
 			imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
-			pthread_mutex_unlock(&mutexSTDOUT);
+			sem_post(&semSTDOUT);
 
 			// Enviar tentativa
 			sprintf(bufferEnviar, "%u|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d",
@@ -402,11 +402,11 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 					clienteConfig->jogoAtual.resolvido = atoi(resolvido);
 					clienteConfig->jogoAtual.numeroTentativas = atoi(numeroTentativas);
 					logEventoCliente(logCliente, clienteConfig);
-					pthread_mutex_lock(&mutexSTDOUT);
+					sem_wait(&semSTDOUT);
 					printf("Cliente ID:%d\n", clienteConfig->idCliente);
 					printf("Valores corretos:\n\n");
 					imprimirTabuleiro(clienteConfig->jogoAtual.valoresCorretos);
-					pthread_mutex_unlock(&mutexSTDOUT);
+					sem_post(&semSTDOUT);
 				}
 				else
 				{
@@ -419,35 +419,35 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 				exit(1);
 			}
 		}
-		pthread_mutex_lock(&mutexSTDOUT);
+		sem_wait(&semSTDOUT);
 		printf("Jogo resolvido!\n");
 		printf("Resolvido em %d tentativas\n", clienteConfig->jogoAtual.numeroTentativas - 1);
 		printf("Hora de fim: %s\n", clienteConfig->jogoAtual.tempoFinal);
-		pthread_mutex_unlock(&mutexSTDOUT);
+		sem_post(&semSTDOUT);
 	}
 }
 // Thread function that will replace the child process logic
 void* jogadorThread(void* arg) {
     struct ClienteConfig* config = (struct ClienteConfig*)arg;
     
-    pthread_mutex_lock(&mutexSTDOUT);
+    sem_wait(&semSTDOUT);
     printf("Iniciando jogador %d\n", config->idCliente);
-    pthread_mutex_unlock(&mutexSTDOUT);
+    sem_post(&semSTDOUT);
 
     // Inicia o cliente
     construtorCliente(AF_INET, config->porta, INADDR_ANY, config);
     iniciarClienteSocket(config);
 
-    pthread_mutex_lock(&mutexSTDOUT);
+    sem_wait(&semSTDOUT);
     printf("Finalizando jogador %d\n", config->idCliente);
-    pthread_mutex_unlock(&mutexSTDOUT);
+    sem_post(&semSTDOUT);
 
     pthread_exit(NULL);
 }
 
 int main(int argc, char **argv) {
     struct ClienteConfig clienteConfig = {0};
-
+	sem_init(&semSTDOUT, 0, 1);
     // Validação dos argumentos da linha de comando
     if (argc < 2) {
         printf("Erro: Nome do ficheiro de configuracao nao fornecido.\n");
