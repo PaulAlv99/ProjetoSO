@@ -131,6 +131,9 @@ void logQueEventoCliente(int numero, struct ClienteConfig clienteConfig)
 	case 6:
 		logEventoCliente("Cliente desconectou-se do servidor", &clienteConfig);
 		break;
+	case 7:
+		logEventoCliente("[ERRO]", &clienteConfig);
+		break;
 	default:
 		logEventoCliente("Evento desconhecido", &clienteConfig);
 		break;
@@ -187,11 +190,30 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 			umaVez = 0;
 		}
 	}
+	char* mandaID="MANDA_ID";
+
+	if(writeSocket(clienteConfig->socket, mandaID, sizeof(mandaID)) < 0){
+		perror("Erro ao enviar ID");
+		logQueEventoCliente(7, *clienteConfig);
+		return;
+	}
 	char recebeIDCliente[BUF_SIZE] = {0};
-	readSocket(clienteConfig->socket, recebeIDCliente, BUF_SIZE);
+	int bytesRecebidos;
+	while((bytesRecebidos = recv(clienteConfig->socket, recebeIDCliente, BUF_SIZE, 0)) > 0){
+		if(strstr(recebeIDCliente, "|") != NULL){
+			clienteConfig->idCliente = atoi(strtok(recebeIDCliente, "|"));
+			logQueEventoCliente(1, *clienteConfig);
+			break;
+		}
+	}
+	if(bytesRecebidos == 0){
+		perror("Erro parte dos IDs\n");
+		logQueEventoCliente(7, *clienteConfig);
+		return;
+	}
+	// readSocket(clienteConfig->socket, recebeIDCliente, BUF_SIZE);
 	// cliente recebe id do servidor
-	clienteConfig->idCliente = atoi(strtok(recebeIDCliente, "|"));
-	logQueEventoCliente(1, *clienteConfig);
+	
 	
 	printf("========= Ligado =========\n");
 	printf("===== IP: %s ======\n", clienteConfig->ipServidor);
@@ -262,7 +284,11 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 			clienteConfig->jogoAtual.resolvido,
 			clienteConfig->jogoAtual.numeroTentativas);
 
-	writeSocket(clienteConfig->socket, buffer, BUF_SIZE);
+	if(writeSocket(clienteConfig->socket, buffer, BUF_SIZE) < 0){
+		perror("Erro ao enviar mensagem para o servidor");
+		logQueEventoCliente(7, *clienteConfig);
+		return;
+	}
 
 	memset(buffer, 0, BUF_SIZE);
 
@@ -287,8 +313,9 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 	char *numeroTentativas = strtok(NULL, "|");
 	if (idCliente == NULL || tipoJogo == NULL || tipoResolucao == NULL || temJogo == NULL || idJogo == NULL || jogo == NULL || valoresCorretos == NULL || tempoInicio == NULL || tempoFinal == NULL || resolvido == NULL || numeroTentativas == NULL)
 	{
-		printf("Erro: Falha ao ler\n");
-		exit(1);
+		perror("Erro: Falha ao ler\n");
+		logQueEventoCliente(7, *clienteConfig);
+		return;
 	}
 	clienteConfig->idCliente = atoi(idCliente);
 	strcpy(clienteConfig->TemJogo, temJogo);

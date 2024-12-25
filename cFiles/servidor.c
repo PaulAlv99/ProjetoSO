@@ -17,6 +17,7 @@ pthread_mutex_t mutexClienteID = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexNTentativas = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexjogosAleatorios = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexIDSala = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t aceitarCliente = PTHREAD_MUTEX_INITIALIZER;
 
 // semaforos
 sem_t semaforoSingleJogador;
@@ -312,13 +313,27 @@ void *criaClienteThread(void *arg)
     struct ClienteConfig clienteConfig = {0};
 
     char temp[BUF_SIZE] = {0};
-    //envia o id do cliente para o cliente
-    // ID|
-    sprintf(temp, "%d|", clientID);
-
-    writeSocket(socketCliente, temp, BUF_SIZE);
     
-    logQueEventoServidor(3, clientID);
+    
+    int bytesRecebidos;
+    while((bytesRecebidos = recv(socketCliente, temp, BUF_SIZE,0)) > 0){
+        if(strstr(temp, "MANDA_ID") != NULL){
+            //envia o id do cliente para o cliente
+            // ID|
+            sprintf(temp, "%d|", clientID);
+            if(writeSocket(socketCliente, temp, BUF_SIZE) < 0){
+                perror("Erro ao enviar ID");
+                exit(1);
+            }
+            logQueEventoServidor(3, clientID);
+            break;
+        }
+    }
+    if(bytesRecebidos == 0){
+        printf("Erro parte dos IDs\n");
+        exit(1);
+    }
+    
     pthread_mutex_unlock(&mutexClienteID);
     receberMensagemETratarServer(temp, socketCliente, clienteConfig, *args->server);
 
@@ -379,12 +394,14 @@ void iniciarServidorSocket(struct ServidorConfig *server,struct Jogo jogosEsoluc
     //inicializa salas dos dois tipos de jogo singleplayer e multiplayer
     //cada sala é uma tarefa
     iniciarSalasJogoSinglePlayer(server,jogosEsolucoes);
+    iniciarSalasJogoMultiplayer(server,jogosEsolucoes);
     while (1)
     {
         struct sockaddr_in enderecoCliente;
         int tamanhoEndereco = sizeof(enderecoCliente);
+        pthread_mutex_lock(&aceitarCliente);
         int socketCliente = accept(socketServidor, (struct sockaddr *)&enderecoCliente, (socklen_t *)&tamanhoEndereco);
-
+        
         if (socketCliente == -1)
         {
             perror("Erro ao aceitar conexão");
@@ -406,6 +423,7 @@ void iniciarServidorSocket(struct ServidorConfig *server,struct Jogo jogosEsoluc
 
         // Criar thread para permitir clientes
         pthread_t thread;
+        pthread_mutex_unlock(&aceitarCliente);
         if (pthread_create(&thread, NULL, criaClienteThread, args) != 0)
         {
             perror("Failed to create thread");
@@ -507,6 +525,7 @@ struct SalaSinglePlayer *handleSinglePlayerFila(int idCliente, struct ServidorCo
         // enquanto espera por uma sala
         // 100ms
         usleep(100000);
+        // sched_yield();
     }
     return NULL;
 }
@@ -927,7 +946,7 @@ void removerFilaPorID(struct filaClientesSinglePlayer *fila, int clientID) {
     
 }
 
-void *Sala(void *arg)
+void *SalaSingleplayer(void *arg)
 {
     struct SalaSinglePlayer *sala = (struct SalaSinglePlayer *)arg;
     // struct filaClientesSinglePlayer *fila = ;
@@ -992,21 +1011,35 @@ void *Sala(void *arg)
             pthread_mutex_unlock(&sala->mutexSala);
             // 100ms para cpu nao ficar sobrecarregado
             usleep(100000);
+            // sched_yield();
         }
     }
 
     return NULL;
 }
+void *SalaMultiplayer(void *arg)
+{
+    struct SalaSinglePlayer *sala = (struct SalaSinglePlayer *)arg;
+    // struct filaClientesSinglePlayer *fila = ;
 
+    printf("[Sala-%d] Iniciada-Multiplayer\n", sala->idSala);
+    return NULL;
+}
 void *iniciarSalaSinglePlayer(void *arg)
 {
     struct SalaSinglePlayer *sala = (struct SalaSinglePlayer *)arg;
-    Sala(sala);
+    SalaSingleplayer(sala);
+    return NULL;
+}
+void *iniciarSalaMultiplayer(void *arg)
+{
+    struct SalaMultiplayer *sala = (struct SalaMultiplayer *)arg;
+    SalaMultiplayer(sala);
     return NULL;
 }
 void iniciarSalasJogoSinglePlayer(struct ServidorConfig *serverConfig, struct Jogo jogosEsolucoes[])
 {
-    printf("[Sistema] Iniciando %d salas\n", serverConfig->numeroJogos);
+    printf("[Sistema] Iniciando %d salas\n", 2 * serverConfig->numeroJogos);
 
     if (!serverConfig || !serverConfig->sala)
     {
@@ -1036,6 +1069,51 @@ void iniciarSalasJogoSinglePlayer(struct ServidorConfig *serverConfig, struct Jo
         pthread_t threadSala;
         void *roomPtr = &serverConfig->sala[i];
         if (pthread_create(&threadSala, NULL, iniciarSalaSinglePlayer, roomPtr) != 0)
+        {
+            perror("Failed to create barber thread");
+            exit(1);
+        }
+        pthread_detach(threadSala);
+    }
+}
+
+void iniciarSalasJogoMultiplayer(struct ServidorConfig *serverConfig, struct Jogo jogosEsolucoes[])
+{
+    if (!serverConfig || !serverConfig->sala)
+    {
+        perror("Server config ou salas nao inicializadas");
+        exit(1);
+    }
+
+    int numeroTotalSalas = 3 + serverConfig->numeroJogos;
+    for (int i = 3; i < numeroTotalSalas; i++)
+    {
+        serverConfig->salaMultiplayer[i].idSala = i;
+        serverConfig->salaMultiplayer[i].clientesMax = 1;
+        serverConfig->salaMultiplayer[i].clienteMin = 1;
+        serverConfig->salaMultiplayer[i].nClientes = 0;
+        pthread_cond_init(&serverConfig->salaMultiplayer[i].jogoADecorrer, NULL);
+        serverConfig->salaMultiplayer[i].jogoIniciado = false;
+        serverConfig->salaMultiplayer[i].clienteAtualID = NULL;
+
+        // Cada sala tem um jogo
+        serverConfig->salaMultiplayer[i].jogo = jogosEsolucoes[i];
+
+        if (pthread_mutex_init(&serverConfig->salaMultiplayer[i].mutexSala, NULL) != 0)
+        {
+            perror("Failed to initialize room mutex");
+            exit(1);
+        }
+        if (pthread_cond_init(&serverConfig->salaMultiplayer[i].jogoADecorrer, NULL) != 0)
+        {
+            perror("Failed to initialize room mutex");
+            exit(1);
+        }
+
+        // Umasala é uma tread
+        pthread_t threadSala;
+        void *roomPtr = &serverConfig->salaMultiplayer[i];
+        if (pthread_create(&threadSala, NULL, iniciarSalaMultiplayer, roomPtr) != 0)
         {
             perror("Failed to create barber thread");
             exit(1);

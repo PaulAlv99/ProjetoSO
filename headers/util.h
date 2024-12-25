@@ -20,6 +20,7 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <sys/wait.h>
+#include <sched.h>
 #define CHECK_NULL(x) ((x) == NULL)
 
 #define TEMPO_TAMANHO 22
@@ -69,7 +70,10 @@ struct ServidorConfig
     unsigned int porta;
     int backlog;
     char ficheiroJogosESolucoesCaminho[PATH_SIZE];
-    struct SalaSinglePlayer *sala;
+    union{
+        struct SalaSinglePlayer *sala;
+        struct SalaMultiplayer *salaMultiplayer;
+    };
     int numeroJogos;
     int NUM_MAX_CLIENTES_FILA_SINGLEPLAYER;
 };

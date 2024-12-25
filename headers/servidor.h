@@ -39,7 +39,19 @@ struct SalaSinglePlayer
     struct Jogo jogo;
     int clienteAtualID; // Add this to track current client
 };
-
+struct SalaMultiplayer {
+    int idSala;
+    int clientesMax;
+    int clienteMin;
+    int nClientes;
+    pthread_cond_t jogoADecorrer;
+    pthread_mutex_t mutexSala;
+    sem_t clientesSala;
+    struct Jogo jogo;
+    int *clienteAtualID;
+    bool jogoIniciado;
+    time_t tempoInicio;
+};
 struct filaClientesSinglePlayer
 {
     int *clientesID;
@@ -86,7 +98,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente, struct Client
 
 // funcoes singleplayer
 struct SalaSinglePlayer *handleSinglePlayerFila(int idCliente, struct ServidorConfig *serverConfig);
-void *Sala(void *arg);
+void *SalaSinglePlayer(void *arg);
 struct SalaSinglePlayer *criarSalaSinglePlayer(int idSala);
 void *iniciarSalaSinglePlayer(void *arg);
 void iniciarSalasJogoSinglePlayer(struct ServidorConfig *serverConfig, struct Jogo jogosEsolucoes[]);
