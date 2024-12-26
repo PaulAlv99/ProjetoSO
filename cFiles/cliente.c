@@ -7,7 +7,7 @@ char *padrao = "./configs/cliente";
 
 // tricos
 pthread_mutex_t mutexClienteLog = PTHREAD_MUTEX_INITIALIZER;
-sem_t semSTDOUT;
+pthread_mutex_t semSTDOUT = PTHREAD_MUTEX_INITIALIZER;
 
 
 void carregarConfigCliente(char *nomeFicheiro, struct ClienteConfig *clienteConfig) {
@@ -221,12 +221,12 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 	// readSocket(clienteConfig->socket, recebeIDCliente, BUF_SIZE);
 	// cliente recebe id do servidor
 	
-	
+	pthread_mutex_lock(&semSTDOUT);
 	printf("========= Ligado =========\n");
 	printf("===== IP: %s ======\n", clienteConfig->ipServidor);
 	printf("===== Porta: %d =======\n", clienteConfig->porta);
 	printf("===== Cliente ID: %u =======\n\n", clienteConfig->idCliente);
-	sem_post(&semSTDOUT);
+	pthread_mutex_unlock(&semSTDOUT);
 	mandarETratarMSG(clienteConfig);
 	close(clienteConfig->socket);
 	logQueEventoCliente(2, *clienteConfig);
@@ -381,11 +381,11 @@ void atualizarTentativa(struct ClienteConfig *clienteConfig) {
 }
 
 bool processarEstadoJogo(struct ClienteConfig *clienteConfig) {
-    sem_wait(&semSTDOUT);
+    pthread_mutex_lock(&semSTDOUT);
     printf("Cliente ID:%d\n", clienteConfig->idCliente);
     printf("\nTentativa %d:\n\n", clienteConfig->jogoAtual.numeroTentativas);
     imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
-    sem_post(&semSTDOUT);
+    pthread_mutex_unlock(&semSTDOUT);
 
     // Realizar tentativa
     atualizarTentativa(clienteConfig);
@@ -401,22 +401,22 @@ bool processarEstadoJogo(struct ClienteConfig *clienteConfig) {
 }
 
 void imprimirResultadoFinal(struct ClienteConfig *clienteConfig) {
-    sem_wait(&semSTDOUT);
+    pthread_mutex_lock(&semSTDOUT);
     printf("Jogo resolvido!\n");
     printf("Resolvido em %d tentativas\n", 
            clienteConfig->jogoAtual.numeroTentativas - 1);
     printf("Hora de fim: %s\n", clienteConfig->jogoAtual.tempoFinal);
-    sem_post(&semSTDOUT);
+    pthread_mutex_unlock(&semSTDOUT);
 }
 
 void imprimirEstadoInicial(struct ClienteConfig *clienteConfig) {
-    sem_wait(&semSTDOUT);
+    pthread_mutex_lock(&semSTDOUT);
     printf("Cliente ID:%d\n", clienteConfig->idCliente);
     printf("Iniciando tentativa de solução...\n");
     printf("Jogo Inicial:\n\n");
     printf("Hora de inicio: %s\n\n", clienteConfig->jogoAtual.tempoInicio);
     imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
-    sem_post(&semSTDOUT);
+    pthread_mutex_unlock(&semSTDOUT);
 }
 
 // Main message handling function
@@ -435,9 +435,9 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig) {
         
         // Check for special messages
         if (strcmp(buffer, "FILA CHEIA SINGLEPLAYER") == 0) {
-            sem_wait(&semSTDOUT);
+            pthread_mutex_lock(&semSTDOUT);
             printf("Fila singleplayer está cheia\n");
-            sem_post(&semSTDOUT);
+            pthread_mutex_unlock(&semSTDOUT);
             return;
         }
         
@@ -484,24 +484,19 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig) {
 void* jogadorThread(void* arg) {
     struct ClienteConfig* config = (struct ClienteConfig*)arg;
     
-    sem_wait(&semSTDOUT);
+    pthread_mutex_lock(&semSTDOUT);
     printf("Iniciando jogador %d\n", config->idCliente);
-    sem_post(&semSTDOUT);
+    pthread_mutex_unlock(&semSTDOUT);
 
     // Inicia o cliente
     construtorCliente(AF_INET, config->porta, INADDR_ANY, config);
     iniciarClienteSocket(config);
-
-    sem_wait(&semSTDOUT);
-    printf("Finalizando jogador %d\n", config->idCliente);
-    sem_post(&semSTDOUT);
 
     pthread_exit(NULL);
 }
 
 int main(int argc, char **argv) {
     struct ClienteConfig clienteConfig = {0};
-	sem_init(&semSTDOUT, 0, 1);
     // Validação dos argumentos da linha de comando
     if (argc < 2) {
         printf("Erro: Nome do ficheiro de configuracao nao fornecido.\n");
@@ -551,12 +546,12 @@ int main(int argc, char **argv) {
         }
 
     }
-
     // Espera todas as threads terminarem
     for (int i = 0; i < numJogadores; i++) {
         pthread_join(threads[i], NULL);
-        printf("Jogador %d terminou. (%d/%d)\n", 
-               i + 1, i + 1, numJogadores);
+    }
+    for (int i = 0; i < numJogadores; i++) {
+        printf("Jogador terminou. (%d/%d)\n",  i + 1, numJogadores);
     }
 
     // Limpa a memória alocada

@@ -119,6 +119,8 @@ ssize_t writeSocket(int socket, const void *buffer, size_t length)
 
 	while (length > 0)
 	{
+		//como ritmo de troca de mensagens está muito rápido, é necessário esperar um pouco
+		usleep(200000);
 		ssize_t n = send(socket, ptr, length, MSG_NOSIGNAL);
 		if (n <= 0)
 		{
