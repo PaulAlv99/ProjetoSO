@@ -52,6 +52,12 @@ struct SalaMultiplayer {
     bool jogoIniciado;
     time_t tempoInicio;
 };
+struct sala{
+    union{
+        struct SalaSinglePlayer *salaSingleplayer;
+        struct SalaMultiplayer *salaMultiplayer;
+    };
+};
 struct filaClientesSinglePlayer
 {
     int *clientesID;
@@ -86,11 +92,11 @@ void iniciarServidorSocket(struct ServidorConfig *server, struct Jogo jogosEsolu
 
 // funcoes de logs
 void logEventoServidor(const char *message);
-void logQueEventoServidor(int numero, int clienteID);
+void logQueEventoServidor(int numero, int clienteID,int salaID);
 
 // logica de jogo
 char *atualizaValoresCorretos(char tentativaAtual[], char valoresCorretos[], char solucao[], int *nTentativas);
-bool verificaResolvido(char valoresCorretos[], char solucao[], bool resolvido);
+bool verificaResolvido(char valoresCorretos[], char solucao[]);
 
 // tratar clientes
 void *criaClienteThread(void *arg);
@@ -103,6 +109,9 @@ struct SalaSinglePlayer *criarSalaSinglePlayer(int idSala);
 void *iniciarSalaSinglePlayer(void *arg);
 void iniciarSalasJogoSinglePlayer(struct ServidorConfig *serverConfig, struct Jogo jogosEsolucoes[]);
 
+//funcoes multiplayer
+void *iniciarSalaMultiplayer(void *arg);
+void iniciarSalasJogoMultiplayer(struct ServidorConfig *serverConfig, struct Jogo jogosEsolucoes[]);
 // funcoes fila
 struct filaClientesSinglePlayer *criarFila(struct ServidorConfig *serverConfig);
 void delete_queue(struct filaClientesSinglePlayer *fila);

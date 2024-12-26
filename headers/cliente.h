@@ -11,7 +11,7 @@ void logEventoCliente(const char *message, struct ClienteConfig *clienteConfig);
 
 void logQueEventoCliente(int numero, struct ClienteConfig clienteConfig);
 
-void construtorCliente(int dominio, int porta, __u_long interface, struct ClienteConfig *clienteConfig);
+void construtorCliente(int dominio, unsigned int porta, __u_long interface, struct ClienteConfig *clienteConfig);
 
 void iniciarClienteSocket(struct ClienteConfig *clienteConfig);
 

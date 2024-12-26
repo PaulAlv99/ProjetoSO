@@ -143,7 +143,7 @@ void logQueEventoCliente(int numero, struct ClienteConfig clienteConfig)
 	}
 }
 
-void construtorCliente(int dominio, int porta, __u_long interface, struct ClienteConfig *clienteConfig)
+void construtorCliente(int dominio, unsigned int porta, __u_long interface, struct ClienteConfig *clienteConfig)
 {
 	strcpy(clienteConfig->TemJogo, "SEM_JOGO");
 	clienteConfig->jogoAtual.resolvido = false;
@@ -340,6 +340,12 @@ bool enviarPedidoJogo(struct ClienteConfig *clienteConfig) {
         logQueEventoCliente(7, *clienteConfig);
         return false;
     }
+     char *log = malloc(2*BUF_SIZE * sizeof(char));
+    if (log) {
+        sprintf(log, "Mensagem enviada: %s", buffer);
+        logEventoCliente(log, clienteConfig);
+        free(log);
+    }
     return true;
 }
 
@@ -437,7 +443,6 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig) {
         
         // Parse received message
         if (!parseMensagemJogo(buffer, clienteConfig)) {
-            logQueEventoCliente(7, *clienteConfig);
             continue;
         }
 
@@ -544,7 +549,7 @@ int main(int argc, char **argv) {
             free(configsJogadores);
             return 1;
         }
-        usleep(10000); // Mantém o pequeno delay entre criação de jogadores
+
     }
 
     // Espera todas as threads terminarem

@@ -38,7 +38,7 @@ void carregarConfigServidor(char *nomeFicheiro, struct ServidorConfig *serverCon
             strcpy(serverConfig->ficheiroJogosESolucoesCaminho, strtok(buffer, "\n"));
             break;
         case 1:
-            serverConfig->porta = atoi(strtok(buffer, "\n"));
+            serverConfig->porta = (unsigned int) strtoul(strtok(buffer, "\n"), NULL, 10);
             break;
         case 2:
             serverConfig->NUM_MAX_CLIENTES_FILA_SINGLEPLAYER = atoi(strtok(buffer, "\n"));
@@ -77,7 +77,7 @@ void logEventoServidor(const char *message)
 }
 
 // TODO METER LOGS QUANDO ENTRA E SAI DAS SALAS
-void logQueEventoServidor(int numero, int clienteID)
+void logQueEventoServidor(int numero, int clienteID,int salaID)
 {
     char *mensagem = malloc(BUF_SIZE * sizeof(char));
     if (mensagem == NULL)
@@ -126,6 +126,26 @@ void logQueEventoServidor(int numero, int clienteID)
         logEventoServidor(mensagem);
         free(mensagem);
         break;
+    case 9:
+        sprintf(mensagem, "Cliente-%d entrou na fila", clienteID);
+        logEventoServidor(mensagem);
+        free(mensagem);
+        break;
+    case 10:
+        sprintf(mensagem, "Cliente-%d removido da fila", clienteID);
+        logEventoServidor(mensagem);
+        free(mensagem);
+        break;
+    case 11:
+        sprintf(mensagem, "Cliente-%d rejeitado a entrar na fila", clienteID);
+        logEventoServidor(mensagem);
+        free(mensagem);
+        break;
+    case 12:
+        sprintf(mensagem, "Cliente-%d entrou na sala-%d", clienteID,salaID);
+        logEventoServidor(mensagem);
+        free(mensagem);
+        break;
     default:
         logEventoServidor("Evento desconhecido");
         free(mensagem);
@@ -149,7 +169,7 @@ char *atualizaValoresCorretos(char tentativaAtual[], char valoresCorretos[], cha
     sprintf(Tentativas, "Tentativa n: %d\n", *nTentativas);
 
     // Retornar tentativas para escrever no log do cliente
-    for (int i = 0; i < strlen(tentativaAtual); i++)
+    for (int i = 0; i < (int) strlen(tentativaAtual); i++)
     {
         if (valoresCorretos[i] == '0' && tentativaAtual[i] != '0')
         {
@@ -178,9 +198,9 @@ char *atualizaValoresCorretos(char tentativaAtual[], char valoresCorretos[], cha
 }
 
 // Atualiza o booleano Resolvido se o jogo tiver sido resolvido
-bool verificaResolvido(char valoresCorretos[], char solucao[], bool resolvido)
+bool verificaResolvido(char valoresCorretos[], char solucao[])
 {
-    for (int i = 0; i < strlen(valoresCorretos); i++)
+    for (int i = 0; i < (int) strlen(valoresCorretos); i++)
     {
         if (valoresCorretos[i] != solucao[i])
         {
@@ -325,7 +345,8 @@ void *criaClienteThread(void *arg)
                 perror("Erro ao enviar ID");
                 exit(1);
             }
-            logQueEventoServidor(3, clientID);
+            //passo 0 como sala nao importa para esta msg
+            logQueEventoServidor(3, clientID,0);
             break;
         }
     }
@@ -424,6 +445,7 @@ void iniciarServidorSocket(struct ServidorConfig *server,struct Jogo jogosEsoluc
         // Criar thread para permitir clientes
         pthread_t thread;
         pthread_mutex_unlock(&aceitarCliente);
+        
         if (pthread_create(&thread, NULL, criaClienteThread, args) != 0)
         {
             perror("Failed to create thread");
@@ -596,7 +618,7 @@ bool verSeJogoAcabouEAtualizar(struct ClienteConfig *cliente, struct SalaSingleP
         return true;
     }
 
-    if (verificaResolvido(cliente->jogoAtual.valoresCorretos, sala->jogo.solucao, true))
+    if (verificaResolvido(cliente->jogoAtual.valoresCorretos, sala->jogo.solucao))
     {
         cliente->jogoAtual.resolvido = 1;
         strcpy(cliente->jogoAtual.tempoFinal, getTempoHoraMinutoSegundo());
@@ -610,8 +632,8 @@ bool verSeJogoAcabouEAtualizar(struct ClienteConfig *cliente, struct SalaSingleP
 
         printf("Sala %d: Cliente %d resolveu o jogo %d em %ld segundos!\n",
                sala->idSala, cliente->idCliente, sala->jogo.idJogo, tempoDemorado);
-
-        logQueEventoServidor(8, cliente->idCliente);
+        //passo 0 como nao importa para esta msg
+        logQueEventoServidor(8, cliente->idCliente,0);
 
         pthread_mutex_unlock(&sala->mutexSala);
         return true;
@@ -676,7 +698,8 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
             // printf("Cliente-%d conectado à sala %d com jogo %d\n", clienteConfig.idCliente, salaAtual->idSala, nJogo);
             char bufferEnviarFinal[BUF_SIZE] = {0};
             sprintf(bufferEnviarFinal, "Mensagem enviada: %s\n", buffer);
-            logQueEventoServidor(4, clienteConfig.idCliente);
+            //passo 0 como nao importa para esta msg
+            logQueEventoServidor(4, clienteConfig.idCliente,0);
             logEventoServidor(bufferEnviarFinal);
             memset(buffer, 0, BUF_SIZE);
         }
@@ -694,8 +717,8 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
             strcpy(clienteConfig.jogoAtual.tempoFinal, msgData.tempoFinal);
             clienteConfig.jogoAtual.resolvido = atoi(msgData.resolvido);
             clienteConfig.jogoAtual.numeroTentativas = atoi(msgData.numeroTentativas);
-
-            logQueEventoServidor(5, clienteConfig.idCliente);
+            //passo 0 como nao importa para esta msg
+            logQueEventoServidor(5, clienteConfig.idCliente,0);
 
             char *logClienteEnviar = handleResolucaoJogo(&clienteConfig, salaAtual);
             bool gameCompleted = verSeJogoAcabouEAtualizar(&clienteConfig, salaAtual);
@@ -724,7 +747,8 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
 
             char bufferFinal[BUF_SIZE] = {0};
             sprintf(bufferFinal, "Mensagem enviada: %s", buffer);
-            logQueEventoServidor(6, clienteConfig.idCliente);
+            //passo 0 como nao importa para esta msg
+            logQueEventoServidor(6, clienteConfig.idCliente,0);
             logEventoServidor(bufferFinal);
             memset(buffer, 0, BUF_SIZE);
             if (gameCompleted)
@@ -746,7 +770,8 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
     char temp[BUF_SIZE] = {0};
     sprintf(temp, "Cliente-%d saiu do servidor", clienteConfig.idCliente);
     printf("%s\n", temp);
-    logQueEventoServidor(7, clienteConfig.idCliente);
+    //passo 0 como nao importa para esta msg
+    logQueEventoServidor(7, clienteConfig.idCliente,0);
     
     
     
@@ -842,6 +867,8 @@ bool enqueue(struct filaClientesSinglePlayer *fila, int clientID)
     {
         printf("[Fila] Rejeitado cliente %d - fila cheia (tamanho: %d)\n",
                clientID, fila->tamanho);
+               //passo 0 como nao importa para esta msg
+        logQueEventoServidor(11, clientID,0);
         pthread_mutex_unlock(&fila->mutex);
         return false;
     }
@@ -852,7 +879,8 @@ bool enqueue(struct filaClientesSinglePlayer *fila, int clientID)
 
     printf("[Fila] Cliente %d entrou na fila (posição: %d, tamanho: %d)\n",
            clientID, fila->rear, fila->tamanho);
-
+           //passo 0 como nao importa para esta msg
+    logQueEventoServidor(9, clientID,0);
     pthread_mutex_unlock(&fila->mutex);
     return true;
 }
@@ -884,7 +912,8 @@ int dequeue(struct filaClientesSinglePlayer *fila)
 
     printf("[Fila] Cliente %d removido da fila (tamanho restante: %d)\n",
            clientID, fila->tamanho);
-
+           //passo 0 como nao importa para esta msg
+    logQueEventoServidor(10, clientID,0);
     pthread_mutex_unlock(&fila->mutex);
     return clientID;
 }
@@ -968,6 +997,7 @@ void *SalaSingleplayer(void *arg)
 
         // Proximo cliente na fila
         int clienteID = dequeue(filaClientesSinglePlayer);
+        logQueEventoServidor(12, clienteID,sala->idSala);
         if (clienteID == -1)
         {
             pthread_mutex_unlock(&sala->mutexSala);
@@ -1001,7 +1031,7 @@ void *SalaSingleplayer(void *arg)
                 printf("[Sala-%d] Cliente %d finalizou\n",
                        sala->idSala, clienteID);
                 pthread_mutex_unlock(&sala->mutexSala);
-
+                
                 break;
             }
             if(sala->nClientes == 0){
@@ -1143,7 +1173,8 @@ int main(int argc, char **argv)
     serverConfig.numeroJogos = numeroJogos;
     carregarFicheiroJogosSolucoes(serverConfig.ficheiroJogosESolucoesCaminho,jogosEsolucoes);
     construtorServer(&serverConfig,AF_INET, SOCK_STREAM, 0, INADDR_ANY, serverConfig.porta, 1, serverConfig.ficheiroJogosESolucoesCaminho);
-    logQueEventoServidor(1, 0);
+    //passo 0 como nao importa para esta msg
+    logQueEventoServidor(1, 0,0);
     filaClientesSinglePlayer = malloc(sizeof(struct filaClientesSinglePlayer));
     filaClientesSinglePlayer = criarFila(&serverConfig);
     iniciarServidorSocket(&serverConfig,jogosEsolucoes);
