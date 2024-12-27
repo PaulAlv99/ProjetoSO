@@ -331,7 +331,7 @@ void *criaClienteThread(void *arg)
     
     
     int bytesRecebidos;
-    while((bytesRecebidos = recv(socketCliente, temp, BUF_SIZE,0)) > 0){
+    while((bytesRecebidos = readSocket(socketCliente, temp, BUF_SIZE)) > 0){
         if(strstr(temp, "MANDA_ID") != NULL){
             //envia o id do cliente para o cliente
             // ID|
@@ -663,7 +663,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
     int SalaID = -1;
     bool clienteDesconectado = false;
 
-    while (!clienteDesconectado && (bytesRecebidos = recv(socketCliente, buffer, BUF_SIZE, 0)) > 0) {
+    while (!clienteDesconectado && (bytesRecebidos = readSocket(socketCliente, buffer, BUF_SIZE)) > 0) {
         // Log received message
         char bufferFinal[BUF_SIZE] = {0};
         snprintf(bufferFinal, BUF_SIZE, "Mensagem recebida: %s", buffer);

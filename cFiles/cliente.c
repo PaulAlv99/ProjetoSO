@@ -199,7 +199,7 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
     
 	char* mandaID="MANDA_ID";
 
-	if(writeSocket(clienteConfig->socket, mandaID, sizeof(mandaID)) < 0){
+	if(writeSocket(clienteConfig->socket, mandaID, strlen(mandaID)) < 0){
 		perror("Erro ao enviar ID");
 		logQueEventoCliente(7, *clienteConfig);
 		return;
@@ -330,7 +330,6 @@ bool parseMensagemJogo(const char *buffer, struct ClienteConfig *clienteConfig) 
     return success;
 }
 
-// Communication functions
 bool enviarPedidoJogo(struct ClienteConfig *clienteConfig) {
     char buffer[BUF_SIZE] = {0};
     formatarMensagemJogo(buffer, clienteConfig);
@@ -437,12 +436,6 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
         buffer[bytesRead] = '\0';
         
         // Check for special messages
-        if (strcmp(buffer, "FILA CHEIA SINGLEPLAYER") == 0) {
-            pthread_mutex_lock(&semSTDOUT);
-            printf("Fila singleplayer está cheia\n");
-            pthread_mutex_unlock(&semSTDOUT);
-            return;
-        }
         
         // Parse received message
         if (!parseMensagemJogo(buffer, clienteConfig)) {
@@ -472,6 +465,12 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
                 logQueEventoCliente(8, *clienteConfig);
                 break;
             }
+        }
+        if (strcmp(buffer, "FILA CHEIA SINGLEPLAYER") == 0) {
+            pthread_mutex_lock(&semSTDOUT);
+            printf("Fila singleplayer está cheia\n");
+            pthread_mutex_unlock(&semSTDOUT);
+            break;
         }
     }
 
