@@ -16,6 +16,8 @@ pthread_mutex_t verificaEstadoSala = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexAcabouJogo = PTHREAD_MUTEX_INITIALIZER;
 // semaforos
 sem_t semaforoSingleJogador;
+sem_t esperaPrintResolveu;
+sem_t esperaPrintSaiu;
 //carregar configs do servidor
 
 void carregarConfigServidor(char *nomeFicheiro, struct ServidorConfig *serverConfig)
@@ -499,6 +501,7 @@ struct SalaSinglePlayer* handleSinglePlayerFila(int idCliente, struct ServidorCo
     }
     
     sem_post(&filaClientesSinglePlayer->customers);
+
     sem_wait(&semaforoSingleJogador);
     // printf("Cliente %d a verificar se foi chamado\n", idCliente);
     
@@ -518,7 +521,7 @@ struct SalaSinglePlayer* handleSinglePlayerFila(int idCliente, struct ServidorCo
         pthread_mutex_unlock(&verificaEstadoSala);
         
         if (!salaEncontrada) {
-            usleep(10000);
+            // usleep(10000);
         }
     }
     
@@ -611,6 +614,7 @@ bool verSeJogoAcabouEAtualizar(struct ClienteConfig *cliente, struct SalaSingleP
         printf("[Sala-%d] Cliente %d resolveu o jogo %d em %ld segundos!\n",
                sala->idSala, cliente->idCliente, sala->jogo.idJogo, tempoDemorado);
         //passo 0 como nao importa para esta msg
+        sem_post(&esperaPrintResolveu);
         logQueEventoServidor(8, cliente->idCliente,0);
 
         pthread_mutex_unlock(&mutexAcabouJogo);
@@ -741,6 +745,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
             }
         }
     }
+    sem_wait(&esperaPrintSaiu);
     printf(COLOR_RED "Cliente %d saiu\n" COLOR_RESET, clienteConfig.idCliente);
     // // Cleanup when client disconnects
     // if (salaAtual) {
@@ -845,9 +850,10 @@ bool enqueue(struct filaClientesSinglePlayer *fila, int clientID)
 
     if (fila->tamanho >= fila->capacidade)
     {
-        printf("[Fila] Rejeitado cliente %d - fila cheia (tamanho: %d)\n",
+        printf(COLOR_PURPLE"[Fila] Rejeitado cliente %d - fila cheia (tamanho: %d)\n"COLOR_RESET,
                clientID, fila->tamanho);
                //passo 0 como nao importa para esta msg
+        sem_post(&esperaPrintSaiu);
         logQueEventoServidor(11, clientID,0);
         pthread_mutex_unlock(&fila->mutex);
         return false;
@@ -963,11 +969,11 @@ void* SalaSingleplayer(void* arg) {
         sem_wait(&filaClientesSinglePlayer->customers);
         pthread_mutex_lock(&sala->mutexSala);
         
-        if (sala->nClientes > 0) {
-            pthread_mutex_unlock(&sala->mutexSala);
-            sem_post(&filaClientesSinglePlayer->customers);
-            continue;
-        }
+        // if (sala->nClientes > 0) {
+        //     pthread_mutex_unlock(&sala->mutexSala);
+        //     sem_post(&filaClientesSinglePlayer->customers);
+        //     continue;
+        // }
         
         int clienteID = dequeue(filaClientesSinglePlayer);
         if (clienteID == -1) {
@@ -990,14 +996,16 @@ void* SalaSingleplayer(void* arg) {
                 sala->nClientes = 0;
                 sala->clienteAtualID = -1;
                 clienteFinalizou = true;
+                sem_wait(&esperaPrintResolveu);
                 printf("[Sala-%d] Cliente %d finalizou\n", sala->idSala, clienteID);
                 printf("[Sala-%d] Cliente %d saiu da sala\n", sala->idSala, clienteID);
+                sem_post(&esperaPrintSaiu);
                 pthread_mutex_unlock(&sala->mutexSala);
                 break;
             }
                         
             if (!clienteFinalizou) {
-                usleep(100000);
+                // usleep(100000);
             }
         }
     }
@@ -1047,7 +1055,7 @@ void iniciarSalasJogoSinglePlayer(struct ServidorConfig *serverConfig, struct Jo
 
         if (pthread_mutex_init(&serverConfig->sala[i].mutexSala, NULL) != 0)
         {
-            perror("Failed to initialize room mutex");
+            perror("Erro sala mutex");
             exit(1);
         }
 
@@ -1056,7 +1064,7 @@ void iniciarSalasJogoSinglePlayer(struct ServidorConfig *serverConfig, struct Jo
         void *roomPtr = &serverConfig->sala[i];
         if (pthread_create(&threadSala, NULL, iniciarSalaSinglePlayer, roomPtr) != 0)
         {
-            perror("Failed to create barber thread");
+            perror("Erro criar tarefa");
             exit(1);
         }
         pthread_detach(threadSala);
@@ -1111,7 +1119,8 @@ void iniciarSalasJogoMultiplayer(struct ServidorConfig *serverConfig, struct Jog
 int main(int argc, char **argv)
 {
     struct ServidorConfig serverConfig = {0};
-    
+    sem_init(&esperaPrintResolveu,0,0);
+    sem_init(&esperaPrintSaiu,0,0);
     if (argc < 2)
     {
         printf("Erro: Nome do ficheiro nao fornecido.\n");

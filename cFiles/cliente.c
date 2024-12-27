@@ -532,9 +532,7 @@ int main(int argc, char **argv) {
         // Copia a configuração base para cada jogador
         configsJogadores[i] = clienteConfig;
         configsJogadores[i].idCliente = i + 1;
-        if ((i + 1) % 50 == 0) {
-            sleep(1);
-        }
+        
         int result = pthread_create(&threads[i], NULL, jogadorThread, &configsJogadores[i]);
         if (result != 0) {
             fprintf(stderr, "Erro ao criar thread: %s\n", strerror(result));
