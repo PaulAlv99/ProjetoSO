@@ -21,6 +21,7 @@
 #include <sys/shm.h>
 #include <sys/wait.h>
 #include <sched.h>
+#include <poll.h>
 #define CHECK_NULL(x) ((x) == NULL)
 
 #define TEMPO_TAMANHO 22

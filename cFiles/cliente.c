@@ -206,18 +206,13 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 	
 	char recebeIDCliente[BUF_SIZE] = {0};
 	int bytesRecebidos;
-	while((bytesRecebidos = recv(clienteConfig->socket, recebeIDCliente, BUF_SIZE, 0)) > 0){
-		if(strstr(recebeIDCliente, "|") != NULL){
-			clienteConfig->idCliente = atoi(strtok(recebeIDCliente, "|"));
-			logQueEventoCliente(1, *clienteConfig);
-			break;
-		}
-	}
-	if(bytesRecebidos == 0){
-		perror("Erro parte dos IDs\n");
-		logQueEventoCliente(7, *clienteConfig);
-		return;
-	}
+    while(readSocket(clienteConfig->socket, recebeIDCliente, BUF_SIZE) < 0){
+        
+    }
+    if(strstr(recebeIDCliente, "|") != NULL){
+            clienteConfig->idCliente = atoi(strtok(recebeIDCliente, "|"));
+            logQueEventoCliente(1, *clienteConfig);
+        }
 	// readSocket(clienteConfig->socket, recebeIDCliente, BUF_SIZE);
 	// cliente recebe id do servidor
 	
@@ -420,7 +415,8 @@ void imprimirEstadoInicial(struct ClienteConfig *clienteConfig) {
 }
 
 // Main message handling function
-void mandarETratarMSG(struct ClienteConfig *clienteConfig) {
+void mandarETratarMSG(struct ClienteConfig *clienteConfig) 
+{
     char buffer[BUF_SIZE];
     ssize_t bytesRead;
     
@@ -430,7 +426,7 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig) {
     }
     
     // Main receive loop
-    while ((bytesRead = recv(clienteConfig->socket, buffer, BUF_SIZE, 0)) > 0) {
+    while ((bytesRead = readSocket(clienteConfig->socket, buffer, BUF_SIZE)) > 0) {
         buffer[bytesRead] = '\0';
         
         // Check for special messages
@@ -466,17 +462,15 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig) {
                 }
             } else {
                 imprimirResultadoFinal(clienteConfig);
-				logQueEventoCliente(8,*clienteConfig);
+                logQueEventoCliente(8, *clienteConfig);
                 break;
             }
         }
     }
-    
+
     if (bytesRead == 0) {
-        // Connection closed by server
         logQueEventoCliente(6, *clienteConfig);
     } else if (bytesRead < 0) {
-        // Error occurred
         logQueEventoCliente(7, *clienteConfig);
     }
 }
