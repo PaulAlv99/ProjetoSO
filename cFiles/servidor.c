@@ -12,7 +12,8 @@ pthread_mutex_t mutexNTentativas = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexjogosAleatorios = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexIDSala = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t aceitarCliente = PTHREAD_MUTEX_INITIALIZER;
-
+pthread_mutex_t verificaEstadoSala = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutexAcabouJogo = PTHREAD_MUTEX_INITIALIZER;
 // semaforos
 sem_t semaforoSingleJogador;
 //carregar configs do servidor
@@ -351,7 +352,7 @@ void *criaClienteThread(void *arg)
     
     pthread_mutex_unlock(&mutexClienteID);
     receberMensagemETratarServer(temp, socketCliente, clienteConfig, *args->server);
-
+    shutdown(socket, SHUT_WR);
     close(socketCliente);
     free(args);
     return NULL;
@@ -379,11 +380,11 @@ void iniciarServidorSocket(struct ServidorConfig *server,struct Jogo jogosEsoluc
     }
 
     int opt = 1;
-    // if (setsockopt(socketServidor, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
-    // {
-    //     perror("setsockopt failed");
-    //     exit(1);
-    // }
+    if (setsockopt(socketServidor, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
+    {
+        perror("setsockopt failed");
+        exit(1);
+    }
 
     struct sockaddr_in enderecoServidor;
     enderecoServidor.sin_family = server->dominio;
@@ -428,6 +429,7 @@ void iniciarServidorSocket(struct ServidorConfig *server,struct Jogo jogosEsoluc
         if (!args)
         {
             perror("Erro ao alocar memória para args-thread");
+            shutdown(socket, SHUT_WR);
             close(socketCliente);
             continue;
         }
@@ -444,13 +446,14 @@ void iniciarServidorSocket(struct ServidorConfig *server,struct Jogo jogosEsoluc
         {
             perror("Failed to create thread");
             free(args);
+            shutdown(socket, SHUT_WR);
             close(socketCliente);
             continue;
         }
         // Liberta recursos da thread
         pthread_detach(thread);
     }
-
+    shutdown(socket, SHUT_WR);
     close(socketServidor);
 }
 
@@ -463,6 +466,7 @@ struct FormatoMensagens parseMensagem(char *buffer)
     msg.tipoResolucao = strtok(NULL, "|");
     msg.temJogo = strtok(NULL, "|");
     msg.idJogo = strtok(NULL, "|");
+    msg.idSala = strtok(NULL, "|");
     msg.jogo = strtok(NULL, "|");
     msg.valoresCorretos = strtok(NULL, "|");
     msg.tempoInicio = strtok(NULL, "|");
@@ -489,67 +493,45 @@ bool validarMensagemVazia(struct FormatoMensagens *msg)
 }
 
 // Função que dá handle a entrada de um cliente na fila e sua atribuição a uma sala
-struct SalaSinglePlayer *handleSinglePlayerFila(int idCliente, struct ServidorConfig *serverConfig)
-{
-    // Tenta adicionar o cliente à fila de espera
-    // Se a fila estiver cheia, retorna NULL ou seja foi rejeitado
-    if (!enqueue(filaClientesSinglePlayer, idCliente))
-    {
-
+struct SalaSinglePlayer* handleSinglePlayerFila(int idCliente, struct ServidorConfig* serverConfig) {
+    if (!enqueue(filaClientesSinglePlayer, idCliente)) {
         return NULL;
     }
-
-    // Incrementa o semáforo customers, sinalizando às salas
-    // que existe um novo cliente esperando na fila
-    // O sem_post acorda uma das threads barbeiro que esteja esperando em sem_wait
+    
     sem_post(&filaClientesSinglePlayer->customers);
-
-    //clientes que estao na fila de espera estao em espera dentro deste while
-    //à espera de serem selecionados pelas salas
     sem_wait(&semaforoSingleJogador);
-    //apenas os num_jogos à frente da fila verificam se foram chamados
-    printf("Cliente %d a verificar se foi chamado\n", idCliente);
-    //estao dentro de um while(1) porque têm de estar constantemente a verificar se foram chamados
-    while (1)
-    {
-        // Percorre todas as salas disponíveis procurando a sala que
-        // aceitou o cliente
-        for (int i = 0; i < serverConfig->numeroJogos; i++)
-        {
-            // Bloqueia o mutex da sala para verificar seu estado
-            pthread_mutex_lock(&serverConfig->sala[i].mutexSala);
-
-            // Verifica duas condições:
-            // 1. Se o ID do cliente atual da sala corresponde a este cliente
-            // 2. Se a sala está ocupada (nClientes == 1)
-            // Significa que o barbeiro selecionou esse cliente
-            if (serverConfig->sala[i].clienteAtualID == idCliente &&
-                serverConfig->sala[i].nClientes == 1)
-            {
-                // Libera o mutex antes de retornar
-                pthread_mutex_unlock(&serverConfig->sala[i].mutexSala);
-                printf("Cliente %d foi chamado para a sala %d\n", idCliente, i);
-                sem_post(&semaforoSingleJogador);
-                return &serverConfig->sala[i];
+    // printf("Cliente %d a verificar se foi chamado\n", idCliente);
+    
+    struct SalaSinglePlayer* salaEncontrada = NULL;
+    
+    while (!salaEncontrada) {
+        pthread_mutex_lock(&verificaEstadoSala);
+        
+        for (int i = 0; i < serverConfig->numeroJogos; i++) {
+            if (serverConfig->sala[i].clienteAtualID == idCliente) {
+                salaEncontrada = &serverConfig->sala[i];
+                // printf("Cliente %d foi chamado para a sala %d\n", idCliente, i);
+                break;
             }
-
-            // Libera o mutex se a sala não é a correta
-            pthread_mutex_unlock(&serverConfig->sala[i].mutexSala);
         }
-
-        // Pequena pausa para evitar consumo excessivo de CPU
-        // enquanto espera por uma sala
-        // 100ms
-        usleep(100000);
+        
+        pthread_mutex_unlock(&verificaEstadoSala);
+        
+        if (!salaEncontrada) {
+            usleep(10000);
+        }
     }
-    return NULL;
+    
+    sem_post(&semaforoSingleJogador);
+    return salaEncontrada;
 }
 
 
 void updateClientConfig(struct ClienteConfig *clienteConfig,
                         const struct FormatoMensagens *msg,
                         const char *jogoADar,
-                        int nJogo)
+                        int nJogo,
+                        int salaID)
 {
     strcpy(clienteConfig->tipoJogo, msg->tipoJogo);
     strcpy(clienteConfig->tipoResolucao, msg->tipoResolucao);
@@ -561,17 +543,19 @@ void updateClientConfig(struct ClienteConfig *clienteConfig,
     clienteConfig->jogoAtual.resolvido = atoi(msg->resolvido);
     clienteConfig->jogoAtual.numeroTentativas = atoi(msg->numeroTentativas);
     clienteConfig->jogoAtual.idJogo = nJogo;
+    clienteConfig->idSala = salaID;
     clienteConfig->idCliente = atoi(msg->idCliente);
 }
 
 void bufferParaStructCliente(char *buffer, const struct ClienteConfig *clienteConfig)
 {
-    sprintf(buffer, "%u|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d",
+    sprintf(buffer, "%u|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%d",
             clienteConfig->idCliente,
             clienteConfig->tipoJogo,
             clienteConfig->tipoResolucao,
             clienteConfig->TemJogo,
             clienteConfig->jogoAtual.idJogo,
+            clienteConfig->idSala,
             clienteConfig->jogoAtual.jogo,
             clienteConfig->jogoAtual.valoresCorretos,
             clienteConfig->jogoAtual.tempoInicio,
@@ -604,11 +588,11 @@ char *handleResolucaoJogo(struct ClienteConfig *clienteConfig, struct SalaSingle
 
 bool verSeJogoAcabouEAtualizar(struct ClienteConfig *cliente, struct SalaSinglePlayer *sala)
 {
-    pthread_mutex_lock(&sala->mutexSala);
+    pthread_mutex_lock(&mutexAcabouJogo);
 
     if (cliente->jogoAtual.resolvido)
     {
-        pthread_mutex_unlock(&sala->mutexSala);
+        pthread_mutex_unlock(&mutexAcabouJogo);
         return true;
     }
 
@@ -619,21 +603,21 @@ bool verSeJogoAcabouEAtualizar(struct ClienteConfig *cliente, struct SalaSingleP
 
         sala->jogadorAResolver = false;
         sala->nClientes = 0;
-
+        sala->clienteAtualID = -1;
         time_t tempoInicioConvertido = converterTempoStringParaTimeT(cliente->jogoAtual.tempoInicio);
         time_t tempoFinalConvertido = converterTempoStringParaTimeT(cliente->jogoAtual.tempoFinal);
         time_t tempoDemorado = difftime(tempoFinalConvertido, tempoInicioConvertido);
 
-        printf("Sala %d: Cliente %d resolveu o jogo %d em %ld segundos!\n",
+        printf("[Sala-%d] Cliente %d resolveu o jogo %d em %ld segundos!\n",
                sala->idSala, cliente->idCliente, sala->jogo.idJogo, tempoDemorado);
         //passo 0 como nao importa para esta msg
         logQueEventoServidor(8, cliente->idCliente,0);
 
-        pthread_mutex_unlock(&sala->mutexSala);
+        pthread_mutex_unlock(&mutexAcabouJogo);
         return true;
     }
 
-    pthread_mutex_unlock(&sala->mutexSala);
+    pthread_mutex_unlock(&mutexAcabouJogo);
     return false;
 }
 void atualizarClientConfig(struct ClienteConfig *clienteConfig, const struct FormatoMensagens *msgData) {
@@ -642,6 +626,7 @@ void atualizarClientConfig(struct ClienteConfig *clienteConfig, const struct For
     strcpy(clienteConfig->tipoJogo, msgData->tipoJogo);
     strcpy(clienteConfig->tipoResolucao, msgData->tipoResolucao);
     clienteConfig->jogoAtual.idJogo = atoi(msgData->idJogo);
+    clienteConfig->idSala = atoi(msgData->idSala);
     strcpy(clienteConfig->jogoAtual.jogo, msgData->jogo);
     strcpy(clienteConfig->jogoAtual.valoresCorretos, msgData->valoresCorretos);
     strcpy(clienteConfig->jogoAtual.tempoInicio, msgData->tempoInicio);
@@ -652,12 +637,13 @@ void atualizarClientConfig(struct ClienteConfig *clienteConfig, const struct For
 
 // Helper function to prepare game response
 void prepararRespostaJogo(char *buffer, const struct ClienteConfig *clienteConfig, const char *logClienteEnviar) {
-    snprintf(buffer, BUF_SIZE, "%u|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d|%s",
+    snprintf(buffer, BUF_SIZE, "%u|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%d|%s",
             clienteConfig->idCliente,
             clienteConfig->tipoJogo,
             clienteConfig->tipoResolucao,
             clienteConfig->TemJogo,
             clienteConfig->jogoAtual.idJogo,
+            clienteConfig->idSala,
             clienteConfig->jogoAtual.jogo,
             clienteConfig->jogoAtual.valoresCorretos,
             clienteConfig->jogoAtual.tempoInicio,
@@ -674,6 +660,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
     char *jogoADar = "";
     int nJogo = -1;
     int bytesRecebidos;
+    int SalaID = -1;
     bool clienteDesconectado = false;
 
     while (!clienteDesconectado && (bytesRecebidos = recv(socketCliente, buffer, BUF_SIZE, 0)) > 0) {
@@ -702,11 +689,11 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
 
                 jogoADar = salaAtual->jogo.jogo;
                 nJogo = salaAtual->jogo.idJogo;
+                SalaID = salaAtual->idSala;
             }
 
-            updateClientConfig(&clienteConfig, &msgData, jogoADar, nJogo);
+            updateClientConfig(&clienteConfig, &msgData, jogoADar, nJogo,SalaID);
 
-            memset(buffer, 0, BUF_SIZE);
             bufferParaStructCliente(buffer, &clienteConfig);
 
             if (writeSocket(socketCliente, buffer, BUF_SIZE) < 0) {
@@ -750,24 +737,22 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
             logQueEventoServidor(6, clienteConfig.idCliente, salaAtual->idSala);
             
             if (gameCompleted) {
-                printf("Sala %d: Jogo concluído. Encerrando sessão do cliente %d.\n",
-                       salaAtual->idSala, clienteConfig.idCliente);
                 break;
             }
         }
     }
-
-    // Cleanup when client disconnects
-    if (salaAtual) {
-        pthread_mutex_lock(&salaAtual->mutexSala);
-        salaAtual->nClientes = 0;
-        salaAtual->clienteAtualID = -1;
-        salaAtual->jogadorAResolver = false;
-        pthread_cond_broadcast(&salaAtual->condSala);
-        pthread_mutex_unlock(&salaAtual->mutexSala);
+    printf(COLOR_RED "Cliente %d saiu\n" COLOR_RESET, clienteConfig.idCliente);
+    // // Cleanup when client disconnects
+    // if (salaAtual) {
+    //     pthread_mutex_lock(&salaAtual->mutexSala);
+    //     salaAtual->nClientes = 0;
+    //     salaAtual->clienteAtualID = -1;
+    //     salaAtual->jogadorAResolver = false;
+    //     pthread_cond_broadcast(&salaAtual->condSala);
+    //     pthread_mutex_unlock(&salaAtual->mutexSala);
         
-        printf("Cliente %d saiu da sala %d\n", clienteConfig.idCliente, salaAtual->idSala);
-    }
+    //     printf("Cliente %d saiu da sala %d\n", clienteConfig.idCliente, salaAtual->idSala);
+    // }
 
     logQueEventoServidor(7, clienteConfig.idCliente, salaAtual ? salaAtual->idSala : 0);
 }
@@ -872,7 +857,7 @@ bool enqueue(struct filaClientesSinglePlayer *fila, int clientID)
     fila->clientesID[fila->rear] = clientID;
     fila->tamanho++;
 
-    printf("[Fila] Cliente %d entrou na fila (posição: %d, tamanho: %d)\n",
+    printf(COLOR_GREEN "[Fila] Cliente %d entrou na fila (posição: %d, tamanho: %d)\n"COLOR_RESET,
            clientID, fila->rear, fila->tamanho);
            //passo 0 como nao importa para esta msg
     logQueEventoServidor(9, clientID,0);
@@ -905,7 +890,7 @@ int dequeue(struct filaClientesSinglePlayer *fila)
     // Update rear pointer
     fila->rear = fila->tamanho - 1;
 
-    printf("[Fila] Cliente %d removido da fila (tamanho restante: %d)\n",
+    printf(COLOR_RED "[Fila] Cliente %d removido da fila (tamanho restante: %d)\n"COLOR_RESET,
            clientID, fila->tamanho);
            //passo 0 como nao importa para esta msg
     logQueEventoServidor(10, clientID,0);
@@ -970,74 +955,52 @@ void removerFilaPorID(struct filaClientesSinglePlayer *fila, int clientID) {
     
 }
 
-void *SalaSingleplayer(void *arg)
-{
-     struct SalaSinglePlayer *sala = (struct SalaSinglePlayer *)arg;
-    // struct filaClientesSinglePlayer *fila = ;
-
+void* SalaSingleplayer(void* arg) {
+    struct SalaSinglePlayer* sala = (struct SalaSinglePlayer*)arg;
     printf("[Sala-%d] Iniciada-Singleplayer\n", sala->idSala);
-
-    while (1)
-    {
-        // Sala pronta para proximo cliente
+    
+    while (1) {
         sem_wait(&filaClientesSinglePlayer->customers);
-
         pthread_mutex_lock(&sala->mutexSala);
-        if (sala->nClientes > 0)
-        {
+        
+        if (sala->nClientes > 0) {
             pthread_mutex_unlock(&sala->mutexSala);
             sem_post(&filaClientesSinglePlayer->customers);
             continue;
         }
-
-        // Proximo cliente na fila
+        
         int clienteID = dequeue(filaClientesSinglePlayer);
-        if (clienteID == -1)
-        {
+        if (clienteID == -1) {
             pthread_mutex_unlock(&sala->mutexSala);
             sem_post(&filaClientesSinglePlayer->customers);
             continue;
         }
-
-        // Sala tem agora cliente
+        
         sala->nClientes = 1;
         sala->jogadorAResolver = true;
         sala->clienteAtualID = clienteID;
-
-        // Preparar jogo
-        // unsigned int seed = (unsigned int)time(NULL) ^ (unsigned int)pthread_self();
-        // int jogoIndex = rand_r(&seed) % NUM_JOGOS;
-        // sala->jogo = jogosEsolucoes[jogoIndex];
-
-        printf("[Sala-%d] Atendendo cliente %d com jogo %d\n",
+                
+        printf(COLOR_YELLOW "[Sala-%d] Atendendo cliente %d com jogo %d\n" COLOR_RESET,
                sala->idSala, clienteID, sala->jogo.idJogo);
-
-        pthread_mutex_unlock(&sala->mutexSala);
-
-        while (1)
-        {
-            pthread_mutex_lock(&sala->mutexSala);
-            if (!sala->jogadorAResolver && sala->nClientes == 1)
-            {
-                // reset depois cliente acabar
+               
+        bool clienteFinalizou = false;
+        while (!clienteFinalizou) {
+            
+            if (!sala->jogadorAResolver) {
                 sala->nClientes = 0;
                 sala->clienteAtualID = -1;
-                printf("[Sala-%d] Cliente %d finalizou\n",
-                       sala->idSala, clienteID);
-                pthread_mutex_unlock(&sala->mutexSala);
-
-                break;
-            }
-            if(sala->nClientes == 0){
+                clienteFinalizou = true;
+                printf("[Sala-%d] Cliente %d finalizou\n", sala->idSala, clienteID);
+                printf("[Sala-%d] Cliente %d saiu da sala\n", sala->idSala, clienteID);
                 pthread_mutex_unlock(&sala->mutexSala);
                 break;
             }
-            pthread_mutex_unlock(&sala->mutexSala);
-            // 100ms para cpu nao ficar sobrecarregado
-            usleep(100000);
+                        
+            if (!clienteFinalizou) {
+                usleep(100000);
+            }
         }
     }
-
     return NULL;
 }
 void *SalaMultiplayer(void *arg)
@@ -1112,8 +1075,8 @@ void iniciarSalasJogoMultiplayer(struct ServidorConfig *serverConfig, struct Jog
     for (int i = 3; i < numeroTotalSalas; i++)
     {
         serverConfig->salaMultiplayer[i].idSala = i;
-        serverConfig->salaMultiplayer[i].clientesMax = 1;
-        serverConfig->salaMultiplayer[i].clienteMin = 1;
+        serverConfig->salaMultiplayer[i].clientesMax = 5;
+        serverConfig->salaMultiplayer[i].clienteMin = 5;
         serverConfig->salaMultiplayer[i].nClientes = 0;
         pthread_cond_init(&serverConfig->salaMultiplayer[i].jogoADecorrer, NULL);
         serverConfig->salaMultiplayer[i].jogoIniciado = false;

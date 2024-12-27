@@ -149,6 +149,7 @@ void construtorCliente(int dominio, unsigned int porta, __u_long interface, stru
 	clienteConfig->jogoAtual.resolvido = false;
 	clienteConfig->jogoAtual.numeroTentativas = 1;
 	clienteConfig->jogoAtual.idJogo = 0;
+    clienteConfig->idSala = -1;
 	size_t tamanhoStringJogo = strlen(clienteConfig->jogoAtual.jogo);
 	memset(clienteConfig->jogoAtual.jogo + tamanhoStringJogo, '0', NUMEROS_NO_JOGO);
 	*(clienteConfig->jogoAtual.jogo + NUMEROS_NO_JOGO + 1) = '\0';
@@ -195,7 +196,7 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 			umaVez = 0;
 		}
 	}
-    pthread_mutex_unlock(&ligarSocket);
+    
 	char* mandaID="MANDA_ID";
 
 	if(writeSocket(clienteConfig->socket, mandaID, sizeof(mandaID)) < 0){
@@ -203,7 +204,7 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 		logQueEventoCliente(7, *clienteConfig);
 		return;
 	}
-	
+	pthread_mutex_unlock(&ligarSocket);
 	char recebeIDCliente[BUF_SIZE] = {0};
 	int bytesRecebidos;
     while(readSocket(clienteConfig->socket, recebeIDCliente, BUF_SIZE) < 0){
@@ -223,6 +224,7 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 	printf("===== Cliente ID: %u =======\n\n", clienteConfig->idCliente);
 	pthread_mutex_unlock(&semSTDOUT);
 	mandarETratarMSG(clienteConfig);
+    shutdown(socket, SHUT_WR);
 	close(clienteConfig->socket);
 	logQueEventoCliente(2, *clienteConfig);
 }
@@ -270,12 +272,13 @@ void tentarSolucaoCompleta(char tentativaAtual[], char valoresCorretos[])
 
 // Message formatting and parsing functions
 void formatarMensagemJogo(char *buffer, const struct ClienteConfig *clienteConfig) {
-    sprintf(buffer, "%u|%s|%s|%s|%d|%s|%s|%s|%s|%d|%d",
+    sprintf(buffer, "%u|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%d",
             clienteConfig->idCliente,
             clienteConfig->tipoJogo,
             clienteConfig->tipoResolucao,
             clienteConfig->TemJogo,
             clienteConfig->jogoAtual.idJogo,
+            clienteConfig->idSala,
             clienteConfig->jogoAtual.jogo,
             clienteConfig->jogoAtual.valoresCorretos,
             clienteConfig->jogoAtual.tempoInicio,
@@ -293,6 +296,7 @@ bool parseMensagemJogo(const char *buffer, struct ClienteConfig *clienteConfig) 
     char *tipoResolucao = strtok(NULL, "|");
     char *temJogo = strtok(NULL, "|");
     char *idJogo = strtok(NULL, "|");
+    char *idSala = strtok(NULL, "|");
     char *jogo = strtok(NULL, "|");
     char *valoresCorretos = strtok(NULL, "|");
     char *tempoInicio = strtok(NULL, "|");
@@ -302,13 +306,14 @@ bool parseMensagemJogo(const char *buffer, struct ClienteConfig *clienteConfig) 
     char *logCliente = strtok(NULL, "|");
 
     bool success = (idCliente && tipoJogo && tipoResolucao && temJogo && 
-                   idJogo && jogo && valoresCorretos && tempoInicio && 
+                   idJogo && idSala && valoresCorretos && tempoInicio && 
                    tempoFinal && resolvido && numeroTentativas);
 
     if (success) {
         clienteConfig->idCliente = atoi(idCliente);
         strcpy(clienteConfig->TemJogo, temJogo);
         clienteConfig->jogoAtual.idJogo = atoi(idJogo);
+        clienteConfig->idSala = atoi(idSala);
         strcpy(clienteConfig->jogoAtual.jogo, jogo);
         strcpy(clienteConfig->jogoAtual.valoresCorretos, valoresCorretos);
         strcpy(clienteConfig->jogoAtual.tempoInicio, tempoInicio);
@@ -378,6 +383,7 @@ void atualizarTentativa(struct ClienteConfig *clienteConfig) {
 bool processarEstadoJogo(struct ClienteConfig *clienteConfig) {
     pthread_mutex_lock(&semSTDOUT);
     printf("Cliente ID:%d\n", clienteConfig->idCliente);
+    printf("Sala ID:%d\n", clienteConfig->idSala);
     printf("\nTentativa %d:\n\n", clienteConfig->jogoAtual.numeroTentativas);
     imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
     pthread_mutex_unlock(&semSTDOUT);
@@ -397,6 +403,7 @@ bool processarEstadoJogo(struct ClienteConfig *clienteConfig) {
 
 void imprimirResultadoFinal(struct ClienteConfig *clienteConfig) {
     pthread_mutex_lock(&semSTDOUT);
+    printf("Cliente ID:%d\n", clienteConfig->idCliente);
     printf("Jogo resolvido!\n");
     printf("Resolvido em %d tentativas\n", 
            clienteConfig->jogoAtual.numeroTentativas - 1);
@@ -526,7 +533,9 @@ int main(int argc, char **argv) {
         // Copia a configuração base para cada jogador
         configsJogadores[i] = clienteConfig;
         configsJogadores[i].idCliente = i + 1;
-
+        if ((i + 1) % 50 == 0) {
+            sleep(1);
+        }
         int result = pthread_create(&threads[i], NULL, jogadorThread, &configsJogadores[i]);
         if (result != 0) {
             fprintf(stderr, "Erro ao criar thread: %s\n", strerror(result));

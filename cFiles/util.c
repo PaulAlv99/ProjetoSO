@@ -77,116 +77,65 @@ const time_t converterTempoStringParaTimeT(char *tempo)
 
 ssize_t readSocket(int socket, void *buffer, size_t length)
 {
-    ssize_t totalRead = 0;
-    char *ptr = (char *)buffer;
-    
-    // Set socket timeout
-    struct timespec tv;
-    tv.tv_sec = 5;  // 5 second timeout
-    tv.tv_nsec = 0;
-    setsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
+	ssize_t totalRead = 0;
+	char *ptr = (char *)buffer;
 
-    // Use poll to check for data availability
-    struct pollfd pfd = {
-        .fd = socket,
-        .events = POLLIN,
-    };
+	while (length > 0)
+	{
+		
+		ssize_t n = recv(socket, ptr, length, 0);
 
-    while (length > 0)
-    {
-        // Check if data is available
-        int poll_result = poll(&pfd, 1, 1000); // 1 second timeout
-        if (poll_result < 0)
-        {
-            if (errno == EINTR)
-                continue;
-            return -1;
-        }
-        if (poll_result == 0)
-        {
-            // Timeout - return what we have or -1 if nothing read
-            return totalRead > 0 ? totalRead : -1;
-        }
+		if (n < 0)
+		{
+			if (errno == EINTR)
+			{
+				continue; // Interrompido por sinal
+			}
+			if (errno == ECONNRESET || errno == EPIPE)
+			{
+				printf("[Sistema] Conexão encerrada pelo cliente\n");
+				return -1;
+			}
+			return -1; // Erro na leitura
+		}
 
-        ssize_t n = recv(socket, ptr, length, 0);
-        if (n < 0)
-        {
-            if (errno == EINTR)
-                continue;
-            if (errno == EAGAIN || errno == EWOULDBLOCK)
-                return totalRead > 0 ? totalRead : -1;
-            if (errno == ECONNRESET || errno == EPIPE)
-            {
-                printf("[Sistema] Conexão encerrada pelo cliente\n");
-                return -1;
-            }
-            return -1;
-        }
-        if (n == 0)
-            return totalRead; // Connection closed
+		if (n == 0)
+		{
+			// EOF - conexão fechada pelo cliente
+			return totalRead;
+		}
 
-        totalRead += n;
-        ptr += n;
-        length -= n;
+		totalRead += n;
+		ptr += n;
+		length -= n;
+	}
 
-        // If we have some data and no more is immediately available, return
-        if (totalRead > 0 && poll(&pfd, 1, 0) <= 0)
-            break;
-    }
-    return totalRead;
+	return totalRead;
 }
 
 ssize_t writeSocket(int socket, const void *buffer, size_t length)
 {
-    ssize_t written = 0;
-    const char *ptr = (const char *)buffer;
-    
-    // Set socket timeout
-    struct timespec tv;
-    tv.tv_sec = 5;
-    tv.tv_nsec = 0;
-    setsockopt(socket, SOL_SOCKET, SO_SNDTIMEO, (const char*)&tv, sizeof tv);
+	ssize_t written = 0;
+	const char *ptr = (const char *)buffer;
 
-    // Use poll to check for write availability
-    struct pollfd pfd = {
-        .fd = socket,
-        .events = POLLOUT,
-    };
-
-    while (length > 0)
-    {
-        // Check if we can write
-        int poll_result = poll(&pfd, 1, 1000); // 1 second timeout
-        if (poll_result < 0)
-        {
-            if (errno == EINTR)
-                continue;
-            return -1;
-        }
-        if (poll_result == 0)
-        {
-            // Timeout - return what we've written or -1 if nothing written
-            return written > 0 ? written : -1;
-        }
-
-        ssize_t n = send(socket, ptr, length, MSG_NOSIGNAL);
-        if (n <= 0)
-        {
-            if (errno == EINTR)
-                continue;
-            if (errno == EAGAIN || errno == EWOULDBLOCK)
-                return written > 0 ? written : -1;
-            if (errno == EPIPE)
-            {
-                printf("[Sistema] Cliente desconectou abruptamente\n");
-                return -1;
-            }
-            return -1;
-        }
-
-        written += n;
-        ptr += n;
-        length -= n;
-    }
-    return written;
+	while (length > 0)
+	{
+        
+		ssize_t n = send(socket, ptr, length, MSG_NOSIGNAL);
+		if (n <= 0)
+		{
+			if (errno == EINTR)
+				continue; // Interrompido por sinal
+			if (errno == EPIPE)
+			{
+				printf("[Sistema] Cliente desconectou abruptamente\n");
+				return -1; // Conexão fechada
+			}
+			return -1; // Erro na escrita
+		}
+		written += n;
+		ptr += n;
+		length -= n;
+	}
+	return written;
 }

@@ -34,7 +34,10 @@
 #define SHM_SIZE 1024
 #define IP_SIZE 16
 #define PATH_SIZE 32
-
+#define COLOR_RED "\033[31m"
+#define COLOR_GREEN "\033[32m"
+#define COLOR_YELLOW "\033[33m"
+#define COLOR_RESET "\033[0m"
 struct JogoAtual
 {
     int idJogo;
@@ -52,6 +55,7 @@ struct ClienteConfig
     int numJogadoresASimular;
     int tempoEntreTentativas;
     int dominio;
+    int idSala;
      unsigned int porta;
     __u_long interface;
     int socket;

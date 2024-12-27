@@ -77,6 +77,7 @@ struct FormatoMensagens
     char *tipoResolucao;
     char *temJogo;
     char *idJogo;
+    char* idSala;
     char *jogo;
     char *valoresCorretos;
     char *tempoInicio;
@@ -126,7 +127,7 @@ void print_fila(struct filaClientesSinglePlayer *fila);
 int getFilaTamanho(struct filaClientesSinglePlayer *fila);
 
 //funcoes uteis para parses e afins 
-void updateClientConfig(struct ClienteConfig *clienteConfig, const struct FormatoMensagens *msg, const char *jogoADar, int nJogo);
+void updateClientConfig(struct ClienteConfig *clienteConfig, const struct FormatoMensagens *msg, const char *jogoADar, int nJogo,int salaID);
 void bufferParaStructCliente(char *buffer, const struct ClienteConfig *clienteConfig);
 char *handleResolucaoJogo(struct ClienteConfig *clienteConfig, struct SalaSinglePlayer *sala);
 struct FormatoMensagens parseMensagem(char *buffer);
