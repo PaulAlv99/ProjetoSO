@@ -1,7 +1,7 @@
 #define CAPACIDADE_CONFSERVER 1
 #define CONFIGFILE "./configs/servidor.conf"
 #include "util.h"
-
+#define MAX_CLIENTS 5000
 // Isto nao e daqui, apagar depois
 struct Jogo
 {
@@ -35,8 +35,8 @@ struct SalaSinglePlayer
     int clienteMin;
     int nClientes;
     bool jogadorAResolver;
-    pthread_mutex_t mutexSala;
     sem_t esperaPrintSaiu;
+    pthread_mutex_t mutexSala;
     int socketCliente;
     struct Jogo jogo;
     int clienteAtualID; // Add this to track current client
@@ -86,7 +86,11 @@ struct FormatoMensagens
     char *resolvido;
     char *numeroTentativas;
 };
-
+struct ClientSocket{
+    int clientID;
+    int socketID;
+    bool ativo;
+};
 // inicializar e configs
 void carregarConfigServidor(char *nomeFicheiro, struct ServidorConfig *serverConfig);
 void carregarFicheiroJogosSolucoes(char *nomeFicheiro, struct Jogo jogosEsolucoes[]);

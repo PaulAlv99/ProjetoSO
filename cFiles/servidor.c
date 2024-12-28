@@ -4,128 +4,23 @@ struct filaClientesSinglePlayer *filaClientesSinglePlayer;
 
 // globais
 static int idCliente = 0;
-
+struct ClientSocket clientSockets[MAX_CLIENTS];
+int clientesID[5];
 // tricos
 pthread_mutex_t mutexServidorLog = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexClienteID = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexNTentativas = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexjogosAleatorios = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexIDSala = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t aceitarCliente = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t verificaEstadoSala = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexAcabouJogo = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t socketsMutex = PTHREAD_MUTEX_INITIALIZER;
 // semaforos
 sem_t semaforoSingleJogador;
 sem_t esperaPrintResolveu;
-
+sem_t aguardaClientesMultiplayer;
+sem_t clientesNaSalaMultiplayer;
 //carregar configs do servidor
-#define MAX_CLIENTS 100  // Adjust based on your needs
-
-struct ClientSocket {
-    int clientID;
-    int socketID;
-    bool active;
-};
-
-struct ClientSocket clientSockets[2000];
-pthread_mutex_t socketsMutex = PTHREAD_MUTEX_INITIALIZER;
-int nextSocketIndex = 0;
-
-void initSocketTracker() {
-    pthread_mutex_lock(&socketsMutex);
-    for (int i = 0; i < MAX_CLIENTS; i++) {
-        clientSockets[i].clientID = -1;
-        clientSockets[i].socketID = -1;
-        clientSockets[i].active = false;
-    }
-    nextSocketIndex = 0;
-    pthread_mutex_unlock(&socketsMutex);
-}
-
-bool addClientSocket(int clientID, int socketID) {
-    pthread_mutex_lock(&socketsMutex);
-    
-    // First, check if client already exists and update if found
-    for (int i = 0; i < 2000; i++) {  // Using full array size instead of MAX_CLIENTS
-        if (clientSockets[i].clientID == clientID) {
-            clientSockets[i].socketID = socketID;
-            clientSockets[i].active = true;
-            pthread_mutex_unlock(&socketsMutex);
-            return true;
-        }
-    }
-    
-    // If client doesn't exist, find first available slot
-    for (int i = 0; i < 2000; i++) {  // Using full array size
-        if (clientSockets[i].active == false) {
-            clientSockets[i].clientID = clientID;
-            clientSockets[i].socketID = socketID;
-            clientSockets[i].active = true;
-            pthread_mutex_unlock(&socketsMutex);
-            return true;
-        }
-    }
-    
-    // No slots available
-    pthread_mutex_unlock(&socketsMutex);
-    return false;
-}
-
-
-int getSocketID(int clientID) {
-    pthread_mutex_lock(&socketsMutex);
-    for (int i = 0; i < MAX_CLIENTS; i++) {
-        if (clientSockets[i].clientID == clientID && clientSockets[i].active) {
-            int socketID = clientSockets[i].socketID;
-            pthread_mutex_unlock(&socketsMutex);
-            return socketID;
-        }
-    }
-    pthread_mutex_unlock(&socketsMutex);
-    return -1;
-}
-bool isSocketAlive(int socket) {
-    int error = 0;
-    socklen_t len = sizeof(error);
-    int retval = getsockopt(socket, SOL_SOCKET, SO_ERROR, &error, &len);
-    
-    if (retval != 0) {
-        // Error getting socket error status
-        return false;
-    }
-    
-    if (error != 0) {
-        // Socket has an error
-        return false;
-    }
-    
-    // Additional check: try to peek at the socket
-    char buffer[1];
-    int peek_result = recv(socket, buffer, 1, MSG_PEEK | MSG_DONTWAIT);
-    if (peek_result == 0) {  // Connection closed
-        return false;
-    } else if (peek_result < 0) {
-        if (errno != EAGAIN && errno != EWOULDBLOCK) {
-            // Real error, not just no data available
-            return false;
-        }
-    }
-    
-    return true;
-}
-void removeClientSocket(int clientID) {
-    pthread_mutex_lock(&socketsMutex);
-    for (int i = 0; i < MAX_CLIENTS; i++) {
-        if (clientSockets[i].clientID == clientID) {
-            clientSockets[i].active = false;
-            clientSockets[i].clientID=-1;
-            clientSockets[i].socketID=-1;
-            break;
-        }
-    }
-    pthread_mutex_unlock(&socketsMutex);
-}
-
 void carregarConfigServidor(char *nomeFicheiro, struct ServidorConfig *serverConfig)
 {
     FILE *config = abrirFicheiroRead(nomeFicheiro);
@@ -313,25 +208,33 @@ bool verificaResolvido(char valoresCorretos[], char solucao[])
     return true;
 }
 
-int lerNumeroJogos(char *nomeFicheiro)
-{
+int lerNumeroJogos(char *nomeFicheiro) {
     FILE *config = abrirFicheiroRead(nomeFicheiro);
-    char buffer[BUF_SIZE];
-    int contadorConfigs = 0;
-    int numeroJogos = 0;
-    while (fgets(buffer, BUF_SIZE, config) != NULL)
-    {
-        if (contadorConfigs % 3 == 2) {
-            numeroJogos++;
-        }
-        contadorConfigs++;
-    }
-    fecharFicheiro(config);
-    if (contadorConfigs == 0)
-    {
-        printf("Sem configs\n");
+    if (config == NULL) {
+        printf("Erro ao abrir ficheiro\n");
         exit(1);
     }
+
+    char buffer[BUF_SIZE];
+    int contadorLinhas = 0;
+    int numeroJogos = 0;
+
+    while (fgets(buffer, BUF_SIZE, config) != NULL) {
+        contadorLinhas++;
+        // A cada 3 linhas completas, temos um jogo
+        if (contadorLinhas % 3 == 0) {
+            numeroJogos++;
+        }
+    }
+
+    fecharFicheiro(config);
+
+    // Verifica se o número de linhas é múltiplo de 3
+    if (contadorLinhas == 0 || contadorLinhas % 3 != 0) {
+        printf("Formato do ficheiro inválido: número de linhas não é múltiplo de 3\n");
+        exit(1);
+    }
+
     return numeroJogos;
 }
 
@@ -373,7 +276,99 @@ void carregarFicheiroJogosSolucoes(char *nomeFicheiro, struct Jogo jogosEsolucoe
         exit(1);
     }
 }
+void iniciarTrackerSocket() {
+    pthread_mutex_lock(&socketsMutex);
+    for (int i = 0; i < MAX_CLIENTS; i++) {
+        clientSockets[i].clientID = -1;
+        clientSockets[i].socketID = -1;
+        clientSockets[i].ativo = false;
+    }
+    pthread_mutex_unlock(&socketsMutex);
+}
 
+bool adicionarClienteSocket(int clientID, int socketID) {
+    pthread_mutex_lock(&socketsMutex);
+    
+    // Ver se cliente já existe se existir dá update
+    for (int i = 0; i < MAX_CLIENTS; i++) {
+        if (clientSockets[i].clientID == clientID) {
+            clientSockets[i].socketID = socketID;
+            clientSockets[i].ativo = true;
+            pthread_mutex_unlock(&socketsMutex);
+            return true;
+        }
+    }
+    
+    // se nao existir coloca primeiro espaço vago
+    for (int i = 0; i < MAX_CLIENTS; i++) {
+        if (clientSockets[i].ativo == false) {
+            clientSockets[i].clientID = clientID;
+            clientSockets[i].socketID = socketID;
+            clientSockets[i].ativo = true;
+            pthread_mutex_unlock(&socketsMutex);
+            return true;
+        }
+    }
+    
+    pthread_mutex_unlock(&socketsMutex);
+    return false;
+}
+
+
+int getSocketID(int clientID) {
+    pthread_mutex_lock(&socketsMutex);
+    for (int i = 0; i < MAX_CLIENTS; i++) {
+        if (clientSockets[i].clientID == clientID && clientSockets[i].ativo) {
+            int socketID = clientSockets[i].socketID;
+            pthread_mutex_unlock(&socketsMutex);
+            return socketID;
+        }
+    }
+    pthread_mutex_unlock(&socketsMutex);
+    return -1;
+}
+// bool estaSocketAtivo(int socket) {
+//     int error = 0;
+//     socklen_t len = sizeof(error);
+//     int retval = getsockopt(socket, SOL_SOCKET, SO_ERROR, &error, &len);
+    
+//     if (retval != 0) {
+//         // erro ao tentar fazer getsockopt
+//         return false;
+//     }
+    
+//     if (error != 0) {
+//         //comando resultou mas algum erro na ligacao- =0 sem erros
+//         return false;
+//     }
+    
+//     // Additional check: try to peek at the socket
+//     char buffer[1];
+//     int peek_result = recv(socket, buffer, 1, MSG_PEEK | MSG_DONTWAIT);
+//     if (peek_result == 0) {  // Connection closed
+//         return false;
+//     } else if (peek_result < 0) {
+//         //EAGAIN/EWOULDBLOCK-operation would block socket valido mas sem dados,
+//         // verificamos por erros diferentes destes
+//         if (errno != EAGAIN && errno != EWOULDBLOCK) {
+//             return false;
+//         }
+//     }
+    
+//     return true;
+// }
+void removeClientSocket(int clientID) {
+    pthread_mutex_lock(&socketsMutex);
+    for (int i = 0; i < MAX_CLIENTS; i++) {
+        if (clientSockets[i].clientID == clientID) {
+            clientSockets[i].ativo = false;
+            clientSockets[i].clientID=-1;
+            clientSockets[i].socketID=-1;
+            break;
+        }
+    }
+    pthread_mutex_unlock(&socketsMutex);
+}
 void construtorServer(struct ServidorConfig *servidor,
                      int dominio, 
                      int servico, 
@@ -416,6 +411,98 @@ void construtorServer(struct ServidorConfig *servidor,
         servidor->sala[i].jogadorAResolver = false;
         servidor->sala[i].clienteAtualID = -1;
     }
+}
+
+/*
+    * Trata de iniciar o servidor socket
+    * iniciar fila para sala singleplayer
+    * aceitar conexoes, criando tarefas
+    * 
+*/
+
+void iniciarServidorSocket(struct ServidorConfig *server,struct Jogo jogosEsolucoes[])
+{
+    int socketServidor = socket(server->dominio, server->servico, server->protocolo);
+    if (socketServidor == -1)
+    {
+        perror("Erro ao criar socket");
+        exit(1);
+    }
+
+    int opt = 1;
+    if (setsockopt(socketServidor, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
+    {
+        perror("setsockopt failed");
+        exit(1);
+    }
+
+    struct sockaddr_in enderecoServidor;
+    enderecoServidor.sin_family = server->dominio;
+    enderecoServidor.sin_port = htons(server->porta);
+    enderecoServidor.sin_addr.s_addr = server->interface;
+
+    if (bind(socketServidor, (struct sockaddr *)&enderecoServidor, sizeof(enderecoServidor)) == -1)
+    {
+        perror("Erro ao fazer bind");
+        exit(1);
+    }
+
+    if (listen(socketServidor, server->backlog) == -1)
+    {
+        perror("Erro ao fazer listen");
+        exit(1);
+    }
+
+    printf("==== Servidor Iniciado ====\n");
+    printf("====== Porta: %d =======\n\n", server->porta);
+
+    sem_init(&semaforoSingleJogador,0,server->numeroJogos);
+    //inicializa salas dos dois tipos de jogo singleplayer e multiplayer
+    //cada sala é uma tarefa
+    iniciarSalasJogoSinglePlayer(server,jogosEsolucoes);
+    iniciarSalasJogoMultiplayer(server,jogosEsolucoes);
+    while (1)
+    {
+        struct sockaddr_in enderecoCliente;
+        int tamanhoEndereco = sizeof(enderecoCliente);
+        int socketCliente = accept(socketServidor, (struct sockaddr *)&enderecoCliente, (socklen_t *)&tamanhoEndereco);
+        if (socketCliente == -1)
+        {
+            perror("Erro ao aceitar conexão");
+            continue;
+        }
+
+        // alocar memoria para args
+        struct ThreadCliente *args = malloc(sizeof(struct ThreadCliente));
+        if (!args)
+        {
+            perror("Erro ao alocar memória para args-thread");
+            shutdown(socket, SHUT_WR);
+            close(socketCliente);
+            continue;
+        }
+
+        
+        args->socketCliente = socketCliente;
+        args->server = server;
+
+        // Criar thread para permitir clientes
+        pthread_t thread;
+        
+        
+        if (pthread_create(&thread, NULL, criaClienteThread, args) != 0)
+        {
+            perror("Failed to create thread");
+            free(args);
+            shutdown(socket, SHUT_WR);
+            close(socketCliente);
+            continue;
+        }
+        // Liberta recursos da thread
+        pthread_detach(thread);
+    }
+    shutdown(socket, SHUT_WR);
+    close(socketServidor);
 }
 
 //Sempre que um cliente faz a ligacao ao servidor, é criada uma thread para ele
@@ -466,101 +553,6 @@ void *criaClienteThread(void *arg)
     return NULL;
 }
 
-/*
-    * Trata de iniciar o servidor socket
-    * iniciar fila para sala singleplayer
-    * aceitar conexoes, criando tarefas
-    * 
-*/
-
-void iniciarServidorSocket(struct ServidorConfig *server,struct Jogo jogosEsolucoes[])
-{
-    int socketServidor = socket(server->dominio, server->servico, server->protocolo);
-    if (socketServidor == -1)
-    {
-        perror("Erro ao criar socket");
-        exit(1);
-    }
-
-    int opt = 1;
-    if (setsockopt(socketServidor, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
-    {
-        perror("setsockopt failed");
-        exit(1);
-    }
-
-    struct sockaddr_in enderecoServidor;
-    enderecoServidor.sin_family = server->dominio;
-    enderecoServidor.sin_port = htons(server->porta);
-    enderecoServidor.sin_addr.s_addr = server->interface;
-
-    if (bind(socketServidor, (struct sockaddr *)&enderecoServidor, sizeof(enderecoServidor)) == -1)
-    {
-        perror("Erro ao fazer bind");
-        exit(1);
-    }
-
-    if (listen(socketServidor, server->backlog) == -1)
-    {
-        perror("Erro ao fazer listen");
-        exit(1);
-    }
-
-    printf("==== Servidor Iniciado ====\n");
-    printf("====== Porta: %d =======\n\n", server->porta);
-
-    sem_init(&semaforoSingleJogador,1,server->numeroJogos);
-    //inicializa salas dos dois tipos de jogo singleplayer e multiplayer
-    //cada sala é uma tarefa
-    //TODO mudar para apenas uma sala multiplayer
-    iniciarSalasJogoSinglePlayer(server,jogosEsolucoes);
-    iniciarSalasJogoMultiplayer(server,jogosEsolucoes);
-    while (1)
-    {
-        struct sockaddr_in enderecoCliente;
-        int tamanhoEndereco = sizeof(enderecoCliente);
-        pthread_mutex_lock(&aceitarCliente);
-        int socketCliente = accept(socketServidor, (struct sockaddr *)&enderecoCliente, (socklen_t *)&tamanhoEndereco);
-        
-        if (socketCliente == -1)
-        {
-            perror("Erro ao aceitar conexão");
-            continue;
-        }
-
-        // alocar memoria para args
-        struct ThreadCliente *args = malloc(sizeof(struct ThreadCliente));
-        if (!args)
-        {
-            perror("Erro ao alocar memória para args-thread");
-            shutdown(socket, SHUT_WR);
-            close(socketCliente);
-            continue;
-        }
-
-        
-        args->socketCliente = socketCliente;
-        args->server = server;
-
-        // Criar thread para permitir clientes
-        pthread_t thread;
-        pthread_mutex_unlock(&aceitarCliente);
-        
-        if (pthread_create(&thread, NULL, criaClienteThread, args) != 0)
-        {
-            perror("Failed to create thread");
-            free(args);
-            shutdown(socket, SHUT_WR);
-            close(socketCliente);
-            continue;
-        }
-        // Liberta recursos da thread
-        pthread_detach(thread);
-    }
-    shutdown(socket, SHUT_WR);
-    close(socketServidor);
-}
-
 // Fazer Parse Mensagem
 struct FormatoMensagens parseMensagem(char *buffer)
 {
@@ -602,16 +594,19 @@ struct SalaSinglePlayer* handleSinglePlayerFila(int idCliente, struct ServidorCo
         return NULL;
     }
     
+    //sinaliza a uma das salas que está um cliente disponivel
+    //ou seja se Sala está nesse sem_wait desbloqueia
     sem_post(&filaClientesSinglePlayer->customers);
 
+    //semaforo para os n-jogos primeiros jogadores da fila ou seja apenas os 3 primeiros vao verificar se podem ir para uma das 3 primeiras salas
     sem_wait(&semaforoSingleJogador);
     // printf("Cliente %d a verificar se foi chamado\n", idCliente);
     
     struct SalaSinglePlayer* salaEncontrada = NULL;
     
-    while (!salaEncontrada) {
-        pthread_mutex_lock(&verificaEstadoSala);
-        
+    //estao constantemente a verificar se foram chamadas
+    pthread_mutex_lock(&verificaEstadoSala);
+    while (!salaEncontrada && getSocketID(idCliente)) {
         for (int i = 0; i < serverConfig->numeroJogos; i++) {
             if (serverConfig->sala[i].clienteAtualID == idCliente) {
                 salaEncontrada = &serverConfig->sala[i];
@@ -620,9 +615,9 @@ struct SalaSinglePlayer* handleSinglePlayerFila(int idCliente, struct ServidorCo
             }
         }
         
-        pthread_mutex_unlock(&verificaEstadoSala);
+
     }
-    
+    pthread_mutex_unlock(&verificaEstadoSala);
     sem_post(&semaforoSingleJogador);
     return salaEncontrada;
 }
@@ -763,7 +758,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
     
     while (!clienteDesconectado && (bytesRecebidos = readSocket(socketCliente, buffer, BUF_SIZE)) > 0) {
         // Log received message
-        addClientSocket(clienteConfig.idCliente,socketCliente);
+        adicionarClienteSocket(clienteConfig.idCliente,socketCliente);
         char bufferFinal[BUF_SIZE] = {0};
         snprintf(bufferFinal, BUF_SIZE, "Mensagem recebida: %s", buffer);
         logEventoServidor(bufferFinal);
@@ -790,7 +785,16 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 nJogo = salaAtual->jogo.idJogo;
                 SalaID = salaAtual->idSala;
             }
-
+            if (strcmp(msgData.tipoJogo, "MUL") == 0) {
+                clienteConfig.idCliente = atoi(msgData.idCliente);
+                if (sem_trywait(&clientesNaSalaMultiplayer) == 0) {
+                    sem_wait(&aguardaClientesMultiplayer);
+                }
+                else if (errno == EAGAIN) {
+                    printf(COLOR_PURPLE"Cliente %d rejeitado sala multiplayer cheia\n"COLOR_RESET,clienteConfig.idCliente);
+                break;
+                }
+            }
             updateClientConfig(&clienteConfig, &msgData, jogoADar, nJogo,SalaID);
 
             bufferParaStructCliente(buffer, &clienteConfig);
@@ -846,6 +850,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
         sem_wait(&salaAtual->esperaPrintSaiu);
     }
     printf(COLOR_RED "Cliente %d saiu\n" COLOR_RESET, clienteConfig.idCliente);
+    removeClientSocket(clienteConfig.idCliente);
     logQueEventoServidor(7, clienteConfig.idCliente, salaAtual ? salaAtual->idSala : 0);
     logQueEventoServidor(7, clienteConfig.idCliente, salaAtual ? salaAtual->idSala : 0);
 }
@@ -1102,12 +1107,28 @@ void* SalaSingleplayer(void* arg) {
     return NULL;
 }
 
-void *SalaMultiplayer(void *arg)
-{
-    struct SalaSinglePlayer *sala = (struct SalaSinglePlayer *)arg;
-    // struct filaClientesSinglePlayer *fila = ;
-
+void* SalaMultiplayer(void* arg) {
+    struct SalaMultiplayer* sala = (struct SalaMultiplayer*)arg;  // Fixed casting
+    int umaVez = 1;
+    //sem que incrementa sempre que cliente entra
+    sem_init(&aguardaClientesMultiplayer, 0, 0);
+    // max de clientes que podem entrar
+    sem_init(&clientesNaSalaMultiplayer, 0, 5);
+    
     printf("[Sala-%d] Iniciada-Multiplayer\n", sala->idSala);
+    int waiting = 0;
+    while (1) {
+        // Wait for 5 clients
+        sem_getvalue(&aguardaClientesMultiplayer, &waiting);
+        if (waiting == 5 && umaVez) {
+            printf("[Sala-%d] Começando jogo sala multiplayer\n", sala->idSala);
+            umaVez = 0;
+            // Start game logic here
+        }
+        
+        // Add game loop logic here
+    }
+    
     return NULL;
 }
 void *iniciarSalaSinglePlayer(void *arg)
@@ -1170,14 +1191,13 @@ void iniciarSalasJogoMultiplayer(struct ServidorConfig *serverConfig, struct Jog
         exit(1);
     }
 
-    int numeroTotalSalas = 3 + serverConfig->numeroJogos;
-    for (int i = 3; i < numeroTotalSalas; i++)
+    int numeroTotalSalas = 1 + serverConfig->numeroJogos;
+    for (int i = serverConfig->numeroJogos; i < numeroTotalSalas; i++)
     {
         serverConfig->salaMultiplayer[i].idSala = i;
         serverConfig->salaMultiplayer[i].clientesMax = 5;
         serverConfig->salaMultiplayer[i].clienteMin = 5;
         serverConfig->salaMultiplayer[i].nClientes = 0;
-        pthread_cond_init(&serverConfig->salaMultiplayer[i].jogoADecorrer, NULL);
         serverConfig->salaMultiplayer[i].jogoIniciado = false;
         serverConfig->salaMultiplayer[i].clienteAtualID = NULL;
 
@@ -1185,11 +1205,6 @@ void iniciarSalasJogoMultiplayer(struct ServidorConfig *serverConfig, struct Jog
         serverConfig->salaMultiplayer[i].jogo = jogosEsolucoes[i];
 
         if (pthread_mutex_init(&serverConfig->salaMultiplayer[i].mutexSala, NULL) != 0)
-        {
-            perror("Failed to initialize room mutex");
-            exit(1);
-        }
-        if (pthread_cond_init(&serverConfig->salaMultiplayer[i].jogoADecorrer, NULL) != 0)
         {
             perror("Failed to initialize room mutex");
             exit(1);
@@ -1210,7 +1225,7 @@ void iniciarSalasJogoMultiplayer(struct ServidorConfig *serverConfig, struct Jog
 int main(int argc, char **argv) {
     struct ServidorConfig serverConfig = {0};
     sem_init(&esperaPrintResolveu,0,0);
-    initSocketTracker();
+    iniciarTrackerSocket();
     
     if (argc < 2) {
         printf("Erro: Nome do ficheiro nao fornecido.\n");

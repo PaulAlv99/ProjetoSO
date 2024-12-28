@@ -217,12 +217,12 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 	// readSocket(clienteConfig->socket, recebeIDCliente, BUF_SIZE);
 	// cliente recebe id do servidor
 	
-	pthread_mutex_lock(&semSTDOUT);
-	printf("========= Ligado =========\n");
-	printf("===== IP: %s ======\n", clienteConfig->ipServidor);
-	printf("===== Porta: %d =======\n", clienteConfig->porta);
-	printf("===== Cliente ID: %u =======\n\n", clienteConfig->idCliente);
-	pthread_mutex_unlock(&semSTDOUT);
+	// pthread_mutex_lock(&semSTDOUT);
+	// printf("========= Ligado =========\n");
+	// printf("===== IP: %s ======\n", clienteConfig->ipServidor);
+	// printf("===== Porta: %d =======\n", clienteConfig->porta);
+	// printf("===== Cliente ID: %u =======\n\n", clienteConfig->idCliente);
+	// pthread_mutex_unlock(&semSTDOUT);
 	mandarETratarMSG(clienteConfig);
     shutdown(socket, SHUT_WR);
 	close(clienteConfig->socket);
@@ -482,6 +482,7 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 }
 // Thread function that will replace the child process logic
 void* jogadorThread(void* arg) {
+    
     struct ClienteConfig* config = (struct ClienteConfig*)arg;
     
     pthread_mutex_lock(&semSTDOUT);
