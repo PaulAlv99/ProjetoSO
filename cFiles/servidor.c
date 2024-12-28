@@ -17,8 +17,114 @@ pthread_mutex_t mutexAcabouJogo = PTHREAD_MUTEX_INITIALIZER;
 // semaforos
 sem_t semaforoSingleJogador;
 sem_t esperaPrintResolveu;
-sem_t esperaPrintSaiu;
+
 //carregar configs do servidor
+#define MAX_CLIENTS 100  // Adjust based on your needs
+
+struct ClientSocket {
+    int clientID;
+    int socketID;
+    bool active;
+};
+
+struct ClientSocket clientSockets[2000];
+pthread_mutex_t socketsMutex = PTHREAD_MUTEX_INITIALIZER;
+int nextSocketIndex = 0;
+
+void initSocketTracker() {
+    pthread_mutex_lock(&socketsMutex);
+    for (int i = 0; i < MAX_CLIENTS; i++) {
+        clientSockets[i].clientID = -1;
+        clientSockets[i].socketID = -1;
+        clientSockets[i].active = false;
+    }
+    nextSocketIndex = 0;
+    pthread_mutex_unlock(&socketsMutex);
+}
+
+bool addClientSocket(int clientID, int socketID) {
+    pthread_mutex_lock(&socketsMutex);
+    
+    // First, check if client already exists and update if found
+    for (int i = 0; i < 2000; i++) {  // Using full array size instead of MAX_CLIENTS
+        if (clientSockets[i].clientID == clientID) {
+            clientSockets[i].socketID = socketID;
+            clientSockets[i].active = true;
+            pthread_mutex_unlock(&socketsMutex);
+            return true;
+        }
+    }
+    
+    // If client doesn't exist, find first available slot
+    for (int i = 0; i < 2000; i++) {  // Using full array size
+        if (clientSockets[i].active == false) {
+            clientSockets[i].clientID = clientID;
+            clientSockets[i].socketID = socketID;
+            clientSockets[i].active = true;
+            pthread_mutex_unlock(&socketsMutex);
+            return true;
+        }
+    }
+    
+    // No slots available
+    pthread_mutex_unlock(&socketsMutex);
+    return false;
+}
+
+
+int getSocketID(int clientID) {
+    pthread_mutex_lock(&socketsMutex);
+    for (int i = 0; i < MAX_CLIENTS; i++) {
+        if (clientSockets[i].clientID == clientID && clientSockets[i].active) {
+            int socketID = clientSockets[i].socketID;
+            pthread_mutex_unlock(&socketsMutex);
+            return socketID;
+        }
+    }
+    pthread_mutex_unlock(&socketsMutex);
+    return -1;
+}
+bool isSocketAlive(int socket) {
+    int error = 0;
+    socklen_t len = sizeof(error);
+    int retval = getsockopt(socket, SOL_SOCKET, SO_ERROR, &error, &len);
+    
+    if (retval != 0) {
+        // Error getting socket error status
+        return false;
+    }
+    
+    if (error != 0) {
+        // Socket has an error
+        return false;
+    }
+    
+    // Additional check: try to peek at the socket
+    char buffer[1];
+    int peek_result = recv(socket, buffer, 1, MSG_PEEK | MSG_DONTWAIT);
+    if (peek_result == 0) {  // Connection closed
+        return false;
+    } else if (peek_result < 0) {
+        if (errno != EAGAIN && errno != EWOULDBLOCK) {
+            // Real error, not just no data available
+            return false;
+        }
+    }
+    
+    return true;
+}
+void removeClientSocket(int clientID) {
+    pthread_mutex_lock(&socketsMutex);
+    for (int i = 0; i < MAX_CLIENTS; i++) {
+        if (clientSockets[i].clientID == clientID) {
+            clientSockets[i].active = false;
+            clientSockets[i].clientID=-1;
+            clientSockets[i].socketID=-1;
+            break;
+        }
+    }
+    pthread_mutex_unlock(&socketsMutex);
+}
 
 void carregarConfigServidor(char *nomeFicheiro, struct ServidorConfig *serverConfig)
 {
@@ -361,11 +467,6 @@ void *criaClienteThread(void *arg)
 }
 
 /*
-    * Inicia o servidor socket
-    * 
-    * @param server - Configurações do servidor
-    * @param jogosEsolucoes - Array de jogos e soluções
-    * 
     * Trata de iniciar o servidor socket
     * iniciar fila para sala singleplayer
     * aceitar conexoes, criando tarefas
@@ -411,6 +512,7 @@ void iniciarServidorSocket(struct ServidorConfig *server,struct Jogo jogosEsoluc
     sem_init(&semaforoSingleJogador,1,server->numeroJogos);
     //inicializa salas dos dois tipos de jogo singleplayer e multiplayer
     //cada sala é uma tarefa
+    //TODO mudar para apenas uma sala multiplayer
     iniciarSalasJogoSinglePlayer(server,jogosEsolucoes);
     iniciarSalasJogoMultiplayer(server,jogosEsolucoes);
     while (1)
@@ -519,10 +621,6 @@ struct SalaSinglePlayer* handleSinglePlayerFila(int idCliente, struct ServidorCo
         }
         
         pthread_mutex_unlock(&verificaEstadoSala);
-        
-        if (!salaEncontrada) {
-            // usleep(10000);
-        }
     }
     
     sem_post(&semaforoSingleJogador);
@@ -590,14 +688,8 @@ char *handleResolucaoJogo(struct ClienteConfig *clienteConfig, struct SalaSingle
 }
 
 bool verSeJogoAcabouEAtualizar(struct ClienteConfig *cliente, struct SalaSinglePlayer *sala)
-{
+{   
     pthread_mutex_lock(&mutexAcabouJogo);
-
-    if (cliente->jogoAtual.resolvido)
-    {
-        pthread_mutex_unlock(&mutexAcabouJogo);
-        return true;
-    }
 
     if (verificaResolvido(cliente->jogoAtual.valoresCorretos, sala->jogo.solucao))
     {
@@ -666,9 +758,12 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
     int bytesRecebidos;
     int SalaID = -1;
     bool clienteDesconectado = false;
-
+    
+    
+    
     while (!clienteDesconectado && (bytesRecebidos = readSocket(socketCliente, buffer, BUF_SIZE)) > 0) {
         // Log received message
+        addClientSocket(clienteConfig.idCliente,socketCliente);
         char bufferFinal[BUF_SIZE] = {0};
         snprintf(bufferFinal, BUF_SIZE, "Mensagem recebida: %s", buffer);
         logEventoServidor(bufferFinal);
@@ -715,21 +810,18 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
             continue;
         }
 
-        // Handle game moves
         if (strcmp(msgData.temJogo, "COM_JOGO") == 0) {
             if (!salaAtual) {
                 printf("Erro: Cliente sem sala atribuída\n");
                 break;
             }
 
-            // Update client config with received data
             atualizarClientConfig(&clienteConfig, &msgData);
             logQueEventoServidor(5, clienteConfig.idCliente, salaAtual->idSala);
 
             char *logClienteEnviar = handleResolucaoJogo(&clienteConfig, salaAtual);
             bool gameCompleted = verSeJogoAcabouEAtualizar(&clienteConfig, salaAtual);
 
-            // Prepare and send response
             memset(buffer, 0, BUF_SIZE);
             prepararRespostaJogo(buffer, &clienteConfig, logClienteEnviar);
 
@@ -745,20 +837,16 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
             }
         }
     }
-    sem_wait(&esperaPrintSaiu);
+    if(salaAtual) {
+        pthread_mutex_lock(&salaAtual->mutexSala);
+        salaAtual->jogadorAResolver = false;
+        salaAtual->clienteAtualID = -1;
+        salaAtual->nClientes = 0;
+        pthread_mutex_unlock(&salaAtual->mutexSala);
+        sem_wait(&salaAtual->esperaPrintSaiu);
+    }
     printf(COLOR_RED "Cliente %d saiu\n" COLOR_RESET, clienteConfig.idCliente);
-    // // Cleanup when client disconnects
-    // if (salaAtual) {
-    //     pthread_mutex_lock(&salaAtual->mutexSala);
-    //     salaAtual->nClientes = 0;
-    //     salaAtual->clienteAtualID = -1;
-    //     salaAtual->jogadorAResolver = false;
-    //     pthread_cond_broadcast(&salaAtual->condSala);
-    //     pthread_mutex_unlock(&salaAtual->mutexSala);
-        
-    //     printf("Cliente %d saiu da sala %d\n", clienteConfig.idCliente, salaAtual->idSala);
-    // }
-
+    logQueEventoServidor(7, clienteConfig.idCliente, salaAtual ? salaAtual->idSala : 0);
     logQueEventoServidor(7, clienteConfig.idCliente, salaAtual ? salaAtual->idSala : 0);
 }
 
@@ -853,7 +941,6 @@ bool enqueue(struct filaClientesSinglePlayer *fila, int clientID)
         printf(COLOR_PURPLE"[Fila] Rejeitado cliente %d - fila cheia (tamanho: %d)\n"COLOR_RESET,
                clientID, fila->tamanho);
                //passo 0 como nao importa para esta msg
-        sem_post(&esperaPrintSaiu);
         logQueEventoServidor(11, clientID,0);
         pthread_mutex_unlock(&fila->mutex);
         return false;
@@ -968,49 +1055,53 @@ void* SalaSingleplayer(void* arg) {
     while (1) {
         sem_wait(&filaClientesSinglePlayer->customers);
         pthread_mutex_lock(&sala->mutexSala);
-        
-        // if (sala->nClientes > 0) {
-        //     pthread_mutex_unlock(&sala->mutexSala);
-        //     sem_post(&filaClientesSinglePlayer->customers);
-        //     continue;
-        // }
-        
+       
         int clienteID = dequeue(filaClientesSinglePlayer);
         if (clienteID == -1) {
             pthread_mutex_unlock(&sala->mutexSala);
             sem_post(&filaClientesSinglePlayer->customers);
             continue;
         }
-        
+       
         sala->nClientes = 1;
         sala->jogadorAResolver = true;
         sala->clienteAtualID = clienteID;
-                
+       
         printf(COLOR_YELLOW "[Sala-%d] Atendendo cliente %d com jogo %d\n" COLOR_RESET,
                sala->idSala, clienteID, sala->jogo.idJogo);
                
         bool clienteFinalizou = false;
+        
+
         while (!clienteFinalizou) {
             
-            if (!sala->jogadorAResolver) {
+            // Check if client disconnected or finished
+             if (!sala->jogadorAResolver) {
                 sala->nClientes = 0;
                 sala->clienteAtualID = -1;
                 clienteFinalizou = true;
-                sem_wait(&esperaPrintResolveu);
-                printf("[Sala-%d] Cliente %d finalizou\n", sala->idSala, clienteID);
-                printf("[Sala-%d] Cliente %d saiu da sala\n", sala->idSala, clienteID);
-                sem_post(&esperaPrintSaiu);
+                
+                int socketID = getSocketID(clienteID);
+                bool isConnected = false;
+                
+                if (socketID>=0) {
+                    printf("[Sala-%d] Cliente %d saiu da sala\n", sala->idSala, clienteID);
+                } else {
+                    printf("[Sala-%d] Cliente %d saiu da sala mas nao acabou o jogo\n", sala->idSala, clienteID);
+                }
+                
+                sem_post(&sala->esperaPrintSaiu);
                 pthread_mutex_unlock(&sala->mutexSala);
                 break;
             }
-                        
-            if (!clienteFinalizou) {
-                // usleep(100000);
-            }
+            
+            pthread_mutex_unlock(&sala->mutexSala);
+            usleep(100000); // 100ms sleep to reduce CPU usage
         }
     }
     return NULL;
 }
+
 void *SalaMultiplayer(void *arg)
 {
     struct SalaSinglePlayer *sala = (struct SalaSinglePlayer *)arg;
@@ -1116,32 +1207,32 @@ void iniciarSalasJogoMultiplayer(struct ServidorConfig *serverConfig, struct Jog
     }
 }
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     struct ServidorConfig serverConfig = {0};
     sem_init(&esperaPrintResolveu,0,0);
-    sem_init(&esperaPrintSaiu,0,0);
-    if (argc < 2)
-    {
+    initSocketTracker();
+    
+    if (argc < 2) {
         printf("Erro: Nome do ficheiro nao fornecido.\n");
         return 1;
     }
 
-    if (strcmp(argv[1], CONFIGFILE) != 0)
-    {
+    if (strcmp(argv[1], CONFIGFILE) != 0) {
         printf("Nome do ficheiro incorreto\n");
         return 1;
     }
+    
     carregarConfigServidor(argv[1], &serverConfig);
     int numeroJogos = lerNumeroJogos(serverConfig.ficheiroJogosESolucoesCaminho);
     struct Jogo jogosEsolucoes[numeroJogos];
     serverConfig.numeroJogos = numeroJogos;
     carregarFicheiroJogosSolucoes(serverConfig.ficheiroJogosESolucoesCaminho,jogosEsolucoes);
     construtorServer(&serverConfig,AF_INET, SOCK_STREAM, 0, INADDR_ANY, serverConfig.porta, 1, serverConfig.ficheiroJogosESolucoesCaminho);
-    //passo 0 como nao importa para esta msg
+    
     logQueEventoServidor(1, 0,0);
     filaClientesSinglePlayer = malloc(sizeof(struct filaClientesSinglePlayer));
     filaClientesSinglePlayer = criarFila(&serverConfig);
+    
     iniciarServidorSocket(&serverConfig,jogosEsolucoes);
     return 0;
 }

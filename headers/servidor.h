@@ -36,7 +36,8 @@ struct SalaSinglePlayer
     int nClientes;
     bool jogadorAResolver;
     pthread_mutex_t mutexSala;
-    pthread_cond_t condSala;
+    sem_t esperaPrintSaiu;
+    int socketCliente;
     struct Jogo jogo;
     int clienteAtualID; // Add this to track current client
 };
