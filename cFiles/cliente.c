@@ -116,9 +116,6 @@ void logQueEventoCliente(int numero, struct ClienteConfig clienteConfig)
 	case 1:
 		logEventoCliente("Cliente comecou o programa", &clienteConfig);
 		break;
-	case 2:
-		logEventoCliente("Cliente desconectou-se", &clienteConfig);
-		break;
 	case 3:
 		logEventoCliente("Cliente conectou-se ao servidor", &clienteConfig);
 		break;
@@ -226,7 +223,6 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 	mandarETratarMSG(clienteConfig);
     shutdown(socket, SHUT_WR);
 	close(clienteConfig->socket);
-	logQueEventoCliente(2, *clienteConfig);
 }
 
 void tentarSolucaoParcial(char tentativaAtual[], char valoresCorretos[])
@@ -467,6 +463,12 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
             }
         }
         if (strcmp(buffer, "FILA CHEIA SINGLEPLAYER") == 0) {
+            pthread_mutex_lock(&semSTDOUT);
+            printf("Fila singleplayer está cheia\n");
+            pthread_mutex_unlock(&semSTDOUT);
+            break;
+        }
+        if (strcmp(buffer, "FILA CHEIA MULTIPLAYER") == 0) {
             pthread_mutex_lock(&semSTDOUT);
             printf("Fila singleplayer está cheia\n");
             pthread_mutex_unlock(&semSTDOUT);

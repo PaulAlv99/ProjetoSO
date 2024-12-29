@@ -91,6 +91,12 @@ struct ClientSocket{
     int socketID;
     bool ativo;
 };
+enum GameState {
+    WAITING_PLAYERS,
+    GAME_STARTING,
+    GAME_RUNNING,
+    GAME_ENDED
+};
 // inicializar e configs
 void carregarConfigServidor(char *nomeFicheiro, struct ServidorConfig *serverConfig);
 void carregarFicheiroJogosSolucoes(char *nomeFicheiro, struct Jogo jogosEsolucoes[]);

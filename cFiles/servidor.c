@@ -786,15 +786,30 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 SalaID = salaAtual->idSala;
             }
             if (strcmp(msgData.tipoJogo, "MUL") == 0) {
-                clienteConfig.idCliente = atoi(msgData.idCliente);
-                if (sem_trywait(&clientesNaSalaMultiplayer) == 0) {
-                    sem_wait(&aguardaClientesMultiplayer);
-                }
-                else if (errno == EAGAIN) {
-                    printf(COLOR_PURPLE"Cliente %d rejeitado sala multiplayer cheia\n"COLOR_RESET,clienteConfig.idCliente);
+    clienteConfig.idCliente = atoi(msgData.idCliente);
+    struct SalaMultiplayer* roomPtr = &serverConfig.salaMultiplayer[0]; // Use first multiplayer room
+    
+        int sem_result = sem_trywait(&clientesNaSalaMultiplayer);
+            if (sem_result == 0) {
+                printf("[Sala-%d] Cliente %d entrou na sala\n", 
+                    roomPtr->idSala, clienteConfig.idCliente);
+                jogoADar = roomPtr->jogo.jogo;
+                nJogo = roomPtr->jogo.idJogo;
+                SalaID = roomPtr->idSala;
+            } else if (errno == EAGAIN) {
+                printf(COLOR_PURPLE "[Sala-%d] Cliente %d rejeitado - sala multiplayer cheia\n" COLOR_RESET,
+                    roomPtr->idSala, clienteConfig.idCliente);
+                const char* filaCheiaMUL = "FILA CHEIA MULTIPLAYER";
+                writeSocket(socketCliente, filaCheiaMUL, strlen(filaCheiaMUL));
+                clienteDesconectado = true;
                 break;
-                }
+            } else {
+                printf("[Sala-%d] Erro ao processar entrada do cliente %d\n",
+                    roomPtr->idSala, clienteConfig.idCliente);
+                clienteDesconectado = true;
+                break;
             }
+        }
             updateClientConfig(&clienteConfig, &msgData, jogoADar, nJogo,SalaID);
 
             bufferParaStructCliente(buffer, &clienteConfig);
@@ -1108,27 +1123,40 @@ void* SalaSingleplayer(void* arg) {
 }
 
 void* SalaMultiplayer(void* arg) {
-    struct SalaMultiplayer* sala = (struct SalaMultiplayer*)arg;  // Fixed casting
-    int umaVez = 1;
-    //sem que incrementa sempre que cliente entra
-    sem_init(&aguardaClientesMultiplayer, 0, 0);
-    // max de clientes que podem entrar
-    sem_init(&clientesNaSalaMultiplayer, 0, 5);
+    struct SalaMultiplayer* sala = (struct SalaMultiplayer*) arg;
+    enum GameState state = WAITING_PLAYERS;
+    int temp = -1;
     
+    sem_init(&clientesNaSalaMultiplayer, 0, 5);
     printf("[Sala-%d] Iniciada-Multiplayer\n", sala->idSala);
-    int waiting = 0;
+    
     while (1) {
-        // Wait for 5 clients
-        sem_getvalue(&aguardaClientesMultiplayer, &waiting);
-        if (waiting == 5 && umaVez) {
-            printf("[Sala-%d] Começando jogo sala multiplayer\n", sala->idSala);
-            umaVez = 0;
-            // Start game logic here
-        }
+        sem_getvalue(&clientesNaSalaMultiplayer, &temp);
         
-        // Add game loop logic here
+        switch(state) {
+            case WAITING_PLAYERS:
+                if (temp == 0) {
+                    printf("[Sala-%d] Começando jogo sala multiplayer\n", sala->idSala);
+                    state = GAME_STARTING;
+                }
+                break;
+                
+            case GAME_STARTING:
+                // Initialize game
+                state = GAME_RUNNING;
+                break;
+                
+            case GAME_RUNNING:
+                // Game loop logic
+                break;
+                
+            case GAME_ENDED:
+                // Cleanup and possibly restart
+                break;
+        }
     }
     
+    sem_destroy(&clientesNaSalaMultiplayer);
     return NULL;
 }
 void *iniciarSalaSinglePlayer(void *arg)
