@@ -144,7 +144,7 @@ void construtorCliente(int dominio, unsigned int porta, __u_long interface, stru
 {
 	strcpy(clienteConfig->TemJogo, "SEM_JOGO");
 	clienteConfig->jogoAtual.resolvido = false;
-	clienteConfig->jogoAtual.numeroTentativas = 1;
+	clienteConfig->jogoAtual.numeroTentativas = 0;
 	clienteConfig->jogoAtual.idJogo = 0;
     clienteConfig->idSala = -1;
 	size_t tamanhoStringJogo = strlen(clienteConfig->jogoAtual.jogo);
@@ -399,22 +399,25 @@ bool processarEstadoJogo(struct ClienteConfig *clienteConfig) {
 void imprimirResultadoFinal(struct ClienteConfig *clienteConfig) {
     pthread_mutex_lock(&semSTDOUT);
     printf("Cliente ID:%d\n", clienteConfig->idCliente);
+    printf("Sala ID:%d\n", clienteConfig->idSala);
+    printf("Tentativa %d:\n\n",clienteConfig->jogoAtual.numeroTentativas);
+    imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
     printf("Jogo resolvido!\n");
     printf("Resolvido em %d tentativas\n", 
-           clienteConfig->jogoAtual.numeroTentativas - 1);
+           clienteConfig->jogoAtual.numeroTentativas);
     printf("Hora de fim: %s\n", clienteConfig->jogoAtual.tempoFinal);
     pthread_mutex_unlock(&semSTDOUT);
 }
 
-void imprimirEstadoInicial(struct ClienteConfig *clienteConfig) {
-    pthread_mutex_lock(&semSTDOUT);
-    printf("Cliente ID:%d\n", clienteConfig->idCliente);
-    printf("Iniciando tentativa de solução...\n");
-    printf("Jogo Inicial:\n\n");
-    printf("Hora de inicio: %s\n\n", clienteConfig->jogoAtual.tempoInicio);
-    imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
-    pthread_mutex_unlock(&semSTDOUT);
-}
+// void imprimirEstadoInicial(struct ClienteConfig *clienteConfig) {
+//     pthread_mutex_lock(&semSTDOUT);
+//     printf("Cliente ID:%d\n", clienteConfig->idCliente);
+//     printf("Iniciando tentativa de solução...\n");
+//     printf("Jogo Inicial:\n\n");
+//     printf("Hora de inicio: %s\n\n", clienteConfig->jogoAtual.tempoInicio);
+//     imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
+//     pthread_mutex_unlock(&semSTDOUT);
+// }
 
 // Main message handling function
 void mandarETratarMSG(struct ClienteConfig *clienteConfig) 
@@ -448,9 +451,9 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
         
         // Handle game state
         if (strcmp(clienteConfig->TemJogo, "COM_JOGO") == 0) {
-            if (clienteConfig->jogoAtual.numeroTentativas == 1) {
-                imprimirEstadoInicial(clienteConfig);
-            }
+            // if (clienteConfig->jogoAtual.numeroTentativas == 1) {
+            //     imprimirEstadoInicial(clienteConfig);
+            // }
             
             if (!clienteConfig->jogoAtual.resolvido) {
                 if (!processarEstadoJogo(clienteConfig)) {
