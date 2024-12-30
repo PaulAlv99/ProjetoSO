@@ -54,6 +54,15 @@ struct SalaMultiplayer {
     int *clienteAtualID;
     bool jogoIniciado;
     time_t tempoInicio;
+    pthread_mutex_t moveMutex;
+    pthread_mutex_t stateMutex;
+    sem_t roundBarrier;
+    sem_t clientesNaSala;
+    int currentRound;
+    int lastMoveByClient;
+    bool roundComplete;
+    char lastMove[BUF_SIZE];
+    int activeClients[5];  // Track active client sockets
 };
 struct sala{
     union{

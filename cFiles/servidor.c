@@ -5,7 +5,6 @@ struct filaClientesSinglePlayer *filaClientesSinglePlayer;
 // globais
 static int idCliente = 0;
 struct ClientSocket clientSockets[MAX_CLIENTS];
-int clientesID[5];
 // tricos
 pthread_mutex_t mutexServidorLog = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexClienteID = PTHREAD_MUTEX_INITIALIZER;
@@ -400,7 +399,7 @@ void construtorServer(struct ServidorConfig *servidor,
         perror("Erro ao alocar memória para salas");
         exit(1);
     }
-
+    servidor->salaMultiplayer=malloc(sizeof(struct SalaMultiplayer));
     //colocar a 0 as posicoes de mem que temos
     memset(servidor->sala, 0, servidor->numeroJogos * sizeof(struct SalaSinglePlayer));
 
@@ -750,6 +749,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                                  struct ServidorConfig serverConfig)
 {
     struct SalaSinglePlayer *salaAtual = NULL;
+    struct SalaMultiplayer* roomPtr= NULL;
     char *jogoADar = "";
     int nJogo = -1;
     int bytesRecebidos;
@@ -790,18 +790,18 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
             if (strcmp(msgData.tipoJogo, "MUL") == 0) {
     clienteConfig.idCliente = atoi(msgData.idCliente);
     
-    struct SalaMultiplayer* roomPtr = &serverConfig.salaMultiplayer[serverConfig.numeroJogos];
+    
     int sem_result = sem_trywait(&clientesNaSalaMultiplayer);
     
         if (sem_result == 0) {
+            roomPtr = &serverConfig.salaMultiplayer[0];
             printf("[Sala-%d] Cliente %d entrou na sala\n",
                 roomPtr->idSala, clienteConfig.idCliente);
             jogoADar = roomPtr->jogo.jogo;
             nJogo = roomPtr->jogo.idJogo;
             SalaID = roomPtr->idSala;
         } else if (errno == EAGAIN) {
-            printf(COLOR_PURPLE "[Sala-%d] Cliente %d rejeitado - sala multiplayer cheia\n" COLOR_RESET,
-                roomPtr->idSala, clienteConfig.idCliente);
+            printf(COLOR_PURPLE "Cliente %d rejeitado - sala multiplayer cheia\n" COLOR_RESET, clienteConfig.idCliente);
             const char* filaCheiaMUL = "FILA CHEIA MULTIPLAYER";
             writeSocket(socketCliente, filaCheiaMUL, strlen(filaCheiaMUL));
             clienteDesconectado = true;
@@ -833,7 +833,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
         }
 
         if (strcmp(msgData.temJogo, "COM_JOGO") == 0) {
-            if (!salaAtual) {
+            if (!salaAtual || !roomPtr) {
                 printf("Erro: Cliente sem sala atribuída\n");
                 break;
             }
@@ -865,7 +865,6 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
         salaAtual->nClientes = 0;
         sem_post(&salaAtual->esperaRespostaClienteSingle);
         sem_wait(&salaAtual->esperaPrintSaiu);
-        
     }
     printf(COLOR_RED "Cliente %d saiu\n" COLOR_RESET, clienteConfig.idCliente);
     removeClientSocket(clienteConfig.idCliente);
@@ -1235,10 +1234,9 @@ void iniciarSalasJogoMultiplayer(struct ServidorConfig *serverConfig, struct Jog
         exit(1);
     }
 
-    int numeroTotalSalas = 1 + serverConfig->numeroJogos;
-    for (int i = serverConfig->numeroJogos; i < numeroTotalSalas; i++)
+    for (int i = 0; i < 1; i++)
     {
-        serverConfig->salaMultiplayer[i].idSala = i;
+        serverConfig->salaMultiplayer[i].idSala = serverConfig->numeroJogos;
         serverConfig->salaMultiplayer[i].clientesMax = 5;
         serverConfig->salaMultiplayer[i].clienteMin = 5;
         serverConfig->salaMultiplayer[i].nClientes = 0;
