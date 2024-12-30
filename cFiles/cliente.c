@@ -489,10 +489,6 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 void* jogadorThread(void* arg) {
     
     struct ClienteConfig* config = (struct ClienteConfig*)arg;
-    
-    pthread_mutex_lock(&semSTDOUT);
-    printf("Iniciando jogador %d\n", config->idCliente);
-    pthread_mutex_unlock(&semSTDOUT);
 
     // Inicia o cliente
     construtorCliente(AF_INET, config->porta, INADDR_ANY, config);
@@ -537,7 +533,6 @@ int main(int argc, char **argv) {
     for (int i = 0; i < numJogadores; i++) {
         // Copia a configuração base para cada jogador
         configsJogadores[i] = clienteConfig;
-        configsJogadores[i].idCliente = i + 1;
         
         int result = pthread_create(&threads[i], NULL, jogadorThread, &configsJogadores[i]);
         if (result != 0) {

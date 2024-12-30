@@ -456,7 +456,8 @@ void iniciarServidorSocket(struct ServidorConfig *server,struct Jogo jogosEsoluc
     printf("==== Servidor Iniciado ====\n");
     printf("====== Porta: %d =======\n\n", server->porta);
 
-    sem_init(&semaforoSingleJogador,0,server->numeroJogos);
+    //sem para o primeiro da fila verificar em que sala está
+    sem_init(&semaforoSingleJogador,0,1);
     //inicializa salas dos dois tipos de jogo singleplayer e multiplayer
     //cada sala é uma tarefa
     iniciarSalasJogoSinglePlayer(server,jogosEsolucoes);
@@ -598,14 +599,18 @@ struct SalaSinglePlayer* handleSinglePlayerFila(int idCliente, struct ServidorCo
     //ou seja se Sala está nesse sem_wait desbloqueia
     sem_post(&filaClientesSinglePlayer->customers);
 
-    //semaforo para os n-jogos primeiros jogadores da fila ou seja apenas os 3 primeiros vao verificar se podem ir para uma das 3 primeiras salas
-    sem_wait(&semaforoSingleJogador);
+    //semaforo para o primeiro jogador da fila verificar em que sala foi colocado
+    
+    
     // printf("Cliente %d a verificar se foi chamado\n", idCliente);
     
     struct SalaSinglePlayer* salaEncontrada = NULL;
     
     //estao constantemente a verificar se foram chamadas
     pthread_mutex_lock(&verificaEstadoSala);
+    sem_wait(&semaforoSingleJogador);
+    //este while consome muitos recursos porque está sempre
+    // a verificar se alguma fala foi atribuida
     while (!salaEncontrada && getSocketID(idCliente)) {
         for (int i = 0; i < serverConfig->numeroJogos; i++) {
             if (serverConfig->sala[i].clienteAtualID == idCliente) {
@@ -614,11 +619,8 @@ struct SalaSinglePlayer* handleSinglePlayerFila(int idCliente, struct ServidorCo
                 break;
             }
         }
-        
-
     }
     pthread_mutex_unlock(&verificaEstadoSala);
-    sem_post(&semaforoSingleJogador);
     return salaEncontrada;
 }
 
@@ -690,7 +692,7 @@ bool verSeJogoAcabouEAtualizar(struct ClienteConfig *cliente, struct SalaSingleP
     {
         cliente->jogoAtual.resolvido = 1;
         strcpy(cliente->jogoAtual.tempoFinal, getTempoHoraMinutoSegundo());
-
+        //significa que ja acabou
         sala->jogadorAResolver = false;
         sala->nClientes = 0;
         sala->clienteAtualID = -1;
@@ -786,30 +788,31 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 SalaID = salaAtual->idSala;
             }
             if (strcmp(msgData.tipoJogo, "MUL") == 0) {
-                clienteConfig.idCliente = atoi(msgData.idCliente);
-                struct SalaMultiplayer* roomPtr = &serverConfig.salaMultiplayer[0]; // Use first multiplayer room
+    clienteConfig.idCliente = atoi(msgData.idCliente);
     
-            int sem_result = sem_trywait(&clientesNaSalaMultiplayer);
-                if (sem_result == 0) {
-                    printf("[Sala-%d] Cliente %d entrou na sala\n", 
-                        roomPtr->idSala, clienteConfig.idCliente);
-                    jogoADar = roomPtr->jogo.jogo;
-                    nJogo = roomPtr->jogo.idJogo;
-                    SalaID = roomPtr->idSala;
-                } else if (errno == EAGAIN) {
-                    printf(COLOR_PURPLE "[Sala-%d] Cliente %d rejeitado - sala multiplayer cheia\n" COLOR_RESET,
-                        roomPtr->idSala, clienteConfig.idCliente);
-                    const char* filaCheiaMUL = "FILA CHEIA MULTIPLAYER";
-                    writeSocket(socketCliente, filaCheiaMUL, strlen(filaCheiaMUL));
-                    clienteDesconectado = true;
-                    break;
-                } else {
-                    printf("[Sala-%d] Erro ao processar entrada do cliente %d\n",
-                        roomPtr->idSala, clienteConfig.idCliente);
-                    clienteDesconectado = true;
-                    break;
-                }
-            }
+    struct SalaMultiplayer* roomPtr = &serverConfig.salaMultiplayer[serverConfig.numeroJogos];
+    int sem_result = sem_trywait(&clientesNaSalaMultiplayer);
+    
+        if (sem_result == 0) {
+            printf("[Sala-%d] Cliente %d entrou na sala\n",
+                roomPtr->idSala, clienteConfig.idCliente);
+            jogoADar = roomPtr->jogo.jogo;
+            nJogo = roomPtr->jogo.idJogo;
+            SalaID = roomPtr->idSala;
+        } else if (errno == EAGAIN) {
+            printf(COLOR_PURPLE "[Sala-%d] Cliente %d rejeitado - sala multiplayer cheia\n" COLOR_RESET,
+                roomPtr->idSala, clienteConfig.idCliente);
+            const char* filaCheiaMUL = "FILA CHEIA MULTIPLAYER";
+            writeSocket(socketCliente, filaCheiaMUL, strlen(filaCheiaMUL));
+            clienteDesconectado = true;
+            break;
+        } else {
+            printf("[Sala-%d] Erro ao processar entrada do cliente %d\n",
+                roomPtr->idSala, clienteConfig.idCliente);
+            clienteDesconectado = true;
+            break;
+        }
+    }
             updateClientConfig(&clienteConfig, &msgData, jogoADar, nJogo,SalaID);
 
             bufferParaStructCliente(buffer, &clienteConfig);
@@ -840,7 +843,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
 
             char *logClienteEnviar = handleResolucaoJogo(&clienteConfig, salaAtual);
             bool gameCompleted = verSeJogoAcabouEAtualizar(&clienteConfig, salaAtual);
-
+            sem_post(&salaAtual->esperaRespostaClienteSingle);
             memset(buffer, 0, BUF_SIZE);
             prepararRespostaJogo(buffer, &clienteConfig, logClienteEnviar);
 
@@ -860,7 +863,9 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
         salaAtual->jogadorAResolver = false;
         salaAtual->clienteAtualID = -1;
         salaAtual->nClientes = 0;
+        sem_post(&salaAtual->esperaRespostaClienteSingle);
         sem_wait(&salaAtual->esperaPrintSaiu);
+        
     }
     printf(COLOR_RED "Cliente %d saiu\n" COLOR_RESET, clienteConfig.idCliente);
     removeClientSocket(clienteConfig.idCliente);
@@ -1071,7 +1076,8 @@ void* SalaSingleplayer(void* arg) {
     printf("[Sala-%d] Iniciada-Singleplayer\n", sala->idSala);
     
     while (1) {
-        //espera que tenha clientes na fila
+        //espera que tenha clientes na fila fica bloqueado aqui nao consumindo recursos por ser um while true
+        //cliente entra e uma das salas desbloqueia e quando desbloqueia bloqueia a sala e vai buscar na fila o id do cliente
         sem_wait(&filaClientesSinglePlayer->customers);
         pthread_mutex_lock(&sala->mutexSala);
        //tira o primeiro cliente da fila
@@ -1088,21 +1094,29 @@ void* SalaSingleplayer(void* arg) {
        
         printf(COLOR_YELLOW "[Sala-%d] Atendendo cliente %d com jogo %d\n" COLOR_RESET,
                sala->idSala, clienteID, sala->jogo.idJogo);
+
                
         bool clienteFinalizou = false;
-        
+        sem_post(&semaforoSingleJogador);
         //quando cliente terminou ou desconecta-se volta ao inicio do while(1)
         // fica neste while à espera que cliente acabe o jogo
         while (!clienteFinalizou) {
-            
+            //sem a 0 que quando cliente manda resposta e verifica se jogo acabou é feito post
+            //outro cenario que é desbloqueado é quando cliente sai da sala
+            //usado para consumir menos recursos
+
+            sem_wait(&sala->esperaRespostaClienteSingle);
+            //esta variavel-jogadorAResolver é mudada em duas alternativas
+            // na parte de verificar o jogo se o jogo for resolvido
+            // na parte da comunicacao quando o cliente sai mas nao acaba o jogo
              if (!sala->jogadorAResolver) {
                 sala->nClientes = 0;
                 sala->clienteAtualID = -1;
                 clienteFinalizou = true;
                 
                 int socketID = getSocketID(clienteID);
-                bool isConnected = false;
-                
+                //quando um cliente desconecta-se o seu ID é mudado para -1
+                //entao se desconecta-se sei que saiu da sala mas nao acabou
                 if (socketID>=0) {
                     printf("[Sala-%d] Cliente %d saiu da sala\n", sala->idSala, clienteID);
                 } else {
@@ -1113,9 +1127,6 @@ void* SalaSingleplayer(void* arg) {
                 pthread_mutex_unlock(&sala->mutexSala);
                 break;
             }
-            
-            // pthread_mutex_unlock(&sala->mutexSala);
-            usleep(100000);
         }
     }
     return NULL;
@@ -1153,7 +1164,7 @@ void* SalaMultiplayer(void* arg) {
                 // Cleanup and possibly restart
                 break;
         }
-        usleep(1000);
+        usleep(100000);
     }
     
     sem_destroy(&clientesNaSalaMultiplayer);
@@ -1196,6 +1207,11 @@ void iniciarSalasJogoSinglePlayer(struct ServidorConfig *serverConfig, struct Jo
         if (pthread_mutex_init(&serverConfig->sala[i].mutexSala, NULL) != 0)
         {
             perror("Erro sala mutex");
+            exit(1);
+        }
+        if (sem_init(&serverConfig->sala[i].esperaRespostaClienteSingle,0,0) != 0)
+        {
+            perror("Erro sem");
             exit(1);
         }
 
@@ -1270,7 +1286,7 @@ int main(int argc, char **argv) {
     struct Jogo jogosEsolucoes[numeroJogos];
     serverConfig.numeroJogos = numeroJogos;
     carregarFicheiroJogosSolucoes(serverConfig.ficheiroJogosESolucoesCaminho,jogosEsolucoes);
-    construtorServer(&serverConfig,AF_INET, SOCK_STREAM, 0, INADDR_ANY, serverConfig.porta, 1, serverConfig.ficheiroJogosESolucoesCaminho);
+    construtorServer(&serverConfig,AF_INET, SOCK_STREAM, 0, INADDR_ANY, serverConfig.porta, 5000, serverConfig.ficheiroJogosESolucoesCaminho);
     
     logQueEventoServidor(1, 0,0);
     filaClientesSinglePlayer = malloc(sizeof(struct filaClientesSinglePlayer));

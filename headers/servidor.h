@@ -36,6 +36,7 @@ struct SalaSinglePlayer
     int nClientes;
     bool jogadorAResolver;
     sem_t esperaPrintSaiu;
+    sem_t esperaRespostaClienteSingle;
     pthread_mutex_t mutexSala;
     int socketCliente;
     struct Jogo jogo;
