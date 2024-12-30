@@ -794,7 +794,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
     int sem_result = sem_trywait(&clientesNaSalaMultiplayer);
     
         if (sem_result == 0) {
-            roomPtr = &serverConfig.salaMultiplayer[0];
+            roomPtr= &serverConfig.salaMultiplayer[0];
             printf("[Sala-%d] Cliente %d entrou na sala\n",
                 roomPtr->idSala, clienteConfig.idCliente);
             jogoADar = roomPtr->jogo.jogo;
@@ -833,7 +833,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
         }
 
         if (strcmp(msgData.temJogo, "COM_JOGO") == 0) {
-            if (!salaAtual || !roomPtr) {
+            if (!salaAtual) {
                 printf("Erro: Cliente sem sala atribuída\n");
                 break;
             }
