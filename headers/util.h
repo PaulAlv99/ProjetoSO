@@ -76,10 +76,8 @@ struct ServidorConfig
     unsigned int porta;
     int backlog;
     char ficheiroJogosESolucoesCaminho[PATH_SIZE];
-    union{
-        struct SalaSinglePlayer *sala;
-        struct SalaMultiplayer *salaMultiplayer;
-    };
+    struct SalaSinglePlayer *sala;
+    struct SalaMultiplayer *salaMultiplayer;
     int numeroJogos;
     int NUM_MAX_CLIENTES_FILA_SINGLEPLAYER;
 };

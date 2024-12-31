@@ -35,6 +35,7 @@ struct SalaSinglePlayer
     int clienteMin;
     int nClientes;
     bool jogadorAResolver;
+    sem_t clientePronto;
     pthread_mutex_t mutexSala;
     sem_t esperaPrintSaiu;
     int socketCliente;
@@ -54,12 +55,6 @@ struct SalaMultiplayer {
     bool jogoIniciado;
     time_t tempoInicio;
 };
-struct sala{
-    union{
-        struct SalaSinglePlayer *salaSingleplayer;
-        struct SalaMultiplayer *salaMultiplayer;
-    };
-};
 struct filaClientesSinglePlayer
 {
     int *clientesID;
@@ -69,6 +64,7 @@ struct filaClientesSinglePlayer
     int capacidade;
     pthread_mutex_t mutex;
     sem_t customers;
+    sem_t* semaforoSingleJogador;
 };
 
 struct FormatoMensagens
