@@ -57,8 +57,9 @@ struct ClienteConfig
     int tempoEntreTentativas;
     int dominio;
     int idSala;
-     unsigned int porta;
+    unsigned int porta;
     __u_long interface;
+    sem_t* sinalizarVerificaSala;
     int socket;
     struct JogoAtual jogoAtual;
     char TemJogo[INFO_SIZE];

@@ -35,19 +35,16 @@ struct SalaSinglePlayer
     int clienteMin;
     int nClientes;
     bool jogadorAResolver;
-    sem_t clientePronto;
     pthread_mutex_t mutexSala;
-    sem_t esperaPrintSaiu;
     int socketCliente;
     struct Jogo jogo;
-    int clienteAtualID; // Add this to track current client
+    struct ClienteConfig clienteAtual; // Add this to track current client
 };
 struct SalaMultiplayer {
     int idSala;
     int clientesMax;
     int clienteMin;
     int nClientes;
-    pthread_cond_t jogoADecorrer;
     pthread_mutex_t mutexSala;
     sem_t clientesSala;
     struct Jogo jogo;
@@ -57,14 +54,13 @@ struct SalaMultiplayer {
 };
 struct filaClientesSinglePlayer
 {
-    int *clientesID;
+    struct ClienteConfig *cliente;
     int front;
     int rear;
     int tamanho;
     int capacidade;
     pthread_mutex_t mutex;
     sem_t customers;
-    sem_t* semaforoSingleJogador;
 };
 
 struct FormatoMensagens
@@ -102,7 +98,7 @@ void *criaClienteThread(void *arg);
 void receberMensagemETratarServer(char *buffer, int socketCliente, struct ClienteConfig clienteConfig, struct ServidorConfig serverConfig);
 
 // funcoes singleplayer
-struct SalaSinglePlayer *handleSinglePlayerFila(int idCliente, struct ServidorConfig *serverConfig);
+struct SalaSinglePlayer* handleSinglePlayerFila(struct ClienteConfig *cliente, struct ServidorConfig* serverConfig);
 void *SalaSinglePlayer(void *arg);
 struct SalaSinglePlayer *criarSalaSinglePlayer(int idSala);
 void *iniciarSalaSinglePlayer(void *arg);
@@ -114,8 +110,8 @@ void iniciarSalasJogoMultiplayer(struct ServidorConfig *serverConfig, struct Jog
 // funcoes fila
 struct filaClientesSinglePlayer *criarFila(struct ServidorConfig *serverConfig);
 void delete_queue(struct filaClientesSinglePlayer *fila);
-bool enqueue(struct filaClientesSinglePlayer *fila, int clientID);
-int dequeue(struct filaClientesSinglePlayer *fila);
+bool enqueue(struct filaClientesSinglePlayer *fila, struct ClienteConfig cliente);
+struct ClienteConfig dequeue(struct filaClientesSinglePlayer *fila);
 bool boolEstaFilaCheia(struct filaClientesSinglePlayer *fila);
 bool estaFilaCheiaTrSafe(struct filaClientesSinglePlayer *fila);
 bool boolEstaFilaVazia(struct filaClientesSinglePlayer *fila);
