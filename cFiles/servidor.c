@@ -21,32 +21,6 @@ sem_t bloquearAcessoSala;
 sem_t entradaPlayerMulPrimeiro;
 
 pthread_barrier_t barreiraComecaTodos;
-bool isSocketAlive(int socket) {
-    int error = 0;
-    socklen_t len = sizeof(error);
-    int retval = getsockopt(socket, SOL_SOCKET, SO_ERROR, &error, &len);
-    
-    if (retval != 0) {
-        return false;
-    }
-    
-    if (error != 0) {
-        return false;
-    }
-    
-    char buffer[1];
-    int peek_result = recv(socket, buffer, 1, MSG_PEEK | MSG_DONTWAIT);
-    if (peek_result == 0) { 
-        return false;
-    } else if (peek_result < 0) {
-        if (errno != EAGAIN && errno != EWOULDBLOCK) {
-           
-            return false;
-        }
-    }
-    
-    return true;
-}
 
 void carregarConfigServidor(char *nomeFicheiro, struct ServidorConfig *serverConfig)
 {
@@ -515,7 +489,9 @@ bool validarMensagemVazia(struct FormatoMensagens *msg)
              CHECK_NULL(msg->resolvido) ||
              CHECK_NULL(msg->numeroTentativas));
 }
-
+//BarberShop problem com vários barbeiros FIFO-Customer
+//Parte de sinalizar que acabou de ser atendido na funcao
+//receberMensagemETratarServer 
 // Função que dá handle a entrada de um cliente na fila e sua atribuição a uma sala
 struct SalaSinglePlayer* handleSinglePlayerFila(struct ClienteConfig *cliente, struct ServidorConfig* serverConfig) {
     struct SalaSinglePlayer* salaEncontrada = NULL;
@@ -524,22 +500,27 @@ struct SalaSinglePlayer* handleSinglePlayerFila(struct ClienteConfig *cliente, s
     if (!enqueue(filaClientesSinglePlayer, *cliente)) {
         sem_destroy(cliente->sinalizarVerificaSala);
         free(cliente->sinalizarVerificaSala);
+        //se nao ha lugares na fila larga o semaforo
         sem_post(&acessoLugares);
         return NULL;
     }
+    //outro cliente pode verificar
     sem_post(&acessoLugares);
+    //sinaliza a sala que tem um cliente
     sem_post(&filaClientesSinglePlayer->customers);
-    
+    //fica aqui à espera de ser chamado pela sala
     sem_wait(cliente->sinalizarVerificaSala);
-    
+    //parte de saber em que sala está
+    //a parter de receber um haircut é a parte de
+    //resolver o jogo
+    //ver comentarios onde esta funcao retorna
     for (int i = 0; i < serverConfig->numeroJogos; i++) {
         if (serverConfig->sala[i].clienteAtual.idCliente == cliente->idCliente) {
             salaEncontrada = &serverConfig->sala[i];
             break;
         }
     }
-    
-    // Clean up semaphore after use
+
     sem_destroy(cliente->sinalizarVerificaSala);
     free(cliente->sinalizarVerificaSala);
     cliente->sinalizarVerificaSala = NULL;
@@ -693,7 +674,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
     
     // Store pointer to semaphore
     clienteConfig.sinalizarVerificaSala = clientSem;
-    clienteConfig.jaSaiu = false;
+    
     
     while (!clienteDesconectado && (bytesRecebidos = readSocket(socketCliente, buffer, BUF_SIZE)) > 0) {
         // Log received message
@@ -712,6 +693,10 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
         if (strcmp(msgData.temJogo, "SEM_JOGO") == 0) {
             updateClientConfig(&clienteConfig, &msgData, jogoADar, nJogo,SalaID);
             if (strcmp(msgData.tipoJogo, "SIG") == 0) {
+                //vai mandar jogo cliente posteriormente
+                //continuacao haircut/resolucao do jogo em baixo jogo completo
+                //se o cliente terminou é disponibilizada a msg
+                //que o cliente resolveu senao
                 salaAtualSIG = handleSinglePlayerFila(&clienteConfig, &serverConfig);
                 if (!salaAtualSIG) {
                     const char* filaCheia = "FILA CHEIA SINGLEPLAYER";
@@ -785,7 +770,11 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
     }
     if(salaAtualSIG) {
         pthread_mutex_lock(&salaAtualSIG->mutexSala);
-        clienteConfig.jaSaiu = true;
+        sem_post(&salaAtualSIG->jogadorFinalizou);
+        
+        if(salaAtualSIG->jogadorAResolver){
+            printf("Cliente %d não resolveu o jogo\n",clienteConfig.idCliente);
+        }
         salaAtualSIG->jogadorAResolver = false;
         salaAtualSIG->clienteAtual.idCliente = -1;
         salaAtualSIG->nClientes = 0;
@@ -794,6 +783,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
     printf(COLOR_RED "Cliente %d saiu\n" COLOR_RESET, clienteConfig.idCliente);
     logQueEventoServidor(7, clienteConfig.idCliente, salaAtualSIG ? salaAtualSIG->idSala : 0);
     logQueEventoServidor(7, clienteConfig.idCliente, salaAtualSIG ? salaAtualSIG->idSala : 0);
+    sem_wait(&salaAtualSIG->salaPronta);
 }
 
 struct filaClientesSinglePlayer *criarFila(struct ServidorConfig *serverConfig)
@@ -928,11 +918,12 @@ void removerFilaPorID(struct filaClientesSinglePlayer *fila, int clientID) {
     pthread_mutex_unlock(&fila->mutex);
     
 }
-
+//BarberShop problem com vários barbeiros FIFO-Barber
 void* SalaSingleplayer(void* arg) {
     struct SalaSinglePlayer* sala = (struct SalaSinglePlayer*)arg;
     printf("[Sala-%d] Iniciada-Singleplayer\n", sala->idSala);
-    
+    sem_init(&sala->salaPronta,0,0);
+    sem_init(&sala->jogadorFinalizou,0,0);
     while (1) {
         //acorda se tiver clientes na fila de espera
         sem_wait(&filaClientesSinglePlayer->customers);
@@ -955,23 +946,23 @@ void* SalaSingleplayer(void* arg) {
         //para deixar a fila encher nao ser tao rapido
         sleep(1);
         sem_post(&acessoLugares);
+        //sinaliza que o cliente pode entrar
         sem_post(cliente.sinalizarVerificaSala);
         
         
         bool clienteFinalizou = false;
-        while (!clienteFinalizou) {
-            if(cliente.jaSaiu){
-                printf(COLOR_YELLOW "[Sala-%d] Cliente %d nao conseguiu resolver o jogo %d\n" COLOR_RESET,
-                sala->idSala, sala->clienteAtual.idCliente, sala->jogo.idJogo);
-            }
-            if (!sala->jogadorAResolver) {
+        //espera ativa nao ideal
+        sem_wait(&sala->jogadorFinalizou);
+        // while (!clienteFinalizou) {
+        //     if (!sala->jogadorAResolver) {
                 sala->nClientes = 0;
                 memset(&sala->clienteAtual, 0, sizeof(struct ClienteConfig));
                 sala->clienteAtual.idCliente = -1;
                 clienteFinalizou = true;
-                break;
-            }
-        }
+        sem_post(&sala->salaPronta);
+                // break;
+        //     }
+        // }
     }
     return NULL;
 }

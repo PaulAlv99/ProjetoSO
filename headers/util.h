@@ -62,6 +62,7 @@ struct ClienteConfig
     unsigned int porta;
     __u_long interface;
     sem_t* sinalizarVerificaSala;
+    sem_t acabouResolver;
     int socket;
     struct MultiplayerState* mpState;
     struct JogoAtual jogoAtual;
