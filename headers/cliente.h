@@ -1,5 +1,11 @@
 #include "util.h"
-
+struct MultiplayerState {
+    int currentRound;
+    bool roundActive;
+    pthread_mutex_t stateLock;
+    bool canAttempt;
+    bool waitingForResponse;
+};
 // 1KB
 #define IP_SIZE 16
 

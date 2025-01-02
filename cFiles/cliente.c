@@ -147,7 +147,7 @@ void construtorCliente(int dominio, unsigned int porta, __u_long interface, stru
 {
 	strcpy(clienteConfig->TemJogo, "SEM_JOGO");
 	clienteConfig->jogoAtual.resolvido = false;
-	clienteConfig->jogoAtual.numeroTentativas = 1;
+	clienteConfig->jogoAtual.numeroTentativas = 0;
 	clienteConfig->jogoAtual.idJogo = 0;
     clienteConfig->idSala = -1;
 	size_t tamanhoStringJogo = strlen(clienteConfig->jogoAtual.jogo);
@@ -396,9 +396,11 @@ bool processarEstadoJogo(struct ClienteConfig *clienteConfig) {
 void imprimirResultadoFinal(struct ClienteConfig *clienteConfig) {
     pthread_mutex_lock(&semSTDOUT);
     printf("Cliente ID:%d\n", clienteConfig->idCliente);
+    printf("Tentativa: %d\n\n",clienteConfig->jogoAtual.numeroTentativas);
+    imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
     printf("Jogo resolvido!\n");
     printf("Resolvido em %d tentativas\n", 
-           clienteConfig->jogoAtual.numeroTentativas - 1);
+           clienteConfig->jogoAtual.numeroTentativas);
     printf("Hora de fim: %s\n", clienteConfig->jogoAtual.tempoFinal);
     pthread_mutex_unlock(&semSTDOUT);
 }
@@ -445,9 +447,6 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
         
         // Handle game state
         if (strcmp(clienteConfig->TemJogo, "COM_JOGO") == 0) {
-            if (clienteConfig->jogoAtual.numeroTentativas == 1) {
-                imprimirEstadoInicial(clienteConfig);
-            }
             
             if (!clienteConfig->jogoAtual.resolvido) {
                 if (!processarEstadoJogo(clienteConfig)) {
@@ -465,6 +464,7 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
             pthread_mutex_unlock(&semSTDOUT);
             break;
         }
+        
     }
 
     if (bytesRead == 0) {
@@ -527,6 +527,9 @@ int main(int argc, char **argv) {
         configsJogadores[i].idCliente = i + 1;
         
         int result = pthread_create(&threads[i], NULL, jogadorThread, &configsJogadores[i]);
+        srand(getpid());
+        usleep((rand() % 9501) + 5000);
+        
         if (result != 0) {
             fprintf(stderr, "Erro ao criar thread: %s\n", strerror(result));
             // Espera pelas threads já criadas terminarem

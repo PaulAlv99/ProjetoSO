@@ -39,6 +39,8 @@
 #define COLOR_YELLOW "\033[33m"
 #define COLOR_PURPLE "\033[0;35m"
 #define COLOR_RESET "\033[0m"
+
+
 struct JogoAtual
 {
     int idJogo;
@@ -61,11 +63,13 @@ struct ClienteConfig
     __u_long interface;
     sem_t* sinalizarVerificaSala;
     int socket;
+    struct MultiplayerState* mpState;
     struct JogoAtual jogoAtual;
     char TemJogo[INFO_SIZE];
     char tipoJogo[INFO_SIZE];
     char tipoResolucao[INFO_SIZE];
     char ipServidor[IP_SIZE];
+    bool jaSaiu;
 };
 
 struct ServidorConfig

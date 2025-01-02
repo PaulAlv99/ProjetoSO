@@ -1,4 +1,4 @@
-CFLAGS:=-Wall -Wextra -Wpedantic -Wshadow -Wconversion -g
+CFLAGS:=-Wall -g
 LDFLAGS:=-lpthread -pthread
 
 all: cliente servidor
