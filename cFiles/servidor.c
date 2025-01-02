@@ -498,9 +498,7 @@ struct SalaSinglePlayer* handleSinglePlayerFila(struct ClienteConfig *cliente, s
     //acesso aos lugares disponiveis
     sem_wait(&acessoLugares);
     if (!enqueue(filaClientesSinglePlayer, *cliente)) {
-        sem_destroy(cliente->sinalizarVerificaSala);
-        free(cliente->sinalizarVerificaSala);
-        //se nao ha lugares na fila larga o semaforo
+        
         sem_post(&acessoLugares);
         return NULL;
     }
@@ -521,8 +519,8 @@ struct SalaSinglePlayer* handleSinglePlayerFila(struct ClienteConfig *cliente, s
         }
     }
 
-    sem_destroy(cliente->sinalizarVerificaSala);
-    free(cliente->sinalizarVerificaSala);
+    // sem_destroy(cliente->sinalizarVerificaSala);
+    // free(cliente->sinalizarVerificaSala);
     cliente->sinalizarVerificaSala = NULL;
     
     return salaEncontrada;
@@ -648,6 +646,18 @@ void prepararRespostaJogo(char *buffer, const struct ClienteConfig *clienteConfi
             clienteConfig->jogoAtual.numeroTentativas,
             logClienteEnviar ? logClienteEnviar : "");
 }
+
+void adicionarClienteSalaMultiplayerFaster(struct ServidorConfig *serverConfig, struct ClienteConfig* cliente, int socketCliente) {
+    struct SalaMultiplayer sala = serverConfig->salaMultiplayer[0];
+    
+    sem_wait(&mutexSalaMultiplayer);
+    if (sala.nClientes < sala.clientesMax) {
+        cliente->socket = socketCliente;  // Store the socket
+        sala.clientes[sala.nClientes] = *cliente;
+        sala.nClientes++;
+    }
+    sem_post(&mutexSalaMultiplayer);
+}
 void receberMensagemETratarServer(char *buffer, int socketCliente,
                                  struct ClienteConfig clienteConfig,
                                  struct ServidorConfig serverConfig)
@@ -710,13 +720,11 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 nJogo = salaAtualSIG->jogo.idJogo;
                 SalaID = salaAtualSIG->idSala;
             }
-            if (strcmp(msgData.tipoJogo, "MUL_PRIMEIRO") == 0) {
+            if (strcmp(msgData.tipoJogo, "MUL_FASTER") == 0) {
                 sem_post(&entradaPlayerMulPrimeiro);
-                salaAtualMUL= &serverConfig.salaMultiplayer[0];
+                salaAtualMUL = &serverConfig.salaMultiplayer[0];
+                adicionarClienteSalaMultiplayerFaster(&serverConfig, &clienteConfig, socketCliente);
                 pthread_barrier_wait(&barreiraComecaTodos);
-                jogoADar = salaAtualMUL->jogo.jogo;
-                nJogo = salaAtualMUL->jogo.idJogo;
-                SalaID = salaAtualMUL->idSala;
             }
 
             updateClientConfig(&clienteConfig, &msgData, jogoADar, nJogo,SalaID);
@@ -944,6 +952,7 @@ void* SalaSingleplayer(void* arg) {
         
         
         //para deixar a fila encher nao ser tao rapido
+        //visto que estou a usar tempo entre tentativas 0
         sleep(1);
         sem_post(&acessoLugares);
         //sinaliza que o cliente pode entrar
@@ -966,12 +975,13 @@ void* SalaSingleplayer(void* arg) {
     }
     return NULL;
 }
-//5 jogadores a jogar ao mesmo tempo para ver sem acaba primeiro
-void* SalaMultiplayerPrimeiro(void* arg) {
+//5 jogadores a jogar ao mesmo tempo para ver quem acaba primeiro
+void* SalaMultiplayerFaster(void* arg) {
     struct SalaMultiplayer* sala = (struct SalaMultiplayer*) arg;
 
     enum GameState state = WAITING_PLAYERS;
-    int naSala,esperandoEntrar = 0;
+    int esperandoEntrar = 0;
+    char* entrouSala="ENTROU_FASTER";
     bool temDeEsperar = false;
     pthread_barrier_init(&barreiraComecaTodos, NULL, 5);
     if(sem_init(&mutexSalaMultiplayer, 0, 1) || sem_init(&bloquearAcessoSala, 0, 0) || sem_init(&entradaPlayerMulPrimeiro, 0, 0)){
@@ -987,8 +997,8 @@ void* SalaMultiplayerPrimeiro(void* arg) {
             sem_wait(&bloquearAcessoSala);
             esperandoEntrar-=1;
         }
-        naSala+=1;
-        temDeEsperar = (naSala==sala->clientesMax);
+        sala->nClientes+=1;
+        temDeEsperar = (sala->nClientes==sala->clientesMax);
         if(esperandoEntrar && !temDeEsperar){
             sem_post(&bloquearAcessoSala);
         }
@@ -997,8 +1007,25 @@ void* SalaMultiplayerPrimeiro(void* arg) {
         }
         switch(state) {
             case WAITING_PLAYERS:
-                printf("[Sala-%d] Jogadores na sala, começando quando estiver cheio(%d/%d)\n", sala->idSala, naSala, sala->clientesMax);
-                if(naSala == 5){
+                printf("[Sala-%d] Jogadores na sala, começando quando estiver cheio(%d/%d)\n", sala->idSala, sala->nClientes, sala->clientesMax);
+                switch(sala->nClientes){
+                    case 1:
+                        writeSocket(sala->clientes[0].socket,entrouSala,strlen(entrouSala));
+                        break;
+                    case 2:
+                        writeSocket(sala->clientes[1].socket,entrouSala,strlen(entrouSala));
+                        break;
+                    case 3:
+                        writeSocket(sala->clientes[2].socket,entrouSala,strlen(entrouSala));
+                        break;
+                    case 4:
+                        writeSocket(sala->clientes[3].socket,entrouSala,strlen(entrouSala));
+                        break;
+                    case 5:
+                        writeSocket(sala->clientes[4].socket,entrouSala,strlen(entrouSala));
+                        break;
+                }
+                if(sala->nClientes == 5){
                     state = GAME_STARTING;
                 }
                 else{
@@ -1032,7 +1059,7 @@ void *iniciarSalaSinglePlayer(void *arg)
 void *iniciarSalaMultiplayer(void *arg)
 {
     struct SalaMultiplayer *sala = (struct SalaMultiplayer *)arg;
-    SalaMultiplayerPrimeiro(sala);
+    SalaMultiplayerFaster(sala);
     return NULL;
 }
 void iniciarSalasJogoSinglePlayer(struct ServidorConfig *serverConfig, struct Jogo jogosEsolucoes[])
@@ -1097,7 +1124,8 @@ void iniciarSalasJogoMultiplayer(struct ServidorConfig *serverConfig, struct Jog
 
         // Cada sala tem um jogo
         serverConfig->salaMultiplayer[i].jogo = jogosEsolucoes[i];
-        
+        serverConfig->salaMultiplayer[i].clientes = malloc(
+        serverConfig->salaMultiplayer[i].clientesMax * sizeof(struct ClienteConfig));
 
         // Umasala é uma tread
         pthread_t threadSala;

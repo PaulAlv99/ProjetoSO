@@ -429,7 +429,18 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
     // Main receive loop
     while ((bytesRead = readSocket(clienteConfig->socket, buffer, BUF_SIZE)) > 0) {
         buffer[bytesRead] = '\0';
-        
+        if (strcmp(buffer, "FILA CHEIA SINGLEPLAYER") == 0) {
+            pthread_mutex_lock(&semSTDOUT);
+            printf("Fila singleplayer está cheia\n");
+            pthread_mutex_unlock(&semSTDOUT);
+            break;
+        }
+        if(strcmp(buffer,"ENTROU_FASTER") == 0){
+            pthread_mutex_lock(&semSTDOUT);
+            printf("Entrou na sala multiplayer Faster\n");
+            pthread_mutex_unlock(&semSTDOUT);
+            break;
+        }
         // Check for special messages
         
         // Parse received message
@@ -458,12 +469,7 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
                 break;
             }
         }
-        if (strcmp(buffer, "FILA CHEIA SINGLEPLAYER") == 0) {
-            pthread_mutex_lock(&semSTDOUT);
-            printf("Fila singleplayer está cheia\n");
-            pthread_mutex_unlock(&semSTDOUT);
-            break;
-        }
+        
         
     }
 
