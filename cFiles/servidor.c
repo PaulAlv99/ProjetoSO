@@ -497,6 +497,7 @@ struct SalaSinglePlayer* handleSinglePlayerFila(struct ClienteConfig *cliente, s
     struct SalaSinglePlayer* salaEncontrada = NULL;
     //acesso aos lugares disponiveis
     sem_wait(&acessoLugares);
+    printf("Cliente %d entrou na fila\n", cliente->idCliente);
     if (!enqueue(filaClientesSinglePlayer, *cliente)) {
         
         sem_post(&acessoLugares);
@@ -504,6 +505,7 @@ struct SalaSinglePlayer* handleSinglePlayerFila(struct ClienteConfig *cliente, s
     }
     //outro cliente pode verificar
     sem_post(&acessoLugares);
+    
     //sinaliza a sala que tem um cliente
     sem_post(&filaClientesSinglePlayer->customers);
     //fica aqui à espera de ser chamado pela sala
@@ -521,7 +523,6 @@ struct SalaSinglePlayer* handleSinglePlayerFila(struct ClienteConfig *cliente, s
 
     // sem_destroy(cliente->sinalizarVerificaSala);
     // free(cliente->sinalizarVerificaSala);
-    cliente->sinalizarVerificaSala = NULL;
     
     return salaEncontrada;
 }
@@ -710,7 +711,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 salaAtualSIG = handleSinglePlayerFila(&clienteConfig, &serverConfig);
                 if (!salaAtualSIG) {
                     const char* filaCheia = "FILA CHEIA SINGLEPLAYER";
-                    send(socketCliente, filaCheia, strlen(filaCheia), 0);
+                    writeSocket(clienteConfig.socket, filaCheia, strlen(filaCheia));
                     clienteConfig.idCliente = atoi(msgData.idCliente);
                     clienteDesconectado = true;
                     break;
@@ -786,12 +787,14 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
         salaAtualSIG->jogadorAResolver = false;
         salaAtualSIG->clienteAtual.idCliente = -1;
         salaAtualSIG->nClientes = 0;
+        sem_wait(&salaAtualSIG->salaPronta);
         pthread_mutex_unlock(&salaAtualSIG->mutexSala);
+        
     }
     printf(COLOR_RED "Cliente %d saiu\n" COLOR_RESET, clienteConfig.idCliente);
     logQueEventoServidor(7, clienteConfig.idCliente, salaAtualSIG ? salaAtualSIG->idSala : 0);
     logQueEventoServidor(7, clienteConfig.idCliente, salaAtualSIG ? salaAtualSIG->idSala : 0);
-    sem_wait(&salaAtualSIG->salaPronta);
+    
 }
 
 struct filaClientesSinglePlayer *criarFila(struct ServidorConfig *serverConfig)
@@ -859,7 +862,6 @@ bool enqueue(struct filaClientesSinglePlayer *fila, struct ClienteConfig cliente
         printf(COLOR_PURPLE"[Fila] Rejeitado cliente %d - fila cheia (tamanho: %d)\n"COLOR_RESET,
                cliente.idCliente, fila->tamanho);
         logQueEventoServidor(11, cliente.idCliente, 0);
-        pthread_mutex_unlock(&fila->mutex);
         return false;
     }
     

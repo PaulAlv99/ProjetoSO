@@ -437,9 +437,9 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
         }
         if(strcmp(buffer,"ENTROU_FASTER") == 0){
             pthread_mutex_lock(&semSTDOUT);
+            printf("Cliente ID: %d\n",clienteConfig->idCliente);
             printf("Entrou na sala multiplayer Faster\n");
             pthread_mutex_unlock(&semSTDOUT);
-            break;
         }
         // Check for special messages
         
