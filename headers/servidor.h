@@ -48,8 +48,10 @@ struct SalaMultiplayer {
     int clienteMin;
     int nClientes;
     int winnerID;
+    int esperandoEntrar;
     int* clienteAtualID;
     bool jogoIniciado;
+    bool temDeEsperar;
     struct Jogo jogo;
     bool hasWinner;
     pthread_mutex_t winnerMutex;
