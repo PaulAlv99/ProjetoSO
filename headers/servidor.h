@@ -53,6 +53,7 @@ struct SalaMultiplayer {
     struct Jogo jogo;
     bool hasWinner;
     pthread_mutex_t winnerMutex;
+    sem_t sinalizarVencedor;
    
     struct ClienteConfig* clientes;
 };
@@ -131,7 +132,7 @@ int getFilaTamanho(struct filaClientesSinglePlayer *fila);
 //funcoes uteis para parses e afins 
 void updateClientConfig(struct ClienteConfig *clienteConfig, const struct FormatoMensagens *msg, const char *jogoADar, int nJogo,int salaID);
 void bufferParaStructCliente(char *buffer, const struct ClienteConfig *clienteConfig);
-char *handleResolucaoJogo(struct ClienteConfig *clienteConfig, struct SalaSinglePlayer *sala);
+char *handleResolucaoJogoSIG(struct ClienteConfig *clienteConfig, struct SalaSinglePlayer *sala);
 struct FormatoMensagens parseMensagem(char *buffer);
 bool validarMensagemVazia(struct FormatoMensagens *msg);
 

@@ -366,9 +366,11 @@ void atualizarTentativa(struct ClienteConfig *clienteConfig) {
     if (strcmp(clienteConfig->tipoResolucao, "COMPLET") == 0) {
         tentarSolucaoCompleta(clienteConfig->jogoAtual.jogo, 
                             clienteConfig->jogoAtual.valoresCorretos);
+                            clienteConfig->jogoAtual.numeroTentativas++;
     } else if (strcmp(clienteConfig->tipoResolucao, "PARCIAL") == 0) {
         tentarSolucaoParcial(clienteConfig->jogoAtual.jogo, 
                             clienteConfig->jogoAtual.valoresCorretos);
+                            clienteConfig->jogoAtual.numeroTentativas++;
     }
 }
 
@@ -465,31 +467,37 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
         
         // Handle game state
         if (strcmp(clienteConfig->TemJogo, "COM_JOGO") == 0) {
-            if (strncmp(buffer, "WINNER|", 7) == 0) {
-            int winnerID;
-            sscanf(buffer, "WINNER|%d", &winnerID);
             
-            pthread_mutex_lock(&semSTDOUT);
-            if (winnerID == clienteConfig->idCliente) {
-                printf("\nVocê venceu o jogo!\n");
-            } else {
-                printf("\nJogador %d venceu o jogo!\n", winnerID);
-            }
-            printf("Jogo finalizado.\n");
-            pthread_mutex_unlock(&semSTDOUT);
-            
-            // Exit the game loop
-            break;
-            }
             if (!clienteConfig->jogoAtual.resolvido) {
                 if (!processarEstadoJogo(clienteConfig)) {
                     break;
                 }
-            } else {
+            }
+            else {
                 imprimirResultadoFinal(clienteConfig);
                 logQueEventoCliente(8, *clienteConfig);
-                break;
+                // break;
             }
+            if (strcmp(buffer, "WINNER|") > 0) {
+                int winnerID;
+                sscanf(buffer, "WINNER|%d", &winnerID);
+                
+                pthread_mutex_lock(&semSTDOUT);
+                if (winnerID == clienteConfig->idCliente) {
+                    printf("\nVocê venceu o jogo!\n");
+                    pthread_mutex_unlock(&semSTDOUT);
+                    break;
+                } else {
+                    printf("\nJogador %d venceu o jogo!\n", winnerID);
+                    pthread_mutex_unlock(&semSTDOUT);
+                    break;
+                }
+                printf("Jogo finalizado.\n");
+            
+            // Exit the game loop
+            
+            }
+            
         }
         
         

@@ -189,7 +189,7 @@ char *atualizaValoresCorretos(char tentativaAtual[], char valoresCorretos[], cha
         }
     }
 
-    *nTentativas = *nTentativas + 1;
+    // *nTentativas = *nTentativas + 1;
     
 
     snprintf(logClienteFinal, BUF_SIZE, "%s", logCliente);
@@ -566,7 +566,7 @@ void bufferParaStructCliente(char *buffer, const struct ClienteConfig *clienteCo
             clienteConfig->jogoAtual.numeroTentativas);
 }
 
-char *handleResolucaoJogo(struct ClienteConfig *clienteConfig, struct SalaSinglePlayer *sala)
+char *handleResolucaoJogoSIG(struct ClienteConfig *clienteConfig, struct SalaSinglePlayer *sala)
 {
     char *logClienteEnviar = NULL;
 
@@ -587,7 +587,27 @@ char *handleResolucaoJogo(struct ClienteConfig *clienteConfig, struct SalaSingle
 
     return logClienteEnviar ? logClienteEnviar : "";
 }
+char *handleResolucaoJogoMUL(struct ClienteConfig *clienteConfig, struct SalaMultiplayer *sala)
+{
+    char *logClienteEnviar = NULL;
 
+    if (clienteConfig->jogoAtual.resolvido)
+    {
+        return "1";
+    }
+
+    if (strcmp(clienteConfig->tipoResolucao, "COMPLET") == 0 ||
+        strcmp(clienteConfig->tipoResolucao, "PARCIAL") == 0)
+    {
+        logClienteEnviar = atualizaValoresCorretos(
+            clienteConfig->jogoAtual.jogo,
+            clienteConfig->jogoAtual.valoresCorretos,
+            sala->jogo.solucao,
+            &clienteConfig->jogoAtual.numeroTentativas);
+    }
+
+    return logClienteEnviar ? logClienteEnviar : "";
+}
 bool verSeJogoAcabouEAtualizar(struct ClienteConfig *cliente, struct SalaSinglePlayer *sala)
 {   
     pthread_mutex_lock(&mutexAcabouJogo);
@@ -730,7 +750,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 nJogo = salaAtualMUL->jogo.idJogo;
                 SalaID = salaAtualMUL->idSala;
                 pthread_barrier_wait(&barreiraComecaTodos);
-                sleep(1);
+                sleep(5);
             }
 
             updateClientConfig(&clienteConfig, &msgData, jogoADar, nJogo,SalaID);
@@ -766,7 +786,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 atualizarClientConfig(&clienteConfig, &msgData);
                 logQueEventoServidor(5, clienteConfig.idCliente, salaAtualSIG->idSala);
 
-                char *logClienteEnviar = handleResolucaoJogo(&clienteConfig, salaAtualSIG);
+                char *logClienteEnviar = handleResolucaoJogoSIG(&clienteConfig, salaAtualSIG);
                 bool gameCompleted = verSeJogoAcabouEAtualizar(&clienteConfig, salaAtualSIG);
 
                 memset(buffer, 0, BUF_SIZE);
@@ -776,40 +796,44 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                     perror("Erro ao enviar mensagem para o cliente");
                     break;
                 }
-
+                char bufferEnviarFinal[BUF_SIZE] = {0};
+                snprintf(bufferEnviarFinal, BUF_SIZE, "Mensagem enviada: %s", buffer);
+                logEventoServidor(bufferEnviarFinal);
                 logQueEventoServidor(6, clienteConfig.idCliente, salaAtualSIG->idSala);
                 
                 if (gameCompleted) {
                     break;
                 }
             }
-            if(strcmp(msgData.tipoJogo, "MUL_FASTER") == 0) {
+            if (strcmp(msgData.tipoJogo, "MUL_FASTER") == 0) {
                 if (!salaAtualMUL) {
                     printf("Erro: Cliente sem sala atribuída\n");
                     break;
                 }
+                
                 atualizarClientConfig(&clienteConfig, &msgData);
                 logQueEventoServidor(5, clienteConfig.idCliente, salaAtualMUL->idSala);
                 
-                // Add synchronization for client state
-                // pthread_mutex_lock(&salaAtualMUL->winnerMutex);
-                pthread_mutex_lock(&verificarEstadoSalaMultiplayerFaster);
-                char *logClienteEnviar = handleResolucaoJogo(&clienteConfig, salaAtualMUL);
+                char *logClienteEnviar = handleResolucaoJogoMUL(&clienteConfig, salaAtualMUL);
                 bool gameCompleted = verSeJogoAcabouEAtualizarMultiplayerFaster(&clienteConfig, salaAtualMUL);
-                // pthread_mutex_unlock(&salaAtualMUL->winnerMutex);
                 
-                pthread_mutex_unlock(&verificarEstadoSalaMultiplayerFaster);
                 memset(buffer, 0, BUF_SIZE);
                 prepararRespostaJogo(buffer, &clienteConfig, logClienteEnviar);
+                
                 if (writeSocket(socketCliente, buffer, BUF_SIZE) < 0) {
                     perror("Erro ao enviar mensagem para o cliente");
                     break;
                 }
+                
                 logQueEventoServidor(6, clienteConfig.idCliente, salaAtualMUL->idSala);
-                if (gameCompleted) {
-                    printf("Cliente %d resolveu o jogo\n",clienteConfig.idCliente);
-                    break;
+                if(gameCompleted){
+                    sem_post(&salaAtualMUL->sinalizarVencedor);
                 }
+                // if (gameCompleted && salaAtualMUL->hasWinner) {
+                //     sem_post(&salaAtualMUL->sinalizarVencedor);
+                //     break;
+                // }
+                
             }
             
         }
@@ -829,9 +853,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
         
     }
     printf(COLOR_RED "Cliente %d saiu\n" COLOR_RESET, clienteConfig.idCliente);
-    logQueEventoServidor(7, clienteConfig.idCliente, salaAtualSIG ? salaAtualSIG->idSala : 0);
-    logQueEventoServidor(7, clienteConfig.idCliente, salaAtualSIG ? salaAtualSIG->idSala : 0);
-    
+    logQueEventoServidor(7, clienteConfig.idCliente, salaAtualSIG ? salaAtualSIG->idSala : 0);    
 }
 
 struct filaClientesSinglePlayer *criarFila(struct ServidorConfig *serverConfig)
@@ -1057,7 +1079,7 @@ void* SalaMultiplayerFaster(void* arg) {
     char entrouSala[50];
     bool temDeEsperar = false;
     pthread_barrier_init(&barreiraComecaTodos, NULL, 5);
-    if(sem_init(&mutexSalaMultiplayer, 0, 1) || sem_init(&bloquearAcessoSala, 0, 0) || sem_init(&entradaPlayerMulPrimeiro, 0, 0)){
+    if(sem_init(&mutexSalaMultiplayer, 0, 1) || sem_init(&bloquearAcessoSala, 0, 0) || sem_init(&entradaPlayerMulPrimeiro, 0, 0) || sem_init(&sala->sinalizarVencedor,0,0)){
         perror("Erro ao inicializar semaforos");
         exit(1);
     }
@@ -1104,17 +1126,16 @@ void* SalaMultiplayerFaster(void* arg) {
                 // Initialize game
                 printf("[Sala-%d] A iniciar jogo\n", sala->idSala);
                 state = GAME_RUNNING;
-                break;
-                
             case GAME_RUNNING:
                 // When checking if a player won (in verSeJogoAcabouEAtualizar):
-                pthread_mutex_lock(&sala->winnerMutex);
-            
-            if (sala->hasWinner) {
+
                 // Broadcast winner to all clients
+                sem_wait(&sala->sinalizarVencedor);
                 char winnerMsg[BUF_SIZE];
                 sprintf(winnerMsg, "WINNER|%d", sala->winnerID);
-                
+                printf("[Sala-%d] Enviando mensagem de vencedor para todos os clientes\n", sala->idSala);
+                printf("[Sala-%d] Vencedor: %d\n", sala->idSala, sala->winnerID);
+                printf("Mesangem a enviar %s\n",winnerMsg);
                 for (int i = 0; i < sala->nClientes; i++) {
                     if (writeSocket(sala->clientes[i].socket, winnerMsg, strlen(winnerMsg)) < 0) {
                         perror("Failed to send winner message");
@@ -1122,16 +1143,15 @@ void* SalaMultiplayerFaster(void* arg) {
                 }
                 
                 // Reset game state
+                state=GAME_ENDED;
+            
+            // pthread_mutex_unlock(&sala->winnerMutex);
+                
+            case GAME_ENDED:
                 sala->jogoIniciado = false;
                 sala->nClientes = 0;
                 sala->hasWinner = false;
                 sala->winnerID = -1;
-            }
-            
-            pthread_mutex_unlock(&sala->winnerMutex);
-                break;
-                
-            case GAME_ENDED:
                 break;
         }
     }
