@@ -680,6 +680,12 @@ void adicionarClienteSalaMultiplayerFaster(struct ServidorConfig *serverConfig, 
     }
     sem_post(&mutexSalaMultiplayer);
 }
+void limparAdicionarClienteSalaMultiplayerFaster(struct SalaMultiplayer *sala) {
+    sala->nClientes = 0;
+    sala->hasWinner = false;
+    sala->winnerID = -1;
+    memset(sala->clientes, 0, sala->clientesMax * sizeof(struct ClienteConfig));
+}
 void receberMensagemETratarServer(char *buffer, int socketCliente,
                                  struct ClienteConfig clienteConfig,
                                  struct ServidorConfig serverConfig)
@@ -750,7 +756,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 nJogo = salaAtualMUL->jogo.idJogo;
                 SalaID = salaAtualMUL->idSala;
                 pthread_barrier_wait(&barreiraComecaTodos);
-                sleep(5);
+                sleep(1);
             }
 
             updateClientConfig(&clienteConfig, &msgData, jogoADar, nJogo,SalaID);
@@ -787,6 +793,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 logQueEventoServidor(5, clienteConfig.idCliente, salaAtualSIG->idSala);
 
                 char *logClienteEnviar = handleResolucaoJogoSIG(&clienteConfig, salaAtualSIG);
+                
                 bool gameCompleted = verSeJogoAcabouEAtualizar(&clienteConfig, salaAtualSIG);
 
                 memset(buffer, 0, BUF_SIZE);
@@ -810,12 +817,20 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                     printf("Erro: Cliente sem sala atribuída\n");
                     break;
                 }
-                
+                bool gameCompleted;
                 atualizarClientConfig(&clienteConfig, &msgData);
                 logQueEventoServidor(5, clienteConfig.idCliente, salaAtualMUL->idSala);
                 
                 char *logClienteEnviar = handleResolucaoJogoMUL(&clienteConfig, salaAtualMUL);
-                bool gameCompleted = verSeJogoAcabouEAtualizarMultiplayerFaster(&clienteConfig, salaAtualMUL);
+                
+                    if(salaAtualMUL->hasWinner){
+                    continue;
+                    }
+                    sem_wait(&mutexSalaMultiplayer);
+                    gameCompleted = verSeJogoAcabouEAtualizarMultiplayerFaster(&clienteConfig, salaAtualMUL);
+                    
+                    
+                    sem_post(&mutexSalaMultiplayer);
                 
                 memset(buffer, 0, BUF_SIZE);
                 prepararRespostaJogo(buffer, &clienteConfig, logClienteEnviar);
@@ -1058,7 +1073,7 @@ bool verSeJogoAcabouEAtualizarMultiplayerFaster(struct ClienteConfig *cliente, s
         time_t tempoFinalConvertido = converterTempoStringParaTimeT(cliente->jogoAtual.tempoFinal);
         time_t tempoDemorado = difftime(tempoFinalConvertido, tempoInicioConvertido);
 
-        printf("[Sala-%d] Cliente %d venceu o jogo %d em %ld segundos!\n",
+        printf("[Sala-%d] Cliente %d resolveu o jogo %d em %ld segundos!\n",
                sala->idSala, cliente->idCliente, sala->jogo.idJogo, tempoDemorado);
         
         logQueEventoServidor(8, cliente->idCliente, sala->idSala);
@@ -1131,27 +1146,35 @@ void* SalaMultiplayerFaster(void* arg) {
 
                 // Broadcast winner to all clients
                 sem_wait(&sala->sinalizarVencedor);
+                sem_wait(&mutexSalaMultiplayer);
+                sleep(1);
                 char winnerMsg[BUF_SIZE];
                 sprintf(winnerMsg, "WINNER|%d", sala->winnerID);
-                printf("[Sala-%d] Enviando mensagem de vencedor para todos os clientes\n", sala->idSala);
-                printf("[Sala-%d] Vencedor: %d\n", sala->idSala, sala->winnerID);
-                printf("Mesangem a enviar %s\n",winnerMsg);
+                printf("[Sala-%d] Vencedor ID: %d\n", sala->idSala, sala->winnerID);
                 for (int i = 0; i < sala->nClientes; i++) {
                     if (writeSocket(sala->clientes[i].socket, winnerMsg, strlen(winnerMsg)) < 0) {
                         perror("Failed to send winner message");
                     }
+                    char bufferEnviarFinal[BUF_SIZE] = {0};
+                    snprintf(bufferEnviarFinal, BUF_SIZE, "Mensagem enviada: %s", winnerMsg);
+                    logEventoServidor(bufferEnviarFinal);
                 }
-                
+                sala->hasWinner = true;
+                sem_post(&mutexSalaMultiplayer);
                 // Reset game state
                 state=GAME_ENDED;
             
             // pthread_mutex_unlock(&sala->winnerMutex);
                 
             case GAME_ENDED:
+            sem_wait(&mutexSalaMultiplayer);
+            limparAdicionarClienteSalaMultiplayerFaster(sala);
                 sala->jogoIniciado = false;
                 sala->nClientes = 0;
                 sala->hasWinner = false;
                 sala->winnerID = -1;
+                state=WAITING_PLAYERS;
+            sem_post(&mutexSalaMultiplayer);
                 break;
         }
     }
