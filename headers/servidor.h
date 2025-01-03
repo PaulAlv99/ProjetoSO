@@ -47,9 +47,13 @@ struct SalaMultiplayer {
     int clientesMax;
     int clienteMin;
     int nClientes;
+    int winnerID;
+    int* clienteAtualID;
     bool jogoIniciado;
     struct Jogo jogo;
-    int* clienteAtualID;
+    bool hasWinner;
+    pthread_mutex_t winnerMutex;
+   
     struct ClienteConfig* clientes;
 };
 struct filaClientesSinglePlayer
@@ -132,3 +136,4 @@ struct FormatoMensagens parseMensagem(char *buffer);
 bool validarMensagemVazia(struct FormatoMensagens *msg);
 
 bool verSeJogoAcabouEAtualizar(struct ClienteConfig *cliente, struct SalaSinglePlayer *sala);
+bool verSeJogoAcabouEAtualizarMultiplayerFaster(struct ClienteConfig *cliente, struct SalaMultiplayer *sala);

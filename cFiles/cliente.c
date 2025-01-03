@@ -420,7 +420,7 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 {
     char buffer[BUF_SIZE];
     ssize_t bytesRead;
-    
+    int jogadoresEmFalta;
     // Send initial game request
     if (!enviarPedidoJogo(clienteConfig)) {
         return;
@@ -435,10 +435,17 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
             pthread_mutex_unlock(&semSTDOUT);
             break;
         }
-        if(strcmp(buffer,"ENTROU_FASTER") == 0){
+        if(strcmp(buffer,"ENTROU_FASTER|") > 0){
+            sscanf(buffer,"ENTROU_FASTER|%d",&jogadoresEmFalta);
             pthread_mutex_lock(&semSTDOUT);
-            printf("Cliente ID: %d\n",clienteConfig->idCliente);
-            printf("Entrou na sala multiplayer Faster\n");
+            printf("\nCliente ID: %d\n",clienteConfig->idCliente);
+            if(jogadoresEmFalta == 0){
+                printf("Começando jogo...\n\n");
+            }
+            else{
+                printf("Aguardando restantes %d jogadores\n\n",jogadoresEmFalta);
+            }
+            
             pthread_mutex_unlock(&semSTDOUT);
         }
         // Check for special messages
@@ -458,7 +465,22 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
         
         // Handle game state
         if (strcmp(clienteConfig->TemJogo, "COM_JOGO") == 0) {
+            if (strncmp(buffer, "WINNER|", 7) == 0) {
+            int winnerID;
+            sscanf(buffer, "WINNER|%d", &winnerID);
             
+            pthread_mutex_lock(&semSTDOUT);
+            if (winnerID == clienteConfig->idCliente) {
+                printf("\nVocê venceu o jogo!\n");
+            } else {
+                printf("\nJogador %d venceu o jogo!\n", winnerID);
+            }
+            printf("Jogo finalizado.\n");
+            pthread_mutex_unlock(&semSTDOUT);
+            
+            // Exit the game loop
+            break;
+            }
             if (!clienteConfig->jogoAtual.resolvido) {
                 if (!processarEstadoJogo(clienteConfig)) {
                     break;

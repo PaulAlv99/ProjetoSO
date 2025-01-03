@@ -14,6 +14,7 @@ pthread_mutex_t mutexIDSala = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t aceitarCliente = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t verificaEstadoSala = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexAcabouJogo = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t verificarEstadoSalaMultiplayerFaster = PTHREAD_MUTEX_INITIALIZER;
 // semaforos
 sem_t mutexSalaMultiplayer;
 sem_t acessoLugares;
@@ -664,7 +665,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                                  struct ServidorConfig serverConfig)
 {
     struct SalaSinglePlayer *salaAtualSIG = NULL;
-    struct SalaMultiplayer* salaAtualMUL= NULL;
+    struct SalaMultiplayer *salaAtualMUL= NULL;
     char *jogoADar = "";
     int nJogo = -1;
     int bytesRecebidos;
@@ -725,7 +726,11 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 sem_post(&entradaPlayerMulPrimeiro);
                 salaAtualMUL = &serverConfig.salaMultiplayer[0];
                 adicionarClienteSalaMultiplayerFaster(&serverConfig, &clienteConfig, socketCliente);
+                jogoADar = salaAtualMUL->jogo.jogo;
+                nJogo = salaAtualMUL->jogo.idJogo;
+                SalaID = salaAtualMUL->idSala;
                 pthread_barrier_wait(&barreiraComecaTodos);
+                sleep(1);
             }
 
             updateClientConfig(&clienteConfig, &msgData, jogoADar, nJogo,SalaID);
@@ -736,8 +741,12 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 perror("Erro ao enviar mensagem para o cliente");
                 break;
             }
-
-            logQueEventoServidor(4, clienteConfig.idCliente, salaAtualSIG ? salaAtualSIG->idSala : 0);
+            if(strcmp(msgData.tipoJogo, "SIG") == 0){
+                logQueEventoServidor(4, clienteConfig.idCliente, salaAtualSIG ? salaAtualSIG->idSala : 0);
+            }
+            else{
+                logQueEventoServidor(4, clienteConfig.idCliente, salaAtualMUL ? salaAtualMUL->idSala : 0);
+            }
             
             char bufferEnviarFinal[BUF_SIZE] = {0};
             snprintf(bufferEnviarFinal, BUF_SIZE, "Mensagem enviada: %s", buffer);
@@ -771,6 +780,34 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 logQueEventoServidor(6, clienteConfig.idCliente, salaAtualSIG->idSala);
                 
                 if (gameCompleted) {
+                    break;
+                }
+            }
+            if(strcmp(msgData.tipoJogo, "MUL_FASTER") == 0) {
+                if (!salaAtualMUL) {
+                    printf("Erro: Cliente sem sala atribuída\n");
+                    break;
+                }
+                atualizarClientConfig(&clienteConfig, &msgData);
+                logQueEventoServidor(5, clienteConfig.idCliente, salaAtualMUL->idSala);
+                
+                // Add synchronization for client state
+                // pthread_mutex_lock(&salaAtualMUL->winnerMutex);
+                pthread_mutex_lock(&verificarEstadoSalaMultiplayerFaster);
+                char *logClienteEnviar = handleResolucaoJogo(&clienteConfig, salaAtualMUL);
+                bool gameCompleted = verSeJogoAcabouEAtualizarMultiplayerFaster(&clienteConfig, salaAtualMUL);
+                // pthread_mutex_unlock(&salaAtualMUL->winnerMutex);
+                
+                pthread_mutex_unlock(&verificarEstadoSalaMultiplayerFaster);
+                memset(buffer, 0, BUF_SIZE);
+                prepararRespostaJogo(buffer, &clienteConfig, logClienteEnviar);
+                if (writeSocket(socketCliente, buffer, BUF_SIZE) < 0) {
+                    perror("Erro ao enviar mensagem para o cliente");
+                    break;
+                }
+                logQueEventoServidor(6, clienteConfig.idCliente, salaAtualMUL->idSala);
+                if (gameCompleted) {
+                    printf("Cliente %d resolveu o jogo\n",clienteConfig.idCliente);
                     break;
                 }
             }
@@ -955,6 +992,7 @@ void* SalaSingleplayer(void* arg) {
         
         //para deixar a fila encher nao ser tao rapido
         //visto que estou a usar tempo entre tentativas 0
+        //posso tirar o sleep se estiver a usar mais tempo entre tentativas para deixar fila encher
         sleep(1);
         sem_post(&acessoLugares);
         //sinaliza que o cliente pode entrar
@@ -977,19 +1015,59 @@ void* SalaSingleplayer(void* arg) {
     }
     return NULL;
 }
+bool verSeJogoAcabouEAtualizarMultiplayerFaster(struct ClienteConfig *cliente, struct SalaMultiplayer *sala) {   
+    pthread_mutex_lock(&sala->winnerMutex);
+    
+    // If we already have a winner, return false
+    if (sala->hasWinner) {
+        pthread_mutex_unlock(&sala->winnerMutex);
+        return true;
+    }
+
+    // Check if this client won
+    if (verificaResolvido(cliente->jogoAtual.valoresCorretos, sala->jogo.solucao)) {
+        cliente->jogoAtual.resolvido = 1;
+        strcpy(cliente->jogoAtual.tempoFinal, getTempoHoraMinutoSegundo());
+
+        sala->hasWinner = true;
+        sala->winnerID = cliente->idCliente;
+
+        time_t tempoInicioConvertido = converterTempoStringParaTimeT(cliente->jogoAtual.tempoInicio);
+        time_t tempoFinalConvertido = converterTempoStringParaTimeT(cliente->jogoAtual.tempoFinal);
+        time_t tempoDemorado = difftime(tempoFinalConvertido, tempoInicioConvertido);
+
+        printf("[Sala-%d] Cliente %d venceu o jogo %d em %ld segundos!\n",
+               sala->idSala, cliente->idCliente, sala->jogo.idJogo, tempoDemorado);
+        
+        logQueEventoServidor(8, cliente->idCliente, sala->idSala);
+        
+        pthread_mutex_unlock(&sala->winnerMutex);
+        return true;
+    }
+
+    pthread_mutex_unlock(&sala->winnerMutex);
+    return false;
+}
 //5 jogadores a jogar ao mesmo tempo para ver quem acaba primeiro
 void* SalaMultiplayerFaster(void* arg) {
     struct SalaMultiplayer* sala = (struct SalaMultiplayer*) arg;
 
     enum GameState state = WAITING_PLAYERS;
     int esperandoEntrar = 0;
-    char* entrouSala="ENTROU_FASTER";
+    char entrouSala[50];
     bool temDeEsperar = false;
     pthread_barrier_init(&barreiraComecaTodos, NULL, 5);
     if(sem_init(&mutexSalaMultiplayer, 0, 1) || sem_init(&bloquearAcessoSala, 0, 0) || sem_init(&entradaPlayerMulPrimeiro, 0, 0)){
         perror("Erro ao inicializar semaforos");
         exit(1);
     }
+    sala->hasWinner = false;
+    sala->winnerID = -1;
+    if (pthread_mutex_init(&sala->winnerMutex, NULL) != 0)
+        {
+            perror("Erro sala mutex");
+            exit(1);
+        }
     printf("[Sala-%d] Iniciada-Multiplayer\n", sala->idSala);
     while (1) {
         sem_wait(&entradaPlayerMulPrimeiro);
@@ -1010,22 +1088,10 @@ void* SalaMultiplayerFaster(void* arg) {
         switch(state) {
             case WAITING_PLAYERS:
                 printf("[Sala-%d] Jogadores na sala, começando quando estiver cheio(%d/%d)\n", sala->idSala, sala->nClientes, sala->clientesMax);
-                switch(sala->nClientes){
-                    case 1:
-                        writeSocket(sala->clientes[0].socket,entrouSala,strlen(entrouSala));
-                        break;
-                    case 2:
-                        writeSocket(sala->clientes[1].socket,entrouSala,strlen(entrouSala));
-                        break;
-                    case 3:
-                        writeSocket(sala->clientes[2].socket,entrouSala,strlen(entrouSala));
-                        break;
-                    case 4:
-                        writeSocket(sala->clientes[3].socket,entrouSala,strlen(entrouSala));
-                        break;
-                    case 5:
-                        writeSocket(sala->clientes[4].socket,entrouSala,strlen(entrouSala));
-                        break;
+                int jogadoresFaltantes = sala->clientesMax - sala->nClientes;
+                for(int i=0;i<sala->nClientes;i++){
+                    sprintf(entrouSala,"ENTROU_FASTER|%d",jogadoresFaltantes);
+                    writeSocket(sala->clientes[i].socket,entrouSala,strlen(entrouSala));
                 }
                 if(sala->nClientes == 5){
                     state = GAME_STARTING;
@@ -1041,15 +1107,37 @@ void* SalaMultiplayerFaster(void* arg) {
                 break;
                 
             case GAME_RUNNING:
+                // When checking if a player won (in verSeJogoAcabouEAtualizar):
+                pthread_mutex_lock(&sala->winnerMutex);
+            
+            if (sala->hasWinner) {
+                // Broadcast winner to all clients
+                char winnerMsg[BUF_SIZE];
+                sprintf(winnerMsg, "WINNER|%d", sala->winnerID);
+                
+                for (int i = 0; i < sala->nClientes; i++) {
+                    if (writeSocket(sala->clientes[i].socket, winnerMsg, strlen(winnerMsg)) < 0) {
+                        perror("Failed to send winner message");
+                    }
+                }
+                
+                // Reset game state
+                sala->jogoIniciado = false;
+                sala->nClientes = 0;
+                sala->hasWinner = false;
+                sala->winnerID = -1;
+            }
+            
+            pthread_mutex_unlock(&sala->winnerMutex);
                 break;
                 
             case GAME_ENDED:
-                // Cleanup and possibly restart
                 break;
         }
     }
     
     sem_destroy(&mutexSalaMultiplayer);
+    pthread_mutex_destroy(&sala->winnerMutex);
     return NULL;
 }
 void *iniciarSalaSinglePlayer(void *arg)
@@ -1123,7 +1211,7 @@ void iniciarSalasJogoMultiplayer(struct ServidorConfig *serverConfig, struct Jog
 
         serverConfig->salaMultiplayer[i].jogoIniciado = false;
         serverConfig->salaMultiplayer[i].clienteAtualID = NULL;
-
+        serverConfig->salaMultiplayer[i].hasWinner = false;
         // Cada sala tem um jogo
         serverConfig->salaMultiplayer[i].jogo = jogosEsolucoes[i];
         serverConfig->salaMultiplayer[i].clientes = malloc(
