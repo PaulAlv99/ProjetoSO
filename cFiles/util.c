@@ -56,11 +56,13 @@ const char *getTempo()
 	return buffer;
 }
 
-const char *getTempoHoraMinutoSegundo()
+const char *getTempoHoraMinutoSegundoMs()
 {
 	static char buffer[TEMPO_TAMANHO];
-	time_t now = time(NULL);
-	strftime(buffer, sizeof(buffer) - 1, "%H:%M:%S", localtime(&now));
+	struct timespec ts;
+	clock_gettime(CLOCK_REALTIME, &ts);
+	struct tm *tm_info = localtime(&ts.tv_sec);
+	snprintf(buffer, sizeof(buffer), "%02d:%02d:%02d.%03ld", tm_info->tm_hour, tm_info->tm_min, tm_info->tm_sec, ts.tv_nsec / 1000000);
 	return buffer;
 }
 

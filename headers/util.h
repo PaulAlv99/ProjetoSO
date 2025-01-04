@@ -24,7 +24,7 @@
 #include <poll.h>
 #define CHECK_NULL(x) ((x) == NULL)
 
-#define TEMPO_TAMANHO 22
+#define TEMPO_TAMANHO 64
 #define BUF_SIZE 8192
 // 81 + \0
 #define NUMEROS_NO_JOGO 81
@@ -90,7 +90,7 @@ struct ServidorConfig
 
 // globais
 const char *getTempo();
-const char *getTempoHoraMinutoSegundo();
+const char *getTempoHoraMinutoSegundoMs();
 void enviarMensagens();
 void receberMensagens(int nUtilizadores);
 int fecharFicheiro(FILE *file);

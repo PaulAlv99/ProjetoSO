@@ -44,10 +44,10 @@ void carregarConfigCliente(char *nomeFicheiro, struct ClienteConfig *clienteConf
             case 3: // porta
                 clienteConfig->porta = atoi(valor);
                 break;
-            case 4:
+            case 4: // numJogadoresASimular
 				clienteConfig->numJogadoresASimular = atoi(valor);
 				break;
-			case 5:
+			case 5: // tempoEntreTentativas
 				clienteConfig->tempoEntreTentativas = atoi(valor);
 				break;
             default:
@@ -103,7 +103,7 @@ void logEventoCliente(const char *message, struct ClienteConfig *clienteConfig)
 		pthread_mutex_unlock(&mutexClienteLog);
 		return;
 	}
-	fprintf(file, "[%s] [Cliente ID: %u] %s\n", getTempo(), clienteConfig->idCliente, message);
+	fprintf(file, "[%s] [Cliente ID: %u] %s\n", getTempoHoraMinutoSegundoMs(), clienteConfig->idCliente, message);
 
 	fclose(file);
 	pthread_mutex_unlock(&mutexClienteLog);
@@ -115,9 +115,6 @@ void logQueEventoCliente(int numero, struct ClienteConfig clienteConfig)
 	{
 	case 1:
 		logEventoCliente("Cliente comecou o programa", &clienteConfig);
-		break;
-	case 2:
-		logEventoCliente("Cliente desconectou-se", &clienteConfig);
 		break;
 	case 3:
 		logEventoCliente("Cliente conectou-se ao servidor", &clienteConfig);
@@ -137,6 +134,9 @@ void logQueEventoCliente(int numero, struct ClienteConfig clienteConfig)
 	case 8:
 		logEventoCliente("Cliente resolveu jogo",&clienteConfig);
 		break;
+    case 9:
+        logEventoCliente("Fila singleplayer cheia, jogador saiu",&clienteConfig);
+        break;
 	default:
 		logEventoCliente("Evento desconhecido", &clienteConfig);
 		break;
@@ -219,7 +219,6 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 	mandarETratarMSG(clienteConfig);
     shutdown(socket, SHUT_WR);
 	close(clienteConfig->socket);
-	logQueEventoCliente(2, *clienteConfig);
 }
 
 void tentarSolucaoParcial(char tentativaAtual[], char valoresCorretos[])
@@ -298,11 +297,11 @@ bool parseMensagemJogo(const char *buffer, struct ClienteConfig *clienteConfig) 
     char *numeroTentativas = strtok(NULL, "|");
     char *logCliente = strtok(NULL, "|");
 
-    bool success = (idCliente && tipoJogo && tipoResolucao && temJogo && 
+    bool sucesso = (idCliente && tipoJogo && tipoResolucao && temJogo && 
                    idJogo && idSala && valoresCorretos && tempoInicio && 
                    tempoFinal && resolvido && numeroTentativas);
 
-    if (success) {
+    if (sucesso) {
         clienteConfig->idCliente = atoi(idCliente);
         strcpy(clienteConfig->TemJogo, temJogo);
         clienteConfig->jogoAtual.idJogo = atoi(idJogo);
@@ -314,13 +313,13 @@ bool parseMensagemJogo(const char *buffer, struct ClienteConfig *clienteConfig) 
         clienteConfig->jogoAtual.resolvido = atoi(resolvido);
         clienteConfig->jogoAtual.numeroTentativas = atoi(numeroTentativas);
         
-        if (logCliente) {
-            logEventoCliente(logCliente, clienteConfig);
-        }
+        // if (logCliente) {
+        //     logEventoCliente(logCliente, clienteConfig);
+        // }
     }
 
     free(temp);
-    return success;
+    return sucesso;
 }
 
 bool enviarPedidoJogo(struct ClienteConfig *clienteConfig) {
@@ -332,12 +331,14 @@ bool enviarPedidoJogo(struct ClienteConfig *clienteConfig) {
         logQueEventoCliente(7, *clienteConfig);
         return false;
     }
-     char *log = malloc(2*BUF_SIZE * sizeof(char));
-    if (log) {
-        sprintf(log, "Mensagem enviada: %s", buffer);
-        logEventoCliente(log, clienteConfig);
-        free(log);
+    char *log = malloc(2*BUF_SIZE * sizeof(char));
+    if(log == NULL){
+        perror("Erro ao alocar memoria para log");
+        exit(1);
     }
+    sprintf(log, "Mensagem enviada: %s", buffer);
+    logEventoCliente(log, clienteConfig);
+    free(log);
     return true;
 }
 
@@ -352,16 +353,18 @@ bool enviarTentativa(struct ClienteConfig *clienteConfig) {
     }
 
     char *bufferLog = malloc(2*BUF_SIZE * sizeof(char));
-    if (bufferLog) {
-        sprintf(bufferLog, "Mensagem enviada: %s", buffer);
-        logEventoCliente(bufferLog, clienteConfig);
-        free(bufferLog);
+    if(bufferLog == NULL){
+        perror("Erro ao alocar memoria para log");
+        exit(1);
     }
+    sprintf(bufferLog, "Mensagem enviada: %s", buffer);
+    logEventoCliente(bufferLog, clienteConfig);
+    free(bufferLog);
+    
     
     return true;
 }
 
-// Game state handling functions
 void atualizarTentativa(struct ClienteConfig *clienteConfig) {
     if (strcmp(clienteConfig->tipoResolucao, "COMPLET") == 0) {
         tentarSolucaoCompleta(clienteConfig->jogoAtual.jogo, 
@@ -386,6 +389,7 @@ bool processarEstadoJogo(struct ClienteConfig *clienteConfig) {
     atualizarTentativa(clienteConfig);
 
     // Aguardar tempo entre tentativas
+    //mudado na config do jogador
     struct timespec tempo = {
         .tv_sec = clienteConfig->tempoEntreTentativas / 1000,
         .tv_nsec = (clienteConfig->tempoEntreTentativas % 1000) * 1000000
@@ -417,26 +421,31 @@ void imprimirEstadoInicial(struct ClienteConfig *clienteConfig) {
     pthread_mutex_unlock(&semSTDOUT);
 }
 
-// Main message handling function
+//Funcao principal para enviar e receber mensagens
 void mandarETratarMSG(struct ClienteConfig *clienteConfig) 
 {
     char buffer[BUF_SIZE];
     ssize_t bytesRead;
     int jogadoresEmFalta;
-    // Send initial game request
+    // Mandar pedido inicial de jogo
     if (!enviarPedidoJogo(clienteConfig)) {
         return;
     }
     
-    // Main receive loop
+    //Parte principal do cliente
     while ((bytesRead = readSocket(clienteConfig->socket, buffer, BUF_SIZE)) > 0) {
         buffer[bytesRead] = '\0';
+        //Para jogos singleplayer se estiver cheio dá break ou seja sai logo
         if (strcmp(buffer, "FILA CHEIA SINGLEPLAYER") == 0) {
             pthread_mutex_lock(&semSTDOUT);
             printf("Fila singleplayer está cheia\n");
             pthread_mutex_unlock(&semSTDOUT);
+            logQueEventoCliente(9, *clienteConfig);
             break;
         }
+        //Para jogos multiplayer faster cada cliente recebe a mensagem
+        //de quem ganhou, tendo em consideração o seu próprio id sabem se 
+        //ganhou ou perdeu depois disso saem da sala e do servidor
         if (strcmp(buffer, "WINNER|") > 0) {
                 int winnerID;
                 sscanf(buffer, "WINNER|%d", &winnerID);
@@ -452,10 +461,11 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
                     printf("\nVocê perdeu o jogo!\n\n");
                     pthread_mutex_unlock(&semSTDOUT);
                     break;
-                }
-            // Exit the game loop
-            
+                }            
             }
+        //servidor manda mensagem de quando entra um player na sala
+        //multiplayer faster sempre com quantos players faltam entrar
+
         if(strcmp(buffer,"ENTROU_FASTER|") > 0){
             pthread_mutex_lock(&semSTDOUT);
             sscanf(buffer,"ENTROU_FASTER|%d",&jogadoresEmFalta);
@@ -471,22 +481,21 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
             pthread_mutex_unlock(&semSTDOUT);
         }
         
-        // Check for special messages
-        
-        // Parse received message
+        //transformar a mensagem recebida em struct clienteConfig
         if (!parseMensagemJogo(buffer, clienteConfig)) {
             continue;
         }
-
-        // Log received message
+        //alocar memória para o log
         char *bufferLog = malloc(2*BUF_SIZE * sizeof(char));
-        if (bufferLog) {
-            sprintf(bufferLog, "Mensagem recebida: %s", buffer);
-            logEventoCliente(bufferLog, clienteConfig);
-            free(bufferLog);
+        if(bufferLog == NULL){
+            perror("Erro ao alocar memoria para mensagem recebida");
+            exit(1);
         }
+        sprintf(bufferLog, "Mensagem recebida: %s", buffer);
+        logEventoCliente(bufferLog, clienteConfig);
+        free(bufferLog);
         
-        // Handle game state
+        
         if (strcmp(clienteConfig->TemJogo, "COM_JOGO") == 0) {
             
             if (!clienteConfig->jogoAtual.resolvido) {
@@ -497,7 +506,9 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
             else {
                 imprimirResultadoFinal(clienteConfig);
                 logQueEventoCliente(8, *clienteConfig);
-                // break;
+                char resolvidoEmTempo[64];
+                // sprintf(resolvidoEmTempo, "Resolvido em %d tentativas e %d ", clienteConfig->jogoAtual.numeroTentativas);
+                // logEventoCliente("Cliente resolveu o jogo", clienteConfig);
             }
             
         }

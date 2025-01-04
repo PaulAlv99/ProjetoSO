@@ -72,7 +72,7 @@ void logEventoServidor(const char *message)
         pthread_mutex_unlock(&mutexServidorLog);
         return;
     }
-    fprintf(file, "[%s] %s\n", getTempo(), message);
+    fprintf(file, "[%s] %s\n", getTempoHoraMinutoSegundoMs(), message);
     fecharFicheiro(file);
     pthread_mutex_unlock(&mutexServidorLog);
 }
@@ -123,7 +123,7 @@ void logQueEventoServidor(int numero, int clienteID,int salaID)
         free(mensagem);
         break;
     case 8:
-        sprintf(mensagem, "Cliente-%d resolveu o jogo", clienteID);
+        sprintf(mensagem, "Cliente-%d resolveu o jogo da sala-%d", clienteID,salaID);
         logEventoServidor(mensagem);
         free(mensagem);
         break;
@@ -144,6 +144,11 @@ void logQueEventoServidor(int numero, int clienteID,int salaID)
         break;
     case 12:
         sprintf(mensagem, "Cliente-%d entrou na sala-%d", clienteID,salaID);
+        logEventoServidor(mensagem);
+        free(mensagem);
+        break;
+    case 13:
+        sprintf(mensagem, "Cliente-%d não resolveu o jogo da sala-%d", clienteID,salaID);
         logEventoServidor(mensagem);
         free(mensagem);
         break;
@@ -541,7 +546,7 @@ void updateClientConfig(struct ClienteConfig *clienteConfig,
     strcpy(clienteConfig->TemJogo, "COM_JOGO");
     strcpy(clienteConfig->jogoAtual.jogo, jogoADar);
     strcpy(clienteConfig->jogoAtual.valoresCorretos, jogoADar);
-    strcpy(clienteConfig->jogoAtual.tempoInicio, getTempoHoraMinutoSegundo());
+    strcpy(clienteConfig->jogoAtual.tempoInicio, getTempoHoraMinutoSegundoMs());
     strcpy(clienteConfig->jogoAtual.tempoFinal, msg->tempoFinal);
     clienteConfig->jogoAtual.resolvido = atoi(msg->resolvido);
     clienteConfig->jogoAtual.numeroTentativas = atoi(msg->numeroTentativas);
@@ -616,7 +621,7 @@ bool verSeJogoAcabouEAtualizar(struct ClienteConfig *cliente, struct SalaSingleP
     if (verificaResolvido(cliente->jogoAtual.valoresCorretos, sala->jogo.solucao))
     {
         cliente->jogoAtual.resolvido = 1;
-        strcpy(cliente->jogoAtual.tempoFinal, getTempoHoraMinutoSegundo());
+        strcpy(cliente->jogoAtual.tempoFinal, getTempoHoraMinutoSegundoMs());
 
         sala->jogadorAResolver = false;
         sala->nClientes = 0;
@@ -624,12 +629,11 @@ bool verSeJogoAcabouEAtualizar(struct ClienteConfig *cliente, struct SalaSingleP
         time_t tempoInicioConvertido = converterTempoStringParaTimeT(cliente->jogoAtual.tempoInicio);
         time_t tempoFinalConvertido = converterTempoStringParaTimeT(cliente->jogoAtual.tempoFinal);
         time_t tempoDemorado = difftime(tempoFinalConvertido, tempoInicioConvertido);
-
+        
         printf("[Sala-%d] Cliente %d resolveu o jogo %d em %ld segundos!\n",
                sala->idSala, cliente->idCliente, sala->jogo.idJogo, tempoDemorado);
         //passo 0 como nao importa para esta msg
-        logQueEventoServidor(8, cliente->idCliente,0);
-
+        logQueEventoServidor(8, cliente->idCliente, sala->idSala);
         pthread_mutex_unlock(&mutexAcabouJogo);
         return true;
     }
@@ -760,6 +764,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
             }
             if (strcmp(msgData.tipoJogo, "MUL_FASTER") == 0) {
                 sem_post(&entradaPlayerMulPrimeiro);
+                //apenas 5 players entram
                 sem_wait(&capacidadeSalaMultiplayeFaster);
                 sem_wait(&mutexSalaMultiplayer);
                 adicionarClienteSalaMultiplayerFaster(&serverConfig,clienteConfig);
@@ -768,6 +773,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 jogoADar = salaAtualMUL->jogo.jogo;
                 nJogo = salaAtualMUL->jogo.idJogo;
                 SalaID = salaAtualMUL->idSala;
+                //espera todos para começar ao mesmo tempo - (roller coaster-espera todos embarcar)
                 pthread_barrier_wait(&barreiraComecaTodos);
                 //sleep por causa de prints
                 sleep(1);
@@ -873,7 +879,9 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
         
         if(salaAtualSIG->jogadorAResolver){
             printf("Cliente %d não resolveu o jogo\n",clienteConfig.idCliente);
+            logQueEventoServidor(13, clienteConfig.idCliente, salaAtualSIG->idSala);
         }
+        
         salaAtualSIG->jogadorAResolver = false;
         salaAtualSIG->clienteAtual.idCliente = -1;
         salaAtualSIG->nClientes = 0;
@@ -884,6 +892,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
     if(salaAtualMUL) {
     salaAtualMUL->nClientes--;
     printf("Numero de clientes na sala %d\n",salaAtualMUL->nClientes);
+    //sinalizar que todos os clientes sairam
     if(salaAtualMUL->nClientes == 0){
         sem_post(&ultimoClienteSairSalaMultiplayerFaster);
     }
@@ -1082,7 +1091,7 @@ bool verSeJogoAcabouEAtualizarMultiplayerFaster(struct ClienteConfig *cliente, s
     // Check if this client won
     if (verificaResolvido(cliente->jogoAtual.valoresCorretos, sala->jogo.solucao)) {
         cliente->jogoAtual.resolvido = 1;
-        strcpy(cliente->jogoAtual.tempoFinal, getTempoHoraMinutoSegundo());
+        strcpy(cliente->jogoAtual.tempoFinal, getTempoHoraMinutoSegundoMs());
 
         sala->hasWinner = true;
         sala->winnerID = cliente->idCliente;
@@ -1093,9 +1102,9 @@ bool verSeJogoAcabouEAtualizarMultiplayerFaster(struct ClienteConfig *cliente, s
 
         printf("[Sala-%d] Cliente %d resolveu o jogo %d em %ld segundos!\n",
                sala->idSala, cliente->idCliente, sala->jogo.idJogo, tempoDemorado);
-        
+        //passo 0 como nao importa para esta msg
         logQueEventoServidor(8, cliente->idCliente, sala->idSala);
-        
+
         pthread_mutex_unlock(&sala->winnerMutex);
         return true;
     }
@@ -1153,6 +1162,7 @@ void* SalaMultiplayerFaster(void* arg) {
         }
         //comer sushi
         switch(state) {
+            //estado inicial entrada de players(roller coaster-load)
             case WAITING_PLAYERS:
                
                 printf("[Sala-%d] Jogadores na sala, começando quando estiver cheio(%d/%d)\n", sala->idSala, sala->nClientes, sala->clientesMax);
@@ -1167,11 +1177,12 @@ void* SalaMultiplayerFaster(void* arg) {
                 else{
                     break;
                 }
-         
+            //estado de preparação para o jogo
             case GAME_STARTING:
                 // Initialize game
                 printf("[Sala-%d] A iniciar jogo\n", sala->idSala);
                 state = GAME_RUNNING;
+            //estado de execução do jogo(roller coaster-run)
             case GAME_RUNNING:
                 // When checking if a player won (in verSeJogoAcabouEAtualizar):
 
@@ -1193,8 +1204,9 @@ void* SalaMultiplayerFaster(void* arg) {
                 state=GAME_ENDED;
             
             // pthread_mutex_unlock(&sala->winnerMutex);
-                
+            //estado final - (roller coaster-unload)    
             case GAME_ENDED:
+            //aguarda que todos os jogadores desembarcar
             sem_wait(&ultimoClienteSairSalaMultiplayerFaster);
             sem_wait(&mutexSalaMultiplayer);
             
@@ -1204,6 +1216,7 @@ void* SalaMultiplayerFaster(void* arg) {
                 sala->winnerID = -1;
                 state=WAITING_PLAYERS;
                 sala->temDeEsperar = false;
+                // limpa a sala -(roller coaster-reset dos contadores de boarders e unboarders)
                 limparAdicionarClienteSalaMultiplayerFaster(sala);
                 if(sala->esperandoEntrar > 0){
                     sem_post(&bloquearAcessoSala);
@@ -1211,6 +1224,7 @@ void* SalaMultiplayerFaster(void* arg) {
                 else{
                     sem_post(&mutexSalaMultiplayer);
                 }
+            //libertar lugares
             for(int i=0;i<sala->clientesMax;i++){
                 sem_post(&capacidadeSalaMultiplayeFaster);
             }
