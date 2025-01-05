@@ -26,8 +26,8 @@
 	┣ jogosEsolucoes.txt
 	┣ makefile
 	┗ servidor
-
-## Para iniciar o servidor é necessário passar o caminho do ficheiro que será usado para a configuração do servidor. Com o comando ./servidor ./configs/servidor.conf . Deverá certificar se que o ficheiro contém a seguinte estrutura,uma linha para cada parâmetro:
+## 1-Fazer make
+## 2-Para iniciar o servidor é necessário passar o caminho do ficheiro que será usado para a configuração do servidor. Com o comando ./servidor ./configs/servidor.conf . Deverá certificar se que o ficheiro contém a seguinte estrutura,uma linha para cada parâmetro:
 
 jogosEsolucoes.txt
 25575
@@ -46,7 +46,7 @@ Primeira linha-id do jogo que será o mesmo id da sala.
 Segunda linha-jogo que será enviado ao cliente.
 Terceira linha-solução do jogo.
 
-## Para iniciar os clientes é necessário passar o caminho do ficheiro que será usado para a configuração do cliente. Com o comando ./cliente ./configs/cliente.conf . Deverá certificar se que o ficheiro contém a seguinte estrutura,uma linha para cada parâmetro:
+## 3-Para iniciar os clientes é necessário passar o caminho do ficheiro que será usado para a configuração do cliente. Com o comando ./cliente ./configs/cliente.conf . Deverá certificar se que o ficheiro contém a seguinte estrutura,uma linha para cada parâmetro:
 
 SIG
 COMPLET
