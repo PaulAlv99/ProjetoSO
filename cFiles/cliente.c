@@ -11,14 +11,13 @@ pthread_mutex_t mutexSTDOUT = PTHREAD_MUTEX_INITIALIZER;
 sem_t aguardaChegarClientes;
 sem_t garfos[4];
 sem_t mutexFilosofos;
-enum Estados estadosFilosofos[4];
-
 enum Estados
 {
     PENSANDO,
     COM_FOME,
     COMENDO
 };
+enum Estados estadosFilosofos[4];
 
 
 int left(int i)
