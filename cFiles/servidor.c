@@ -6,11 +6,14 @@ struct filaClientesSinglePlayer *filaClientesSinglePlayer;
 // globais
 static int idCliente = 0;
 int numeroJogosResolvidos=0;
+int numeroClientesRejeitados=0;
 int jogosEmResolucao=0;
 int clientesAtuais=0;
+
 pthread_mutex_t numeroJogosResolvidosMutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t jogosEmResolucaoMutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t clientesAtuaisMutex=PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t numeroClientesRejeitadosMutex=PTHREAD_MUTEX_INITIALIZER;
 
 // tricos
 pthread_mutex_t mutexServidorLog = PTHREAD_MUTEX_INITIALIZER;
@@ -153,6 +156,9 @@ void logQueEventoServidor(int numero, int clienteID,int salaID)
         //free(mensagem);
         break;
     case 11:
+        pthread_mutex_lock(&numeroClientesRejeitadosMutex);
+        numeroClientesRejeitados++;
+        pthread_mutex_unlock(&numeroClientesRejeitadosMutex);
         sprintf(mensagem, "[%s] Cliente-%d rejeitado a entrar na fila",getTempoHoraMinutoSegundoMs(), clienteID);
         logEventoServidor(mensagem);
         //free(mensagem);
@@ -661,7 +667,6 @@ bool verSeJogoAcabouEAtualizar(struct ClienteConfig *cliente, struct SalaSingleP
         logQueEventoServidor(8, cliente->idCliente, sala->idSala);
         pthread_mutex_lock(&numeroJogosResolvidosMutex);
         numeroJogosResolvidos++;
-        jogosEmResolucao--;
         pthread_mutex_unlock(&numeroJogosResolvidosMutex);
         pthread_mutex_unlock(&mutexAcabouJogo);
         return true;
@@ -976,7 +981,10 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
     logQueEventoServidor(7, clienteConfig.idCliente, salaAtualSIG ? salaAtualSIG->idSala : 0);
     pthread_mutex_lock(&clientesAtuaisMutex);
     clientesAtuais--;
-    pthread_mutex_unlock(&clientesAtuaisMutex);  
+    pthread_mutex_unlock(&clientesAtuaisMutex);
+    pthread_mutex_lock(&jogosEmResolucaoMutex);
+    jogosEmResolucao--;
+    pthread_mutex_unlock(&jogosEmResolucaoMutex);
 }
 
 struct filaClientesSinglePlayer *criarFila(struct ServidorConfig *serverConfig)
@@ -1148,7 +1156,6 @@ bool verSeJogoAcabouEAtualizarMultiplayerFaster(struct ClienteConfig *cliente, s
         logQueEventoServidor(8, cliente->idCliente, sala->idSala);
         pthread_mutex_lock(&numeroJogosResolvidosMutex);
         numeroJogosResolvidos++;
-        jogosEmResolucao--;
         pthread_mutex_unlock(&numeroJogosResolvidosMutex);
         pthread_mutex_unlock(&sala->winnerMutex);
         return true;
@@ -1429,19 +1436,7 @@ void iniciarSalasJogoMultiplayer(struct ServidorConfig *serverConfig, struct Jog
         }
         pthread_detach(threadSala);
     }
-    // pthread_t threadSalaMultiplayer;
-    // serverConfig->salaMultiplayer[1].jogo = jogosEsolucoes[0];
-    // serverConfig->salaMultiplayer[1].idSala = numeroTotalSalas + 1;
-    // serverConfig->salaMultiplayer[1].clientesMax = 4;
-    // serverConfig->salaMultiplayer[1].clienteMin = 4;
-    // serverConfig->salaMultiplayer[1].nClientes = 0;
-    // serverConfig->salaMultiplayer[1].jogoIniciado = false;
-    // serverConfig->salaMultiplayer[1].clientes = calloc(serverConfig->salaMultiplayer[1].clientesMax, sizeof(struct ClienteConfig));
-    // if (pthread_create(&threadSalaMultiplayer, NULL, iniciarSalaMultiplayer, &serverConfig->salaMultiplayer[1]) != 0) {
-    //     perror("Erro ao criar thread sala multiplayer");
-    //     exit(1);
-    // }
-    // pthread_detach(threadSalaMultiplayer);
+
 }
 void* informacoesServidor(void* arg) {
     struct ServidorConfig* serverConfig = (struct ServidorConfig*)arg;
@@ -1449,7 +1444,8 @@ void* informacoesServidor(void* arg) {
         printf("[Sistema] Número de clientes atuais: %d\n", clientesAtuais);
         printf("[Sistema] Número de jogos resolvidos: %d\n", numeroJogosResolvidos);
         printf("[Sistema] Número de jogos em resolução: %d\n", jogosEmResolucao);
-        sleep(5);
+        printf("[Sistema] Número de jogadores rejeitados: %d\n", numeroClientesRejeitados);
+        sleep(10);
     }
     return NULL;
 }

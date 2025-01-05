@@ -8,96 +8,6 @@ char *padrao = "./configs/cliente";
 pthread_mutex_t mutexClienteLog = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexSTDOUT = PTHREAD_MUTEX_INITIALIZER;
 
-int numeroClientesMul;
-sem_t aguardaChegarClientes;
-sem_t garfos[9];
-sem_t mutexFilosofos;
-enum Estados
-{
-    PENSANDO,
-    COM_FOME,
-    COMENDO
-};
-enum Estados estadosFilosofos[9];
-
-bool posicoesSaoAdjacentes(int i,int j){
-    if(i == 0){
-        if(j == 1 || j == 8){
-            return true;
-        }
-    }
-    if(i == 1){
-        if(j == 0 || j == 2){
-            return true;
-        }
-    }
-    if(i == 2){
-        if(j == 1 || j == 3){
-            return true;
-        }
-    }
-    if(i == 3){
-        if(j == 2 || j == 4){
-            return true;
-        }
-    }
-    if(i == 4){
-        if(j == 3 || j == 5){
-            return true;
-        }
-    }
-    if(i == 5){
-        if(j == 4 || j == 6){
-            return true;
-        }
-    }
-    if(i == 6){
-        if(j == 5 || j == 7){
-            return true;
-        }
-    }
-    if(i == 7){
-        if(j == 6 || j == 8){
-            return true;
-        }
-    }
-    if(i == 8){
-        if(j == 7 || j == 0){
-            return true;
-        }
-    }
-    return false;
-}
-int left(int i)
-{
-    return i;
-}
-int right(int i)
-{
-    return (i + 1) % 9;
-}
-void get_fork(int i){
-    sem_wait(&mutexFilosofos);
-    estadosFilosofos[i] = COM_FOME;
-    testar(i);
-    sem_post(&mutexFilosofos);
-    sem_wait(&garfos[i]);
-}
-
-void put_fork(int i){
-    sem_wait(&mutexFilosofos);
-    estadosFilosofos[i] = PENSANDO;
-    testar(right(i));
-    testar(left(i));
-    sem_post(&mutexFilosofos);
-}
-void testar(int i){
-    if (estadosFilosofos[i] == COM_FOME && estadosFilosofos[left(i)] != COMENDO && estadosFilosofos[right(i)] != COMENDO){
-        estadosFilosofos[i] = COMENDO;
-        sem_post(&garfos[i]);
-    }
-}
-
 void carregarConfigCliente(char *nomeFicheiro, struct ClienteConfig *clienteConfig) {
     FILE *config = abrirFicheiroRead(nomeFicheiro);
     if (config == NULL) {
@@ -603,16 +513,7 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
                 logQueEventoCliente(7, *clienteConfig);
             break;
             }
-            if(strcmp(clienteConfig->tipoJogo,"MUL") == 0){
-                pthread_mutex_lock(&mutexSTDOUT);
-                printf("Cliente ID:%d\n", clienteConfig->idCliente);
-                while(numeroClientesMul < 9){
-                    numeroClientesMul++;
-                    sem_wait(&aguardaChegarClientes);
-                    
-                }
-                
-                pthread_mutex_unlock(&mutexSTDOUT);
+            if(strcmp(clienteConfig->tipoJogo,"COOP") == 0){
             }
             
             if (!clienteConfig->jogoAtual.resolvido) {
@@ -663,21 +564,6 @@ bool desistirDeResolver(){
 }
 int main(int argc, char **argv) {
     struct ClienteConfig clienteConfig = {0};
-    numeroClientesMul = 0;
-    for(int i = 0; i < 4; i++){
-        sem_init(&garfos[i], 0, 1);
-    }
-    if(sem_init(&mutexFilosofos, 0, 1) != 0){
-        perror("Erro ao inicializar semaforo");
-        exit(1);
-    }
-    if(sem_init(&aguardaChegarClientes, 0, 4) != 0){
-        perror("Erro ao inicializar semaforo");
-        exit(1);
-    }
-    for(int i = 0; i < 4; i++){
-        estadosFilosofos[i] = PENSANDO;
-    }
     // Validação dos argumentos da linha de comando
     if (argc < 2) {
         printf("Erro: Nome do ficheiro de configuracao nao fornecido.\n");
