@@ -9,7 +9,7 @@ pthread_mutex_t mutexClienteLog = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexSTDOUT = PTHREAD_MUTEX_INITIALIZER;
 
 sem_t aguardaChegarClientes;
-sem_t garfos[4];
+sem_t garfos[9];
 sem_t mutexFilosofos;
 enum Estados
 {
@@ -17,16 +17,65 @@ enum Estados
     COM_FOME,
     COMENDO
 };
-enum Estados estadosFilosofos[4];
+enum Estados estadosFilosofos[9];
 
 
+
+bool posicoesSaoAdjacentes(int i,int j){
+    if(i == 0){
+        if(j == 1 || j == 8){
+            return true;
+        }
+    }
+    if(i == 1){
+        if(j == 0 || j == 2){
+            return true;
+        }
+    }
+    if(i == 2){
+        if(j == 1 || j == 3){
+            return true;
+        }
+    }
+    if(i == 3){
+        if(j == 2 || j == 4){
+            return true;
+        }
+    }
+    if(i == 4){
+        if(j == 3 || j == 5){
+            return true;
+        }
+    }
+    if(i == 5){
+        if(j == 4 || j == 6){
+            return true;
+        }
+    }
+    if(i == 6){
+        if(j == 5 || j == 7){
+            return true;
+        }
+    }
+    if(i == 7){
+        if(j == 6 || j == 8){
+            return true;
+        }
+    }
+    if(i == 8){
+        if(j == 7 || j == 0){
+            return true;
+        }
+    }
+    return false;
+}
 int left(int i)
 {
     return i;
 }
 int right(int i)
 {
-    return (i + 1) % 3;
+    return (i + 1) % 4;
 }
 void get_fork(int i){
     sem_wait(&mutexFilosofos);

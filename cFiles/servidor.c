@@ -1265,50 +1265,50 @@ void* SalaMultiplayerFaster(void* arg) {
     pthread_mutex_destroy(&sala->winnerMutex);
     return NULL;
 }
-// void* SalaMultiplayer(void* arg) {
-//     struct SalaMultiplayer* sala = (struct SalaMultiplayer*) arg;
-//     enum GameState state = WAITING_PLAYERS;
-//     printf("[Sala-%d] Iniciada-Multiplayer\n", sala->idSala);
+void* SalaMultiplayer(void* arg) {
+    struct SalaMultiplayer* sala = (struct SalaMultiplayer*) arg;
+    enum GameState state = WAITING_PLAYERS;
+    printf("[Sala-%d] Iniciada-Multiplayer\n", sala->idSala);
     
-//     // Lock para proteger o acesso à condição
-//     // pthread_mutex_lock(&mutexIniciarJogoMULNORMAL);
-//     if(sem_init(&iniciarJogoMul,0,0) || sem_init(&mutexSalaMultiplayerNormal, 0,1) != 0){
-//         perror("Erro ao inicializar mutex");
-//         exit(1);
-//     }
+    // Lock para proteger o acesso à condição
+    // pthread_mutex_lock(&mutexIniciarJogoMULNORMAL);
+    if(sem_init(&iniciarJogoMul,0,0) || sem_init(&mutexSalaMultiplayerNormal, 0,1) != 0){
+        perror("Erro ao inicializar mutex");
+        exit(1);
+    }
 
-//     while (1) {
-//         switch(state){
-//             case WAITING_PLAYERS:
-//                 //espera 4 jogadores
-//                 sem_wait(&iniciarJogoMul);
-//                 printf("[Sala-%d] Jogadores na sala, começando quando estiver cheio(%d/%d)\n", sala->idSala, sala->nClientes, sala->clientesMax);
-//                 if(sala->nClientes == 4){
-//                     state = GAME_STARTING;
-//                 }
-//                 else{
-//                     break;
-//                 }
-//             case GAME_STARTING:
-//                 // Initialize game
-//                 printf("[Sala-%d] A iniciar jogo\n", sala->idSala);
-//                 state = GAME_RUNNING;
-//                 break;
-//             case GAME_RUNNING:
-//                 // verSeJogoAcabouEAtualizarMultiplayerFaster a verificar se alguem acabou
-//                 // Broadcast quem ganhou para todos os clientes
-//                 // Reset game state
-//                 state = GAME_ENDED;
-//                 break;
-//             case GAME_ENDED:
-//                 printf("[Sala-%d] Jogo terminado\n", sala->idSala);
-//                 state = WAITING_PLAYERS;
-//                 break;
-//         }
-//     }
+    while (1) {
+        switch(state){
+            case WAITING_PLAYERS:
+                //espera 4 jogadores
+                sem_wait(&iniciarJogoMul);
+                printf("[Sala-%d] Jogadores na sala, começando quando estiver cheio(%d/%d)\n", sala->idSala, sala->nClientes, sala->clientesMax);
+                if(sala->nClientes == 4){
+                    state = GAME_STARTING;
+                }
+                else{
+                    break;
+                }
+            case GAME_STARTING:
+                // Initialize game
+                printf("[Sala-%d] A iniciar jogo\n", sala->idSala);
+                state = GAME_RUNNING;
+                break;
+            case GAME_RUNNING:
+                // verSeJogoAcabouEAtualizarMultiplayerFaster a verificar se alguem acabou
+                // Broadcast quem ganhou para todos os clientes
+                // Reset game state
+                state = GAME_ENDED;
+                break;
+            case GAME_ENDED:
+                printf("[Sala-%d] Jogo terminado\n", sala->idSala);
+                state = WAITING_PLAYERS;
+                break;
+        }
+    }
     
-//     return NULL;
-// }
+    return NULL;
+}
 void *iniciarSalaSinglePlayer(void *arg)
 {
     struct SalaSinglePlayer *sala = (struct SalaSinglePlayer *)arg;
@@ -1321,12 +1321,12 @@ void *iniciarSalaMultiplayerFaster(void *arg)
     SalaMultiplayerFaster(sala);
     return NULL;
 }
-// void *iniciarSalaMultiplayer(void *arg)
-// {
-//     struct SalaMultiplayer *sala = (struct SalaMultiplayer *)arg;
-//     SalaMultiplayer(sala);
-//     return NULL;
-// }
+void *iniciarSalaMultiplayer(void *arg)
+{
+    struct SalaMultiplayer *sala = (struct SalaMultiplayer *)arg;
+    SalaMultiplayer(sala);
+    return NULL;
+}
 void iniciarSalasJogoSinglePlayer(struct ServidorConfig *serverConfig, struct Jogo jogosEsolucoes[])
 {
     printf("[Sistema] Iniciando %d salas\n", 2 * serverConfig->numeroJogos);
