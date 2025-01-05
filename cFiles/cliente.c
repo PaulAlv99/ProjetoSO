@@ -8,6 +8,7 @@ char *padrao = "./configs/cliente";
 pthread_mutex_t mutexClienteLog = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexSTDOUT = PTHREAD_MUTEX_INITIALIZER;
 
+int numeroClientesMul;
 sem_t aguardaChegarClientes;
 sem_t garfos[9];
 sem_t mutexFilosofos;
@@ -18,8 +19,6 @@ enum Estados
     COMENDO
 };
 enum Estados estadosFilosofos[9];
-
-
 
 bool posicoesSaoAdjacentes(int i,int j){
     if(i == 0){
@@ -75,7 +74,7 @@ int left(int i)
 }
 int right(int i)
 {
-    return (i + 1) % 4;
+    return (i + 1) % 9;
 }
 void get_fork(int i){
     sem_wait(&mutexFilosofos);
@@ -98,16 +97,6 @@ void testar(int i){
         sem_post(&garfos[i]);
     }
 }
-// void filosofo(int i){
-//     while (1){
-//         pensar();
-// pegar em duas regioes
-//         get_fork(i);
-// resolver as duas regioes
-//         comer();
-//         put_fork(i);
-//     }
-// }
 
 void carregarConfigCliente(char *nomeFicheiro, struct ClienteConfig *clienteConfig) {
     FILE *config = abrirFicheiroRead(nomeFicheiro);
@@ -614,6 +603,17 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
                 logQueEventoCliente(7, *clienteConfig);
             break;
             }
+            if(strcmp(clienteConfig->tipoJogo,"MUL") == 0){
+                pthread_mutex_lock(&mutexSTDOUT);
+                printf("Cliente ID:%d\n", clienteConfig->idCliente);
+                while(numeroClientesMul < 9){
+                    numeroClientesMul++;
+                    sem_wait(&aguardaChegarClientes);
+                    
+                }
+                
+                pthread_mutex_unlock(&mutexSTDOUT);
+            }
             
             if (!clienteConfig->jogoAtual.resolvido) {
                 if (!processarEstadoJogo(clienteConfig)) {
@@ -663,7 +663,7 @@ bool desistirDeResolver(){
 }
 int main(int argc, char **argv) {
     struct ClienteConfig clienteConfig = {0};
-
+    numeroClientesMul = 0;
     for(int i = 0; i < 4; i++){
         sem_init(&garfos[i], 0, 1);
     }
