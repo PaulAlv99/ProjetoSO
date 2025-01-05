@@ -1440,10 +1440,10 @@ void iniciarSalasJogoMultiplayer(struct ServidorConfig *serverConfig, struct Jog
 }
 void* informacoesServidor(void* arg) {
     struct ServidorConfig* serverConfig = (struct ServidorConfig*)arg;
+    sleep(5);
     while(1) {
-        printf("[Sistema] Número de clientes atuais: %d\n", clientesAtuais);
+        printf("\n[Sistema] Número de clientes atuais: %d\n", clientesAtuais);
         printf("[Sistema] Número de jogos resolvidos: %d\n", numeroJogosResolvidos);
-        printf("[Sistema] Número de jogos em resolução: %d\n", jogosEmResolucao);
         printf("[Sistema] Número de jogadores rejeitados: %d\n", numeroClientesRejeitados);
         sleep(10);
     }
