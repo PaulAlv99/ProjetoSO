@@ -506,6 +506,7 @@ void imprimirResultadoFinal(struct ClienteConfig *clienteConfig) {
     printf("Jogo resolvido!\n");
     printf("Resolvido em %d tentativas\n", 
            clienteConfig->jogoAtual.numeroTentativas);
+    printf("Hora de inicio: %s\n", clienteConfig->jogoAtual.tempoInicio);
     printf("Hora de fim: %s\n", clienteConfig->jogoAtual.tempoFinal);
     pthread_mutex_unlock(&mutexSTDOUT);
 }
