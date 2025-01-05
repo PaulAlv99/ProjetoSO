@@ -15,14 +15,21 @@ pthread_mutex_t aceitarCliente = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t verificaEstadoSala = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexAcabouJogo = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t verificarEstadoSalaMultiplayerFaster = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutexIniciarJogoMULNORMAL=PTHREAD_MUTEX_INITIALIZER;
+
+//cond
+ pthread_cond_t condIniciarJogoMULNORMAL=PTHREAD_COND_INITIALIZER;
+
 // semaforos
-sem_t mutexSalaMultiplayer;
+sem_t mutexSalaMultiplayerFaster;
+sem_t mutexSalaMultiplayerNormal;
 sem_t acessoLugares;
 sem_t bloquearAcessoSala;
 sem_t entradaPlayerMulPrimeiro;
 sem_t capacidadeSalaMultiplayeFaster;
 sem_t ultimoClienteSairSalaMultiplayerFaster;
 sem_t jogoAcabouMultiplayerFaster;
+sem_t iniciarJogoMul;
 pthread_barrier_t barreiraComecaTodos;
 
 void carregarConfigServidor(char *nomeFicheiro, struct ServidorConfig *serverConfig)
@@ -683,7 +690,19 @@ void prepararRespostaJogo(char *buffer, const struct ClienteConfig *clienteConfi
             clienteConfig->jogoAtual.numeroTentativas,
             logClienteEnviar ? logClienteEnviar : "");
 }
-
+void adicionarClienteSalaMultiplayer(struct ServidorConfig *serverConfig, struct ClienteConfig cliente) {
+    struct SalaMultiplayer *sala = &(serverConfig->salaMultiplayer[1]);
+    for (int i = 0; i < serverConfig->numeroJogos; i++) {
+        if (sala->nClientes < sala->clientesMax) {
+            sala->clientes[sala->nClientes] = cliente;
+            sala->nClientes++;
+            break;
+        }
+    }
+    if(sala->nClientes==sala->clientesMax){
+        sem_post(&iniciarJogoMul);
+    }
+}
 void adicionarClienteSalaMultiplayerFaster(struct ServidorConfig *serverConfig, struct ClienteConfig cliente) {
     struct SalaMultiplayer *sala = &(serverConfig->salaMultiplayer[0]);
 
@@ -714,7 +733,8 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                                  struct ServidorConfig serverConfig)
 {
     struct SalaSinglePlayer *salaAtualSIG = NULL;
-    struct SalaMultiplayer *salaAtualMUL= NULL;
+    struct SalaMultiplayer *salaAtualMULFaster= NULL;
+    struct SalaMultiplayer *salaAtualMUL = NULL;
     char *jogoADar = "";
     int nJogo = -1;
     int bytesRecebidos;
@@ -775,13 +795,13 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 sem_post(&entradaPlayerMulPrimeiro);
                 //apenas 5 players entram
                 sem_wait(&capacidadeSalaMultiplayeFaster);
-                sem_wait(&mutexSalaMultiplayer);
+                sem_wait(&mutexSalaMultiplayerFaster);
                 adicionarClienteSalaMultiplayerFaster(&serverConfig,clienteConfig);
-                sem_post(&mutexSalaMultiplayer);
-                salaAtualMUL = &serverConfig.salaMultiplayer[0];
-                jogoADar = salaAtualMUL->jogo.jogo;
-                nJogo = salaAtualMUL->jogo.idJogo;
-                SalaID = salaAtualMUL->idSala;
+                sem_post(&mutexSalaMultiplayerFaster);
+                salaAtualMULFaster = &serverConfig.salaMultiplayer[0];
+                jogoADar = salaAtualMULFaster->jogo.jogo;
+                nJogo = salaAtualMULFaster->jogo.idJogo;
+                SalaID = salaAtualMULFaster->idSala;
                 //espera todos para começar ao mesmo tempo - (roller coaster-espera todos embarcar)
                 //nao havendo opcao de fazer unboard enquanto o carrinho nao fez o percurso
                 //"Passengers cannot unboard until the car has invoked unload"
@@ -789,6 +809,13 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 pthread_barrier_wait(&barreiraComecaTodos);
                 //sleep por causa de prints
                 sleep(1);
+            }
+            if(strcmp(msgData.tipoJogo,"MUL")==0){
+                salaAtualMUL=&serverConfig.salaMultiplayer[1];
+                jogoADar = salaAtualMUL->jogo.jogo;
+                nJogo = salaAtualMUL->jogo.idJogo;
+                SalaID = salaAtualMUL->idSala;
+                salaAtualMUL->nClientes++;
             }
 
             updateClientConfig(&clienteConfig, &msgData, jogoADar, nJogo,SalaID);
@@ -798,12 +825,12 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 perror("Erro ao enviar mensagem para o cliente");
                 break;
             }
-            if(strcmp(msgData.tipoJogo, "SIG") == 0){
-                // logQueEventoServidor(4, clienteConfig.idCliente, salaAtualSIG ? salaAtualSIG->idSala : 0);
-            }
-            else{
-                // logQueEventoServidor(4, clienteConfig.idCliente, salaAtualMUL ? salaAtualMUL->idSala : 0);
-            }
+            // if(strcmp(msgData.tipoJogo, "SIG") == 0){
+            //     // logQueEventoServidor(4, clienteConfig.idCliente, salaAtualSIG ? salaAtualSIG->idSala : 0);
+            // }
+            // else{
+            //     // logQueEventoServidor(4, clienteConfig.idCliente, salaAtualMUL ? salaAtualMUL->idSala : 0);
+            // }
             
             char bufferEnviarFinal[BUF_SIZE] = {0};
             snprintf(bufferEnviarFinal, BUF_SIZE, "[%s] Mensagem enviada: %s",getTempoHoraMinutoSegundoMs(), buffer);
@@ -844,7 +871,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 }
             }
             if (strcmp(msgData.tipoJogo, "MUL_FASTER") == 0) {
-                if (!salaAtualMUL) {
+                if (!salaAtualMULFaster) {
                     printf("Erro: Cliente sem sala atribuída\n");
                     break;
                 }
@@ -852,17 +879,39 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 atualizarClientConfig(&clienteConfig, &msgData);
                 // logQueEventoServidor(5, clienteConfig.idCliente, salaAtualMUL->idSala);
                 
-                char *logClienteEnviar = handleResolucaoJogoMUL(&clienteConfig, salaAtualMUL);
+                char *logClienteEnviar = handleResolucaoJogoMUL(&clienteConfig, salaAtualMULFaster);
                 
-                    if(salaAtualMUL->hasWinner){
+                    if(salaAtualMULFaster->hasWinner){
                     continue;
                     }
-                    sem_wait(&mutexSalaMultiplayer);
-                    gameCompleted = verSeJogoAcabouEAtualizarMultiplayerFaster(&clienteConfig, salaAtualMUL);
+                    sem_wait(&mutexSalaMultiplayerFaster);
+                    gameCompleted = verSeJogoAcabouEAtualizarMultiplayerFaster(&clienteConfig, salaAtualMULFaster);
                     
                     
-                    sem_post(&mutexSalaMultiplayer);
+                    sem_post(&mutexSalaMultiplayerFaster);
                 
+                memset(buffer, 0, BUF_SIZE);
+                prepararRespostaJogo(buffer, &clienteConfig, logClienteEnviar);
+                
+                if (writeSocket(socketCliente, buffer, BUF_SIZE) < 0) {
+                    perror("Erro ao enviar mensagem para o cliente");
+                    break;
+                }
+                
+                logQueEventoServidor(6, clienteConfig.idCliente, salaAtualMULFaster->idSala);
+                if(gameCompleted){
+                    sem_post(&salaAtualMULFaster->sinalizarVencedor);
+                }
+                
+            }
+            if(strcmp(msgData.tipoJogo, "MUL") == 0){
+                bool gameCompleted=false;
+                adicionarClienteSalaMultiplayer(&serverConfig,clienteConfig);
+                atualizarClientConfig(&clienteConfig, &msgData);
+                // logQueEventoServidor(5, clienteConfig.idCliente, salaAtualMUL->idSala);
+                
+                char *logClienteEnviar = handleResolucaoJogoMUL(&clienteConfig, salaAtualMUL);
+                gameCompleted = verSeJogoAcabouEAtualizarMultiplayerFaster(&clienteConfig, salaAtualMUL);
                 memset(buffer, 0, BUF_SIZE);
                 prepararRespostaJogo(buffer, &clienteConfig, logClienteEnviar);
                 
@@ -873,9 +922,8 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 
                 logQueEventoServidor(6, clienteConfig.idCliente, salaAtualMUL->idSala);
                 if(gameCompleted){
-                    sem_post(&salaAtualMUL->sinalizarVencedor);
+                    break;
                 }
-                
             }
             
         }
@@ -896,19 +944,22 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
         pthread_mutex_unlock(&salaAtualSIG->mutexSala);
         
     }
-    if(salaAtualMUL) {
-    //agora ja podem fazer unboard depois de jogo acabar
-    sem_wait(&jogoAcabouMultiplayerFaster);
-    salaAtualMUL->nClientes--;
-    // printf("Numero de clientes na sala %d\n",salaAtualMUL->nClientes);
-    //sinalizar que todos os clientes sairam
-    if(salaAtualMUL->nClientes == 0){
-        sem_post(&ultimoClienteSairSalaMultiplayerFaster);
-    }
-    //para termos unboard um a um
-    sem_post(&jogoAcabouMultiplayerFaster);
+    if(salaAtualMULFaster) {
+        //agora ja podem fazer unboard depois de jogo acabar
+        sem_wait(&jogoAcabouMultiplayerFaster);
+        salaAtualMULFaster->nClientes--;
+        // printf("Numero de clientes na sala %d\n",salaAtualMUL->nClientes);
+        //sinalizar que todos os clientes sairam
+        if(salaAtualMULFaster->nClientes == 0){
+            sem_post(&ultimoClienteSairSalaMultiplayerFaster);
+        }
+        //para termos unboard um a um
+        sem_post(&jogoAcabouMultiplayerFaster);
     
-}
+    }
+    if(salaAtualMUL){
+        salaAtualMUL->nClientes--;
+    }
     printf(COLOR_RED "Cliente %d saiu\n" COLOR_RESET, clienteConfig.idCliente);
     logQueEventoServidor(7, clienteConfig.idCliente, salaAtualSIG ? salaAtualSIG->idSala : 0);    
 }
@@ -1095,7 +1146,7 @@ void* SalaMultiplayerFaster(void* arg) {
     sala->temDeEsperar = false;
     sala->esperandoEntrar=0;
     pthread_barrier_init(&barreiraComecaTodos, NULL, 5);
-    if(sem_init(&mutexSalaMultiplayer, 0, 1)
+    if(sem_init(&mutexSalaMultiplayerFaster, 0, 1)
      || sem_init(&bloquearAcessoSala, 0, 0)
       || sem_init(&entradaPlayerMulPrimeiro, 0, 0)
        || sem_init(&sala->sinalizarVencedor,0,0)
@@ -1117,11 +1168,11 @@ void* SalaMultiplayerFaster(void* arg) {
         sem_wait(&entradaPlayerMulPrimeiro);
         
         // Entry protocol (similar to sushi bar)
-        sem_wait(&mutexSalaMultiplayer);
+        sem_wait(&mutexSalaMultiplayerFaster);
         // check para ver se houve clientes a sair
         if (sala->temDeEsperar) {
             sala->esperandoEntrar++;
-            sem_post(&mutexSalaMultiplayer);
+            sem_post(&mutexSalaMultiplayerFaster);
             sem_wait(&bloquearAcessoSala);  // When we resume, we hold the mutex
             sala->esperandoEntrar--;
         }
@@ -1133,7 +1184,7 @@ void* SalaMultiplayerFaster(void* arg) {
         if (sala->esperandoEntrar > 0 && !sala->temDeEsperar) {
             sem_post(&bloquearAcessoSala);  // Transfer the mutex
         } else {
-            sem_post(&mutexSalaMultiplayer);
+            sem_post(&mutexSalaMultiplayerFaster);
         }
         //comer sushi
         switch(state) {
@@ -1186,7 +1237,7 @@ void* SalaMultiplayerFaster(void* arg) {
             sem_post(&jogoAcabouMultiplayerFaster);
             //aguarda todos os jogadores desembarcar
             sem_wait(&ultimoClienteSairSalaMultiplayerFaster);
-            sem_wait(&mutexSalaMultiplayer);
+            sem_wait(&mutexSalaMultiplayerFaster);
             
                 printf("[Sala-%d] Jogo terminado e ultimo cliente saiu\n", sala->idSala);
                 sala->jogoIniciado = false;
@@ -1200,7 +1251,7 @@ void* SalaMultiplayerFaster(void* arg) {
                     sem_post(&bloquearAcessoSala);
                 }
                 else{
-                    sem_post(&mutexSalaMultiplayer);
+                    sem_post(&mutexSalaMultiplayerFaster);
                 }
             //libertar lugares
             for(int i=0;i<sala->clientesMax;i++){
@@ -1210,22 +1261,72 @@ void* SalaMultiplayerFaster(void* arg) {
         }
     }
     
-    sem_destroy(&mutexSalaMultiplayer);
+    sem_destroy(&mutexSalaMultiplayerFaster);
     pthread_mutex_destroy(&sala->winnerMutex);
     return NULL;
 }
+// void* SalaMultiplayer(void* arg) {
+//     struct SalaMultiplayer* sala = (struct SalaMultiplayer*) arg;
+//     enum GameState state = WAITING_PLAYERS;
+//     printf("[Sala-%d] Iniciada-Multiplayer\n", sala->idSala);
+    
+//     // Lock para proteger o acesso à condição
+//     // pthread_mutex_lock(&mutexIniciarJogoMULNORMAL);
+//     if(sem_init(&iniciarJogoMul,0,0) || sem_init(&mutexSalaMultiplayerNormal, 0,1) != 0){
+//         perror("Erro ao inicializar mutex");
+//         exit(1);
+//     }
+
+//     while (1) {
+//         switch(state){
+//             case WAITING_PLAYERS:
+//                 //espera 4 jogadores
+//                 sem_wait(&iniciarJogoMul);
+//                 printf("[Sala-%d] Jogadores na sala, começando quando estiver cheio(%d/%d)\n", sala->idSala, sala->nClientes, sala->clientesMax);
+//                 if(sala->nClientes == 4){
+//                     state = GAME_STARTING;
+//                 }
+//                 else{
+//                     break;
+//                 }
+//             case GAME_STARTING:
+//                 // Initialize game
+//                 printf("[Sala-%d] A iniciar jogo\n", sala->idSala);
+//                 state = GAME_RUNNING;
+//                 break;
+//             case GAME_RUNNING:
+//                 // verSeJogoAcabouEAtualizarMultiplayerFaster a verificar se alguem acabou
+//                 // Broadcast quem ganhou para todos os clientes
+//                 // Reset game state
+//                 state = GAME_ENDED;
+//                 break;
+//             case GAME_ENDED:
+//                 printf("[Sala-%d] Jogo terminado\n", sala->idSala);
+//                 state = WAITING_PLAYERS;
+//                 break;
+//         }
+//     }
+    
+//     return NULL;
+// }
 void *iniciarSalaSinglePlayer(void *arg)
 {
     struct SalaSinglePlayer *sala = (struct SalaSinglePlayer *)arg;
     SalaSingleplayer(sala);
     return NULL;
 }
-void *iniciarSalaMultiplayer(void *arg)
+void *iniciarSalaMultiplayerFaster(void *arg)
 {
     struct SalaMultiplayer *sala = (struct SalaMultiplayer *)arg;
     SalaMultiplayerFaster(sala);
     return NULL;
 }
+// void *iniciarSalaMultiplayer(void *arg)
+// {
+//     struct SalaMultiplayer *sala = (struct SalaMultiplayer *)arg;
+//     SalaMultiplayer(sala);
+//     return NULL;
+// }
 void iniciarSalasJogoSinglePlayer(struct ServidorConfig *serverConfig, struct Jogo jogosEsolucoes[])
 {
     printf("[Sistema] Iniciando %d salas\n", 2 * serverConfig->numeroJogos);
@@ -1275,12 +1376,11 @@ void iniciarSalasJogoMultiplayer(struct ServidorConfig *serverConfig, struct Jog
     }
 
     int numeroTotalSalas = serverConfig->numeroJogos;
-    serverConfig->salaMultiplayer = malloc(sizeof(struct SalaMultiplayer));
+    serverConfig->salaMultiplayer = calloc(2, sizeof(struct SalaMultiplayer));
     if(serverConfig->salaMultiplayer == NULL){
         perror("Erro ao alocar memoria para sala multiplayer");
         exit(1);
     }
-    memset(serverConfig->salaMultiplayer, 0, sizeof(struct SalaMultiplayer));
     for (int i = 0; i < 1; i++)
     {
         serverConfig->salaMultiplayer[i].idSala = numeroTotalSalas + i;
@@ -1299,13 +1399,26 @@ void iniciarSalasJogoMultiplayer(struct ServidorConfig *serverConfig, struct Jog
         // Umasala é uma tread
         pthread_t threadSala;
         void *roomPtr = &serverConfig->salaMultiplayer[i];
-        if (pthread_create(&threadSala, NULL, iniciarSalaMultiplayer, roomPtr) != 0)
+        if (pthread_create(&threadSala, NULL, iniciarSalaMultiplayerFaster, roomPtr) != 0)
         {
             perror("Failed to create barber thread");
             exit(1);
         }
         pthread_detach(threadSala);
     }
+    // pthread_t threadSalaMultiplayer;
+    // serverConfig->salaMultiplayer[1].jogo = jogosEsolucoes[0];
+    // serverConfig->salaMultiplayer[1].idSala = numeroTotalSalas + 1;
+    // serverConfig->salaMultiplayer[1].clientesMax = 4;
+    // serverConfig->salaMultiplayer[1].clienteMin = 4;
+    // serverConfig->salaMultiplayer[1].nClientes = 0;
+    // serverConfig->salaMultiplayer[1].jogoIniciado = false;
+    // serverConfig->salaMultiplayer[1].clientes = calloc(serverConfig->salaMultiplayer[1].clientesMax, sizeof(struct ClienteConfig));
+    // if (pthread_create(&threadSalaMultiplayer, NULL, iniciarSalaMultiplayer, &serverConfig->salaMultiplayer[1]) != 0) {
+    //     perror("Erro ao criar thread sala multiplayer");
+    //     exit(1);
+    // }
+    // pthread_detach(threadSalaMultiplayer);
 }
 
 int main(int argc, char **argv) {

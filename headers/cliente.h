@@ -6,6 +6,12 @@ struct MultiplayerState {
     bool canAttempt;
     bool waitingForResponse;
 };
+
+struct ThreadData {
+    int index;
+    struct ClienteConfig *config;
+    pthread_mutex_t *locks;
+};
 // 1KB
 #define IP_SIZE 16
 
@@ -28,3 +34,5 @@ void tentarSolucaoCompleta(char tentativaAtual[], char valoresCorretos[]);
 void mandarETratarMSG(struct ClienteConfig *clienteConfig);
 
 bool desistirDeResolver();
+
+void handleClientMultiplayer(struct ClienteConfig* clienteConfig);

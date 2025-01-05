@@ -44,6 +44,13 @@ struct SalaSinglePlayer
     struct Jogo jogo;
     struct ClienteConfig clienteAtual; // Add this to track current client
 };
+typedef struct {
+    char buffer[BUF_SIZE];  // Shared buffer for game state
+    bool bufferFull;        // Flag indicating if buffer is full
+    sem_t mutex;           // Protects access to buffer
+    sem_t empty;           // Counts empty buffer slots 
+    sem_t full;            // Counts full slots
+} GameBuffer;
 struct SalaMultiplayer {
     int idSala;
     int clientesMax;
@@ -119,7 +126,7 @@ void *iniciarSalaSinglePlayer(void *arg);
 void iniciarSalasJogoSinglePlayer(struct ServidorConfig *serverConfig, struct Jogo jogosEsolucoes[]);
 
 //funcoes multiplayer
-void *iniciarSalaMultiplayer(void *arg);
+void *iniciarSalaMultiplayerFaster(void *arg);
 void iniciarSalasJogoMultiplayer(struct ServidorConfig *serverConfig, struct Jogo jogosEsolucoes[]);
 // funcoes fila
 struct filaClientesSinglePlayer *criarFila(struct ServidorConfig *serverConfig);

@@ -4,11 +4,62 @@
 char *padrao = "./configs/cliente";
 
 #define LINE_SIZE 16
-
 // tricos
 pthread_mutex_t mutexClienteLog = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexSTDOUT = PTHREAD_MUTEX_INITIALIZER;
 
+sem_t aguardaChegarClientes;
+sem_t garfos[4];
+sem_t mutexFilosofos;
+enum Estados estadosFilosofos[4];
+
+enum Estados
+{
+    PENSANDO,
+    COM_FOME,
+    COMENDO
+};
+
+
+int left(int i)
+{
+    return i;
+}
+int right(int i)
+{
+    return (i + 1) % 3;
+}
+void get_fork(int i){
+    sem_wait(&mutexFilosofos);
+    estadosFilosofos[i] = COM_FOME;
+    testar(i);
+    sem_post(&mutexFilosofos);
+    sem_wait(&garfos[i]);
+}
+
+void put_fork(int i){
+    sem_wait(&mutexFilosofos);
+    estadosFilosofos[i] = PENSANDO;
+    testar(right(i));
+    testar(left(i));
+    sem_post(&mutexFilosofos);
+}
+void testar(int i){
+    if (estadosFilosofos[i] == COM_FOME && estadosFilosofos[left(i)] != COMENDO && estadosFilosofos[right(i)] != COMENDO){
+        estadosFilosofos[i] = COMENDO;
+        sem_post(&garfos[i]);
+    }
+}
+// void filosofo(int i){
+//     while (1){
+//         pensar();
+// pegar em duas regioes
+//         get_fork(i);
+// resolver as duas regioes
+//         comer();
+//         put_fork(i);
+//     }
+// }
 
 void carregarConfigCliente(char *nomeFicheiro, struct ClienteConfig *clienteConfig) {
     FILE *config = abrirFicheiroRead(nomeFicheiro);
@@ -219,7 +270,6 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 	mandarETratarMSG(clienteConfig);
 	close(clienteConfig->socket);
 }
-
 void tentarSolucaoParcial(char tentativaAtual[], char valoresCorretos[])
 {
 	for (int i = 0; i < strlen(tentativaAtual); i++)
@@ -260,6 +310,7 @@ void tentarSolucaoCompleta(char tentativaAtual[], char valoresCorretos[])
 		}
 	}
 }
+
 
 // Message formatting and parsing functions
 void formatarMensagemJogo(char *buffer, const struct ClienteConfig *clienteConfig) {
@@ -369,7 +420,8 @@ void atualizarTentativa(struct ClienteConfig *clienteConfig) {
         tentarSolucaoCompleta(clienteConfig->jogoAtual.jogo, 
                             clienteConfig->jogoAtual.valoresCorretos);
                             clienteConfig->jogoAtual.numeroTentativas++;
-    } else if (strcmp(clienteConfig->tipoResolucao, "PARCIAL") == 0) {
+    }
+    else if (strcmp(clienteConfig->tipoResolucao, "PARCIAL") == 0) {
         tentarSolucaoParcial(clienteConfig->jogoAtual.jogo, 
                             clienteConfig->jogoAtual.valoresCorretos);
                             clienteConfig->jogoAtual.numeroTentativas++;
@@ -514,6 +566,7 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
                 logQueEventoCliente(7, *clienteConfig);
             break;
             }
+            
             if (!clienteConfig->jogoAtual.resolvido) {
                 if (!processarEstadoJogo(clienteConfig)) {
                     break;
@@ -562,6 +615,21 @@ bool desistirDeResolver(){
 }
 int main(int argc, char **argv) {
     struct ClienteConfig clienteConfig = {0};
+
+    for(int i = 0; i < 4; i++){
+        sem_init(&garfos[i], 0, 1);
+    }
+    if(sem_init(&mutexFilosofos, 0, 1) != 0){
+        perror("Erro ao inicializar semaforo");
+        exit(1);
+    }
+    if(sem_init(&aguardaChegarClientes, 0, 4) != 0){
+        perror("Erro ao inicializar semaforo");
+        exit(1);
+    }
+    for(int i = 0; i < 4; i++){
+        estadosFilosofos[i] = PENSANDO;
+    }
     // Validação dos argumentos da linha de comando
     if (argc < 2) {
         printf("Erro: Nome do ficheiro de configuracao nao fornecido.\n");

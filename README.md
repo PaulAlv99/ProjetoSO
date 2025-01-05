@@ -2,30 +2,30 @@
 #### Paulo Alves,Renato Pêssego,Francisco Afonseca
 ## Primeiramente, deve certificar-se que no seu projeto está estruturado da seguinte maneira depois de fazer make:
 
-ProjetoSO/
-┣ cFiles/
-┃ ┣ cliente.c
-┃ ┣ servidor.c
-┃ ┗ util.c
-┣ configs/
-┃ ┣ cliente.conf
-┃ ┣ clienteParcial.conf
-┃ ┗ servidor.conf
-┣ headers/
-┃ ┣ cliente.h
-┃ ┣ servidor.h
-┃ ┗ util.h
-┣ logs/
-┣ oFiles/
-┃ ┣ cliente.o
-┃ ┣ servidor.o
-┃ ┗ util.o
-┣ .gitignore
-┣ README.md
-┣ cliente
-┣ jogosEsolucoes.txt
-┣ makefile
-┗ servidor
+	ProjetoSO/
+	┣ cFiles/
+	┃ ┣ cliente.c
+	┃ ┣ servidor.c
+	┃ ┗ util.c
+	┣ configs/
+	┃ ┣ cliente.conf
+	┃ ┣ clienteParcial.conf
+	┃ ┗ servidor.conf
+	┣ headers/
+	┃ ┣ cliente.h
+	┃ ┣ servidor.h
+	┃ ┗ util.h
+	┣ logs/
+	┣ oFiles/
+	┃ ┣ cliente.o
+	┃ ┣ servidor.o
+	┃ ┗ util.o
+	┣ .gitignore
+	┣ README.md
+	┣ cliente
+	┣ jogosEsolucoes.txt
+	┣ makefile
+	┗ servidor
 
 ## Para iniciar o servidor é necessário passar o caminho do ficheiro que será usado para a configuração do servidor. Com o comando ./servidor ./configs/servidor.conf . Deverá certificar se que o ficheiro contém a seguinte estrutura,uma linha para cada parâmetro:
 
