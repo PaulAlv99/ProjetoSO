@@ -103,7 +103,7 @@ void logEventoCliente(const char *message, struct ClienteConfig *clienteConfig)
 		pthread_mutex_unlock(&mutexClienteLog);
 		return;
 	}
-	fprintf(file, "[%s] [Cliente ID: %u] %s\n", getTempoHoraMinutoSegundoMs(), clienteConfig->idCliente, message);
+	fprintf(file, "[Cliente ID: %u] %s\n", clienteConfig->idCliente, message);
 
 	fclose(file);
 	pthread_mutex_unlock(&mutexClienteLog);
@@ -136,6 +136,9 @@ void logQueEventoCliente(int numero, struct ClienteConfig clienteConfig)
 		break;
     case 9:
         logEventoCliente("Fila singleplayer cheia, jogador saiu",&clienteConfig);
+        break;
+    case 10:
+        logEventoCliente("Cliente desistiu de resolver o jogo",&clienteConfig);
         break;
 	default:
 		logEventoCliente("Evento desconhecido", &clienteConfig);
@@ -185,8 +188,7 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 		exit(1);
 	}
 	int umaVez = 1;
-	pthread_mutex_t ligarSocket=PTHREAD_MUTEX_INITIALIZER;
-	pthread_mutex_lock(&ligarSocket);
+    logQueEventoCliente(1, *clienteConfig);
 	while (connect(clienteConfig->socket, (struct sockaddr *)&enderecoServidor, sizeof(enderecoServidor)) == -1)
 	{
 		if (umaVez)
@@ -204,20 +206,17 @@ void iniciarClienteSocket(struct ClienteConfig *clienteConfig)
 		logQueEventoCliente(7, *clienteConfig);
 		return;
 	}
-	pthread_mutex_unlock(&ligarSocket);
 	char recebeIDCliente[BUF_SIZE] = {0};
-	int bytesRecebidos;
     while(readSocket(clienteConfig->socket, recebeIDCliente, BUF_SIZE) < 0){
         
     }
     if(strstr(recebeIDCliente, "|") != NULL){
             clienteConfig->idCliente = atoi(strtok(recebeIDCliente, "|"));
-            logQueEventoCliente(1, *clienteConfig);
-        }
+            
+    }
 	// readSocket(clienteConfig->socket, recebeIDCliente, BUF_SIZE);
 	// cliente recebe id do servidor
 	mandarETratarMSG(clienteConfig);
-    shutdown(socket, SHUT_WR);
 	close(clienteConfig->socket);
 }
 
@@ -295,7 +294,7 @@ bool parseMensagemJogo(const char *buffer, struct ClienteConfig *clienteConfig) 
     char *tempoFinal = strtok(NULL, "|");
     char *resolvido = strtok(NULL, "|");
     char *numeroTentativas = strtok(NULL, "|");
-    char *logCliente = strtok(NULL, "|");
+    // char *logCliente = strtok(NULL, "|");
 
     bool sucesso = (idCliente && tipoJogo && tipoResolucao && temJogo && 
                    idJogo && idSala && valoresCorretos && tempoInicio && 
@@ -331,12 +330,12 @@ bool enviarPedidoJogo(struct ClienteConfig *clienteConfig) {
         logQueEventoCliente(7, *clienteConfig);
         return false;
     }
-    char *log = malloc(2*BUF_SIZE * sizeof(char));
+    char *log = calloc(2*BUF_SIZE, sizeof(char));
     if(log == NULL){
         perror("Erro ao alocar memoria para log");
         exit(1);
     }
-    sprintf(log, "Mensagem enviada: %s", buffer);
+    sprintf(log, "[%s] Mensagem enviada: %s",getTempoHoraMinutoSegundoMs(), buffer);
     logEventoCliente(log, clienteConfig);
     free(log);
     return true;
@@ -352,12 +351,12 @@ bool enviarTentativa(struct ClienteConfig *clienteConfig) {
         return false;
     }
 
-    char *bufferLog = malloc(2*BUF_SIZE * sizeof(char));
+    char *bufferLog = calloc(2 * BUF_SIZE, sizeof(char));
     if(bufferLog == NULL){
         perror("Erro ao alocar memoria para log");
         exit(1);
     }
-    sprintf(bufferLog, "Mensagem enviada: %s", buffer);
+    sprintf(bufferLog, "[%s] Mensagem enviada: %s",getTempoHoraMinutoSegundoMs(), buffer);
     logEventoCliente(bufferLog, clienteConfig);
     free(bufferLog);
     
@@ -434,6 +433,8 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
     
     //Parte principal do cliente
     while ((bytesRead = readSocket(clienteConfig->socket, buffer, BUF_SIZE)) > 0) {
+        //em qualquer momento o cliente pode desistir de resolver 2% de probabilidade
+        
         buffer[bytesRead] = '\0';
         //Para jogos singleplayer se estiver cheio dá break ou seja sai logo
         if (strcmp(buffer, "FILA CHEIA SINGLEPLAYER") == 0) {
@@ -492,19 +493,27 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
         if (!parseMensagemJogo(buffer, clienteConfig)) {
             continue;
         }
+        
         //alocar memória para o log
-        char *bufferLog = malloc(2*BUF_SIZE * sizeof(char));
+        char *bufferLog = calloc(2 * BUF_SIZE, sizeof(char));
         if(bufferLog == NULL){
             perror("Erro ao alocar memoria para mensagem recebida");
             exit(1);
         }
-        sprintf(bufferLog, "Mensagem recebida: %s", buffer);
+        sprintf(bufferLog, "[%s] Mensagem recebida: %s",getTempoHoraMinutoSegundoMs(), buffer);
         logEventoCliente(bufferLog, clienteConfig);
         free(bufferLog);
         
         
         if (strcmp(clienteConfig->TemJogo, "COM_JOGO") == 0) {
-            
+            if(desistirDeResolver() && strcmp(clienteConfig->tipoJogo,"SIG") == 0){
+                pthread_mutex_lock(&mutexSTDOUT);
+                printf("Cliente ID:%d\n", clienteConfig->idCliente);
+                printf("Desistiu de resolver o jogo\n");
+                pthread_mutex_unlock(&mutexSTDOUT);
+                logQueEventoCliente(7, *clienteConfig);
+            break;
+            }
             if (!clienteConfig->jogoAtual.resolvido) {
                 if (!processarEstadoJogo(clienteConfig)) {
                     break;
@@ -513,7 +522,6 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
             else {
                 imprimirResultadoFinal(clienteConfig);
                 logQueEventoCliente(8, *clienteConfig);
-                char resolvidoEmTempo[64];
                 // sprintf(resolvidoEmTempo, "Resolvido em %d tentativas e %d ", clienteConfig->jogoAtual.numeroTentativas);
                 // logEventoCliente("Cliente resolveu o jogo", clienteConfig);
             }
@@ -543,7 +551,15 @@ void* jogadorThread(void* arg) {
 
     pthread_exit(NULL);
 }
-
+bool desistirDeResolver(){
+    //probalidade de 2% de desistir
+    srand(pthread_self());
+    int desistir = rand() % 100;
+    if(desistir < 2){
+        return true;
+    }
+    return false;
+}
 int main(int argc, char **argv) {
     struct ClienteConfig clienteConfig = {0};
     // Validação dos argumentos da linha de comando
@@ -565,9 +581,9 @@ int main(int argc, char **argv) {
     int numJogadores = clienteConfig.numJogadoresASimular;
     
     // Array para guardar os IDs das threads
-    pthread_t* threads = malloc(numJogadores * sizeof(pthread_t));
+    pthread_t* threads = calloc(numJogadores, sizeof(pthread_t));
     // Array para configurações específicas de cada thread
-    struct ClienteConfig* configsJogadores = malloc(numJogadores * sizeof(struct ClienteConfig));
+    struct ClienteConfig* configsJogadores = calloc(numJogadores, sizeof(struct ClienteConfig));
     
     if (!threads || !configsJogadores) {
         perror("Erro na alocação de memória");
@@ -584,6 +600,7 @@ int main(int argc, char **argv) {
         
         int result = pthread_create(&threads[i], NULL, jogadorThread, &configsJogadores[i]);
         //nao é necessário este sleep podendo ser usado para simular diferentes tempos de entrada
+        //usar este sleep fica mais claro nas logs que está a fazer certo
         srand(getpid());
         //entre 5ms-10ms
         usleep((rand() % 9501) + 5000);

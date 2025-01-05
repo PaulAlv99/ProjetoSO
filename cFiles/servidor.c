@@ -73,7 +73,7 @@ void logEventoServidor(const char *message)
         pthread_mutex_unlock(&mutexServidorLog);
         return;
     }
-    fprintf(file, "[%s] %s\n", getTempoHoraMinutoSegundoMs(), message);
+    fprintf(file, " %s\n",message);
     fecharFicheiro(file);
     pthread_mutex_unlock(&mutexServidorLog);
 }
@@ -81,91 +81,92 @@ void logEventoServidor(const char *message)
 // TODO METER LOGS QUANDO ENTRA E SAI DAS SALAS
 void logQueEventoServidor(int numero, int clienteID,int salaID)
 {
-    char *mensagem = malloc(BUF_SIZE * sizeof(char));
-    if (mensagem == NULL)
-    {
-        perror("Erro ao alocar memoria para mensagem");
-        exit(1);
-    }
+    //alocar memoria para mensagem e fazer especie de memset a zeros
+    char mensagem[512]={0};
+    // if (mensagem == NULL)
+    // {
+    //     perror("Erro ao alocar memoria para mensagem");
+    //     exit(1);
+    // }
 
     switch (numero)
     {
     case 1:
         logEventoServidor("Servidor comecou");
-        free(mensagem);
+        // free(mensagem);
         break;
     case 2:
         logEventoServidor("Servidor parou");
-        free(mensagem);
+        //free(mensagem);
         break;
     case 3:
-        sprintf(mensagem, "Cliente-%d conectado", clienteID);
+        sprintf(mensagem, "[%s] Cliente-%d conectado",getTempoHoraMinutoSegundoMs(), clienteID);
         logEventoServidor(mensagem);
-        free(mensagem);
+        //free(mensagem);
         break;
     case 4:
-        sprintf(mensagem, "Servidor enviou um jogo para o cliente-%d", clienteID);
+        sprintf(mensagem, "[%s] Servidor enviou um jogo para o cliente-%d",getTempoHoraMinutoSegundoMs(), clienteID);
         logEventoServidor(mensagem);
-        free(mensagem);
+        //free(mensagem);
         break;
     case 5:
-        sprintf(mensagem, "Servidor recebeu uma solucao do cliente-%d", clienteID);
+        sprintf(mensagem, "[%s] Servidor recebeu uma solucao do cliente-%d",getTempoHoraMinutoSegundoMs(), clienteID);
         logEventoServidor(mensagem);
-        free(mensagem);
+        //free(mensagem);
         break;
     case 6:
-        sprintf(mensagem, "Servidor enviou uma solucao para o cliente-%d", clienteID);
+        sprintf(mensagem, "[%s] Servidor enviou uma solucao para o cliente-%d",getTempoHoraMinutoSegundoMs(), clienteID);
         logEventoServidor(mensagem);
-        free(mensagem);
+        //free(mensagem);
         break;
     case 7:
-        sprintf(mensagem, "Cliente-%d desconectado", clienteID);
+        sprintf(mensagem, "[%s] Cliente-%d desconectado",getTempoHoraMinutoSegundoMs(), clienteID);
         logEventoServidor(mensagem);
-        free(mensagem);
+        //free(mensagem);
         break;
     case 8:
-        sprintf(mensagem, "Cliente-%d resolveu o jogo da sala-%d", clienteID,salaID);
+        sprintf(mensagem, "[%s] Cliente-%d resolveu o jogo da sala-%d",getTempoHoraMinutoSegundoMs(), clienteID,salaID);
         logEventoServidor(mensagem);
-        free(mensagem);
+        //free(mensagem);
         break;
     case 9:
-        sprintf(mensagem, "Cliente-%d entrou na fila", clienteID);
+        sprintf(mensagem, "[%s] Cliente-%d entrou na fila",getTempoHoraMinutoSegundoMs(), clienteID);
         logEventoServidor(mensagem);
-        free(mensagem);
+        //free(mensagem);
         break;
     case 10:
-        sprintf(mensagem, "Cliente-%d removido da fila", clienteID);
+        sprintf(mensagem, "[%s] Cliente-%d removido da fila",getTempoHoraMinutoSegundoMs(), clienteID);
         logEventoServidor(mensagem);
-        free(mensagem);
+        //free(mensagem);
         break;
     case 11:
-        sprintf(mensagem, "Cliente-%d rejeitado a entrar na fila", clienteID);
+        sprintf(mensagem, "[%s] Cliente-%d rejeitado a entrar na fila",getTempoHoraMinutoSegundoMs(), clienteID);
         logEventoServidor(mensagem);
-        free(mensagem);
+        //free(mensagem);
         break;
     case 12:
-        sprintf(mensagem, "Cliente-%d entrou na sala-%d", clienteID,salaID);
+        sprintf(mensagem, "[%s] Cliente-%d entrou na sala-%d",getTempoHoraMinutoSegundoMs(), clienteID,salaID);
         logEventoServidor(mensagem);
-        free(mensagem);
+        //free(mensagem);
         break;
     case 13:
-        sprintf(mensagem, "Cliente-%d não resolveu o jogo da sala-%d", clienteID,salaID);
+        sprintf(mensagem, "[%s] Cliente-%d não resolveu o jogo da sala-%d",getTempoHoraMinutoSegundoMs(), clienteID,salaID);
         logEventoServidor(mensagem);
-        free(mensagem);
+        //free(mensagem);
         break;
     case 14:
-        sprintf(mensagem,"Atendendo Cliente-%d na sala-%d",clienteID,salaID);
+        sprintf(mensagem,"[%s] Atendendo Cliente-%d na sala-%d",getTempoHoraMinutoSegundoMs(),clienteID,salaID);
         logEventoServidor(mensagem);
-        free(mensagem);
+        //free(mensagem);
         break;
     case 15:
-        sprintf(mensagem,"Cliente-%d venceu jogo multiplayer faster",clienteID);
+        sprintf(mensagem,"[%s] Cliente-%d venceu jogo multiplayer faster",getTempoHoraMinutoSegundoMs(),clienteID);
         logEventoServidor(mensagem);
-        free(mensagem);
+        //free(mensagem);
         break;
     default:
         logEventoServidor("Evento desconhecido");
-        free(mensagem);
+        //free(mensagem);
         break;
     }
 }
@@ -174,7 +175,7 @@ void logQueEventoServidor(int numero, int clienteID,int salaID)
 char *atualizaValoresCorretos(char tentativaAtual[], char valoresCorretos[], char solucao[], int *nTentativas)
 {
     // Aloca dinamicamente espaço para logClienteFinal
-    char *logClienteFinal = malloc(2 * BUF_SIZE * sizeof(char));
+    char *logClienteFinal = calloc(2 * BUF_SIZE, sizeof(char));
     if (logClienteFinal == NULL)
     {
         perror("Erro ao alocar memoria para logClienteFinal");
@@ -313,14 +314,14 @@ void construtorServer(struct ServidorConfig *servidor,
     servidor->ficheiroJogosESolucoesCaminho[PATH_SIZE - 1] = '\0';
 
     //alocar memoria para as salas
-    servidor->sala = malloc(servidor->numeroJogos * sizeof(struct SalaSinglePlayer));
+    servidor->sala = calloc(servidor->numeroJogos, sizeof(struct SalaSinglePlayer));
     if (!servidor->sala) {
         perror("Erro ao alocar memória para salas");
         exit(1);
     }
 
     //colocar a 0 as posicoes de mem que temos
-    memset(servidor->sala, 0, servidor->numeroJogos * sizeof(struct SalaSinglePlayer));
+    // memset(servidor->sala, 0, servidor->numeroJogos * sizeof(struct SalaSinglePlayer));
 
     //-1 = nenhum
     for (int i = 0; i < servidor->numeroJogos; i++) {
@@ -447,7 +448,7 @@ void iniciarServidorSocket(struct ServidorConfig *server,struct Jogo jogosEsoluc
             close(socketCliente);
             continue;
         }
-
+        memset(args, 0, sizeof(struct ThreadCliente));
         
         args->socketCliente = socketCliente;
         args->server = server;
@@ -726,7 +727,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
         perror("Failed to allocate semaphore");
         return;
     }
-    
+    memset(clientSem, 0, sizeof(sem_t));
     if (sem_init(clientSem, 0, 0) != 0) {
         free(clientSem);
         perror("Failed to initialize semaphore");
@@ -740,7 +741,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
     while (!clienteDesconectado && (bytesRecebidos = readSocket(socketCliente, buffer, BUF_SIZE)) > 0) {
 
         char bufferFinal[BUF_SIZE] = {0};
-        snprintf(bufferFinal, BUF_SIZE, "Mensagem recebida: %s", buffer);
+        snprintf(bufferFinal, BUF_SIZE, "[%s] Mensagem recebida: %s",getTempoHoraMinutoSegundoMs(), buffer);
         logEventoServidor(bufferFinal);
 
         struct FormatoMensagens msgData = parseMensagem(buffer);
@@ -798,14 +799,14 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 break;
             }
             if(strcmp(msgData.tipoJogo, "SIG") == 0){
-                logQueEventoServidor(4, clienteConfig.idCliente, salaAtualSIG ? salaAtualSIG->idSala : 0);
+                // logQueEventoServidor(4, clienteConfig.idCliente, salaAtualSIG ? salaAtualSIG->idSala : 0);
             }
             else{
-                logQueEventoServidor(4, clienteConfig.idCliente, salaAtualMUL ? salaAtualMUL->idSala : 0);
+                // logQueEventoServidor(4, clienteConfig.idCliente, salaAtualMUL ? salaAtualMUL->idSala : 0);
             }
             
             char bufferEnviarFinal[BUF_SIZE] = {0};
-            snprintf(bufferEnviarFinal, BUF_SIZE, "Mensagem enviada: %s", buffer);
+            snprintf(bufferEnviarFinal, BUF_SIZE, "[%s] Mensagem enviada: %s",getTempoHoraMinutoSegundoMs(), buffer);
             logEventoServidor(bufferEnviarFinal);
             
             memset(buffer, 0, BUF_SIZE);
@@ -820,7 +821,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 }
 
                 atualizarClientConfig(&clienteConfig, &msgData);
-                logQueEventoServidor(5, clienteConfig.idCliente, salaAtualSIG->idSala);
+                // logQueEventoServidor(5, clienteConfig.idCliente, salaAtualSIG->idSala);
 
                 char *logClienteEnviar = handleResolucaoJogoSIG(&clienteConfig, salaAtualSIG);
                 
@@ -834,7 +835,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                     break;
                 }
                 char bufferEnviarFinal[BUF_SIZE] = {0};
-                snprintf(bufferEnviarFinal, BUF_SIZE, "Mensagem enviada: %s", buffer);
+                snprintf(bufferEnviarFinal, BUF_SIZE, "[%s] Mensagem enviada: %s",getTempoHoraMinutoSegundoMs(), buffer);
                 logEventoServidor(bufferEnviarFinal);
                 logQueEventoServidor(6, clienteConfig.idCliente, salaAtualSIG->idSala);
                 
@@ -849,7 +850,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
                 }
                 bool gameCompleted;
                 atualizarClientConfig(&clienteConfig, &msgData);
-                logQueEventoServidor(5, clienteConfig.idCliente, salaAtualMUL->idSala);
+                // logQueEventoServidor(5, clienteConfig.idCliente, salaAtualMUL->idSala);
                 
                 char *logClienteEnviar = handleResolucaoJogoMUL(&clienteConfig, salaAtualMUL);
                 
@@ -920,7 +921,8 @@ struct filaClientesSinglePlayer *criarFila(struct ServidorConfig *serverConfig)
         perror("Erro ao alocar memoria para fila");
         return NULL;
     }
-    fila->cliente = (struct ClienteConfig *)malloc(sizeof(struct ClienteConfig) * serverConfig->NUM_MAX_CLIENTES_FILA_SINGLEPLAYER);
+    memset(fila, 0, sizeof(struct filaClientesSinglePlayer));
+    fila->cliente = (struct ClienteConfig *)calloc(serverConfig->NUM_MAX_CLIENTES_FILA_SINGLEPLAYER, sizeof(struct ClienteConfig));
     if (!fila->cliente)
     {
         free(fila);
@@ -1168,10 +1170,10 @@ void* SalaMultiplayerFaster(void* arg) {
                 logQueEventoServidor(15, sala->winnerID, sala->idSala);
                 for (int i = 0; i < sala->clientesMax; i++) {
                     if (writeSocket(sala->clientes[i].socket, winnerMsg, strlen(winnerMsg)) < 0) {
-                        perror("Falha ao mandar mensagem de quem ganhou, um ou mais clientes sairam ou perderam ligacao o que nao é permitido");
+                        perror("Falha ao mandar mensagem de quem ganhou, um ou mais clientes sairam,perderam ligacao ou desistiram o que nao é permitido");
                     }
                     char bufferEnviarFinal[BUF_SIZE] = {0};
-                    snprintf(bufferEnviarFinal, BUF_SIZE, "Mensagem enviada: %s", winnerMsg);
+                    snprintf(bufferEnviarFinal, BUF_SIZE, "[%s] Mensagem enviada: %s",getTempoHoraMinutoSegundoMs(), winnerMsg);
                     logEventoServidor(bufferEnviarFinal);
                 }
                 sala->hasWinner = true;
@@ -1274,6 +1276,11 @@ void iniciarSalasJogoMultiplayer(struct ServidorConfig *serverConfig, struct Jog
 
     int numeroTotalSalas = serverConfig->numeroJogos;
     serverConfig->salaMultiplayer = malloc(sizeof(struct SalaMultiplayer));
+    if(serverConfig->salaMultiplayer == NULL){
+        perror("Erro ao alocar memoria para sala multiplayer");
+        exit(1);
+    }
+    memset(serverConfig->salaMultiplayer, 0, sizeof(struct SalaMultiplayer));
     for (int i = 0; i < 1; i++)
     {
         serverConfig->salaMultiplayer[i].idSala = numeroTotalSalas + i;
@@ -1288,7 +1295,7 @@ void iniciarSalasJogoMultiplayer(struct ServidorConfig *serverConfig, struct Jog
         serverConfig->salaMultiplayer[i].jogo = jogosEsolucoes[i];
         serverConfig->salaMultiplayer[i].clientes = malloc(
         serverConfig->salaMultiplayer[i].clientesMax * sizeof(struct ClienteConfig));
-
+        memset(serverConfig->salaMultiplayer[i].clientes, 0, serverConfig->salaMultiplayer[i].clientesMax * sizeof(struct ClienteConfig));
         // Umasala é uma tread
         pthread_t threadSala;
         void *roomPtr = &serverConfig->salaMultiplayer[i];
@@ -1322,9 +1329,10 @@ int main(int argc, char **argv) {
     construtorServer(&serverConfig,AF_INET, SOCK_STREAM, 0, INADDR_ANY, serverConfig.porta, 5000, serverConfig.ficheiroJogosESolucoesCaminho);
     
     logQueEventoServidor(1, 0,0);
-    filaClientesSinglePlayer = malloc(sizeof(struct filaClientesSinglePlayer));
+    filaClientesSinglePlayer = calloc(1, sizeof(struct filaClientesSinglePlayer));
     filaClientesSinglePlayer = criarFila(&serverConfig);
     
     iniciarServidorSocket(&serverConfig,jogosEsolucoes);
+    free(filaClientesSinglePlayer);
     return 0;
 }

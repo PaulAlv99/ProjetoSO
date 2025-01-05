@@ -26,3 +26,5 @@ void tentarSolucaoParcial(char tentativaAtual[], char valoresCorretos[]);
 void tentarSolucaoCompleta(char tentativaAtual[], char valoresCorretos[]);
 
 void mandarETratarMSG(struct ClienteConfig *clienteConfig);
+
+bool desistirDeResolver();
