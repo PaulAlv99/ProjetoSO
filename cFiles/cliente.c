@@ -7,7 +7,7 @@ char *padrao = "./configs/cliente";
 
 // tricos
 pthread_mutex_t mutexClienteLog = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t semSTDOUT = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutexSTDOUT = PTHREAD_MUTEX_INITIALIZER;
 
 
 void carregarConfigCliente(char *nomeFicheiro, struct ClienteConfig *clienteConfig) {
@@ -378,12 +378,12 @@ void atualizarTentativa(struct ClienteConfig *clienteConfig) {
 }
 
 bool processarEstadoJogo(struct ClienteConfig *clienteConfig) {
-    pthread_mutex_lock(&semSTDOUT);
+    pthread_mutex_lock(&mutexSTDOUT);
     printf("Cliente ID:%d\n", clienteConfig->idCliente);
     printf("Sala ID:%d\n", clienteConfig->idSala);
     printf("\nTentativa %d:\n\n", clienteConfig->jogoAtual.numeroTentativas);
     imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
-    pthread_mutex_unlock(&semSTDOUT);
+    pthread_mutex_unlock(&mutexSTDOUT);
 
     // Realizar tentativa
     atualizarTentativa(clienteConfig);
@@ -400,7 +400,7 @@ bool processarEstadoJogo(struct ClienteConfig *clienteConfig) {
 }
 
 void imprimirResultadoFinal(struct ClienteConfig *clienteConfig) {
-    pthread_mutex_lock(&semSTDOUT);
+    pthread_mutex_lock(&mutexSTDOUT);
     printf("Cliente ID:%d\n", clienteConfig->idCliente);
     printf("Tentativa: %d\n\n",clienteConfig->jogoAtual.numeroTentativas);
     imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
@@ -408,17 +408,17 @@ void imprimirResultadoFinal(struct ClienteConfig *clienteConfig) {
     printf("Resolvido em %d tentativas\n", 
            clienteConfig->jogoAtual.numeroTentativas);
     printf("Hora de fim: %s\n", clienteConfig->jogoAtual.tempoFinal);
-    pthread_mutex_unlock(&semSTDOUT);
+    pthread_mutex_unlock(&mutexSTDOUT);
 }
 
 void imprimirEstadoInicial(struct ClienteConfig *clienteConfig) {
-    pthread_mutex_lock(&semSTDOUT);
+    pthread_mutex_lock(&mutexSTDOUT);
     printf("Cliente ID:%d\n", clienteConfig->idCliente);
     printf("Iniciando tentativa de solução...\n");
     printf("Jogo Inicial:\n\n");
     printf("Hora de inicio: %s\n\n", clienteConfig->jogoAtual.tempoInicio);
     imprimirTabuleiro(clienteConfig->jogoAtual.jogo);
-    pthread_mutex_unlock(&semSTDOUT);
+    pthread_mutex_unlock(&mutexSTDOUT);
 }
 
 //Funcao principal para enviar e receber mensagens
@@ -437,9 +437,10 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
         buffer[bytesRead] = '\0';
         //Para jogos singleplayer se estiver cheio dá break ou seja sai logo
         if (strcmp(buffer, "FILA CHEIA SINGLEPLAYER") == 0) {
-            pthread_mutex_lock(&semSTDOUT);
+            pthread_mutex_lock(&mutexSTDOUT);
+            printf("Cliente ID:%d\n", clienteConfig->idCliente);
             printf("Fila singleplayer está cheia\n");
-            pthread_mutex_unlock(&semSTDOUT);
+            pthread_mutex_unlock(&mutexSTDOUT);
             logQueEventoCliente(9, *clienteConfig);
             break;
         }
@@ -450,24 +451,30 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
                 int winnerID;
                 sscanf(buffer, "WINNER|%d", &winnerID);
                 
-                pthread_mutex_lock(&semSTDOUT);
+                pthread_mutex_lock(&mutexSTDOUT);
                 if (winnerID == clienteConfig->idCliente) {
                     printf("Cliente ID:%d\n", clienteConfig->idCliente);
                     printf("\nVocê venceu o jogo!\n\n");
-                    pthread_mutex_unlock(&semSTDOUT);
+                    pthread_mutex_unlock(&mutexSTDOUT);
                     break;
                 } else {
                     printf("Cliente ID:%d\n", clienteConfig->idCliente);
                     printf("\nVocê perdeu o jogo!\n\n");
-                    pthread_mutex_unlock(&semSTDOUT);
+                    pthread_mutex_unlock(&mutexSTDOUT);
                     break;
                 }            
-            }
+        }
+        if(strcmp(buffer,"JOGO_CANCELADO") > 0){
+            pthread_mutex_lock(&mutexSTDOUT);
+            printf("Cliente ID: %d\n",clienteConfig->idCliente);
+            printf("Jogo multiplayer faster cancelado\n");
+            pthread_mutex_unlock(&mutexSTDOUT);
+        }
         //servidor manda mensagem de quando entra um player na sala
         //multiplayer faster sempre com quantos players faltam entrar
 
         if(strcmp(buffer,"ENTROU_FASTER|") > 0){
-            pthread_mutex_lock(&semSTDOUT);
+            pthread_mutex_lock(&mutexSTDOUT);
             sscanf(buffer,"ENTROU_FASTER|%d",&jogadoresEmFalta);
             
             printf("\nCliente ID: %d\n",clienteConfig->idCliente);
@@ -478,7 +485,7 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
                 printf("Aguardando restantes %d jogadores\n\n",jogadoresEmFalta);
             }
             
-            pthread_mutex_unlock(&semSTDOUT);
+            pthread_mutex_unlock(&mutexSTDOUT);
         }
         
         //transformar a mensagem recebida em struct clienteConfig
@@ -526,9 +533,9 @@ void mandarETratarMSG(struct ClienteConfig *clienteConfig)
 void* jogadorThread(void* arg) {
     struct ClienteConfig* config = (struct ClienteConfig*)arg;
     
-    pthread_mutex_lock(&semSTDOUT);
+    pthread_mutex_lock(&mutexSTDOUT);
     printf("Iniciando jogador %d\n", config->idCliente);
-    pthread_mutex_unlock(&semSTDOUT);
+    pthread_mutex_unlock(&mutexSTDOUT);
 
     // Inicia o cliente
     construtorCliente(AF_INET, config->porta, INADDR_ANY, config);
@@ -576,7 +583,9 @@ int main(int argc, char **argv) {
         configsJogadores[i].idCliente = i + 1;
         
         int result = pthread_create(&threads[i], NULL, jogadorThread, &configsJogadores[i]);
+        //nao é necessário este sleep podendo ser usado para simular diferentes tempos de entrada
         srand(getpid());
+        //entre 5ms-10ms
         usleep((rand() % 9501) + 5000);
         
         if (result != 0) {

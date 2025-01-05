@@ -1,5 +1,5 @@
 #include "../headers/servidor.h"
-#define MAX_CLIENTS 5000  // Adjust based on your needs
+
 
 struct filaClientesSinglePlayer *filaClientesSinglePlayer;
 
@@ -149,6 +149,16 @@ void logQueEventoServidor(int numero, int clienteID,int salaID)
         break;
     case 13:
         sprintf(mensagem, "Cliente-%d não resolveu o jogo da sala-%d", clienteID,salaID);
+        logEventoServidor(mensagem);
+        free(mensagem);
+        break;
+    case 14:
+        sprintf(mensagem,"Atendendo Cliente-%d na sala-%d",clienteID,salaID);
+        logEventoServidor(mensagem);
+        free(mensagem);
+        break;
+    case 15:
+        sprintf(mensagem,"Cliente-%d venceu jogo multiplayer faster",clienteID);
         logEventoServidor(mensagem);
         free(mensagem);
         break;
@@ -683,10 +693,10 @@ void adicionarClienteSalaMultiplayerFaster(struct ServidorConfig *serverConfig, 
         for(int i = 0; i < sala->clientesMax; i++) {
             if(sala->clientes[i].idCliente == 0) { // Check for empty spot
                 sala->clientes[i] = cliente;
-                printf("[Sala-%d] Cliente %d adicionado na posição %d\n", 
-                       sala->idSala, 
-                       cliente.idCliente, 
-                       i);
+                // printf("[Sala-%d] Cliente %d adicionado na posição %d\n", 
+                //        sala->idSala, 
+                //        cliente.idCliente, 
+                //        i);
                        
                 // Log that client entered the room
                 logQueEventoServidor(12, cliente.idCliente, sala->idSala);
@@ -891,7 +901,7 @@ void receberMensagemETratarServer(char *buffer, int socketCliente,
     }
     if(salaAtualMUL) {
     salaAtualMUL->nClientes--;
-    printf("Numero de clientes na sala %d\n",salaAtualMUL->nClientes);
+    // printf("Numero de clientes na sala %d\n",salaAtualMUL->nClientes);
     //sinalizar que todos os clientes sairam
     if(salaAtualMUL->nClientes == 0){
         sem_post(&ultimoClienteSairSalaMultiplayerFaster);
@@ -1043,6 +1053,7 @@ void* SalaSingleplayer(void* arg) {
     while (1) {
         //acorda se tiver clientes na fila de espera
         sem_wait(&filaClientesSinglePlayer->customers);
+        //sem para controlar o acesso aos lugares de espera
         sem_wait(&acessoLugares);
         
         struct ClienteConfig cliente = dequeue(filaClientesSinglePlayer);
@@ -1057,7 +1068,7 @@ void* SalaSingleplayer(void* arg) {
         sala->clienteAtual = cliente;
         printf(COLOR_YELLOW "[Sala-%d] Atendendo cliente %d com jogo %d\n" COLOR_RESET,
         sala->idSala, sala->clienteAtual.idCliente, sala->jogo.idJogo);
-        
+        logQueEventoServidor(14, cliente.idCliente, sala->idSala);
         
         //para deixar a fila encher nao ser tao rapido
         //visto que estou a usar tempo entre tentativas 0
@@ -1143,7 +1154,7 @@ void* SalaMultiplayerFaster(void* arg) {
         
         // Entry protocol (similar to sushi bar)
         sem_wait(&mutexSalaMultiplayer);
-        
+        // check para ver se houve clientes a sair
         if (sala->temDeEsperar) {
             sala->esperandoEntrar++;
             sem_post(&mutexSalaMultiplayer);
@@ -1191,6 +1202,7 @@ void* SalaMultiplayerFaster(void* arg) {
                 char winnerMsg[32];
                 sprintf(winnerMsg, "WINNER|%d", sala->winnerID);
                 printf("[Sala-%d] Vencedor ID: %d\n", sala->idSala, sala->winnerID);
+                logQueEventoServidor(15, sala->winnerID, sala->idSala);
                 for (int i = 0; i < sala->clientesMax; i++) {
                     if (writeSocket(sala->clientes[i].socket, winnerMsg, strlen(winnerMsg)) < 0) {
                         perror("Failed to send winner message");

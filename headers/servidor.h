@@ -10,6 +10,8 @@ struct Jogo
     char solucao[NUMEROS_NO_JOGO + 1];
 };
 
+
+//podia ser mudado para struct do cliente mesmo
 struct ThreadCliente
 {
     int socketCliente;

@@ -22,6 +22,8 @@
 #include <sys/wait.h>
 #include <sched.h>
 #include <poll.h>
+#define MAX_CLIENTS 5000
+
 #define CHECK_NULL(x) ((x) == NULL)
 
 #define TEMPO_TAMANHO 64
@@ -54,6 +56,7 @@ struct JogoAtual
 
 struct ClienteConfig
 {
+    pthread_t threadId;
     int idCliente;
     int numJogadoresASimular;
     int tempoEntreTentativas;
