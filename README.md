@@ -1,7 +1,7 @@
 Projeto SO
 
-Para executar o projeto é necessário fazer make. Se quisermos cliente mudamos o EXECUTAVEL para cliente ou para servidor se for ao contrario
-Para executar devemos estar na pasta do proj e executar o comando sendo X o numero do cliente ./cliente ./clienteConfigs/clienteX.conf
+Para executar o projeto é necessário fazer make na pasta do proj.
+Para executar devemos estar e executar o comando sendo X o numero do cliente ./cliente ./clienteConfigs/clienteX.conf
 Para executar o servidor usamos o comando ./servidor ./servidorConfig/servidor.conf
 
 Os ficheiros de texto estão organizados da seguinte maneira:
